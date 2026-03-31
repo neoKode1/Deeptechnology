@@ -1,105 +1,127 @@
-import React from 'react';
-import Image from 'next/image';
-import PageLayout from '@/components/PageLayout';
-import ContactForm from '@/components/ContactForm';
-import { FaTwitter, FaFacebook, FaInstagram } from 'react-icons/fa';
+'use client';
 
-export default function Contact() {
+import { useState } from 'react';
+import SoftDevHeader from '@/components/SoftDevHeader';
+
+type Status = 'idle' | 'loading' | 'success' | 'error';
+
+export default function ContactPage() {
+  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [status, setStatus] = useState<Status>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus('loading');
+    setErrorMsg('');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || 'Something went wrong.');
+      setStatus('success');
+      setForm({ name: '', email: '', message: '' });
+    } catch (err: unknown) {
+      setStatus('error');
+      setErrorMsg(err instanceof Error ? err.message : 'Failed to send. Please try again.');
+    }
+  };
+
+  const inputClass =
+    'w-full border border-[#ccc] rounded-none px-4 py-3 text-[#111] placeholder-[#bbb] focus:outline-none focus:border-[#111] transition-colors text-sm bg-white font-manrope';
+
   return (
-    <PageLayout>
-      {/* Hero */}
-      <section className="relative h-[50vh] bg-black text-white">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/media/u3538638467_httpss.mj.runSoO7WIhXebc_Massive_quantum_processi_3ccafacd-38f5-44cd-aa8b-be6c548bb071_0.png"
-            alt="Contact A Dark Orchestra Films"
-            fill
-            className="object-cover opacity-40"
-            priority
-          />
-        </div>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black z-0" />
-        <div className="relative z-10 container mx-auto px-6 h-full flex flex-col justify-end pb-16">
-          <p className="text-xs uppercase tracking-[0.25em] text-amber-400/70 mb-3">Get In Touch</p>
-          <h1 className="font-heading text-5xl md:text-7xl font-bold text-white leading-tight">
-            Let&apos;s talk.
+    <div className="min-h-screen bg-white text-[#4d4d4d]">
+      <SoftDevHeader />
+
+      <section className="px-6 md:px-12 lg:px-20 pt-32 pb-24 max-w-[82rem] mx-auto">
+
+        {/* Heading */}
+        <div className="mb-16 border-b border-[#eee] pb-12">
+          <p className="text-xs uppercase tracking-[0.2em] text-[#999] font-manrope mb-4">
+            Contact
+          </p>
+          <h1
+            className="font-manrope font-semibold text-[#111] leading-none tracking-tight"
+            style={{ fontSize: 'clamp(3rem, 9vw, 7rem)' }}
+          >
+            Get in touch.
           </h1>
-          <p className="text-white/50 text-lg mt-3 max-w-xl">
-            Drop us a message and we&apos;ll get back to you.
+          <p className="mt-6 text-base text-[#777] max-w-md leading-relaxed font-manrope">
+            Tell us about your project. We&apos;ll get back to you at{' '}
+            <a href="mailto:1deeptechnology@gmail.com" className="text-[#111] underline underline-offset-4">
+              1deeptechnology@gmail.com
+            </a>
           </p>
         </div>
-      </section>
 
-      {/* Form + Social */}
-      <section className="bg-black text-white py-20">
-        <div className="container mx-auto px-6">
-          <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-5 gap-16">
-
-            {/* Contact form — takes up 3/5 */}
-            <div className="lg:col-span-3">
-              <h2 className="font-heading text-2xl font-semibold mb-8 text-white">Send a message</h2>
-              <ContactForm />
-            </div>
-
-            {/* Sidebar — social links */}
-            <div className="lg:col-span-2 flex flex-col gap-8">
-              <div>
-                <h2 className="font-heading text-2xl font-semibold mb-2 text-white">Find us online</h2>
-                <p className="text-white/40 text-sm leading-relaxed">
-                  We&apos;re also reachable via social — fastest for quick questions and project previews.
-                </p>
-              </div>
-
-              <div className="flex flex-col gap-4">
-                <a
-                  href="https://x.com/JusChadneo"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-4 rounded-xl border border-white/10 hover:border-amber-400/30 hover:bg-white/5 transition-all group"
-                >
-                  <div className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full group-hover:bg-amber-400/10 transition-colors">
-                    <FaTwitter className="w-5 h-5 text-white/60 group-hover:text-amber-400 transition-colors" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-white">Twitter / X</p>
-                    <p className="text-xs text-white/40">@JusChadneo</p>
-                  </div>
-                </a>
-
-                <a
-                  href="https://www.facebook.com/profile.php?id=100093569451356"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-4 rounded-xl border border-white/10 hover:border-amber-400/30 hover:bg-white/5 transition-all group"
-                >
-                  <div className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full group-hover:bg-amber-400/10 transition-colors">
-                    <FaFacebook className="w-5 h-5 text-white/60 group-hover:text-amber-400 transition-colors" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-white">Facebook</p>
-                    <p className="text-xs text-white/40">A Dark Orchestra Films</p>
-                  </div>
-                </a>
-
-                <a
-                  href="https://www.instagram.com/a_dark_orchestra/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-4 p-4 rounded-xl border border-white/10 hover:border-amber-400/30 hover:bg-white/5 transition-all group"
-                >
-                  <div className="w-10 h-10 flex items-center justify-center bg-white/10 rounded-full group-hover:bg-amber-400/10 transition-colors">
-                    <FaInstagram className="w-5 h-5 text-white/60 group-hover:text-amber-400 transition-colors" />
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium text-white">Instagram</p>
-                    <p className="text-xs text-white/40">@a_dark_orchestra</p>
-                  </div>
-                </a>
-              </div>
-            </div>
+        {/* Form */}
+        {status === 'success' ? (
+          <div className="py-20 text-center">
+            <p className="font-manrope text-2xl font-semibold text-[#111]">Message received.</p>
+            <p className="mt-3 text-[#999] text-sm font-manrope">We&apos;ll be in touch shortly.</p>
+            <button
+              onClick={() => setStatus('idle')}
+              className="mt-10 sd-btn-outline"
+            >
+              Send another
+            </button>
           </div>
-        </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="flex flex-col gap-8 max-w-2xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="flex flex-col gap-2">
+                <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Name *</label>
+                <input
+                  name="name" type="text" required placeholder="Your name"
+                  value={form.name} onChange={handleChange}
+                  disabled={status === 'loading'} className={inputClass}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Email *</label>
+                <input
+                  name="email" type="email" required placeholder="you@company.com"
+                  value={form.email} onChange={handleChange}
+                  disabled={status === 'loading'} className={inputClass}
+                />
+              </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Message *</label>
+              <textarea
+                name="message" required rows={7}
+                placeholder="Tell us about your project or what you need..."
+                value={form.message} onChange={handleChange}
+                disabled={status === 'loading'}
+                className={`${inputClass} resize-none`}
+              />
+            </div>
+
+            {status === 'error' && (
+              <p className="text-red-500 text-sm font-manrope">{errorMsg}</p>
+            )}
+
+            <div>
+              <button
+                type="submit"
+                disabled={status === 'loading'}
+                className="sd-btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {status === 'loading' ? 'Sending…' : 'Send Message'}
+              </button>
+            </div>
+          </form>
+        )}
       </section>
-    </PageLayout>
+    </div>
   );
 }

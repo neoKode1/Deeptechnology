@@ -208,7 +208,7 @@ export default function SoftwareDivisionHome() {
           <div className="mt-8 mb-2" style={{ position: 'relative', zIndex: 2 }}>
             <p className="text-sm text-[#888] uppercase tracking-widest font-manrope">
               Don&apos;t know where to start?{' '}
-              <Link href="/#contact" className="text-[#111] font-semibold hover:underline underline-offset-4 transition-all">
+              <Link href="/contact" className="text-[#111] font-semibold hover:underline underline-offset-4 transition-all">
                 Start here.
               </Link>
             </p>
@@ -221,7 +221,7 @@ export default function SoftwareDivisionHome() {
             <Link href="/#work" className="sd-btn-primary">
               Explore Our Work <ArrowUpRight className="w-4 h-4" />
             </Link>
-            <Link href="/#contact" className="sd-btn-outline">
+            <Link href="/contact" className="sd-btn-outline">
               Work With Us <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
