@@ -26,8 +26,7 @@ const SoftDevHeader = () => {
   const isCreative =
     pathname.startsWith('/creative') ||
     pathname === '/about' ||
-    pathname === '/gallery' ||
-    pathname === '/contact';
+    pathname === '/gallery';
   const isRobotics = pathname.startsWith('/robotics');
   const isSoftDev = !isCreative && !isRobotics;
   const isDark = isCreative || isRobotics;
@@ -83,10 +82,10 @@ const SoftDevHeader = () => {
                 <div className="hidden md:flex items-center gap-6 text-sm">
                   <Link href="/#services" className={`transition-colors ${textMuted}`}>Services</Link>
                   <Link href="/#work" className={`transition-colors ${textMuted}`}>Work</Link>
-                  <Link href="/#contact" className={`transition-colors ${textMuted}`}>Contact</Link>
+                  <Link href="/contact" className={`transition-colors ${textMuted}`}>Contact</Link>
                 </div>
                 <Link
-                  href="/#contact"
+                  href="/contact"
                   className={`hidden md:flex items-center gap-2 text-sm transition-colors ${textColor}`}
                 >
                   Let&apos;s talk <ArrowUpRight className="w-4 h-4" />
@@ -120,13 +119,13 @@ const SoftDevHeader = () => {
             </Link>
           </div>
           {/* Nav links — software dev only */}
-          {isSoftDev && [['/#services', 'Services'], ['/#work', 'Work'], ['/#contact', 'Contact']].map(([href, label]) => (
+          {isSoftDev && [['/#services', 'Services'], ['/#work', 'Work'], ['/contact', 'Contact']].map(([href, label]) => (
             <Link key={href} href={href} className={`text-2xl font-manrope font-light ${textColor}`} onClick={() => setIsMenuOpen(false)}>
               {label}
             </Link>
           ))}
           {isSoftDev && (
-            <Link href="/#contact" className={`text-sm ${textMuted}`} onClick={() => setIsMenuOpen(false)}>
+            <Link href="/contact" className={`text-sm ${textMuted}`} onClick={() => setIsMenuOpen(false)}>
               Let&apos;s talk <ArrowUpRight className="w-4 h-4 inline" />
             </Link>
           )}
