@@ -1,5 +1,7 @@
 # Deeptech
 
+![Deeptech](public/media/deeptech.png)
+
 **Engineering your future. Start building.**
 
 Deeptech is a technology company operating across software engineering, artificial intelligence, robotics, systems deployment, prototyping, and research & development. We build infrastructure, products, and intelligent systems for founders, enterprises, and organizations that refuse to settle for ordinary.
