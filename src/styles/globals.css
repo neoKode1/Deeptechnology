@@ -69,7 +69,7 @@
   }
 
   .gradient-text {
-    @apply bg-gradient-to-r from-red-600 via-red-500 to-red-400 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-300 bg-clip-text text-transparent;
   }
 
   .gradient-bg {
@@ -81,15 +81,15 @@
   }
 
   .card-hover {
-    @apply transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-red-500/20;
+    @apply transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/15;
   }
 
   .button-primary {
-    @apply bg-gradient-to-r from-red-600 to-red-500 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:from-red-700 hover:to-red-600 hover:shadow-lg hover:shadow-red-500/30 hover:scale-105;
+    @apply bg-gradient-to-r from-amber-500 to-yellow-400 text-black px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:from-amber-400 hover:to-yellow-300 hover:shadow-lg hover:shadow-amber-500/30 hover:scale-105;
   }
 
   .button-secondary {
-    @apply border-2 border-red-600 text-red-600 px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-red-600 hover:text-white hover:shadow-lg hover:shadow-red-500/30;
+    @apply border border-white/30 text-white px-6 py-3 rounded-lg font-medium transition-all duration-300 hover:bg-white/10 hover:border-white/60;
   }
 
   .animate-float {
@@ -106,8 +106,8 @@
   }
 
   @keyframes glow {
-    from { box-shadow: 0 0 20px rgba(220, 38, 38, 0.5); }
-    to { box-shadow: 0 0 30px rgba(239, 68, 68, 0.8); }
+    from { box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
+    to { box-shadow: 0 0 30px rgba(251, 191, 36, 0.7); }
   }
 
   .animate-pulse-red {
@@ -124,7 +124,7 @@
   }
 
   .text-shadow-red {
-    text-shadow: 0 0 30px rgba(239, 68, 68, 0.8);
+    text-shadow: 0 0 40px rgba(251, 191, 36, 0.35);
   }
 
   .mega-title {
@@ -148,6 +148,10 @@
   /* ── Software Development Division ── */
   .font-manrope {
     font-family: var(--font-manrope), 'Manrope', sans-serif;
+  }
+
+  .font-roboto {
+    font-family: var(--font-roboto), 'Roboto', sans-serif;
   }
 
   .sd-bg {

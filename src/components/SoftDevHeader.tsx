@@ -7,39 +7,47 @@ import { Menu, X, ArrowUpRight, Code2, Clapperboard, Bot } from 'lucide-react';
 
 /**
  * Universal header used across all three divisions.
- * Adapts bg/text colors based on the current division (light for SoftDev, dark for Robotics/Creative).
- * Gains a frosted backdrop on scroll so page content never bleeds through.
+ * - Adapts text colors based on division: light text for Robotics/Creative/sub-pages, dark for SoftDev.
+ * - Always transparent — fades away (opacity-0) once the user scrolls past 60px, fades back at the top.
+ * - /about, /gallery, /contact are treated as Creative sub-pages (dark theme).
  */
 const SoftDevHeader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
+  const [isHidden, setIsHidden] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
-    const onScroll = () => setIsScrolled(window.scrollY > 24);
+    // Fade the header away as soon as the user scrolls past 60px
+    const onScroll = () => setIsHidden(window.scrollY > 60);
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  const isCreative = pathname.startsWith('/creative');
+  const isCreative =
+    pathname.startsWith('/creative') ||
+    pathname === '/about' ||
+    pathname === '/gallery' ||
+    pathname === '/contact';
   const isRobotics = pathname.startsWith('/robotics');
   const isSoftDev = !isCreative && !isRobotics;
   const isDark = isCreative || isRobotics;
 
   const textColor = isDark ? 'text-white/80' : 'text-[#111]';
   const textMuted = isDark ? 'text-white/40 hover:text-white/80' : 'text-[#111]/40 hover:text-[#111]';
-  const pillActive = isDark ? 'text-white font-medium' : 'text-[#111] font-medium';
-  const pillInactive = isDark ? 'text-white/30 hover:text-white/70' : 'text-[#111]/30 hover:text-[#111]/70';
+  // Active = current page: subdued + underline so it reads as "you are here"
+  // Inactive = other divisions: bright + hover, clearly inviting navigation
+  const pillActive = isDark
+    ? 'text-white/40 underline underline-offset-4 decoration-white/20 cursor-default'
+    : 'text-[#111]/40 underline underline-offset-4 decoration-[#111]/20 cursor-default';
+  const pillInactive = isDark
+    ? 'text-white/85 hover:text-white'
+    : 'text-[#111]/75 hover:text-[#111]';
 
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-          isScrolled
-            ? isDark
-              ? 'bg-black/75 backdrop-blur-md border-b border-white/10'
-              : 'bg-white/85 backdrop-blur-md border-b border-[#e5e5e5]/80'
-            : 'bg-transparent border-b border-transparent'
+        className={`fixed top-0 left-0 right-0 z-50 bg-transparent border-b border-transparent transition-all duration-500 ease-in-out ${
+          isHidden ? 'opacity-0 pointer-events-none -translate-y-1' : 'opacity-100 translate-y-0'
         }`}
       >
         <div className="flex items-center justify-between px-6 py-5 md:px-12 lg:px-20">
@@ -68,19 +76,23 @@ const SoftDevHeader = () => {
             </Link>
           </div>
 
-          {/* Right — Nav links + CTA + hamburger */}
+          {/* Right — Nav links + CTA + hamburger (software dev only) */}
           <div className="flex items-center gap-6">
-            <div className="hidden md:flex items-center gap-6 text-sm">
-              <Link href="/#services" className={`transition-colors ${textMuted}`}>Services</Link>
-              <Link href="/#work" className={`transition-colors ${textMuted}`}>Work</Link>
-              <Link href="/#contact" className={`transition-colors ${textMuted}`}>Contact</Link>
-            </div>
-            <Link
-              href="/#contact"
-              className={`hidden md:flex items-center gap-2 text-sm transition-colors ${textColor}`}
-            >
-              Let&apos;s talk <ArrowUpRight className="w-4 h-4" />
-            </Link>
+            {isSoftDev && (
+              <>
+                <div className="hidden md:flex items-center gap-6 text-sm">
+                  <Link href="/#services" className={`transition-colors ${textMuted}`}>Services</Link>
+                  <Link href="/#work" className={`transition-colors ${textMuted}`}>Work</Link>
+                  <Link href="/#contact" className={`transition-colors ${textMuted}`}>Contact</Link>
+                </div>
+                <Link
+                  href="/#contact"
+                  className={`hidden md:flex items-center gap-2 text-sm transition-colors ${textColor}`}
+                >
+                  Let&apos;s talk <ArrowUpRight className="w-4 h-4" />
+                </Link>
+              </>
+            )}
             <button
               className={`md:hidden ${textColor}`}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -95,7 +107,8 @@ const SoftDevHeader = () => {
       {/* Mobile menu — minimal, no heavy bg */}
       {isMenuOpen && (
         <div className={`md:hidden fixed inset-0 top-[65px] z-40 flex flex-col px-6 py-8 gap-8 ${isDark ? 'bg-black/80 backdrop-blur-md' : 'bg-white/90 backdrop-blur-md'}`}>
-          <div className="flex items-center gap-6">
+          {/* Division switcher — only shown on xs screens where header doesn't already show it */}
+          <div className="sm:hidden flex items-center gap-6">
             <Link href="/" onClick={() => setIsMenuOpen(false)} className={`flex items-center gap-1.5 text-xs transition-colors ${isSoftDev ? pillActive : pillInactive}`}>
               <Code2 className="w-3 h-3" /> Software Dev
             </Link>
@@ -106,14 +119,17 @@ const SoftDevHeader = () => {
               <Clapperboard className="w-3 h-3" /> Media
             </Link>
           </div>
-          {[['/#services', 'Services'], ['/#work', 'Work'], ['/#contact', 'Contact']].map(([href, label]) => (
+          {/* Nav links — software dev only */}
+          {isSoftDev && [['/#services', 'Services'], ['/#work', 'Work'], ['/#contact', 'Contact']].map(([href, label]) => (
             <Link key={href} href={href} className={`text-2xl font-manrope font-light ${textColor}`} onClick={() => setIsMenuOpen(false)}>
               {label}
             </Link>
           ))}
-          <Link href="/#contact" className={`text-sm ${textMuted}`} onClick={() => setIsMenuOpen(false)}>
-            Let&apos;s talk <ArrowUpRight className="w-4 h-4 inline" />
-          </Link>
+          {isSoftDev && (
+            <Link href="/#contact" className={`text-sm ${textMuted}`} onClick={() => setIsMenuOpen(false)}>
+              Let&apos;s talk <ArrowUpRight className="w-4 h-4 inline" />
+            </Link>
+          )}
         </div>
       )}
     </>

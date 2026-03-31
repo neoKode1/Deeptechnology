@@ -1,6 +1,5 @@
 import React from 'react';
 import SoftDevHeader from './SoftDevHeader';
-import Footer from './Footer';
 
 interface PageLayoutProps {
   children: React.ReactNode;
@@ -13,9 +12,8 @@ const PageLayout = ({ children }: PageLayoutProps) => {
       <main className="flex-grow">
         {children}
       </main>
-      <Footer />
     </div>
   );
 };
 
-export default PageLayout; 
+export default PageLayout;

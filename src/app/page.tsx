@@ -50,27 +50,27 @@ const TECH_TAGS = [
 const SERVICES = [
   {
     num: '01.',
-    title: 'Full-Stack Development',
-    tags: ['React', 'SvelteKit', 'Node.js', 'Cloudflare'],
-    desc: 'End-to-end web application development from database design through to polished, performant front-end interfaces — built with modern TypeScript and cloud-native architecture deployed on Cloudflare Workers.',
+    title: 'AI Integration & Retrofitting',
+    tags: ['LLMs', 'Anthropic', 'Ollama', 'Agents'],
+    desc: 'We embed intelligence directly into production software — integrating LLMs, autonomous agents, and AI feature layers without displacing existing architecture. Your system continues to ship while we expand its capabilities.',
   },
   {
     num: '02.',
-    title: 'AI Product Engineering',
-    tags: ['LLMs', 'Anthropic', 'Ollama', 'Agents'],
-    desc: 'Building production AI systems — local agent brains with memory and vision, multi-agent orchestration platforms, voice synthesis studios, and LLM-powered content pipelines.',
+    title: 'Legacy System Retooling',
+    tags: ['React', 'SvelteKit', 'Node.js', 'TypeScript'],
+    desc: 'We assess and modernize codebases that have exceeded their original design constraints — refactoring fragile pipelines, introducing AI-native capabilities, and migrating to cloud-native architecture without service interruption.',
   },
   {
     num: '03.',
     title: 'Creative Tech & Media',
     tags: ['Film AI', 'Video Gen', 'Audio'],
-    desc: 'Bridging software and storytelling — AI-powered film studios, beat machines with 16-pad interfaces, music video platforms, and cinematic scene generators.',
+    desc: 'Purpose-built creative infrastructure at the intersection of AI and media production — autonomous film studios, AI-driven music video platforms, and generative scene pipelines for professional creators.',
   },
   {
     num: '04.',
     title: 'Deep Infrastructure',
     tags: ['Quantum', 'Edge Compute', 'APIs'],
-    desc: 'Designing the infrastructure layer for cutting-edge compute — from quantum-as-a-service APIs connecting researchers to real superconducting hardware, to high-performance edge-deployed services.',
+    desc: 'Architecting compute infrastructure at the frontier — quantum-as-a-service APIs routing workloads to live superconducting hardware, paired with high-performance edge-deployed services built for sub-millisecond response.',
   },
 ];
 
@@ -78,35 +78,35 @@ const SERVICES = [
 const PROJECTS = [
   {
     title: 'EdgeQuanta',
-    desc: 'Edge-native infrastructure stack combining high-performance Cloudflare Workers APIs with a quantum compute layer — single API for job submission to real 180-qubit chips, near-zero cold start, and seamless multi-region failover.',
+    desc: 'Production-grade edge infrastructure with an integrated quantum compute layer. A unified API routes workloads to real 180-qubit superconducting chips — near-zero cold start, global multi-region failover, full TypeScript type safety.',
     tags: ['Cloudflare', 'Quantum', 'Edge Compute', 'TypeScript', '2025'],
     link: 'https://github.com/neoKode1/EdgeQuanta',
     img: '/media/Edge Quanta.png',
   },
   {
     title: 'Breach',
-    desc: 'Coming soon.',
+    desc: 'In active development.',
     tags: ['In Development', '2026'],
     link: 'https://github.com/neoKode1/breach',
     img: '/media/breach_screenshot.png',
   },
   {
     title: '12 Monkeys',
-    desc: 'Conversational agent builder platform with cross-registry discovery via the NANDA Index. Build, deploy, and connect AI agents across any service registry through a unified conversational interface.',
+    desc: 'Agent orchestration platform with cross-registry discovery via the NANDA Index — enabling teams to build, deploy, and interconnect AI agents across heterogeneous service registries through a unified conversational interface.',
     tags: ['Agents', 'TypeScript', 'NANDA', '2026'],
     link: 'https://github.com/neoKode1/plus12monkeys',
     img: '/media/Plus 12 monkeys..png',
   },
   {
     title: "Director's Chair",
-    desc: 'Cinematic AI studio where creators describe a scene in plain English and watch it come to life as images, videos, and audio. Full production-team power in a browser — no timelines, no rendering queues.',
+    desc: 'A browser-native cinematic AI studio. Describe a scene and the system generates synchronized images, video, and audio — full production-team capability with no timeline editors, no render queues.',
     tags: ['AI / Studio', 'SvelteKit', '2025'],
     link: 'https://github.com/neoKode1/DirectorchairAi',
     img: '/media/DirectorChair.png',
   },
   {
     title: 'Noelapp',
-    desc: 'Coming soon.',
+    desc: 'In active development.',
     tags: ['In Development', '2026'],
     link: 'https://github.com/neoKode1/noelle',
     img: '/media/theNoelleapp.png',
@@ -153,34 +153,34 @@ export default function SoftwareDivisionHome() {
               white text on white bg → renders black;
               white text on black blob → inverts to white */}
           <h1
-            className="font-manrope font-semibold leading-none tracking-tighter"
+            className="font-roboto font-black uppercase leading-none"
             style={{
               fontSize: 'clamp(5rem, 16vw, 14rem)',
               color: '#fff',
               mixBlendMode: 'difference',
-              letterSpacing: '-0.03em',
+              letterSpacing: '-0.02em',
             }}
           >
             Engineer
           </h1>
           <h1
-            className="font-manrope font-semibold leading-none tracking-tighter"
+            className="font-roboto font-black uppercase leading-none"
             style={{
               fontSize: 'clamp(5rem, 16vw, 14rem)',
               color: '#fff',
               mixBlendMode: 'difference',
-              letterSpacing: '-0.03em',
+              letterSpacing: '-0.02em',
             }}
           >
             your
           </h1>
           <h1
-            className="font-manrope font-semibold leading-none tracking-tighter"
+            className="font-roboto font-black uppercase leading-none"
             style={{
               fontSize: 'clamp(5rem, 16vw, 14rem)',
               color: '#fff',
               mixBlendMode: 'difference',
-              letterSpacing: '-0.03em',
+              letterSpacing: '-0.02em',
             }}
           >
             future.
@@ -201,11 +201,23 @@ export default function SoftwareDivisionHome() {
 
           {/* Body copy + buttons — normal rendering below the blend-mode headlines */}
           <p className="mt-10 text-lg md:text-xl text-[#333] max-w-xl font-normal leading-relaxed" style={{ position: 'relative', zIndex: 2 }}>
-            Deeptech is a technology company spanning software engineering, AI deployment,
-            systems integration, robotics, prototyping, and R&amp;D — built for founders and
-            organizations who demand infrastructure that performs at every layer.
+            We modify existing production systems with enhanced AI integrations.
           </p>
-          <div className="mt-8 flex gap-4 flex-wrap" style={{ position: 'relative', zIndex: 2 }}>
+
+          {/* Entry-point prompt */}
+          <div className="mt-8 mb-2" style={{ position: 'relative', zIndex: 2 }}>
+            <p className="text-sm text-[#888] uppercase tracking-widest font-manrope">
+              Don&apos;t know where to start?{' '}
+              <Link href="/#contact" className="text-[#111] font-semibold hover:underline underline-offset-4 transition-all">
+                Start here.
+              </Link>
+            </p>
+            <p className="mt-1 text-xs text-[#aaa] tracking-widest uppercase font-manrope">
+              Retool your existing infrastructure.
+            </p>
+          </div>
+
+          <div className="mt-6 flex gap-4 flex-wrap" style={{ position: 'relative', zIndex: 2 }}>
             <Link href="/#work" className="sd-btn-primary">
               Explore Our Work <ArrowUpRight className="w-4 h-4" />
             </Link>
@@ -267,46 +279,51 @@ export default function SoftwareDivisionHome() {
         <SectionDivider label="About" />
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
-          {/* Left — name hero */}
+          {/* Left — what we do + founder */}
           <div className="lg:col-span-5">
             <h2
-              className="leading-none text-[#111] tracking-tight font-semibold"
-              style={{ fontSize: 'clamp(3rem, 9vw, 7rem)' }}
+              className="leading-[0.92] text-[#111] tracking-tight font-semibold"
+              style={{ fontSize: 'clamp(2.5rem, 7vw, 5.5rem)' }}
             >
-              Chad
+              What We Do
               <br />
-              Neo
+              at Deeptech.
             </h2>
-            <div className="mt-6 flex flex-col gap-2">
-              {['Software Engineer', 'AI Systems Builder', 'Creative Director'].map((role) => (
-                <span
-                  key={role}
-                  className="text-xs uppercase tracking-[0.18em] text-[#999] font-medium"
-                >
-                  {role}
-                </span>
-              ))}
+
+            <div className="mt-10 pt-8 border-t border-[#e5e5e5]">
+              <p className="text-xs uppercase tracking-[0.18em] text-[#999] font-medium mb-3">Founder &amp; CTO</p>
+              <p className="text-[1.1rem] font-semibold text-[#111] tracking-tight">Chad Neo</p>
+              <div className="mt-3 flex flex-col gap-1.5">
+                {['Software Engineer', 'AI Systems Architect', 'Creative Director'].map((role) => (
+                  <span
+                    key={role}
+                    className="text-xs uppercase tracking-[0.18em] text-[#999] font-medium"
+                  >
+                    {role}
+                  </span>
+                ))}
+              </div>
+              <a
+                href="https://github.com/neoKode1"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-6 inline-flex items-center gap-2 border border-[#ccc] rounded-full px-5 py-2 text-xs text-[#111] hover:bg-[#111] hover:text-white hover:border-[#111] transition-colors"
+              >
+                github.com/neoKode1 <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
             </div>
-            <a
-              href="https://github.com/neoKode1"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="mt-8 inline-flex items-center gap-2 border border-[#ccc] rounded-full px-5 py-2 text-xs text-[#111] hover:bg-[#111] hover:text-white hover:border-[#111] transition-colors"
-            >
-              github.com/neoKode1 <ArrowUpRight className="w-3.5 h-3.5" />
-            </a>
           </div>
 
           {/* Right — bio */}
           <div className="lg:col-span-7 flex flex-col gap-8 pt-2">
             <p className="text-[1.25rem] md:text-[1.5rem] leading-relaxed text-[#222] tracking-tight">
-              I build at the intersection of AI, edge compute, and creative technology — turning ambitious ideas into production systems that ship.
+              We specialize in AI-driven modernization of production systems — embedding intelligent capabilities into existing codebases, accelerating feature delivery, and migrating legacy infrastructure to scalable, AI-native architecture without a full rebuild.
             </p>
             <p className="text-base leading-relaxed text-[#555]">
-              From quantum-as-a-service APIs running on real 180-qubit hardware, to multi-agent platforms that coordinate AI across service registries, to cinematic AI studios where a sentence becomes a scene — my work spans the full stack. I write TypeScript and Python, deploy on Cloudflare Workers, and integrate large language models from Anthropic, Ollama, and open-source communities.
+              Whether layering a language model into an existing workflow, integrating an autonomous agent onto a live API, or replacing a fragile pipeline with AI-native architecture — the work happens inside your existing system. TypeScript and Python, deployed on Cloudflare Workers, with integrations spanning Anthropic, Ollama, and the broader open-source model ecosystem.
             </p>
             <p className="text-base leading-relaxed text-[#555]">
-              Outside of software, I direct AI-assisted film and music video productions and consult on robotic deployment strategy for distribution and last-mile delivery — helping companies match the right autonomous system to their environment, from sidewalk bots to warehouse AMRs.
+              Beyond software, we direct AI-assisted film and music video productions and advise on robotic deployment strategy for distribution and last-mile logistics — helping organizations identify and integrate the right autonomous systems for their operational environment.
             </p>
 
             {/* Stat row */}
@@ -394,7 +411,7 @@ export default function SoftwareDivisionHome() {
           <div className="flex flex-col lg:flex-row justify-between items-start gap-16 mb-24">
             <div className="flex flex-col gap-8 max-w-lg">
               <h2 className="font-manrope text-[2rem] md:text-[2.5rem] font-medium tracking-tight leading-snug">
-                Let&apos;s build something great together.
+                Ready to modernize your stack?
               </h2>
               <a
                 href="mailto:1deeptechnology@gmail.com"

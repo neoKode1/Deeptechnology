@@ -128,7 +128,7 @@ export default function RoboticsDivisionHome() {
             environment.
           </h1>
           <p className="mt-6 text-base md:text-lg text-white/50 max-w-xl leading-relaxed font-manrope font-light">
-            Environmental robotic deployment specialists. We read your space — terrain, traffic, payload, conditions — then source and integrate the exact drone, bot, or autonomous system built for it.
+            Environmental robotic deployment specialists. We read your space — terrain, traffic, payload, conditions — then source the best autonomous solution built for it.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
             <a
@@ -167,7 +167,7 @@ export default function RoboticsDivisionHome() {
               We read the environment first.<br />Then we pick the machine.
             </h2>
             <p className="text-lg leading-relaxed mb-4" style={{ color: 'rgba(200,225,215,0.65)' }}>
-              Deeptech Robotics specializes in environmental robotic deployments. Every environment has its own rules — terrain, foot traffic, payload weight, weather exposure, customer proximity. The wrong robot in the wrong space fails. We make sure that never happens.
+              Deeptech Robotics specializes in environmental robotic deployments. Every environment has its own rules — terrain, foot traffic, payload weight, weather exposure, customer proximity. The wrong robot in the wrong space fails. We source the best autonomous solution so that never happens.
             </p>
             <p className="text-base leading-relaxed" style={{ color: 'rgba(200,225,215,0.45)' }}>
               We are not tied to any brand or platform. We assess your specific conditions, cross-reference the full hardware market, and integrate the system — drone, bot, or AMR — that is engineered for exactly where you need it to operate.
@@ -192,7 +192,7 @@ export default function RoboticsDivisionHome() {
 
       {/* ── ENVIRONMENTS ── */}
       <section id="environments" className="px-6 md:px-12 lg:px-20 py-16 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
-        <p className="text-xs tracking-widest uppercase mb-3 font-manrope" style={{ color: 'rgba(130,185,165,0.45)' }}>Environments We Deploy Into</p>
+        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">Environments We Deploy Into</p>
         <p className="text-white/30 text-sm max-w-lg leading-relaxed mb-12">
           Every environment type demands a different machine. Here is how we match them.
         </p>
@@ -211,7 +211,7 @@ export default function RoboticsDivisionHome() {
 
       {/* ── SERVICES ── */}
       <section id="services" className="px-6 md:px-12 lg:px-20 py-16 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
-        <p className="text-xs tracking-widest uppercase mb-12 font-manrope" style={{ color: 'rgba(130,185,165,0.45)' }}>Capabilities</p>
+        <p className="text-xs tracking-widest uppercase mb-12 font-manrope text-white">Capabilities</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {SERVICES.map((svc) => (
             <div key={svc.num} className="p-8 rounded-lg transition-colors duration-200 border border-[#1a3d35]/60 bg-[#080e10]/55 hover:border-[#285a48]/80">
@@ -232,7 +232,7 @@ export default function RoboticsDivisionHome() {
 
       {/* ── SUPPLIED SYSTEMS ── */}
       <section id="systems" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
-        <p className="text-xs tracking-widest uppercase mb-3 font-manrope" style={{ color: 'rgba(130,185,165,0.45)' }}>Systems We Source &amp; Supply</p>
+        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">Systems We Source &amp; Supply</p>
         <p className="text-white/30 text-sm max-w-xl leading-relaxed mb-14">
           We don&apos;t build these robots — we know which type fits your operation and why. These are the key system categories in active deployment today.
         </p>
@@ -257,7 +257,7 @@ export default function RoboticsDivisionHome() {
 
       {/* ── DELIVERY SYSTEMS COLLAGE ── */}
       <section id="delivery-systems" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
-        <p className="text-xs tracking-widest uppercase mb-3 font-manrope" style={{ color: 'rgba(130,185,165,0.45)' }}>In the Field</p>
+        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">In the Field</p>
         <p className="text-white/30 text-sm max-w-lg leading-relaxed mb-12">
           Delivery systems we assess, source, and integrate — operating across sidewalks, bike lanes, and urban corridors today.
         </p>
@@ -304,7 +304,7 @@ export default function RoboticsDivisionHome() {
 
       {/* ── WAREHOUSE SYSTEMS COLLAGE ── */}
       <section id="warehouse-systems" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
-        <p className="text-xs tracking-widest uppercase mb-3 font-manrope" style={{ color: 'rgba(130,185,165,0.45)' }}>Warehouse &amp; Distribution</p>
+        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">Warehouse &amp; Distribution</p>
         <p className="text-white/30 text-sm max-w-lg leading-relaxed mb-12">
           Autonomous systems operating inside distribution centers, fulfillment floors, and B2B logistics networks.
         </p>
@@ -358,7 +358,7 @@ export default function RoboticsDivisionHome() {
           </div>
           <div className="overflow-hidden rounded-lg" style={{ background: 'rgba(10,24,20,0.6)', border: '1px solid rgba(26,61,53,0.4)' }}>
             <div className="w-full h-full flex flex-col items-center justify-center gap-2 p-4 text-center">
-              <p className="text-xs uppercase tracking-widest font-manrope" style={{ color: 'rgba(130,185,165,0.45)' }}>Your environment</p>
+              <p className="text-xs uppercase tracking-widest font-manrope text-white">Your environment</p>
               <p className="text-white/20 text-xs leading-relaxed">We assess, source,<br />and integrate.</p>
             </div>
           </div>
@@ -367,7 +367,7 @@ export default function RoboticsDivisionHome() {
 
       {/* ── FLIGHT DRONES COLLAGE ── */}
       <section id="flight-drones" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
-        <p className="text-xs tracking-widest uppercase mb-3 font-manrope" style={{ color: 'rgba(130,185,165,0.45)' }}>Aerial Delivery Systems</p>
+        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">Aerial Delivery Systems</p>
         <p className="text-white/30 text-sm max-w-lg leading-relaxed mb-12">
           UAV systems deployed for fast, direct delivery — suburban neighborhoods, campuses, and short flight corridors where ground routing falls short.
         </p>
@@ -414,7 +414,7 @@ export default function RoboticsDivisionHome() {
 
       {/* ── FORKLIFT BOTS COLLAGE ── */}
       <section id="forklift-bots" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
-        <p className="text-xs tracking-widest uppercase mb-3 font-manrope" style={{ color: 'rgba(130,185,165,0.45)' }}>Warehouse Forklift &amp; Sorting Bots</p>
+        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">Warehouse Forklift &amp; Sorting Bots</p>
         <p className="text-white/30 text-sm max-w-lg leading-relaxed mb-12">
           Autonomous forklift and sorting systems for pallet movement, stacking, and high-throughput fulfillment floors — no driver required.
         </p>

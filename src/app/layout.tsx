@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Inter, Poppins, Manrope } from 'next/font/google';
+import { Inter, Poppins, Manrope, Roboto } from 'next/font/google';
 import '@/styles/globals.css';
 import { cn } from '@/lib/utils';
 
@@ -20,6 +20,13 @@ const manrope = Manrope({
   subsets: ['latin'],
   weight: ['400', '500', '600', '700'],
   variable: '--font-manrope',
+  display: 'swap',
+});
+
+const roboto = Roboto({
+  subsets: ['latin'],
+  weight: ['400', '500', '700', '900'],
+  variable: '--font-roboto',
   display: 'swap',
 });
 
@@ -46,7 +53,8 @@ export default function RootLayout({
         "min-h-screen bg-background font-sans antialiased",
         inter.variable,
         poppins.variable,
-        manrope.variable
+        manrope.variable,
+        roboto.variable
       )}>
         {children}
       </body>

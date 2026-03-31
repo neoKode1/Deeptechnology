@@ -252,29 +252,33 @@ export default function Gallery() {
 
   return (
     <PageLayout>
+      {/* Fixed full-page background — stays centered as content scrolls */}
+      <div className="fixed inset-0 -z-10">
+        <Image
+          src="/media/u3538638467_macro_shot_Womans_face_submerged_in_water_water_s_06064e9a-3e6d-4d72-a737-c3c41fa6d643_0.png"
+          alt="Gallery background"
+          fill
+          className="object-cover object-center"
+          priority
+        />
+        <div className="absolute inset-0 bg-black/55" />
+      </div>
+
       {/* Hero Section */}
-      <section className="relative h-[50vh] gradient-bg text-white">
-        <div className="absolute inset-0 z-0">
-          <Image
-            src="/media/u3538638467_macro_shot_Womans_face_submerged_in_water_water_s_06064e9a-3e6d-4d72-a737-c3c41fa6d643_0.png"
-            alt="Gallery Hero - Woman's face submerged in water"
-            fill
-            className="object-cover opacity-40"
-            priority
-          />
-        </div>
-        <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-center">
-          <h1 className="font-heading text-4xl md:text-6xl font-bold mb-4">
-            <span className="gradient-text">Gallery</span>
+      <section className="relative h-[50vh] text-white">
+        <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-end pb-12">
+          <p className="text-xs uppercase tracking-[0.25em] text-amber-400/70 mb-3">A Dark Orchestra Films</p>
+          <h1 className="font-heading text-5xl md:text-7xl font-bold mb-4 text-white">
+            Gallery
           </h1>
-          <p className="font-body text-xl md:text-2xl max-w-2xl text-white/80">
-            Explore our collection of AI-generated films and multimedia content
+          <p className="font-body text-lg max-w-2xl text-white/60">
+            AI-generated films, visual artwork, and cinematic production stills
           </p>
         </div>
       </section>
 
       {/* Image Gallery Section */}
-      <section className="py-24 bg-black">
+      <section className="py-24 bg-black/75 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6">
@@ -308,7 +312,7 @@ export default function Gallery() {
       </section>
 
       {/* Video Gallery Section */}
-      <section className="py-24 bg-black">
+      <section className="py-24 bg-black/75 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6">
@@ -355,7 +359,7 @@ export default function Gallery() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-24 gradient-bg">
+      <section className="py-24 bg-black/80 backdrop-blur-sm">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto">
             <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6 text-white">
