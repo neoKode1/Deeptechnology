@@ -144,4 +144,51 @@
       word-break: break-word;
     }
   }
-} 
+
+  /* ── Software Development Division ── */
+  .font-manrope {
+    font-family: var(--font-manrope), 'Manrope', sans-serif;
+  }
+
+  .sd-bg {
+    background-color: transparent;
+    color: #4d4d4d;
+  }
+
+  .sd-heading {
+    font-family: var(--font-manrope), 'Manrope', sans-serif;
+    color: #111;
+    letter-spacing: -0.03em;
+  }
+
+  .sd-pill {
+    @apply border border-[#ccc] rounded-full px-3 py-1 text-xs text-[#111];
+  }
+
+  .sd-btn-primary {
+    @apply bg-[#111] text-white rounded-full py-2 px-5 text-sm font-normal
+           hover:bg-[#333] transition-colors duration-200 inline-flex items-center gap-2;
+  }
+
+  .sd-btn-outline {
+    @apply border border-[#111] text-[#111] rounded-full py-2 px-5 text-sm font-normal
+           hover:bg-[#111] hover:text-white transition-colors duration-200 inline-flex items-center gap-2;
+  }
+
+  @keyframes marquee-scroll {
+    0%   { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+
+  .animate-marquee {
+    animation: marquee-scroll 30s linear infinite;
+  }
+
+  .animate-marquee-slow {
+    animation: marquee-scroll 20s linear infinite;
+  }
+
+  .animate-marquee-label {
+    animation: marquee-scroll 5s linear infinite;
+  }
+}

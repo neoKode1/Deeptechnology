@@ -1,0 +1,124 @@
+'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { usePathname } from 'next/navigation';
+import { Menu, X, ArrowUpRight, Code2, Clapperboard, Bot } from 'lucide-react';
+
+/**
+ * Universal header used across all three divisions.
+ * Adapts bg/text colors based on the current division (light for SoftDev, dark for Robotics/Creative).
+ * Gains a frosted backdrop on scroll so page content never bleeds through.
+ */
+const SoftDevHeader = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const onScroll = () => setIsScrolled(window.scrollY > 24);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  const isCreative = pathname.startsWith('/creative');
+  const isRobotics = pathname.startsWith('/robotics');
+  const isSoftDev = !isCreative && !isRobotics;
+  const isDark = isCreative || isRobotics;
+
+  const textColor = isDark ? 'text-white/80' : 'text-[#111]';
+  const textMuted = isDark ? 'text-white/40 hover:text-white/80' : 'text-[#111]/40 hover:text-[#111]';
+  const pillActive = isDark ? 'text-white font-medium' : 'text-[#111] font-medium';
+  const pillInactive = isDark ? 'text-white/30 hover:text-white/70' : 'text-[#111]/30 hover:text-[#111]/70';
+
+  return (
+    <>
+      <header
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+          isScrolled
+            ? isDark
+              ? 'bg-black/75 backdrop-blur-md border-b border-white/10'
+              : 'bg-white/85 backdrop-blur-md border-b border-[#e5e5e5]/80'
+            : 'bg-transparent border-b border-transparent'
+        }`}
+      >
+        <div className="flex items-center justify-between px-6 py-5 md:px-12 lg:px-20">
+
+          {/* Left — Brand */}
+          <Link
+            href="/"
+            className={`font-manrope text-sm font-light tracking-[0.25em] uppercase ${textColor}`}
+          >
+            Deeptech
+          </Link>
+
+          {/* Center — Division switcher (no container, just spaced links) */}
+          <div className="hidden sm:flex items-center gap-6">
+            <Link href="/" className={`flex items-center gap-1.5 text-xs transition-colors duration-200 ${isSoftDev ? pillActive : pillInactive}`}>
+              <Code2 className="w-3 h-3" />
+              Software Dev
+            </Link>
+            <Link href="/robotics" className={`flex items-center gap-1.5 text-xs transition-colors duration-200 ${isRobotics ? pillActive : pillInactive}`}>
+              <Bot className="w-3 h-3" />
+              Robotics
+            </Link>
+            <Link href="/creative" className={`flex items-center gap-1.5 text-xs transition-colors duration-200 ${isCreative ? pillActive : pillInactive}`}>
+              <Clapperboard className="w-3 h-3" />
+              Media
+            </Link>
+          </div>
+
+          {/* Right — Nav links + CTA + hamburger */}
+          <div className="flex items-center gap-6">
+            <div className="hidden md:flex items-center gap-6 text-sm">
+              <Link href="/#services" className={`transition-colors ${textMuted}`}>Services</Link>
+              <Link href="/#work" className={`transition-colors ${textMuted}`}>Work</Link>
+              <Link href="/#contact" className={`transition-colors ${textMuted}`}>Contact</Link>
+            </div>
+            <Link
+              href="/#contact"
+              className={`hidden md:flex items-center gap-2 text-sm transition-colors ${textColor}`}
+            >
+              Let&apos;s talk <ArrowUpRight className="w-4 h-4" />
+            </Link>
+            <button
+              className={`md:hidden ${textColor}`}
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+              aria-label="Toggle menu"
+            >
+              {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          </div>
+        </div>
+      </header>
+
+      {/* Mobile menu — minimal, no heavy bg */}
+      {isMenuOpen && (
+        <div className={`md:hidden fixed inset-0 top-[65px] z-40 flex flex-col px-6 py-8 gap-8 ${isDark ? 'bg-black/80 backdrop-blur-md' : 'bg-white/90 backdrop-blur-md'}`}>
+          <div className="flex items-center gap-6">
+            <Link href="/" onClick={() => setIsMenuOpen(false)} className={`flex items-center gap-1.5 text-xs transition-colors ${isSoftDev ? pillActive : pillInactive}`}>
+              <Code2 className="w-3 h-3" /> Software Dev
+            </Link>
+            <Link href="/robotics" onClick={() => setIsMenuOpen(false)} className={`flex items-center gap-1.5 text-xs transition-colors ${isRobotics ? pillActive : pillInactive}`}>
+              <Bot className="w-3 h-3" /> Robotics
+            </Link>
+            <Link href="/creative" onClick={() => setIsMenuOpen(false)} className={`flex items-center gap-1.5 text-xs transition-colors ${isCreative ? pillActive : pillInactive}`}>
+              <Clapperboard className="w-3 h-3" /> Media
+            </Link>
+          </div>
+          {[['/#services', 'Services'], ['/#work', 'Work'], ['/#contact', 'Contact']].map(([href, label]) => (
+            <Link key={href} href={href} className={`text-2xl font-manrope font-light ${textColor}`} onClick={() => setIsMenuOpen(false)}>
+              {label}
+            </Link>
+          ))}
+          <Link href="/#contact" className={`text-sm ${textMuted}`} onClick={() => setIsMenuOpen(false)}>
+            Let&apos;s talk <ArrowUpRight className="w-4 h-4 inline" />
+          </Link>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default SoftDevHeader;
+

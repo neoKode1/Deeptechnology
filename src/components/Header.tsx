@@ -26,9 +26,9 @@ const Header = () => {
   };
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled 
-        ? 'glass-effect shadow-lg' 
+    <header className={`fixed top-[2.25rem] left-0 right-0 z-40 transition-all duration-300 ${
+      isScrolled
+        ? 'glass-effect shadow-lg'
         : 'bg-transparent'
     }`}>
       <div className="container mx-auto px-4 py-4">
