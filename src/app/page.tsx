@@ -141,7 +141,7 @@ export default function SoftwareDivisionHome() {
             width="100%"
             height="100%"
             title="Animated 3D Spline background"
-            style={{ border: 'none', display: 'block' }}
+            style={{ border: 'none', display: 'block', pointerEvents: 'none' }}
           />
         </div>
 

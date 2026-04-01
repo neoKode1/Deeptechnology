@@ -73,7 +73,7 @@ export default function CreativeCanvas({ className = '' }: { className?: string 
       data-us-dpi="1.5"
       data-us-fps="60"
       className={className}
-      style={{ display: 'block', width: '100%', height: '100%' }}
+      style={{ display: 'block', width: '100%', height: '100%', pointerEvents: 'none' }}
     />
   );
 }

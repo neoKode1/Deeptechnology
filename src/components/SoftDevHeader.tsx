@@ -45,7 +45,7 @@ const SoftDevHeader = () => {
   return (
     <>
       <header
-        className={`fixed top-0 left-0 right-0 z-50 bg-transparent border-b border-transparent transition-all duration-500 ease-in-out ${
+        className={`fixed top-0 left-0 right-0 z-[9999] bg-transparent border-b border-transparent transition-all duration-500 ease-in-out ${
           isHidden ? 'opacity-0 pointer-events-none -translate-y-1' : 'opacity-100 translate-y-0'
         }`}
       >
@@ -105,7 +105,7 @@ const SoftDevHeader = () => {
 
       {/* Mobile menu — minimal, no heavy bg */}
       {isMenuOpen && (
-        <div className={`md:hidden fixed inset-0 top-[65px] z-40 flex flex-col px-6 py-8 gap-8 ${isDark ? 'bg-black/80 backdrop-blur-md' : 'bg-white/90 backdrop-blur-md'}`}>
+        <div className={`md:hidden fixed inset-0 top-[65px] z-[9998] flex flex-col px-6 py-8 gap-8 ${isDark ? 'bg-black/80 backdrop-blur-md' : 'bg-white/90 backdrop-blur-md'}`}>
           {/* Division switcher — only shown on xs screens where header doesn't already show it */}
           <div className="sm:hidden flex items-center gap-6">
             <Link href="/" onClick={() => setIsMenuOpen(false)} className={`flex items-center gap-1.5 text-xs transition-colors ${isSoftDev ? pillActive : pillInactive}`}>
