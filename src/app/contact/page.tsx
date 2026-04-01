@@ -44,23 +44,31 @@ export default function ContactPage() {
 
       <section className="px-6 md:px-12 lg:px-20 pt-32 pb-24 max-w-[82rem] mx-auto">
 
-        {/* Heading */}
-        <div className="mb-16 border-b border-[#eee] pb-12">
-          <p className="text-xs uppercase tracking-[0.2em] text-[#999] font-manrope mb-4">
-            Contact
-          </p>
-          <h1
-            className="font-manrope font-semibold text-[#111] leading-none tracking-tight"
-            style={{ fontSize: 'clamp(3rem, 9vw, 7rem)' }}
-          >
-            Get in touch.
-          </h1>
-          <p className="mt-6 text-base text-[#777] max-w-md leading-relaxed font-manrope">
-            Tell us about your project. We&apos;ll get back to you at{' '}
-            <a href="mailto:1deeptechnology@gmail.com" className="text-[#111] underline underline-offset-4">
-              1deeptechnology@gmail.com
-            </a>
-          </p>
+        {/* Heading + Aurora side-by-side */}
+        <div className="mb-16 border-b border-[#eee] pb-12 grid grid-cols-1 lg:grid-cols-2 items-center gap-8">
+          {/* Left — heading copy */}
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-[#999] font-manrope mb-4">
+              Contact
+            </p>
+            <h1
+              className="font-manrope font-semibold text-[#111] leading-none tracking-tight"
+              style={{ fontSize: 'clamp(3rem, 9vw, 7rem)' }}
+            >
+              Get in touch.
+            </h1>
+            <p className="mt-6 text-base text-[#777] max-w-md leading-relaxed font-manrope">
+              Tell us about your project. We&apos;ll get back to you at{' '}
+              <a href="mailto:1deeptechnology@gmail.com" className="text-[#111] underline underline-offset-4">
+                1deeptechnology@gmail.com
+              </a>
+            </p>
+          </div>
+
+          {/* Right — Aurora spinner */}
+          <div className="hidden lg:block" style={{ height: '400px' }}>
+            <AuroraCanvas className="w-full h-full" />
+          </div>
         </div>
 
         {/* Form */}
@@ -120,10 +128,7 @@ export default function ContactPage() {
           </form>
         )}
 
-        {/* Aurora spinner — centered, ~1 inch below the form */}
-        <div className="flex justify-center" style={{ marginTop: '96px', height: '480px' }}>
-          <AuroraCanvas className="w-full max-w-xl h-full" />
-        </div>
+
       </section>
     </div>
   );
