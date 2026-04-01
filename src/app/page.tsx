@@ -315,7 +315,7 @@ export default function SoftwareDivisionHome() {
           {/* Right — bio */}
           <div className="lg:col-span-7 flex flex-col gap-8 pt-2">
             <p className="text-[1.25rem] md:text-[1.5rem] leading-relaxed text-[#222] tracking-tight">
-              We specialize in the modernization of existing production software systems. Embedding intelligent capabilities into existing codebases, accelerating feature delivery, and migrating legacy components to scalable AI-native architecture without the full platform rebuild.
+              We specialize in the modernization of existing production software systems. Embedding intelligent capabilities into existing codebases, accelerating feature delivery, and migrating legacy components to scalable AI-native architecture without full platform rebuild.
             </p>
 
             {/* Stat row */}
