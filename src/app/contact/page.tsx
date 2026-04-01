@@ -63,76 +63,66 @@ export default function ContactPage() {
           </p>
         </div>
 
-        {/* Form + Animation side-by-side */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
-
-          {/* Left — Form */}
-          <div>
-            {status === 'success' ? (
-              <div className="py-20">
-                <p className="font-manrope text-2xl font-semibold text-[#111]">Message received.</p>
-                <p className="mt-3 text-[#999] text-sm font-manrope">We&apos;ll be in touch shortly.</p>
-                <button onClick={() => setStatus('idle')} className="mt-10 sd-btn-outline">
-                  Send another
-                </button>
+        {/* Form */}
+        {status === 'success' ? (
+          <div className="py-20">
+            <p className="font-manrope text-2xl font-semibold text-[#111]">Message received.</p>
+            <p className="mt-3 text-[#999] text-sm font-manrope">We&apos;ll be in touch shortly.</p>
+            <button onClick={() => setStatus('idle')} className="mt-10 sd-btn-outline">
+              Send another
+            </button>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} className="flex flex-col gap-8 max-w-2xl">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="flex flex-col gap-2">
+                <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Name *</label>
+                <input
+                  name="name" type="text" required placeholder="Your name"
+                  value={form.name} onChange={handleChange}
+                  disabled={status === 'loading'} className={inputClass}
+                />
               </div>
-            ) : (
-              <form onSubmit={handleSubmit} className="flex flex-col gap-8">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Name *</label>
-                    <input
-                      name="name" type="text" required placeholder="Your name"
-                      value={form.name} onChange={handleChange}
-                      disabled={status === 'loading'} className={inputClass}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Email *</label>
-                    <input
-                      name="email" type="email" required placeholder="you@company.com"
-                      value={form.email} onChange={handleChange}
-                      disabled={status === 'loading'} className={inputClass}
-                    />
-                  </div>
-                </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Email *</label>
+                <input
+                  name="email" type="email" required placeholder="you@company.com"
+                  value={form.email} onChange={handleChange}
+                  disabled={status === 'loading'} className={inputClass}
+                />
+              </div>
+            </div>
 
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Message *</label>
-                  <textarea
-                    name="message" required rows={7}
-                    placeholder="Tell us about your project or what you need..."
-                    value={form.message} onChange={handleChange}
-                    disabled={status === 'loading'}
-                    className={`${inputClass} resize-none`}
-                  />
-                </div>
+            <div className="flex flex-col gap-2">
+              <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Message *</label>
+              <textarea
+                name="message" required rows={7}
+                placeholder="Tell us about your project or what you need..."
+                value={form.message} onChange={handleChange}
+                disabled={status === 'loading'}
+                className={`${inputClass} resize-none`}
+              />
+            </div>
 
-                {status === 'error' && (
-                  <p className="text-red-500 text-sm font-manrope">{errorMsg}</p>
-                )}
-
-                <div>
-                  <button
-                    type="submit"
-                    disabled={status === 'loading'}
-                    className="sd-btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
-                  >
-                    {status === 'loading' ? 'Sending…' : 'Send Message'}
-                  </button>
-                </div>
-              </form>
+            {status === 'error' && (
+              <p className="text-red-500 text-sm font-manrope">{errorMsg}</p>
             )}
-          </div>
 
-          {/* Right — Aurora spinner animation */}
-          <div className="hidden lg:block relative" style={{ height: '520px' }}>
-            <AuroraCanvas
-              className="absolute w-full h-full"
-              style={{ top: '-96px', left: '96px' }}
-            />
-          </div>
+            <div>
+              <button
+                type="submit"
+                disabled={status === 'loading'}
+                className="sd-btn-primary disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {status === 'loading' ? 'Sending…' : 'Send Message'}
+              </button>
+            </div>
+          </form>
+        )}
 
+        {/* Aurora spinner — centered, ~1 inch below the form */}
+        <div className="flex justify-center" style={{ marginTop: '96px', height: '480px' }}>
+          <AuroraCanvas className="w-full max-w-xl h-full" />
         </div>
       </section>
     </div>
