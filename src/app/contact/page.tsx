@@ -129,7 +129,7 @@ export default function ContactPage() {
           <div className="hidden lg:block relative" style={{ height: '520px' }}>
             <AuroraCanvas
               className="absolute w-full h-full"
-              style={{ top: '-96px', left: '192px' }}
+              style={{ top: '-96px', left: '96px' }}
             />
           </div>
 
