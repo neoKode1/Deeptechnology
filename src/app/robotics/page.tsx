@@ -188,7 +188,7 @@ export default function RoboticsDivisionHome() {
               ['6+', 'Environment types deployed'],
               ['End-to-End', 'Assess · Source · Integrate'],
             ].map(([stat, label]) => (
-              <div key={label} className="p-6 rounded-lg border border-[#1a3d35]/70 bg-[#0a1814]/60">
+              <div key={label} className="p-6 rounded-lg border border-[#1a3d35]/70 bg-white/10 backdrop-blur-sm">
                 <div className="font-manrope text-xl font-semibold text-white mb-1 leading-tight">{stat}</div>
                 <div className="text-sm" style={{ color: 'rgba(160,200,185,0.55)' }}>{label}</div>
               </div>
@@ -202,7 +202,7 @@ export default function RoboticsDivisionHome() {
         <p className="text-xs tracking-widest uppercase mb-12 font-manrope text-white">Capabilities</p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
           {SERVICES.map((svc) => (
-            <div key={svc.num} className="p-8 rounded-lg transition-colors duration-200 border border-[#1a3d35]/60 bg-[#080e10]/55 hover:border-[#285a48]/80">
+            <div key={svc.num} className="p-8 rounded-lg transition-colors duration-200 border border-[#1a3d35]/60 bg-white/10 backdrop-blur-sm hover:border-[#285a48]/80">
               <div className="flex items-start justify-between mb-4">
                 <span className="text-sm font-manrope" style={{ color: 'rgba(130,185,165,0.4)' }}>{svc.num}</span>
                 <div className="flex flex-wrap gap-2 justify-end">
@@ -222,7 +222,7 @@ export default function RoboticsDivisionHome() {
       <section id="delivery-systems" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 items-start">
           {/* Left: description card */}
-          <div className="lg:sticky lg:top-24 p-6 rounded-lg border border-[#1a3d35]/60 bg-[#0a1814]/60">
+          <div className="lg:sticky lg:top-24 p-6 rounded-lg border border-[#1a3d35]/60 bg-white/10 backdrop-blur-sm">
             <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">In the Field</p>
             <p className="text-sm leading-relaxed" style={{ color: 'rgba(190,220,210,0.55)' }}>
               Sidewalk bots, road hybrids, and autonomous delivery vehicles — operating across urban corridors, bike lanes, and last-mile routes.
@@ -310,7 +310,7 @@ export default function RoboticsDivisionHome() {
               className="robo-img"
             />
           </div>
-          <div className="overflow-hidden rounded-lg" style={{ background: 'rgba(10,24,20,0.6)', border: '1px solid rgba(26,61,53,0.4)' }}>
+          <div className="overflow-hidden rounded-lg backdrop-blur-sm" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(26,61,53,0.4)' }}>
             <div className="w-full h-full flex flex-col items-center justify-center gap-2 p-4 text-center">
               <p className="text-xs uppercase tracking-widest font-manrope text-white">Your environment</p>
               <p className="text-white/20 text-xs leading-relaxed">We assess, source,<br />and integrate.</p>
