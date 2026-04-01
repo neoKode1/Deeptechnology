@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, ArrowUpRight, Code2, Clapperboard, Bot } from 'lucide-react';
+import { Menu, X, Code2, Clapperboard, Bot } from 'lucide-react';
 
 /**
  * Universal header used across all three divisions.
@@ -85,12 +85,6 @@ const SoftDevHeader = () => {
               <Link href="/#work" className={`transition-colors ${textMuted}`}>Work</Link>
               <Link href="/contact" className={`transition-colors ${textMuted}`}>Contact</Link>
             </div>
-            <Link
-              href="/contact"
-              className={`hidden md:flex items-center gap-2 text-sm transition-colors ${textColor}`}
-            >
-              Let&apos;s talk <ArrowUpRight className="w-4 h-4" />
-            </Link>
             <button
               className={`md:hidden ${textColor}`}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -123,11 +117,7 @@ const SoftDevHeader = () => {
               {label}
             </Link>
           ))}
-          {isSoftDev && (
-            <Link href="/contact" className={`text-sm ${textMuted}`} onClick={() => setIsMenuOpen(false)}>
-              Let&apos;s talk <ArrowUpRight className="w-4 h-4 inline" />
-            </Link>
-          )}
+
         </div>
       )}
     </>
