@@ -19,6 +19,7 @@ import CreativeCanvas from '@/components/CreativeCanvas';
 export default function CreativeDivisionHome() {
   const carouselRef = useRef<HTMLDivElement>(null);
   const [ready, setReady] = useState(false);
+  const [ytStats, setYtStats] = useState<{ viewCount: string; subscriberCount: string; videoCount: string } | null>(null);
   // card width (500px) + gap (32px = gap-8)
   const scrollAmount = 532;
 
@@ -125,6 +126,23 @@ export default function CreativeDivisionHome() {
     return () => el.removeEventListener('wheel', onWheel);
   }, []);
 
+  // Fetch YouTube channel stats
+  useEffect(() => {
+    fetch('/api/youtube-stats')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => { if (d && !d.error) setYtStats(d); })
+      .catch(() => {});
+  }, []);
+
+  /** Format large numbers: 1234567 → "1.2M", 12345 → "12.3K" */
+  const fmt = (n: string | undefined) => {
+    if (!n) return '—';
+    const v = parseInt(n, 10);
+    if (v >= 1_000_000) return `${(v / 1_000_000).toFixed(1)}M`;
+    if (v >= 1_000) return `${(v / 1_000).toFixed(1)}K`;
+    return v.toLocaleString();
+  };
+
   // Trigger fade-in after a short delay to let the canvas initialize
   useEffect(() => {
     const timer = setTimeout(() => setReady(true), 600);
@@ -172,19 +190,19 @@ export default function CreativeDivisionHome() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl px-4">
               <div className="glass-effect rounded-lg p-6 text-center">
-                <Icon icon={movieOpenIcon} width={32} height={32} className="mx-auto mb-3" style={{ color: 'oklch(84.1% 0.238 128.85)' }} />
-                <div className="font-heading text-2xl font-bold text-white mb-1">100+</div>
-                <div className="font-body text-white/70 text-sm">AI Films</div>
+                <Icon icon={videoCamIcon} width={32} height={32} className="mx-auto mb-3" style={{ color: 'oklch(84.1% 0.238 128.85)' }} />
+                <div className="font-heading text-2xl font-bold text-white mb-1">{ytStats ? fmt(ytStats.viewCount) : '—'}</div>
+                <div className="font-body text-white/70 text-sm">Total Views</div>
               </div>
               <div className="glass-effect rounded-lg p-6 text-center">
                 <Icon icon={musicNoteIcon} width={32} height={32} className="mx-auto mb-3" style={{ color: 'oklch(84.1% 0.238 128.85)' }} />
-                <div className="font-heading text-2xl font-bold text-white mb-1">50+</div>
-                <div className="font-body text-white/70 text-sm">Soundtracks</div>
+                <div className="font-heading text-2xl font-bold text-white mb-1">{ytStats ? fmt(ytStats.subscriberCount) : '—'}</div>
+                <div className="font-body text-white/70 text-sm">Subscribers</div>
               </div>
               <div className="glass-effect rounded-lg p-6 text-center">
-                <Icon icon={cameraIcon} width={32} height={32} className="mx-auto mb-3" style={{ color: 'oklch(84.1% 0.238 128.85)' }} />
-                <div className="font-heading text-2xl font-bold text-white mb-1">24/7</div>
-                <div className="font-body text-white/70 text-sm">Production</div>
+                <Icon icon={movieOpenIcon} width={32} height={32} className="mx-auto mb-3" style={{ color: 'oklch(84.1% 0.238 128.85)' }} />
+                <div className="font-heading text-2xl font-bold text-white mb-1">{ytStats ? fmt(ytStats.videoCount) : '—'}</div>
+                <div className="font-body text-white/70 text-sm">Videos</div>
               </div>
             </div>
           </div>
