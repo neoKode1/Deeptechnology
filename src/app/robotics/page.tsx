@@ -17,17 +17,17 @@ const ENVIRONMENTS = [
   {
     env: 'Urban / Street-Level',
     fit: 'Sidewalk delivery bots, last-mile drones',
-    detail: 'Narrow sidewalks, pedestrian traffic, weather exposure — we source autonomous ground bots and urban drone systems built for public thoroughfare.',
+    detail: 'Narrow sidewalks, pedestrian traffic, weather exposure. We source ground bots and urban drone systems built for public thoroughfare.',
   },
   {
     env: 'Warehouse / Distribution',
     fit: 'AMRs, picking systems, conveyor integration',
-    detail: 'High-traffic floor plans, shelf density, throughput targets — we match autonomous mobile robots to your layout and connect them to your WMS or ERP.',
+    detail: 'High-traffic floor plans, shelf density, throughput targets. We match autonomous mobile robots to your layout and connect them to your WMS or ERP.',
   },
   {
     env: 'Retail Floor',
     fit: 'Service bots, shelf-scanning, front-of-house delivery',
-    detail: 'Customer-facing environments need robots that navigate crowds, avoid obstacles, and stay on brand. We select for form factor, reliability, and low friction.',
+    detail: 'Customer-facing environments need robots that navigate crowds, avoid obstacles, and stay on brand. We select for form factor, reliability, and minimal friction.',
   },
   {
     env: 'Food & Beverage',
@@ -37,7 +37,7 @@ const ENVIRONMENTS = [
   {
     env: 'Campus & Multi-Building',
     fit: 'Indoor-outdoor AMRs, autonomous carts',
-    detail: 'Environments that span indoors and out require robots that hand off between surfaces and navigation modes. We spec and deploy systems that make that transition seamlessly.',
+    detail: 'Indoor-outdoor environments require robots that transition between surfaces and navigation modes. We spec and deploy systems that handle that handoff seamlessly.',
   },
   {
     env: 'Last-Mile Residential',
@@ -52,19 +52,19 @@ const SERVICES = [
     num: '01.',
     title: 'Environmental Assessment',
     tags: ['Site Audit', 'Terrain Mapping', 'Use Case Analysis'],
-    desc: 'Before we recommend any hardware, we study your environment — floor plan, terrain, traffic patterns, payload requirements, weather exposure, and customer proximity. The right robot starts with reading the room.',
+    desc: 'We study your environment first — floor plan, terrain, traffic patterns, payload, weather, and customer proximity. The right robot starts with reading the room.',
   },
   {
     num: '02.',
     title: 'System Selection & Sourcing',
     tags: ['Vendor-Agnostic', 'Hardware Match', 'ROI Mapping'],
-    desc: 'We are not tied to any manufacturer. We cross-reference your environment profile against the full market — AMRs, drones, sidewalk bots, service robots — and select the system that is built for your specific conditions.',
+    desc: 'We cross-reference your environment profile against the full market — AMRs, drones, sidewalk bots, service robots — and select the system built for your conditions. No manufacturer bias.',
   },
   {
     num: '03.',
     title: 'Deployment & Integration',
     tags: ['Fleet Setup', 'POS · ERP · WMS', 'Go-Live Support'],
-    desc: 'We handle the full deployment: hardware commissioning, route configuration, and connecting your robot fleet to existing systems — POS, ERP, fleet dashboards — with zero disruption to live operations.',
+    desc: 'Hardware commissioning, route configuration, and fleet connection to your existing systems — POS, ERP, dashboards — with zero disruption to live operations.',
   },
   {
     num: '04.',
@@ -80,25 +80,25 @@ const SYSTEMS = [
     type: 'SADRs',
     label: 'Sidewalk Autonomous Delivery Robots',
     when: 'High foot-traffic · Campus · Retail corridors · Last-mile residential',
-    desc: 'Small, wheeled ground bots designed to navigate pedestrian walkways autonomously. We deploy these for dense urban and campus environments where last-mile delivery happens at street level — food, groceries, and packages delivered door to door without vehicle traffic.',
+    desc: 'Small, wheeled ground bots that navigate pedestrian walkways autonomously. Built for dense urban and campus environments where last-mile delivery happens at street level — food, groceries, and packages door to door without vehicle traffic.',
   },
   {
     type: 'RADRs',
     label: 'Road / Sidewalk Hybrid Robots',
     when: 'Mixed terrain · Bike lanes · Urban delivery routes · Higher-speed corridors',
-    desc: 'Larger autonomous bots built to transition between sidewalks, bike lanes, and low-speed roads. We source these for operators who need more coverage than a pure sidewalk bot allows — ideal for city blocks, food delivery corridors, and areas with variable surface conditions.',
+    desc: 'Larger autonomous bots that transition between sidewalks, bike lanes, and low-speed roads. More coverage than a pure sidewalk bot — ideal for city blocks, food delivery corridors, and variable surface conditions.',
   },
   {
     type: 'UAVs',
     label: 'Aerial Delivery Drones',
     when: 'Suburban neighborhoods · Rural areas · Short flight corridors · Low-density zones',
-    desc: 'Autonomous aerial systems for fast delivery of small, lightweight packages directly to a backyard, rooftop, or designated drop point. We integrate these for operators where ground routing is impractical — typically suburban and rural environments with clear airspace.',
+    desc: 'Autonomous aerial systems for fast delivery of small, lightweight packages to a backyard, rooftop, or designated drop point. Deployed where ground routing is impractical — suburban and rural environments with clear airspace.',
   },
   {
     type: 'ADVs',
     label: 'Autonomous Delivery Vehicles',
     when: 'Urban roads · Suburban routes · B2B short-haul · Warehouse-to-store logistics',
-    desc: 'Road-scale autonomous vehicles for larger payloads, longer routes, and B2B logistics. We deploy these where volume and distance exceed what a sidewalk bot or drone can handle — warehouse-to-storefront runs, multi-stop urban routes, and short-haul commercial freight.',
+    desc: 'Road-scale autonomous vehicles for larger payloads, longer routes, and B2B logistics. Deployed where volume and distance exceed what a sidewalk bot or drone can handle — warehouse-to-storefront runs, multi-stop urban routes, and short-haul freight.',
   },
 ];
 
@@ -128,7 +128,7 @@ export default function RoboticsDivisionHome() {
             environment.
           </h1>
           <p className="mt-6 text-base md:text-lg text-white/50 max-w-xl leading-relaxed font-manrope font-light">
-            Environmental robotic deployment specialists. We read your space — terrain, traffic, payload, conditions — then source the best autonomous solution built for it.
+            We read your space — terrain, traffic, payload, conditions — then source the autonomous system built for it.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
             <a
@@ -194,7 +194,7 @@ export default function RoboticsDivisionHome() {
       <section id="environments" className="px-6 md:px-12 lg:px-20 py-16 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
         <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">Environments We Deploy Into</p>
         <p className="text-white/30 text-sm max-w-lg leading-relaxed mb-12">
-          Every environment type demands a different machine. Here is how we match them.
+          Different environments demand different machines.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px" style={{ background: 'rgba(26,61,53,0.35)' }}>
           {ENVIRONMENTS.map((e) => (
@@ -234,7 +234,7 @@ export default function RoboticsDivisionHome() {
       <section id="systems" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
         <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">Systems We Source &amp; Supply</p>
         <p className="text-white/30 text-sm max-w-xl leading-relaxed mb-14">
-          We don&apos;t build these robots — we know which type fits your operation and why. These are the key system categories in active deployment today.
+          We know which system fits your operation and why. These are the categories in active deployment today.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-px" style={{ background: 'rgba(26,61,53,0.3)' }}>
           {SYSTEMS.map((sys) => (
@@ -259,7 +259,7 @@ export default function RoboticsDivisionHome() {
       <section id="delivery-systems" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
         <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">In the Field</p>
         <p className="text-white/30 text-sm max-w-lg leading-relaxed mb-12">
-          Delivery systems we assess, source, and integrate — operating across sidewalks, bike lanes, and urban corridors today.
+          Systems we assess, source, and integrate — operating across sidewalks, bike lanes, and urban corridors.
         </p>
         {/* Asymmetric collage grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-2 gap-2" style={{ height: 'clamp(420px, 55vw, 680px)' }}>
@@ -306,7 +306,7 @@ export default function RoboticsDivisionHome() {
       <section id="warehouse-systems" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
         <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">Warehouse &amp; Distribution</p>
         <p className="text-white/30 text-sm max-w-lg leading-relaxed mb-12">
-          Autonomous systems operating inside distribution centers, fulfillment floors, and B2B logistics networks.
+          Autonomous systems inside distribution centers, fulfillment floors, and B2B logistics networks.
         </p>
         {/* Row 1: wide hero + 2 stacked | Row 2: 3 equal */}
         <div className="grid grid-cols-3 gap-2" style={{ gridTemplateRows: 'repeat(2, clamp(180px, 22vw, 300px))' }}>
@@ -369,7 +369,7 @@ export default function RoboticsDivisionHome() {
       <section id="flight-drones" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
         <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">Aerial Delivery Systems</p>
         <p className="text-white/30 text-sm max-w-lg leading-relaxed mb-12">
-          UAV systems deployed for fast, direct delivery — suburban neighborhoods, campuses, and short flight corridors where ground routing falls short.
+          UAV systems for direct delivery — suburban neighborhoods, campuses, and short flight corridors where ground routing falls short.
         </p>
         {/* Top: hero wide + tall right */}
         <div className="grid grid-cols-3 gap-2" style={{ gridTemplateRows: 'repeat(2, clamp(180px, 22vw, 300px))' }}>
@@ -416,7 +416,7 @@ export default function RoboticsDivisionHome() {
       <section id="forklift-bots" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
         <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">Warehouse Forklift &amp; Sorting Bots</p>
         <p className="text-white/30 text-sm max-w-lg leading-relaxed mb-12">
-          Autonomous forklift and sorting systems for pallet movement, stacking, and high-throughput fulfillment floors — no driver required.
+          Autonomous forklift and sorting systems for pallet movement, stacking, and high-throughput fulfillment — no driver required.
         </p>
         <div className="grid grid-cols-3 gap-2" style={{ gridTemplateRows: 'repeat(2, clamp(180px, 22vw, 300px))' }}>
           {/* Hero — 2 cols × 2 rows */}
