@@ -208,7 +208,7 @@ export default function CreativeDivisionHome() {
                 WebkitTextStroke: '1px rgba(251,191,36,0.35)',
                 color: 'transparent',
               }}>
-                Cinematic AI.
+                Cinematic Universe.
               </span>
             </h2>
 
