@@ -1,4 +1,5 @@
 import SoftDevHeader from '@/components/SoftDevHeader';
+import ParallaxRobot from '@/components/ParallaxRobot';
 import { ArrowUpRight } from 'lucide-react';
 
 /* ── Marquee items ── */
@@ -104,38 +105,32 @@ const SYSTEMS = [
 export default function RoboticsDivisionHome() {
   return (
     // Page bg uses the NOMA shader's darkest teal-black tone
-    <div className="min-h-screen overflow-x-hidden text-white" style={{ background: 'transparent' }}>
+    <div className="min-h-screen overflow-x-hidden text-neutral-900" style={{ background: 'transparent' }}>
 
-      {/* ── FIXED Spline 3D robot — stays centered during scroll ── */}
-      <iframe
-        src="https://my.spline.design/nexbotrobotcharacterconcept-FDt7cww2KDcL0RxmRfz1cZG7/"
-        className="fixed inset-0 w-full h-full pointer-events-none"
-        style={{ border: 'none', zIndex: 0 }}
-        title="3D Robot Scene"
-        loading="eager"
-      />
+      {/* ── Parallax Spline 3D robot — pans from head to feet as you scroll ── */}
+      <ParallaxRobot />
 
-      {/* All content sits above the iframe */}
+      {/* All content sits above the iframe — transparent so robot shows through */}
       <div className="relative" style={{ zIndex: 1 }}>
       <SoftDevHeader />
 
       {/* ── HERO ── */}
       <section className="relative w-full h-[100svh] flex flex-col justify-end overflow-hidden">
-        {/* Bottom gradient so text stays legible on white bg */}
+        {/* Bottom gradient so text stays legible */}
         <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/20 to-transparent pointer-events-none" />
 
         <div className="relative z-10 px-6 md:px-12 lg:px-20 pb-16 md:pb-24 max-w-[82rem] mx-auto w-full">
           <p className="text-black/40 text-xs tracking-widest uppercase mb-6 font-manrope">
             Deeptech · Robotics Division
           </p>
-          <h1 className="font-manrope font-semibold text-[3.5rem] md:text-[6.5rem] leading-[1.02] tracking-tighter text-black">
-            Built for your
+          <h1 className="font-manrope font-semibold text-[2.25rem] sm:text-[3.5rem] md:text-[6.5rem] leading-[1.02] tracking-tighter text-black">
+            The right deployment
           </h1>
-          <h1 className="font-manrope font-semibold text-[3.5rem] md:text-[6.5rem] leading-[1.02] tracking-tighter text-black/25">
-            environment.
+          <h1 className="font-manrope font-semibold text-[2.25rem] sm:text-[3.5rem] md:text-[6.5rem] leading-[1.02] tracking-tighter text-black/25">
+            for the right environment.
           </h1>
           <p className="mt-6 text-base md:text-lg text-black/50 max-w-xl leading-relaxed font-manrope font-light">
-            We read your space — terrain, traffic, payload, conditions — then source the autonomous system built for it.
+            We read your space — terrain, traffic, payload, conditions — then source the right robotics platform for it.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
             <a
@@ -155,11 +150,11 @@ export default function RoboticsDivisionHome() {
       </section>
 
       {/* ── MARQUEE ── */}
-      <div className="border-y py-4 overflow-hidden" style={{ borderColor: 'rgba(26,61,53,0.6)' }}>
+      <div className="border-y border-neutral-200 py-4 overflow-hidden">
         <div className="flex gap-8 animate-[marquee_30s_linear_infinite] whitespace-nowrap">
           {MARQUEE.map((tag, i) => (
-            <span key={i} className="text-sm font-manrope shrink-0" style={{ color: 'rgba(160,200,185,0.45)' }}>
-              {tag} <span className="mx-3" style={{ color: 'rgba(160,200,185,0.2)' }}>·</span>
+            <span key={i} className="text-sm font-manrope shrink-0 text-neutral-400">
+              {tag} <span className="mx-3 text-neutral-300">·</span>
             </span>
           ))}
         </div>
@@ -171,14 +166,14 @@ export default function RoboticsDivisionHome() {
       <section id="about" className="px-6 md:px-12 lg:px-20 py-24 max-w-[82rem] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
           <div>
-            <p className="text-xs tracking-widest uppercase mb-4 font-manrope" style={{ color: 'rgba(160,210,190,0.85)' }}>Robotics Division</p>
-            <h2 className="font-manrope text-4xl md:text-5xl font-semibold tracking-tight text-white mb-6">
-              We read the environment first.<br />Then we pick the machine.
+            <p className="text-xs tracking-widest uppercase mb-4 font-manrope text-neutral-400">Robotics Division</p>
+            <h2 className="font-manrope text-4xl md:text-5xl font-semibold tracking-tight text-neutral-900 mb-6">
+              We read your environment first,<br />then source the right machine.
             </h2>
-            <p className="text-lg leading-relaxed mb-4" style={{ color: 'rgba(200,225,215,0.65)' }}>
+            <p className="text-lg leading-relaxed mb-4 text-neutral-600">
               Every environment has its own rules — terrain, foot traffic, payload weight, weather exposure, customer proximity. The wrong robot in the wrong space fails. We source the best autonomous solutions for your environment.
             </p>
-            <p className="text-base leading-relaxed" style={{ color: 'rgba(200,225,215,0.45)' }}>
+            <p className="text-base leading-relaxed text-neutral-500">
               We are not tied to any brand or platform. We assess your specific conditions, cross-reference the full hardware market, and integrate the system — drone, bot, or AMR — that is engineered for exactly where you need it to operate.
             </p>
           </div>
@@ -190,9 +185,9 @@ export default function RoboticsDivisionHome() {
               ['6+', 'Environment types deployed'],
               ['End-to-End', 'Assess · Source · Integrate'],
             ].map(([stat, label]) => (
-              <div key={label} className="p-6 rounded-lg border border-[#1a3d35]/70 bg-white/10 backdrop-blur-sm">
-                <div className="font-manrope text-xl font-semibold text-white mb-1 leading-tight">{stat}</div>
-                <div className="text-sm" style={{ color: 'rgba(160,200,185,0.55)' }}>{label}</div>
+              <div key={label} className="p-6 rounded-xl border border-neutral-200 bg-white/70 backdrop-blur-md shadow-sm">
+                <div className="font-manrope text-xl font-semibold text-neutral-900 mb-1 leading-tight">{stat}</div>
+                <div className="text-sm text-neutral-500">{label}</div>
               </div>
             ))}
           </div>
@@ -200,74 +195,74 @@ export default function RoboticsDivisionHome() {
       </section>
 
       {/* ── SERVICES ── */}
-      <section id="services" className="px-6 md:px-12 lg:px-20 py-16 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
-        <p className="text-xs tracking-widest uppercase mb-12 font-manrope text-white">Capabilities</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+      <section id="services" className="px-6 md:px-12 lg:px-20 py-16 max-w-[82rem] mx-auto border-t border-neutral-200">
+        <p className="text-xs tracking-widest uppercase mb-12 font-manrope text-neutral-400">Capabilities</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {SERVICES.map((svc) => (
-            <div key={svc.num} className="p-8 rounded-lg transition-colors duration-200 border border-[#1a3d35]/60 bg-white/10 backdrop-blur-sm hover:border-[#285a48]/80">
+            <div key={svc.num} className="p-8 rounded-xl transition-all duration-200 border border-neutral-200 bg-white/70 backdrop-blur-md shadow-sm hover:shadow-md hover:border-neutral-300">
               <div className="flex items-start justify-between mb-4">
-                <span className="text-sm font-manrope" style={{ color: 'rgba(130,185,165,0.4)' }}>{svc.num}</span>
+                <span className="text-sm font-manrope text-neutral-300 font-medium">{svc.num}</span>
                 <div className="flex flex-wrap gap-2 justify-end">
                   {svc.tags.map((t) => (
-                    <span key={t} className="rounded-full px-3 py-1 text-xs" style={{ border: '1px solid rgba(26,61,53,0.7)', color: 'rgba(160,200,185,0.6)' }}>{t}</span>
+                    <span key={t} className="rounded-full px-3 py-1 text-xs border border-neutral-200 text-neutral-500 bg-neutral-50/80">{t}</span>
                   ))}
                 </div>
               </div>
-              <h3 className="font-manrope text-xl font-medium text-white mb-3">{svc.title}</h3>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(190,220,210,0.55)' }}>{svc.desc}</p>
+              <h3 className="font-manrope text-xl font-semibold text-neutral-900 mb-3">{svc.title}</h3>
+              <p className="text-sm leading-relaxed text-neutral-500">{svc.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ── DELIVERY SYSTEMS ── */}
-      <section id="delivery-systems" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 items-start">
+      <section id="delivery-systems" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 md:gap-8 items-start">
           {/* Left: description card */}
-          <div className="lg:sticky lg:top-24 p-6 rounded-lg border border-[#1a3d35]/60 bg-white/10 backdrop-blur-sm">
-            <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">In the Field</p>
-            <p className="text-sm leading-relaxed" style={{ color: 'rgba(190,220,210,0.55)' }}>
+          <div className="lg:sticky lg:top-24 p-6 rounded-xl border border-neutral-200 bg-white/70 backdrop-blur-md shadow-sm">
+            <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-900 font-semibold">In the Field</p>
+            <p className="text-sm leading-relaxed text-neutral-500">
               Sidewalk bots, road hybrids, and autonomous delivery vehicles — operating across urban corridors, bike lanes, and last-mile routes.
             </p>
           </div>
           {/* Right: image collage */}
           <div className="flex flex-col gap-2">
-            <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-2 gap-2" style={{ height: 'clamp(420px, 55vw, 680px)' }}>
-              <div className="row-span-2 overflow-hidden rounded-lg robo-img-wrap">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 sm:grid-rows-2 gap-2" style={{ minHeight: 'clamp(320px, 55vw, 680px)' }}>
+              <div className="sm:row-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '200px' }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/media/Serve-Gen-2-left-and-Gen-3-robots.jpg" alt="Sidewalk delivery robots — two generations side by side" className="robo-img" />
+                <img src="/media/Serve-Gen-2-left-and-Gen-3-robots.jpg" alt="Sidewalk delivery robots — two generations side by side" className="robo-img" style={{ objectPosition: 'center' }} />
               </div>
               <div className="overflow-hidden rounded-lg robo-img-wrap">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/media/image.webp" alt="Autonomous delivery robot on urban route" className="robo-img" />
+                <img src="/media/image.webp" alt="Autonomous delivery robot on urban route" className="robo-img" style={{ objectPosition: 'center' }} />
               </div>
               <div className="overflow-hidden rounded-lg robo-img-wrap">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/media/file-20180202-162066-1cj3sym.avif" alt="Aerial delivery drone in flight" className="robo-img" />
+                <img src="/media/file-20180202-162066-1cj3sym.avif" alt="Aerial delivery drone in flight" className="robo-img" style={{ objectPosition: 'center' }} />
               </div>
-              <div className="col-span-2 overflow-hidden rounded-lg robo-img-wrap">
+              <div className="sm:col-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px' }}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/media/DoorDash_Dot-04__1__1__1_.png" alt="Road-capable autonomous delivery bot" className="robo-img" />
+                <img src="/media/DoorDash_Dot-04__1__1__1_.png" alt="Road-capable autonomous delivery bot" className="robo-img" style={{ objectPosition: 'center' }} />
               </div>
             </div>
             <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ height: 'clamp(180px, 22vw, 300px)' }}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/media/del-bot-quad.webp" alt="Autonomous delivery robot — quad platform" className="robo-img" />
+              <img src="/media/del-bot-quad.webp" alt="Autonomous delivery robot — quad platform" className="robo-img" style={{ objectPosition: 'center' }} />
             </div>
           </div>
         </div>
       </section>
 
       {/* ── HUMANOID ROBOTICS COLLAGE ── */}
-      <section id="humanoid-systems" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
-        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">Humanoid Robotics</p>
-        <p className="text-white/30 text-sm max-w-lg leading-relaxed mb-12">
+      <section id="humanoid-systems" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
+        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-400">Humanoid Robotics</p>
+        <p className="text-neutral-500 text-sm max-w-lg leading-relaxed mb-12">
           Bipedal and humanoid systems designed for environments built around people — retail floors, hospitality, and customer-facing operations.
         </p>
         {/* Row 1: wide hero + 2 stacked | Row 2: 3 equal */}
-        <div className="grid grid-cols-3 gap-2" style={{ gridTemplateRows: 'repeat(2, clamp(180px, 22vw, 300px))' }}>
-          {/* Large hero — spans 2 cols, 2 rows */}
-          <div className="col-span-2 row-span-2 overflow-hidden rounded-lg robo-img-wrap">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2" style={{ gridTemplateRows: 'auto' }}>
+          {/* Large hero — spans 2 cols, 2 rows on md+ */}
+          <div className="md:col-span-2 md:row-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '240px' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/df9f333424ff6cc6164ce421b019fb94_a6f832b0-479e-4294-ac75-6516208b91f4_1296x.webp"
@@ -295,7 +290,7 @@ export default function RoboticsDivisionHome() {
           </div>
         </div>
         {/* Row 2: 3 equal-width images */}
-        <div className="grid grid-cols-3 gap-2 mt-2" style={{ height: 'clamp(160px, 18vw, 240px)' }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mt-2" style={{ minHeight: 'clamp(160px, 18vw, 240px)' }}>
           <div className="overflow-hidden rounded-lg robo-img-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
@@ -312,10 +307,10 @@ export default function RoboticsDivisionHome() {
               className="robo-img"
             />
           </div>
-          <div className="overflow-hidden rounded-lg backdrop-blur-sm" style={{ background: 'rgba(255,255,255,0.1)', border: '1px solid rgba(26,61,53,0.4)' }}>
+          <div className="overflow-hidden rounded-lg backdrop-blur-md bg-white/70 border border-neutral-200">
             <div className="w-full h-full flex flex-col items-center justify-center gap-2 p-4 text-center">
-              <p className="text-xs uppercase tracking-widest font-manrope text-white">Your environment</p>
-              <p className="text-white/20 text-xs leading-relaxed">We assess, source,<br />and integrate.</p>
+              <p className="text-xs uppercase tracking-widest font-manrope text-neutral-900 font-semibold">Your environment</p>
+              <p className="text-neutral-400 text-xs leading-relaxed">We assess, source,<br />and integrate.</p>
             </div>
           </div>
         </div>
@@ -341,38 +336,41 @@ export default function RoboticsDivisionHome() {
       </section>
 
       {/* ── FLIGHT DRONES COLLAGE ── */}
-      <section id="flight-drones" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
-        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">Aerial Delivery Systems</p>
-        <p className="text-white/30 text-sm max-w-lg leading-relaxed mb-12">
+      <section id="flight-drones" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
+        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-400">Aerial Delivery Systems</p>
+        <p className="text-neutral-500 text-sm max-w-lg leading-relaxed mb-12">
           UAV systems for direct delivery — suburban neighborhoods, campuses, and short flight corridors where ground routing falls short.
         </p>
         {/* Top: hero wide + tall right */}
-        <div className="grid grid-cols-3 gap-2" style={{ gridTemplateRows: 'repeat(2, clamp(180px, 22vw, 300px))' }}>
-          {/* Hero — 2 cols × 2 rows */}
-          <div className="col-span-2 row-span-2 overflow-hidden rounded-lg robo-img-wrap">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2" style={{ gridTemplateRows: 'auto' }}>
+          {/* Hero — 2 cols × 2 rows on md+ */}
+          <div className="md:col-span-2 md:row-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '240px' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/drones_hero.webp"
               alt="Autonomous delivery drone in flight over urban area"
               className="robo-img"
+              style={{ objectPosition: 'center' }}
             />
           </div>
           {/* Top right */}
-          <div className="overflow-hidden rounded-lg robo-img-wrap">
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/DHL_Drone_Delivery_855666c6-cb8b-4e34-841e-fffe73da729d_1400x.webp"
               alt="Drone making a commercial delivery"
               className="robo-img"
+              style={{ objectPosition: 'center' }}
             />
           </div>
           {/* Bottom right */}
-          <div className="overflow-hidden rounded-lg robo-img-wrap">
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/Shutter2U___stock.adobe.com.62c8617809a24.avif"
               alt="Delivery drone descending to drop zone"
               className="robo-img"
+              style={{ objectPosition: 'center' }}
             />
           </div>
         </div>
@@ -383,42 +381,46 @@ export default function RoboticsDivisionHome() {
             src="/media/Fltrex-image3-e1723551928941.jpg"
             alt="Fleet of delivery drones in operation"
             className="robo-img"
+            style={{ objectPosition: 'center' }}
           />
         </div>
       </section>
 
       {/* ── FORKLIFT BOTS COLLAGE ── */}
-      <section id="forklift-bots" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
-        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">Warehouse Forklift &amp; Sorting Bots</p>
-        <p className="text-white/30 text-sm max-w-lg leading-relaxed mb-12">
+      <section id="forklift-bots" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
+        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-400">Warehouse Forklift &amp; Sorting Bots</p>
+        <p className="text-neutral-500 text-sm max-w-lg leading-relaxed mb-12">
           Autonomous forklift and sorting systems for pallet movement, stacking, and high-throughput fulfillment — no driver required.
         </p>
-        <div className="grid grid-cols-3 gap-2" style={{ gridTemplateRows: 'repeat(2, clamp(180px, 22vw, 300px))' }}>
-          {/* Hero — 2 cols × 2 rows */}
-          <div className="col-span-2 row-span-2 overflow-hidden rounded-lg robo-img-wrap">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2" style={{ gridTemplateRows: 'auto' }}>
+          {/* Hero — 2 cols × 2 rows on md+ */}
+          <div className="md:col-span-2 md:row-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '240px' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/Robotic-Sorting-as-a-Service-B3A7940.webp"
               alt="Robotic sorting system operating on warehouse floor"
               className="robo-img"
+              style={{ objectPosition: 'center' }}
             />
           </div>
           {/* Top right */}
-          <div className="overflow-hidden rounded-lg robo-img-wrap">
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/de41b3ea93135793d5885b95c0005b8e.avif"
               alt="Autonomous forklift bot in operation"
               className="robo-img"
+              style={{ objectPosition: 'center' }}
             />
           </div>
           {/* Bottom right */}
-          <div className="overflow-hidden rounded-lg robo-img-wrap">
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/f6f77a1616e27fc34eb1a81aa7dc6262.jpg"
               alt="Warehouse autonomous mobile robot"
               className="robo-img"
+              style={{ objectPosition: 'center' }}
             />
           </div>
         </div>
@@ -429,6 +431,7 @@ export default function RoboticsDivisionHome() {
             src="/media/DELIVERY-AUTOMATION-10-tzjm-jumbo.jpg"
             alt="Automated delivery and fulfillment system at scale"
             className="robo-img"
+            style={{ objectPosition: 'center' }}
           />
         </div>
         {/* Row 3: 2 new warehouse images */}
@@ -439,6 +442,7 @@ export default function RoboticsDivisionHome() {
               src="/media/warehouse.jpeg"
               alt="Warehouse robot in distribution environment"
               className="robo-img"
+              style={{ objectPosition: 'center' }}
             />
           </div>
           <div className="overflow-hidden rounded-lg robo-img-wrap">
@@ -447,18 +451,19 @@ export default function RoboticsDivisionHome() {
               src="/media/warehouse2.webp"
               alt="Autonomous warehouse robot system"
               className="robo-img"
+              style={{ objectPosition: 'center' }}
             />
           </div>
         </div>
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="px-6 md:px-12 lg:px-20 py-12 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-xs" style={{ color: 'rgba(130,185,165,0.4)' }}>
+      <footer className="px-6 md:px-12 lg:px-20 py-12 max-w-[82rem] mx-auto border-t border-neutral-200">
+        <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-neutral-400">
           <div>© {new Date().getFullYear()} Deeptech Robotics. All rights reserved.</div>
           <div className="flex gap-6">
-            <a href="/" className="hover:text-white transition-colors" style={{ color: 'rgba(160,200,185,0.55)' }}>Software Dev</a>
-            <a href="/creative" className="hover:text-white transition-colors" style={{ color: 'rgba(160,200,185,0.55)' }}>Creative</a>
+            <a href="/" className="text-neutral-500 hover:text-neutral-900 transition-colors">Software Dev</a>
+            <a href="/creative" className="text-neutral-500 hover:text-neutral-900 transition-colors">Creative</a>
           </div>
         </div>
       </footer>

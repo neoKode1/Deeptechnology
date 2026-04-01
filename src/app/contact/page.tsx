@@ -7,11 +7,11 @@ import AuroraCanvas from '@/components/AuroraCanvas';
 type Status = 'idle' | 'loading' | 'success' | 'error';
 
 export default function ContactPage() {
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [form, setForm] = useState({ name: '', email: '', inquiry: '', message: '' });
   const [status, setStatus] = useState<Status>('idle');
   const [errorMsg, setErrorMsg] = useState('');
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
@@ -28,7 +28,7 @@ export default function ContactPage() {
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.message || 'Something went wrong.');
       setStatus('success');
-      setForm({ name: '', email: '', message: '' });
+      setForm({ name: '', email: '', inquiry: '', message: '' });
     } catch (err: unknown) {
       setStatus('error');
       setErrorMsg(err instanceof Error ? err.message : 'Failed to send. Please try again.');
@@ -58,10 +58,10 @@ export default function ContactPage() {
               Get in touch.
             </h1>
             <p className="mt-6 text-base text-[#777] max-w-md leading-relaxed font-manrope">
-              Tell us about your project. We&apos;ll get back to you at{' '}
+              Tell us about your project, or reach us directly at{' '}
               <a href="mailto:1deeptechnology@gmail.com" className="text-[#111] underline underline-offset-4">
                 1deeptechnology@gmail.com
-              </a>
+              </a>.
             </p>
           </div>
 
@@ -99,6 +99,21 @@ export default function ContactPage() {
                   disabled={status === 'loading'} className={inputClass}
                 />
               </div>
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Inquiry Type *</label>
+              <select
+                name="inquiry" required
+                value={form.inquiry} onChange={handleChange}
+                disabled={status === 'loading'}
+                className={`${inputClass} appearance-none cursor-pointer`}
+              >
+                <option value="" disabled>Select a service…</option>
+                <option value="Software solutions">Software solutions</option>
+                <option value="Autonomous solutions">Autonomous solutions</option>
+                <option value="Media solutions">Media solutions</option>
+              </select>
             </div>
 
             <div className="flex flex-col gap-2">

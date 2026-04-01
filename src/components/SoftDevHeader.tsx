@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X, Code2, Clapperboard, Bot } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 
 /**
  * Universal header used across all three divisions.
@@ -28,8 +28,9 @@ const SoftDevHeader = () => {
     pathname === '/about' ||
     pathname === '/gallery';
   const isRobotics = pathname.startsWith('/robotics');
+  const isSoftware = pathname.startsWith('/software');
   const isSoftDev = !isCreative && !isRobotics;
-  const isDark = isCreative || isRobotics;
+  const isDark = isCreative;
 
   const textColor = isDark ? 'text-white/80' : 'text-[#111]';
   const textMuted = isDark ? 'text-white/40 hover:text-white/80' : 'text-[#111]/40 hover:text-[#111]';
@@ -64,27 +65,35 @@ const SoftDevHeader = () => {
 
           {/* Col 2 — Division switcher (always centered) */}
           <div className="hidden sm:flex items-center justify-center gap-6">
-            <Link href="/" className={`flex items-center gap-1.5 text-xs transition-colors duration-200 ${isSoftDev ? pillActive : pillInactive}`}>
-              <Code2 className="w-3 h-3" />
+            <Link href="/software" className={`text-xs transition-colors duration-200 ${isSoftware ? pillActive : pillInactive}`}>
               Software Dev
             </Link>
-            <Link href="/robotics" className={`flex items-center gap-1.5 text-xs transition-colors duration-200 ${isRobotics ? pillActive : pillInactive}`}>
-              <Bot className="w-3 h-3" />
+            <Link href="/robotics" className={`text-xs transition-colors duration-200 ${isRobotics ? pillActive : pillInactive}`}>
               Robotics
             </Link>
-            <Link href="/creative" className={`flex items-center gap-1.5 text-xs transition-colors duration-200 ${isCreative ? pillActive : pillInactive}`}>
-              <Clapperboard className="w-3 h-3" />
+            <Link href="/creative" className={`text-xs transition-colors duration-200 ${isCreative ? pillActive : pillInactive}`}>
               Media
             </Link>
           </div>
 
-          {/* Col 3 — Nav links + CTA + hamburger (right-aligned) */}
+          {/* Col 3 — Nav links + X icon + hamburger (right-aligned) */}
           <div className="flex items-center justify-end gap-6">
             <div className="hidden md:flex items-center gap-6 text-sm">
               <Link href="/#services" className={`transition-colors ${textMuted}`}>Services</Link>
-              <Link href="/#work" className={`transition-colors ${textMuted}`}>Work</Link>
+              <Link href="/software#work" className={`transition-colors ${textMuted}`}>Work</Link>
               <Link href="/contact" className={`transition-colors ${textMuted}`}>Contact</Link>
             </div>
+            <a
+              href="https://x.com/JusChadneo"
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Follow on X"
+              className={`transition-colors ${textMuted}`}
+            >
+              <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden="true">
+                <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+              </svg>
+            </a>
             <button
               className={`md:hidden ${textColor}`}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -101,23 +110,35 @@ const SoftDevHeader = () => {
         <div className={`md:hidden fixed inset-0 top-[65px] z-[9998] flex flex-col px-6 py-8 gap-8 ${isDark ? 'bg-black/80 backdrop-blur-md' : 'bg-white/90 backdrop-blur-md'}`}>
           {/* Division switcher — only shown on xs screens where header doesn't already show it */}
           <div className="sm:hidden flex items-center gap-6">
-            <Link href="/" onClick={() => setIsMenuOpen(false)} className={`flex items-center gap-1.5 text-xs transition-colors ${isSoftDev ? pillActive : pillInactive}`}>
-              <Code2 className="w-3 h-3" /> Software Dev
+            <Link href="/software" onClick={() => setIsMenuOpen(false)} className={`text-xs transition-colors ${isSoftware ? pillActive : pillInactive}`}>
+              Software Dev
             </Link>
-            <Link href="/robotics" onClick={() => setIsMenuOpen(false)} className={`flex items-center gap-1.5 text-xs transition-colors ${isRobotics ? pillActive : pillInactive}`}>
-              <Bot className="w-3 h-3" /> Robotics
+            <Link href="/robotics" onClick={() => setIsMenuOpen(false)} className={`text-xs transition-colors ${isRobotics ? pillActive : pillInactive}`}>
+              Robotics
             </Link>
-            <Link href="/creative" onClick={() => setIsMenuOpen(false)} className={`flex items-center gap-1.5 text-xs transition-colors ${isCreative ? pillActive : pillInactive}`}>
-              <Clapperboard className="w-3 h-3" /> Media
+            <Link href="/creative" onClick={() => setIsMenuOpen(false)} className={`text-xs transition-colors ${isCreative ? pillActive : pillInactive}`}>
+              Media
             </Link>
           </div>
           {/* Nav links — software dev only */}
-          {isSoftDev && [['/#services', 'Services'], ['/#work', 'Work'], ['/contact', 'Contact']].map(([href, label]) => (
+          {isSoftDev && [['/#services', 'Services'], ['/software#work', 'Work'], ['/contact', 'Contact']].map(([href, label]) => (
             <Link key={href} href={href} className={`text-2xl font-manrope font-light ${textColor}`} onClick={() => setIsMenuOpen(false)}>
               {label}
             </Link>
           ))}
 
+          {/* Social — X */}
+          <a
+            href="https://x.com/JusChadneo"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={`flex items-center gap-2 text-sm transition-colors ${textMuted}`}
+          >
+            <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor" aria-hidden="true">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+            </svg>
+            @JusChadneo
+          </a>
         </div>
       )}
     </>

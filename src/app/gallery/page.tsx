@@ -159,48 +159,93 @@ export default function Gallery() {
     }
   ];
 
-  // YouTube video gallery data
+  // YouTube video gallery data — full A Dark Orchestra catalog
   const videos = [
-    {
-      youtubeId: "PAfe79u8T3U",
-      title: "A Dark Orchestra Production 1",
-      category: "AI Film"
-    },
-    {
-      youtubeId: "vA9E202p2Bc",
-      title: "A Dark Orchestra Production 2",
-      category: "AI Film"
-    },
-    {
-      youtubeId: "GI_oVVu_Nhk",
-      title: "A Dark Orchestra Production 3",
-      category: "AI Film"
-    },
-    {
-      youtubeId: "q-MAtVddHDs",
-      title: "A Dark Orchestra Production 4",
-      category: "AI Film"
-    },
-    {
-      youtubeId: "db8-XM4IfI0",
-      title: "A Dark Orchestra Production 5",
-      category: "AI Film"
-    },
-    {
-      youtubeId: "V5EUTsyIPFw",
-      title: "A Dark Orchestra Production 6",
-      category: "AI Film"
-    },
-    {
-      youtubeId: "yLur3j2spNE",
-      title: "A Dark Orchestra Production 7",
-      category: "AI Film"
-    },
-    {
-      youtubeId: "2U1AHiAJUEc",
-      title: "A Dark Orchestra Production 8",
-      category: "AI Film"
-    }
+    // ── A Dark Orchestra catalog ──
+    { youtubeId: "tsQ1Stusfcc", title: "People Speakin", category: "AI Film" },
+    { youtubeId: "9MJO6GuT5b0", title: "WUrd", category: "AI Film" },
+    { youtubeId: "HgtDZbiS1aM", title: "Glory", category: "AI Film" },
+    { youtubeId: "2pLbNZBnOXU", title: "pHArma", category: "AI Film" },
+    { youtubeId: "1mPGmDVPgXY", title: "like it was", category: "AI Film" },
+    { youtubeId: "qGJ5q4JncTg", title: "T H E  S P R A W L  S2 pt2 + pt3", category: "AI Film" },
+    { youtubeId: "qmmGS7xbefo", title: "A DArk ANThoLogy", category: "AI Film" },
+    { youtubeId: "ddjMtqDMcL4", title: "krem də lə ˈkrem", category: "AI Film" },
+    { youtubeId: "boG0HRXlmrw", title: "boat", category: "AI Film" },
+    { youtubeId: "HoWyrFbpQmc", title: "Sleepwalkerz", category: "AI Film" },
+    { youtubeId: "SWslJcws7MY", title: "SWitch", category: "AI Film" },
+    { youtubeId: "QbD8e8h7KU8", title: "Dreamin Big", category: "AI Film" },
+    { youtubeId: "V5EUTsyIPFw", title: "OTD", category: "AI Film" },
+    { youtubeId: "db8-XM4IfI0", title: "Liquid", category: "AI Film" },
+    { youtubeId: "q-MAtVddHDs", title: "Criminal", category: "AI Film" },
+    { youtubeId: "GI_oVVu_Nhk", title: "Fingerwaves", category: "AI Film" },
+    { youtubeId: "vA9E202p2Bc", title: "N W O (NEW WORLD OVER)", category: "AI Film" },
+    { youtubeId: "PAfe79u8T3U", title: "Kremlin (Return to The Wiz)", category: "AI Film" },
+    // ── Music Videos ──
+    { youtubeId: "0FdlEEQA_pw", title: "Swat Day", category: "Music Video" },
+    { youtubeId: "18GWo28sMUI", title: "Cruel Favor", category: "Music Video" },
+    { youtubeId: "2FJ90SfcVdc", title: "COMPOSITION", category: "Music Video" },
+    { youtubeId: "3-vaVf3vLCA", title: "No Road", category: "Music Video" },
+    { youtubeId: "6Bh2kbZC3Ew", title: "Dirty VICE", category: "Music Video" },
+    { youtubeId: "6FTP_rzBPG4", title: "Garden", category: "Music Video" },
+    { youtubeId: "6nS2s2b5Ezs", title: "No one Knows", category: "Music Video" },
+    { youtubeId: "7vMxQ6NBkvw", title: "WIN MYNAMESHOW", category: "Music Video" },
+    { youtubeId: "B7G2O7sSOOo", title: "Tiime", category: "Music Video" },
+    { youtubeId: "C1vNqCDizrU", title: "Swimmin", category: "Music Video" },
+    { youtubeId: "EEs48_AKRR4", title: "M A X E D  O U T", category: "Music Video" },
+    { youtubeId: "EKADSUlGK2Y", title: "No stress Flexx", category: "Music Video" },
+    { youtubeId: "EheweLIpGNE", title: "Collision", category: "Music Video" },
+    { youtubeId: "EnOo_Q3-M7Y", title: "Casual (Purple Rain)", category: "Music Video" },
+    { youtubeId: "F9rYinLSJ44", title: "Cupid sucks", category: "Music Video" },
+    { youtubeId: "GNsfm-MrXbo", title: "Bagz N Rackz", category: "Music Video" },
+    { youtubeId: "I0B8-V1_GyI", title: "Smalltown", category: "Music Video" },
+    { youtubeId: "I0nFXJ61x28", title: "It Bends the Void", category: "Music Video" },
+    { youtubeId: "IwSolzt0eIY", title: "Smoke", category: "Music Video" },
+    { youtubeId: "MYJnqREjLKw", title: "Demons ans Angels", category: "Music Video" },
+    { youtubeId: "NoqTLz9_MTE", title: "Dead Meat", category: "Music Video" },
+    { youtubeId: "ODMhESU4r3U", title: "Slop", category: "Music Video" },
+    { youtubeId: "Ok9CjuUvIT4", title: "France", category: "Music Video" },
+    { youtubeId: "PRDWXpmEzWQ", title: "LEGEND", category: "Music Video" },
+    { youtubeId: "RmOyLGVzfl0", title: "WET", category: "Music Video" },
+    { youtubeId: "TjgzQ45veZM", title: "Sirens", category: "Music Video" },
+    { youtubeId: "Tp5uHDfYR-Y", title: "Separation", category: "Music Video" },
+    { youtubeId: "UHk3XyG5fGI", title: "Fever Dream", category: "Music Video" },
+    { youtubeId: "UghbHwRiWEY", title: "Fade", category: "Music Video" },
+    { youtubeId: "VPVMztPQGeM", title: "Twisted", category: "Music Video" },
+    { youtubeId: "VpCMxguQ0ko", title: "Lemon Drop Dream", category: "Music Video" },
+    { youtubeId: "W1ZIo7P3nNo", title: "The Algo (King Of Pop)", category: "Music Video" },
+    { youtubeId: "Y2iH0xhLz-k", title: "The Shallow", category: "Music Video" },
+    { youtubeId: "Z-nAnS588Mw", title: "The Art of the Hustle ft. Equipto", category: "Music Video" },
+    { youtubeId: "ZIpUfcYDGdE", title: "Jimmy", category: "Music Video" },
+    { youtubeId: "a-z8ArznQIk", title: "Frsh", category: "Music Video" },
+    { youtubeId: "d7LVTG79spU", title: "Triumph", category: "Music Video" },
+    { youtubeId: "dOCrzAoyfSM", title: "uNALIvE", category: "Music Video" },
+    { youtubeId: "djp0bFZq6xE", title: "Heavy", category: "Music Video" },
+    { youtubeId: "eSsEm24fdmg", title: "The Low End", category: "Music Video" },
+    { youtubeId: "eTNc1xTC30Q", title: "Parallel", category: "Music Video" },
+    { youtubeId: "f59jZldwh7o", title: "Mirage", category: "Music Video" },
+    { youtubeId: "fh7-6cZ4ZQk", title: "City of ghost", category: "Music Video" },
+    { youtubeId: "hFJU0b52dLs", title: "A Dark Orchestra", category: "Music Video" },
+    { youtubeId: "iZa2GJQNkOo", title: "Icey Heart", category: "Music Video" },
+    { youtubeId: "k81jUGX-Kuc", title: "Schemes", category: "Music Video" },
+    { youtubeId: "mENq1C-KIOQ", title: "Dread", category: "Music Video" },
+    { youtubeId: "mmsmUbx33Sc", title: "Chemical", category: "Music Video" },
+    { youtubeId: "o_vwKYmyQco", title: "Shawty Lo", category: "Music Video" },
+    { youtubeId: "oonEKJrtN5Y", title: "THEM", category: "Music Video" },
+    { youtubeId: "pHMEaVJIehY", title: "Align", category: "Music Video" },
+    { youtubeId: "rFMat_rLbfs", title: "Suicide Hearts", category: "Music Video" },
+    { youtubeId: "rwcvojmw1oM", title: "Entropy", category: "Music Video" },
+    { youtubeId: "rzwrUH_SEio", title: "Over & Over", category: "Music Video" },
+    { youtubeId: "su0fTDIH2Ss", title: "LeftRight", category: "Music Video" },
+    { youtubeId: "t4CHU8S5gjM", title: "Jellybeans", category: "Music Video" },
+    { youtubeId: "uV1F-LLWHZU", title: "Murderbot", category: "Music Video" },
+    { youtubeId: "vEM71Apij0Q", title: "2 Die 4", category: "Music Video" },
+    { youtubeId: "w9jz8r8_eG8", title: "Twilight", category: "Music Video" },
+    { youtubeId: "yLur3j2spNE", title: "No Sleep hustle (KANYE-I)", category: "Music Video" },
+    { youtubeId: "yYXXB73BQc8", title: "iNFINITEHUSTLE", category: "Music Video" },
+    { youtubeId: "yyT6SXtHzi4", title: "Pressure", category: "Music Video" },
+    // ── Short Films ──
+    { youtubeId: "FmqRZQwQV84", title: "Aliens THE WOMAN IN THE DARK", category: "Short Film" },
+    { youtubeId: "MBY4pEk1gk8", title: "DEAD SPACE LOST", category: "Short Film" },
   ];
 
   // Handle keyboard navigation
@@ -265,9 +310,9 @@ export default function Gallery() {
       </div>
 
       {/* Hero Section */}
-      <section className="relative h-[50vh] text-white">
+      <section className="relative h-[40vh] sm:h-[50vh] text-white">
         <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-end pb-12">
-          <p className="text-xs uppercase tracking-[0.25em] text-amber-400/70 mb-3">A Dark Orchestra Films</p>
+          <p className="text-xs uppercase tracking-[0.25em] mb-3" style={{ color: 'oklch(84.1% 0.238 128.85 / 0.7)' }}>A Dark Orchestra Films</p>
           <h1 className="font-heading text-5xl md:text-7xl font-bold mb-4 text-white">
             Gallery
           </h1>
@@ -338,15 +383,16 @@ export default function Gallery() {
                 </div>
                 <div className="absolute bottom-0 left-0 right-0 p-6 text-white bg-gradient-to-t from-black/80 via-black/40 to-transparent">
                   <div className="flex items-center space-x-2 mb-2">
-                    <Video className="w-4 h-4 text-red-400" />
-                    <span className="font-body text-sm text-red-300">{video.category}</span>
+                    <Video className="w-4 h-4" style={{ color: 'oklch(84.1% 0.238 128.85)' }} />
+                    <span className="font-body text-sm" style={{ color: 'oklch(84.1% 0.238 128.85 / 0.7)' }}>{video.category}</span>
                   </div>
                   <h3 className="font-heading text-lg font-semibold mb-2">{video.title}</h3>
-                  <a 
+                  <a
                     href={`https://youtu.be/${video.youtubeId}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex items-center space-x-2 text-red-300 hover:text-white transition-colors duration-300"
+                    className="inline-flex items-center space-x-2 hover:text-white transition-colors duration-300"
+                    style={{ color: 'oklch(84.1% 0.238 128.85 / 0.7)' }}
                   >
                     <span>Watch on YouTube</span>
                     <ArrowRight className="w-4 h-4" />
@@ -387,27 +433,34 @@ export default function Gallery() {
             {/* Close Button */}
             <button
               onClick={closeFullscreen}
-              className="absolute top-4 right-4 z-10 p-2 text-white hover:text-red-400 transition-colors duration-300"
+              className="absolute top-4 right-4 z-10 p-2 text-white transition-colors duration-300"
+              style={{ '--hover-color': 'oklch(84.1% 0.238 128.85)' } as React.CSSProperties}
+              onMouseEnter={e => (e.currentTarget.style.color = 'oklch(84.1% 0.238 128.85)')}
+              onMouseLeave={e => (e.currentTarget.style.color = '')}
               aria-label="Close fullscreen"
             >
               <X className="w-8 h-8" />
             </button>
 
-            {/* Navigation Arrows */}
+            {/* Navigation Arrows — larger touch targets on mobile */}
             <button
               onClick={() => navigateImage(-1)}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 p-3 text-white hover:text-red-400 transition-colors duration-300 glass-effect rounded-full"
+              className="absolute left-2 sm:left-4 top-1/2 transform -translate-y-1/2 z-10 p-4 sm:p-3 text-white transition-colors duration-300 glass-effect rounded-full"
+              onMouseEnter={e => (e.currentTarget.style.color = 'oklch(84.1% 0.238 128.85)')}
+              onMouseLeave={e => (e.currentTarget.style.color = '')}
               aria-label="Previous image"
             >
-              <ChevronLeft className="w-8 h-8" />
+              <ChevronLeft className="w-6 h-6 sm:w-8 sm:h-8" />
             </button>
 
             <button
               onClick={() => navigateImage(1)}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 p-3 text-white hover:text-red-400 transition-colors duration-300 glass-effect rounded-full"
+              className="absolute right-2 sm:right-4 top-1/2 transform -translate-y-1/2 z-10 p-4 sm:p-3 text-white transition-colors duration-300 glass-effect rounded-full"
+              onMouseEnter={e => (e.currentTarget.style.color = 'oklch(84.1% 0.238 128.85)')}
+              onMouseLeave={e => (e.currentTarget.style.color = '')}
               aria-label="Next image"
             >
-              <ChevronRight className="w-8 h-8" />
+              <ChevronRight className="w-6 h-6 sm:w-8 sm:h-8" />
             </button>
 
             {/* Image */}

@@ -6,15 +6,16 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, message } = body as {
+    const { name, email, inquiry, message } = body as {
       name: string;
       email: string;
+      inquiry: string;
       message: string;
     };
 
-    if (!name || !email || !message) {
+    if (!name || !email || !inquiry || !message) {
       return NextResponse.json(
-        { success: false, message: 'Name, email and message are required.' },
+        { success: false, message: 'All fields are required.' },
         { status: 400 }
       );
     }
@@ -60,6 +61,14 @@ export async function POST(request: Request) {
                   </td>
                 </tr>
               </table>
+            </td>
+          </tr>
+
+          <!-- Inquiry Type -->
+          <tr>
+            <td style="padding:28px 40px 0;">
+              <p style="margin:0 0 4px;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#999999;font-weight:500;">Inquiry Type</p>
+              <p style="margin:0;font-size:15px;color:#111111;font-weight:600;">${inquiry}</p>
             </td>
           </tr>
 
@@ -118,8 +127,8 @@ export async function POST(request: Request) {
       from: 'Deeptech <onboarding@resend.dev>',
       to: '1deeptechnology@gmail.com',
       replyTo: email,
-      subject: `New message from ${name}`,
-      text: `From: ${name}\nEmail: ${email}\n\n${message}\n\n---\nReceived ${timestamp}`,
+      subject: `[${inquiry}] New message from ${name}`,
+      text: `From: ${name}\nEmail: ${email}\nInquiry: ${inquiry}\n\n${message}\n\n---\nReceived ${timestamp}`,
       html: htmlTemplate,
     });
 

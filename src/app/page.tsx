@@ -1,4 +1,6 @@
-import React from 'react';
+'use client';
+
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { ArrowRight, ArrowUpRight } from 'lucide-react';
 import SoftDevHeader from '@/components/SoftDevHeader';
@@ -50,82 +52,52 @@ const TECH_TAGS = [
 const SERVICES = [
   {
     num: '01.',
-    title: 'AI Integration & Retrofitting',
-    tags: ['LLMs', 'Anthropic', 'Ollama', 'Agents'],
-    desc: 'We embed intelligence directly into production software — integrating LLMs, autonomous agents, and AI feature layers without displacing existing architecture. Your system continues to ship while we expand its capabilities.',
+    title: 'Software Development',
+    tags: ['AI Agents', 'LLMs', 'Edge Compute', 'TypeScript'],
+    desc: 'Production systems enhanced with AI integrations — from legacy retooling to autonomous end-to-end orchestration. We embed intelligence into live codebases, build agent platforms, and architect frontier infrastructure without disrupting what already works.',
+    link: '/software',
   },
   {
     num: '02.',
-    title: 'Legacy System Retooling',
-    tags: ['React', 'SvelteKit', 'Node.js', 'TypeScript'],
-    desc: 'We assess and modernize codebases that have exceeded their original design constraints — refactoring fragile pipelines, introducing AI-native capabilities, and migrating to cloud-native architecture without service interruption.',
+    title: 'Robotics & Automation',
+    tags: ['AMRs', 'Drones', 'Fleet Ops', 'Warehouse'],
+    desc: 'Environment-first robotics consulting — we assess your space, source vendor-agnostic hardware, and deploy autonomous delivery bots, warehouse AMRs, and aerial systems with full fleet integration into your existing operations.',
+    link: '/robotics',
   },
   {
     num: '03.',
-    title: 'Creative Tech & Media',
-    tags: ['Film AI', 'Video Gen', 'Audio'],
-    desc: 'Purpose-built creative infrastructure at the intersection of AI and media production — autonomous film studios, AI-driven music video platforms, and generative scene pipelines for professional creators.',
-  },
-  {
-    num: '04.',
-    title: 'Deep Infrastructure',
-    tags: ['Quantum', 'Edge Compute', 'APIs'],
-    desc: 'Architecting compute infrastructure at the frontier — quantum-as-a-service APIs routing workloads to live superconducting hardware, paired with high-performance edge-deployed services built for sub-millisecond response.',
+    title: 'Creative & Media Production',
+    tags: ['AI Film', 'Music Video', 'Generative Art', 'Audio'],
+    desc: 'AI-native creative studios for film, music, and visual media. We produce cinematic AI films, direct generative music videos, and build production tools that give independent creators full-team capability from a single interface.',
+    link: '/creative',
   },
 ];
 
-/* ── Featured projects ── */
-const PROJECTS = [
-  {
-    title: 'EdgeQuanta',
-    desc: 'Production-grade edge infrastructure with an integrated quantum compute layer. A unified API routes workloads to real 180-qubit superconducting chips — near-zero cold start, global multi-region failover, full TypeScript type safety.',
-    tags: ['Cloudflare', 'Quantum', 'Edge Compute', 'TypeScript', '2025'],
-    link: 'https://github.com/neoKode1/EdgeQuanta',
-    img: '/media/Edge Quanta.png',
-  },
-  {
-    title: 'Breach',
-    desc: 'In active development.',
-    tags: ['In Development', '2026'],
-    link: 'https://github.com/neoKode1/breach',
-    img: '/media/breach_screenshot.png',
-  },
-  {
-    title: '12 Monkeys',
-    desc: 'Agent orchestration platform with cross-registry discovery via the NANDA Index — enabling teams to build, deploy, and interconnect AI agents across heterogeneous service registries through a unified conversational interface.',
-    tags: ['Agents', 'TypeScript', 'NANDA', '2026'],
-    link: 'https://github.com/neoKode1/plus12monkeys',
-    img: '/media/Plus 12 monkeys..png',
-  },
-  {
-    title: "Director's Chair",
-    desc: 'A browser-native cinematic AI studio. Describe a scene and the system generates synchronized images, video, and audio — full production-team capability with no timeline editors, no render queues.',
-    tags: ['AI / Studio', 'SvelteKit', '2025'],
-    link: 'https://github.com/neoKode1/DirectorchairAi',
-    img: '/media/DirectorChair.png',
-  },
-  {
-    title: 'Noelapp',
-    desc: 'In active development.',
-    tags: ['In Development', '2026'],
-    link: 'https://github.com/neoKode1/noelle',
-    img: '/media/theNoelleapp.png',
-  },
-];
+
 
 export default function SoftwareDivisionHome() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setReady(true), 600);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <div className="min-h-screen overflow-x-hidden bg-white text-[#4d4d4d]">
+    <div
+      className="min-h-screen overflow-x-hidden bg-white text-[#4d4d4d] transition-opacity duration-1000 ease-out"
+      style={{ opacity: ready ? 1 : 0 }}
+    >
       <SoftDevHeader />
 
       {/* ── HERO ── */}
       <section
         className="relative overflow-hidden px-6 md:px-12 lg:px-20 pt-16 md:pt-24 pb-20"
-        style={{ maxWidth: '82rem', margin: '0 auto', minHeight: '92vh' }}
+        style={{ maxWidth: '82rem', margin: '0 auto', minHeight: '80vh' }}
       >
-        {/* Spline 3D animation — right-of-center, non-blocking */}
+        {/* Spline 3D animation — right-of-center, non-blocking; hidden on small screens */}
         <div
-          className="absolute top-0 pointer-events-none select-none"
+          className="absolute top-0 pointer-events-none select-none hidden md:block"
           aria-hidden="true"
           style={{
             left: '42%',
@@ -218,7 +190,7 @@ export default function SoftwareDivisionHome() {
           </div>
 
           <div className="mt-6 flex gap-4 flex-wrap" style={{ position: 'relative', zIndex: 2 }}>
-            <Link href="/#work" className="sd-btn-primary">
+            <Link href="/software" className="sd-btn-primary">
               Explore Our Work <ArrowUpRight className="w-4 h-4" />
             </Link>
             <Link href="/contact" className="sd-btn-outline">
@@ -251,8 +223,9 @@ export default function SoftwareDivisionHome() {
 
         <div className="flex flex-col">
           {SERVICES.map((svc, i) => (
-            <div
+            <Link
               key={svc.num}
+              href={svc.link}
               className={`flex flex-col lg:flex-row lg:items-center gap-6 py-10 group hover:bg-[#fafafa] transition-colors -mx-6 px-6 md:-mx-12 md:px-12 lg:-mx-20 lg:px-20 cursor-pointer ${
                 i < SERVICES.length - 1 ? 'border-b border-[#ccc]' : ''
               }`}
@@ -269,7 +242,7 @@ export default function SoftwareDivisionHome() {
                 </div>
                 <p className="text-[#333] text-base max-w-lg leading-relaxed">{svc.desc}</p>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
@@ -285,7 +258,7 @@ export default function SoftwareDivisionHome() {
               className="leading-[0.92] text-[#111] tracking-tight font-semibold"
               style={{ fontSize: 'clamp(2.5rem, 7vw, 5.5rem)' }}
             >
-              What We Do.
+              About.
             </h2>
 
             <div className="mt-10 pt-8 border-t border-[#e5e5e5]">
@@ -315,93 +288,23 @@ export default function SoftwareDivisionHome() {
           {/* Right — bio */}
           <div className="lg:col-span-7 flex flex-col gap-8 pt-2">
             <p className="text-[1.25rem] md:text-[1.5rem] leading-relaxed text-[#222] tracking-tight">
-              We specialize in the modernization of existing production software systems. Embedding intelligent capabilities into existing codebases, accelerating feature delivery, and migrating legacy components to scalable AI-native architecture without full platform rebuild.
+              A multi-disciplinary technology company operating across software, robotics, and media. We build at the intersection of AI and real-world systems — shipping production infrastructure, deploying autonomous hardware, and producing AI-native creative work. One founder. Three divisions. Everything in-house.
             </p>
 
             {/* Stat row */}
-            <div className="grid grid-cols-3 gap-4 pt-4 border-t border-[#e5e5e5]">
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-4 border-t border-[#e5e5e5]">
               {[
                 { n: '30+', label: 'Public Repos' },
                 { n: '3', label: 'Divisions' },
                 { n: '∞', label: 'In Production' },
               ].map(({ n, label }) => (
                 <div key={label} className="flex flex-col gap-1">
-                  <span className="font-manrope text-[2rem] font-semibold tracking-tight text-[#111]">{n}</span>
+                  <span className="font-manrope text-[1.5rem] sm:text-[2rem] font-semibold tracking-tight text-[#111]">{n}</span>
                   <span className="text-xs uppercase tracking-widest text-[#999]">{label}</span>
                 </div>
               ))}
             </div>
           </div>
-        </div>
-      </section>
-
-      {/* ── PROJECTS (dark) ── */}
-      <section id="work" className="bg-[#0a0a0a] text-white px-6 md:px-12 lg:px-20 py-24">
-        <div className="max-w-[82rem] mx-auto">
-          <div className="flex items-center gap-4 mb-16">
-            <div className="border border-[#4d4d4d] rounded-full px-4 py-1.5 overflow-hidden w-24">
-              <div style={{ display: 'flex', width: '200%', animation: 'marquee-scroll 5s linear infinite' }}>
-                <span className="text-xs uppercase tracking-wider font-medium text-white shrink-0 w-full text-center">Works</span>
-                <span className="text-xs uppercase tracking-wider font-medium text-white shrink-0 w-full text-center">Works</span>
-              </div>
-            </div>
-            <div className="h-[1px] bg-[#4d4d4d] flex-grow" />
-          </div>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            {PROJECTS.map((proj) => (
-              <a
-                key={proj.title}
-                href={proj.link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex flex-col border border-[#2d2c2c] bg-[#262626] group overflow-hidden hover:border-[#4d4d4d] transition-colors"
-              >
-                <div className="w-full h-52 overflow-hidden shrink-0">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={proj.img}
-                    alt={proj.title}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700 ease-in-out"
-                  />
-                </div>
-                <div className="p-5 flex items-center justify-between gap-4">
-                  <div className="flex flex-wrap gap-2">
-                    {proj.tags.map((t) => (
-                      <span key={t} className="border border-[#4d4d4d] rounded-full px-3 py-1 text-xs text-[#999]">
-                        {t}
-                      </span>
-                    ))}
-                  </div>
-                  <span className="inline-flex items-center gap-1.5 text-xs text-white/60 group-hover:text-white transition-colors shrink-0">
-                    GitHub <ArrowUpRight className="w-3.5 h-3.5" />
-                  </span>
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── LLM CAROUSEL ── */}
-      <section className="bg-[#eee] py-16 md:py-20 overflow-hidden">
-        <p className="text-center text-xs uppercase tracking-[0.25em] text-[#999] font-manrope mb-8">
-          Models &amp; Platforms We Integrate
-        </p>
-        <div style={{ display: 'flex', width: 'max-content', animation: 'marquee-scroll 30s linear infinite' }}>
-          {[
-            'Claude', 'GPT-4o', 'Gemini', 'Llama 3', 'Mistral', 'Grok',
-            'DeepSeek', 'Phi-4', 'Command R+', 'Qwen', 'Stable Diffusion', 'DALL·E',
-            'Claude', 'GPT-4o', 'Gemini', 'Llama 3', 'Mistral', 'Grok',
-            'DeepSeek', 'Phi-4', 'Command R+', 'Qwen', 'Stable Diffusion', 'DALL·E',
-          ].map((model, i) => (
-            <span
-              key={i}
-              className="font-manrope font-medium text-[4rem] md:text-[6rem] uppercase tracking-tighter text-[#111] whitespace-nowrap px-8"
-            >
-              {model}
-            </span>
-          ))}
         </div>
       </section>
 
@@ -422,14 +325,14 @@ export default function SoftwareDivisionHome() {
               </a>
             </div>
 
-            <div className="grid grid-cols-2 gap-12 lg:gap-24">
+            <div className="grid grid-cols-2 gap-8 sm:gap-12 lg:gap-24">
               <div className="flex flex-col gap-6">
                 <h4 className="font-manrope text-lg font-medium">Navigate</h4>
                 <div className="flex flex-col gap-3 text-sm text-[#999]">
                   <Link href="/" className="hover:text-white transition-colors">Home</Link>
                   <Link href="/#about" className="hover:text-white transition-colors">About</Link>
                   <Link href="/#services" className="hover:text-white transition-colors">Services</Link>
-                  <Link href="/#work" className="hover:text-white transition-colors">Work</Link>
+                  <Link href="/software#work" className="hover:text-white transition-colors">Work</Link>
                   <Link href="/creative" className="hover:text-white transition-colors">Creative Division</Link>
                 </div>
               </div>

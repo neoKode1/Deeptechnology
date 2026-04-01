@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useRef, useEffect } from 'react';
+import React, { useRef, useEffect, useState } from 'react';
 import Link from 'next/link';
 import { ArrowRight, ArrowLeft } from 'lucide-react';
 import { Icon } from '@iconify/react';
@@ -18,6 +18,7 @@ import CreativeCanvas from '@/components/CreativeCanvas';
  */
 export default function CreativeDivisionHome() {
   const carouselRef = useRef<HTMLDivElement>(null);
+  const [ready, setReady] = useState(false);
   // card width (500px) + gap (32px = gap-8)
   const scrollAmount = 532;
 
@@ -124,8 +125,17 @@ export default function CreativeDivisionHome() {
     return () => el.removeEventListener('wheel', onWheel);
   }, []);
 
+  // Trigger fade-in after a short delay to let the canvas initialize
+  useEffect(() => {
+    const timer = setTimeout(() => setReady(true), 600);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
-    <>
+    <div
+      className="transition-opacity duration-1000 ease-out"
+      style={{ opacity: ready ? 1 : 0 }}
+    >
       {/* ── FIXED background canvas — stays centered during scroll ── */}
       <CreativeCanvas className="fixed inset-0 w-full h-full -z-10" />
 
@@ -144,7 +154,7 @@ export default function CreativeDivisionHome() {
               </h1>
             </div>
 
-            <p className="font-body text-lg md:text-xl text-white/70 mb-12 max-w-3xl leading-relaxed px-4 text-left">
+            <p className="font-body text-base sm:text-lg md:text-xl text-white/70 mb-8 sm:mb-12 max-w-3xl leading-relaxed px-4 text-left">
               Revolutionary multimedia AI film company creating cutting-edge content through artificial intelligence.
               Created by The AI Visionary Filmmaker Chad Neo.
             </p>
@@ -202,13 +212,13 @@ export default function CreativeDivisionHome() {
             {/* Headline — two stacked lines */}
             <h2 className="font-manrope font-semibold tracking-tighter uppercase leading-[0.88]">
               <span className="block text-5xl md:text-7xl lg:text-8xl text-white">
-                Latest Productions.
+                Cinematic
               </span>
               <span className="block text-5xl md:text-7xl lg:text-8xl mt-1" style={{
                 WebkitTextStroke: '1px rgba(251,191,36,0.35)',
                 color: 'transparent',
               }}>
-                Cinematic Universe.
+                Universe.
               </span>
             </h2>
 
@@ -216,6 +226,26 @@ export default function CreativeDivisionHome() {
             <div className="flex items-center gap-0 mt-10">
               <div className="h-px flex-1 bg-white/8" />
               <div className="w-16 h-px" style={{ backgroundColor: 'oklch(84.1% 0.238 128.85 / 0.5)' }} />
+            </div>
+
+            {/* Prev / Next controls — right under title */}
+            <div className="flex justify-end mt-6">
+              <div className="flex">
+                <button
+                  onClick={() => carouselRef.current?.scrollBy({ left: -scrollAmount, behavior: 'smooth' })}
+                  aria-label="Previous"
+                  className="w-16 h-16 border border-white/10 flex items-center justify-center text-white/50 hover:bg-neutral-900 hover:text-white hover:border-white/30 transition-all duration-300 group bg-black z-20"
+                >
+                  <ArrowLeft className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" />
+                </button>
+                <button
+                  onClick={() => carouselRef.current?.scrollBy({ left: scrollAmount, behavior: 'smooth' })}
+                  aria-label="Next"
+                  className="w-16 h-16 border-t border-b border-r border-white/10 flex items-center justify-center text-white/50 hover:bg-neutral-900 hover:text-white hover:border-white/30 transition-all duration-300 group bg-black z-20"
+                >
+                  <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
+                </button>
+              </div>
             </div>
           </div>
 
@@ -243,7 +273,7 @@ export default function CreativeDivisionHome() {
                   </div>
 
                   {/* Card info */}
-                  <div className="mt-6 pl-2 flex flex-col flex-grow min-h-[140px]">
+                  <div className="mt-4 sm:mt-6 pl-2 flex flex-col flex-grow min-h-[120px] sm:min-h-[140px]">
                     <h3 className="text-white font-semibold tracking-[0.2em] uppercase text-lg mb-3">{v.title}</h3>
                     <p className="text-neutral-500 text-sm leading-relaxed max-w-sm mb-6 line-clamp-2">
                       A Dark Orchestra original — AI-generated cinematic production.
@@ -268,25 +298,6 @@ export default function CreativeDivisionHome() {
               ))}
             </div>
 
-            {/* Prev / Next controls */}
-            <div className="flex justify-end mt-12 pr-6">
-              <div className="flex">
-                <button
-                  onClick={() => carouselRef.current?.scrollBy({ left: -scrollAmount, behavior: 'smooth' })}
-                  aria-label="Previous"
-                  className="w-16 h-16 border border-white/10 flex items-center justify-center text-white/50 hover:bg-neutral-900 hover:text-white hover:border-white/30 transition-all duration-300 group bg-black z-20"
-                >
-                  <ArrowLeft className="w-5 h-5 transition-transform duration-300 group-hover:-translate-x-1" />
-                </button>
-                <button
-                  onClick={() => carouselRef.current?.scrollBy({ left: scrollAmount, behavior: 'smooth' })}
-                  aria-label="Next"
-                  className="w-16 h-16 border-t border-b border-r border-white/10 flex items-center justify-center text-white/50 hover:bg-neutral-900 hover:text-white hover:border-white/30 transition-all duration-300 group bg-black z-20"
-                >
-                  <ArrowRight className="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" />
-                </button>
-              </div>
-            </div>
           </div>
 
         </div>
@@ -311,7 +322,7 @@ export default function CreativeDivisionHome() {
         </div>
       </section>
       </div>
-    </>
+    </div>
   );
 }
 
