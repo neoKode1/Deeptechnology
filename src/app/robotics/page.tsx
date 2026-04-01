@@ -167,7 +167,7 @@ export default function RoboticsDivisionHome() {
               We read the environment first.<br />Then we pick the machine.
             </h2>
             <p className="text-lg leading-relaxed mb-4" style={{ color: 'rgba(200,225,215,0.65)' }}>
-              Every environment has its own rules — terrain, foot traffic, payload weight, weather exposure, customer proximity. The wrong robot in the wrong space fails. We source the best autonomous solution so that never happens.
+              Every environment has its own rules — terrain, foot traffic, payload weight, weather exposure, customer proximity. The wrong robot in the wrong space fails. We source the best autonomous solutions for your environment.
             </p>
             <p className="text-base leading-relaxed" style={{ color: 'rgba(200,225,215,0.45)' }}>
               We are not tied to any brand or platform. We assess your specific conditions, cross-reference the full hardware market, and integrate the system — drone, bot, or AMR — that is engineered for exactly where you need it to operate.
