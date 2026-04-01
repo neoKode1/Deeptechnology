@@ -475,6 +475,25 @@ export default function RoboticsDivisionHome() {
             className="robo-img"
           />
         </div>
+        {/* Row 3: 2 new warehouse images */}
+        <div className="grid grid-cols-2 gap-2 mt-2" style={{ height: 'clamp(180px, 22vw, 300px)' }}>
+          <div className="overflow-hidden rounded-lg robo-img-wrap">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/media/warehouse.jpeg"
+              alt="Warehouse robot in distribution environment"
+              className="robo-img"
+            />
+          </div>
+          <div className="overflow-hidden rounded-lg robo-img-wrap">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/media/warehouse2.webp"
+              alt="Autonomous warehouse robot system"
+              className="robo-img"
+            />
+          </div>
+        </div>
       </section>
 
       {/* ── FOOTER ── */}
