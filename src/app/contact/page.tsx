@@ -127,7 +127,10 @@ export default function ContactPage() {
 
           {/* Right — Aurora spinner animation */}
           <div className="hidden lg:block relative" style={{ height: '520px' }}>
-            <AuroraCanvas className="absolute inset-0 w-full h-full" />
+            <AuroraCanvas
+              className="absolute w-full h-full"
+              style={{ top: '-96px', left: '192px' }}
+            />
           </div>
 
         </div>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 const SDK_SRC =
   'https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.1.5/dist/unicornStudio.umd.js';
@@ -21,7 +21,7 @@ declare global {
  * Renders the Aurora 3D spinner Unicorn Studio scene.
  * Used as a decorative fill on the contact page right column.
  */
-export default function AuroraCanvas({ className = '' }: { className?: string }) {
+export default function AuroraCanvas({ className = '', style }: { className?: string; style?: React.CSSProperties }) {
   const divRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -64,7 +64,7 @@ export default function AuroraCanvas({ className = '' }: { className?: string })
       data-us-dpi="1.5"
       data-us-fps="60"
       className={className}
-      style={{ display: 'block', width: '100%', height: '100%', pointerEvents: 'none' }}
+      style={{ display: 'block', width: '100%', height: '100%', pointerEvents: 'none', ...style }}
     />
   );
 }
