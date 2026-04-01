@@ -72,7 +72,8 @@
   }
 
   .gradient-text {
-    @apply bg-gradient-to-r from-amber-400 via-yellow-300 to-amber-300 bg-clip-text text-transparent;
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(to right, oklch(84.1% 0.238 128.85), oklch(88% 0.2 120), oklch(84.1% 0.238 128.85));
   }
 
   .gradient-bg {
@@ -84,11 +85,18 @@
   }
 
   .card-hover {
-    @apply transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-amber-500/15;
+    @apply transition-all duration-300 hover:scale-105 hover:shadow-2xl;
+    --tw-shadow-color: oklch(84.1% 0.238 128.85 / 0.15);
+    &:hover { --tw-shadow-color: oklch(84.1% 0.238 128.85 / 0.15); }
   }
 
   .button-primary {
-    @apply bg-gradient-to-r from-amber-500 to-yellow-400 text-black px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:from-amber-400 hover:to-yellow-300 hover:shadow-lg hover:shadow-amber-500/30 hover:scale-105;
+    @apply text-black px-6 py-3 rounded-lg font-semibold transition-all duration-300 hover:shadow-lg hover:scale-105;
+    background: linear-gradient(to right, oklch(84.1% 0.238 128.85), oklch(88% 0.22 120));
+    &:hover {
+      background: linear-gradient(to right, oklch(88% 0.22 120), oklch(84.1% 0.238 128.85));
+      box-shadow: 0 10px 15px -3px oklch(84.1% 0.238 128.85 / 0.3);
+    }
   }
 
   .button-secondary {
@@ -109,8 +117,8 @@
   }
 
   @keyframes glow {
-    from { box-shadow: 0 0 20px rgba(251, 191, 36, 0.4); }
-    to { box-shadow: 0 0 30px rgba(251, 191, 36, 0.7); }
+    from { box-shadow: 0 0 20px oklch(84.1% 0.238 128.85 / 0.4); }
+    to { box-shadow: 0 0 30px oklch(84.1% 0.238 128.85 / 0.7); }
   }
 
   .animate-pulse-red {
@@ -127,7 +135,7 @@
   }
 
   .text-shadow-red {
-    text-shadow: 0 0 40px rgba(251, 191, 36, 0.35);
+    text-shadow: 0 0 40px oklch(84.1% 0.238 128.85 / 0.35);
   }
 
   .mega-title {

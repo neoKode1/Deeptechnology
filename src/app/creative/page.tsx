@@ -22,21 +22,91 @@ export default function CreativeDivisionHome() {
   const scrollAmount = 532;
 
   const videos = [
-    // Newest first
-    { src: 'https://www.youtube.com/embed/HoWyrFbpQmc?si=6cIIlF5HmukDwwrz', href: 'https://youtu.be/HoWyrFbpQmc?si=6cIIlF5HmukDwwrz', title: 'Featured Production 14' },
-    { src: 'https://www.youtube.com/embed/SWslJcws7MY?si=w4Tm-WgHChyMIrlr', href: 'https://youtu.be/SWslJcws7MY?si=w4Tm-WgHChyMIrlr', title: 'Featured Production 13' },
-    { src: 'https://www.youtube.com/embed/QbD8e8h7KU8?si=4wikUUWQmYQNSlH1', href: 'https://youtu.be/QbD8e8h7KU8?si=4wikUUWQmYQNSlH1', title: 'Featured Production 12' },
-    { src: 'https://www.youtube.com/embed/boG0HRXlmrw?si=U9rVqHHKh3yVoiNK', href: 'https://youtu.be/boG0HRXlmrw?si=U9rVqHHKh3yVoiNK', title: 'Featured Production 11' },
-    { src: 'https://www.youtube.com/embed/ddjMtqDMcL4?si=1QX8rJSa32TTVVwQ', href: 'https://youtu.be/ddjMtqDMcL4?si=1QX8rJSa32TTVVwQ', title: 'Featured Production 10' },
-    { src: 'https://www.youtube.com/embed/tsQ1Stusfcc?si=wcKLqWmJOVw3ncix', href: 'https://youtu.be/tsQ1Stusfcc?si=wcKLqWmJOVw3ncix', title: 'Featured Production 9' },
-    { src: 'https://www.youtube.com/embed/HgtDZbiS1aM?si=EUqUUlFx6juNtM_r', href: 'https://youtu.be/HgtDZbiS1aM?si=EUqUUlFx6juNtM_r', title: 'Featured Production 8' },
-    { src: 'https://www.youtube.com/embed/9MJO6GuT5b0?si=-kEESQiLL_wTL2dN', href: 'https://youtu.be/9MJO6GuT5b0?si=-kEESQiLL_wTL2dN', title: 'Featured Production 7' },
-    { src: 'https://www.youtube.com/embed/V5EUTsyIPFw?si=egh-ZL1rczI9OoZ6', href: 'https://youtu.be/V5EUTsyIPFw?si=egh-ZL1rczI9OoZ6', title: 'Featured Production 6' },
-    { src: 'https://www.youtube.com/embed/db8-XM4IfI0?si=NRDMGk69gCDJZOMR', href: 'https://youtu.be/db8-XM4IfI0?si=NRDMGk69gCDJZOMR', title: 'Featured Production 5' },
-    { src: 'https://www.youtube.com/embed/q-MAtVddHDs?si=tHFMGM-z1Es3-AmB', href: 'https://youtu.be/q-MAtVddHDs?si=tHFMGM-z1Es3-AmB', title: 'Featured Production 4' },
-    { src: 'https://www.youtube.com/embed/GI_oVVu_Nhk?si=bjLhxnf0LPeLKB7J', href: 'https://youtu.be/GI_oVVu_Nhk?si=bjLhxnf0LPeLKB7J', title: 'Featured Production 3' },
-    { src: 'https://www.youtube.com/embed/vA9E202p2Bc?si=E_FNXAlHf9YI3PaH', href: 'https://youtu.be/vA9E202p2Bc?si=E_FNXAlHf9YI3PaH', title: 'Featured Production 2' },
-    { src: 'https://www.youtube.com/embed/PAfe79u8T3U?si=QnvrXfM-T7_0OvR-', href: 'https://youtu.be/PAfe79u8T3U?si=QnvrXfM-T7_0OvR-', title: 'Featured Production 1' },
+    // Newest first — A DARK ORCHESTRA catalog
+    { src: 'https://www.youtube.com/embed/tsQ1Stusfcc', href: 'https://youtu.be/tsQ1Stusfcc', title: 'People Speakin' },
+    { src: 'https://www.youtube.com/embed/9MJO6GuT5b0', href: 'https://youtu.be/9MJO6GuT5b0', title: 'WUrd' },
+    { src: 'https://www.youtube.com/embed/HgtDZbiS1aM', href: 'https://youtu.be/HgtDZbiS1aM', title: 'Glory' },
+    { src: 'https://www.youtube.com/embed/2pLbNZBnOXU', href: 'https://youtu.be/2pLbNZBnOXU', title: 'pHArma' },
+    { src: 'https://www.youtube.com/embed/1mPGmDVPgXY', href: 'https://youtu.be/1mPGmDVPgXY', title: 'like it was' },
+    { src: 'https://www.youtube.com/embed/qGJ5q4JncTg', href: 'https://youtu.be/qGJ5q4JncTg', title: 'T H E  S P R A W L  S2 pt2 + pt3' },
+    { src: 'https://www.youtube.com/embed/qmmGS7xbefo', href: 'https://youtu.be/qmmGS7xbefo', title: 'A DArk ANThoLogy' },
+    { src: 'https://www.youtube.com/embed/ddjMtqDMcL4', href: 'https://youtu.be/ddjMtqDMcL4', title: 'krem də lə ˈkrem' },
+    { src: 'https://www.youtube.com/embed/boG0HRXlmrw', href: 'https://youtu.be/boG0HRXlmrw', title: 'boat' },
+    { src: 'https://www.youtube.com/embed/HoWyrFbpQmc', href: 'https://youtu.be/HoWyrFbpQmc', title: 'Sleepwalkerz' },
+    { src: 'https://www.youtube.com/embed/SWslJcws7MY', href: 'https://youtu.be/SWslJcws7MY', title: 'SWitch' },
+    { src: 'https://www.youtube.com/embed/QbD8e8h7KU8', href: 'https://youtu.be/QbD8e8h7KU8', title: 'Dreamin Big' },
+    { src: 'https://www.youtube.com/embed/V5EUTsyIPFw', href: 'https://youtu.be/V5EUTsyIPFw', title: 'OTD' },
+    { src: 'https://www.youtube.com/embed/db8-XM4IfI0', href: 'https://youtu.be/db8-XM4IfI0', title: 'Liquid' },
+    { src: 'https://www.youtube.com/embed/q-MAtVddHDs', href: 'https://youtu.be/q-MAtVddHDs', title: 'Criminal' },
+    { src: 'https://www.youtube.com/embed/GI_oVVu_Nhk', href: 'https://youtu.be/GI_oVVu_Nhk', title: 'Fingerwaves' },
+    { src: 'https://www.youtube.com/embed/vA9E202p2Bc', href: 'https://youtu.be/vA9E202p2Bc', title: 'N W O (NEW WORLD OVER)' },
+    { src: 'https://www.youtube.com/embed/PAfe79u8T3U', href: 'https://youtu.be/PAfe79u8T3U', title: 'Kremlin (Return to The Wiz)' },
+    // ── Music Videos playlist ──
+    { src: 'https://www.youtube.com/embed/0FdlEEQA_pw', href: 'https://youtu.be/0FdlEEQA_pw', title: 'Swat Day' },
+    { src: 'https://www.youtube.com/embed/18GWo28sMUI', href: 'https://youtu.be/18GWo28sMUI', title: 'Cruel Favor' },
+    { src: 'https://www.youtube.com/embed/2FJ90SfcVdc', href: 'https://youtu.be/2FJ90SfcVdc', title: 'COMPOSITION' },
+    { src: 'https://www.youtube.com/embed/3-vaVf3vLCA', href: 'https://youtu.be/3-vaVf3vLCA', title: 'No Road' },
+    { src: 'https://www.youtube.com/embed/6Bh2kbZC3Ew', href: 'https://youtu.be/6Bh2kbZC3Ew', title: 'Dirty VICE' },
+    { src: 'https://www.youtube.com/embed/6FTP_rzBPG4', href: 'https://youtu.be/6FTP_rzBPG4', title: 'Garden' },
+    { src: 'https://www.youtube.com/embed/6nS2s2b5Ezs', href: 'https://youtu.be/6nS2s2b5Ezs', title: 'No one Knows' },
+    { src: 'https://www.youtube.com/embed/7vMxQ6NBkvw', href: 'https://youtu.be/7vMxQ6NBkvw', title: 'WIN MYNAMESHOW' },
+    { src: 'https://www.youtube.com/embed/B7G2O7sSOOo', href: 'https://youtu.be/B7G2O7sSOOo', title: 'Tiime' },
+    { src: 'https://www.youtube.com/embed/C1vNqCDizrU', href: 'https://youtu.be/C1vNqCDizrU', title: 'Swimmin' },
+    { src: 'https://www.youtube.com/embed/EEs48_AKRR4', href: 'https://youtu.be/EEs48_AKRR4', title: 'M A X E D  O U T' },
+    { src: 'https://www.youtube.com/embed/EKADSUlGK2Y', href: 'https://youtu.be/EKADSUlGK2Y', title: 'No stress Flexx' },
+    { src: 'https://www.youtube.com/embed/EheweLIpGNE', href: 'https://youtu.be/EheweLIpGNE', title: 'Collision' },
+    { src: 'https://www.youtube.com/embed/EnOo_Q3-M7Y', href: 'https://youtu.be/EnOo_Q3-M7Y', title: 'Casual (Purple Rain)' },
+    { src: 'https://www.youtube.com/embed/F9rYinLSJ44', href: 'https://youtu.be/F9rYinLSJ44', title: 'Cupid sucks' },
+    { src: 'https://www.youtube.com/embed/GNsfm-MrXbo', href: 'https://youtu.be/GNsfm-MrXbo', title: 'Bagz N Rackz' },
+    { src: 'https://www.youtube.com/embed/I0B8-V1_GyI', href: 'https://youtu.be/I0B8-V1_GyI', title: 'Smalltown' },
+    { src: 'https://www.youtube.com/embed/I0nFXJ61x28', href: 'https://youtu.be/I0nFXJ61x28', title: 'It Bends the Void' },
+    { src: 'https://www.youtube.com/embed/IwSolzt0eIY', href: 'https://youtu.be/IwSolzt0eIY', title: 'Smoke' },
+    { src: 'https://www.youtube.com/embed/MYJnqREjLKw', href: 'https://youtu.be/MYJnqREjLKw', title: 'Demons ans Angels' },
+    { src: 'https://www.youtube.com/embed/NoqTLz9_MTE', href: 'https://youtu.be/NoqTLz9_MTE', title: 'Dead Meat' },
+    { src: 'https://www.youtube.com/embed/ODMhESU4r3U', href: 'https://youtu.be/ODMhESU4r3U', title: 'Slop' },
+    { src: 'https://www.youtube.com/embed/Ok9CjuUvIT4', href: 'https://youtu.be/Ok9CjuUvIT4', title: 'France' },
+    { src: 'https://www.youtube.com/embed/PRDWXpmEzWQ', href: 'https://youtu.be/PRDWXpmEzWQ', title: 'LEGEND' },
+    { src: 'https://www.youtube.com/embed/RmOyLGVzfl0', href: 'https://youtu.be/RmOyLGVzfl0', title: 'WET' },
+    { src: 'https://www.youtube.com/embed/TjgzQ45veZM', href: 'https://youtu.be/TjgzQ45veZM', title: 'Sirens' },
+    { src: 'https://www.youtube.com/embed/Tp5uHDfYR-Y', href: 'https://youtu.be/Tp5uHDfYR-Y', title: 'Separation' },
+    { src: 'https://www.youtube.com/embed/UHk3XyG5fGI', href: 'https://youtu.be/UHk3XyG5fGI', title: 'Fever Dream' },
+    { src: 'https://www.youtube.com/embed/UghbHwRiWEY', href: 'https://youtu.be/UghbHwRiWEY', title: 'Fade' },
+    { src: 'https://www.youtube.com/embed/VPVMztPQGeM', href: 'https://youtu.be/VPVMztPQGeM', title: 'Twisted' },
+    { src: 'https://www.youtube.com/embed/VpCMxguQ0ko', href: 'https://youtu.be/VpCMxguQ0ko', title: 'Lemon Drop Dream' },
+    { src: 'https://www.youtube.com/embed/W1ZIo7P3nNo', href: 'https://youtu.be/W1ZIo7P3nNo', title: 'The Algo (King Of Pop)' },
+    { src: 'https://www.youtube.com/embed/Y2iH0xhLz-k', href: 'https://youtu.be/Y2iH0xhLz-k', title: 'The Shallow' },
+    { src: 'https://www.youtube.com/embed/Z-nAnS588Mw', href: 'https://youtu.be/Z-nAnS588Mw', title: 'The Art of the Hustle ft. Equipto' },
+    { src: 'https://www.youtube.com/embed/ZIpUfcYDGdE', href: 'https://youtu.be/ZIpUfcYDGdE', title: 'Jimmy' },
+    { src: 'https://www.youtube.com/embed/a-z8ArznQIk', href: 'https://youtu.be/a-z8ArznQIk', title: 'Frsh' },
+    { src: 'https://www.youtube.com/embed/d7LVTG79spU', href: 'https://youtu.be/d7LVTG79spU', title: 'Triumph' },
+    { src: 'https://www.youtube.com/embed/dOCrzAoyfSM', href: 'https://youtu.be/dOCrzAoyfSM', title: 'uNALIvE' },
+    { src: 'https://www.youtube.com/embed/djp0bFZq6xE', href: 'https://youtu.be/djp0bFZq6xE', title: 'Heavy' },
+    { src: 'https://www.youtube.com/embed/eSsEm24fdmg', href: 'https://youtu.be/eSsEm24fdmg', title: 'The Low End' },
+    { src: 'https://www.youtube.com/embed/eTNc1xTC30Q', href: 'https://youtu.be/eTNc1xTC30Q', title: 'Parallel' },
+    { src: 'https://www.youtube.com/embed/f59jZldwh7o', href: 'https://youtu.be/f59jZldwh7o', title: 'Mirage' },
+    { src: 'https://www.youtube.com/embed/fh7-6cZ4ZQk', href: 'https://youtu.be/fh7-6cZ4ZQk', title: 'City of ghost' },
+    { src: 'https://www.youtube.com/embed/hFJU0b52dLs', href: 'https://youtu.be/hFJU0b52dLs', title: 'A Dark Orchestra' },
+    { src: 'https://www.youtube.com/embed/iZa2GJQNkOo', href: 'https://youtu.be/iZa2GJQNkOo', title: 'Icey Heart' },
+    { src: 'https://www.youtube.com/embed/k81jUGX-Kuc', href: 'https://youtu.be/k81jUGX-Kuc', title: 'Schemes' },
+    { src: 'https://www.youtube.com/embed/mENq1C-KIOQ', href: 'https://youtu.be/mENq1C-KIOQ', title: 'Dread' },
+    { src: 'https://www.youtube.com/embed/mmsmUbx33Sc', href: 'https://youtu.be/mmsmUbx33Sc', title: 'Chemical' },
+    { src: 'https://www.youtube.com/embed/o_vwKYmyQco', href: 'https://youtu.be/o_vwKYmyQco', title: 'Shawty Lo' },
+    { src: 'https://www.youtube.com/embed/oonEKJrtN5Y', href: 'https://youtu.be/oonEKJrtN5Y', title: 'THEM' },
+    { src: 'https://www.youtube.com/embed/pHMEaVJIehY', href: 'https://youtu.be/pHMEaVJIehY', title: 'Align' },
+    { src: 'https://www.youtube.com/embed/rFMat_rLbfs', href: 'https://youtu.be/rFMat_rLbfs', title: 'Suicide Hearts' },
+    { src: 'https://www.youtube.com/embed/rwcvojmw1oM', href: 'https://youtu.be/rwcvojmw1oM', title: 'Entropy' },
+    { src: 'https://www.youtube.com/embed/rzwrUH_SEio', href: 'https://youtu.be/rzwrUH_SEio', title: 'Over & Over' },
+    { src: 'https://www.youtube.com/embed/su0fTDIH2Ss', href: 'https://youtu.be/su0fTDIH2Ss', title: 'LeftRight' },
+    { src: 'https://www.youtube.com/embed/t4CHU8S5gjM', href: 'https://youtu.be/t4CHU8S5gjM', title: 'Jellybeans' },
+    { src: 'https://www.youtube.com/embed/uV1F-LLWHZU', href: 'https://youtu.be/uV1F-LLWHZU', title: 'Murderbot' },
+    { src: 'https://www.youtube.com/embed/vEM71Apij0Q', href: 'https://youtu.be/vEM71Apij0Q', title: '2 Die 4' },
+    { src: 'https://www.youtube.com/embed/w9jz8r8_eG8', href: 'https://youtu.be/w9jz8r8_eG8', title: 'Twilight' },
+    { src: 'https://www.youtube.com/embed/yLur3j2spNE', href: 'https://youtu.be/yLur3j2spNE', title: 'No Sleep hustle (KANYE-I)' },
+    { src: 'https://www.youtube.com/embed/yYXXB73BQc8', href: 'https://youtu.be/yYXXB73BQc8', title: 'iNFINITEHUSTLE' },
+    { src: 'https://www.youtube.com/embed/yyT6SXtHzi4', href: 'https://youtu.be/yyT6SXtHzi4', title: 'Pressure' },
+    // ── Short Films playlist ──
+    { src: 'https://www.youtube.com/embed/FmqRZQwQV84', href: 'https://youtu.be/FmqRZQwQV84', title: 'Aliens THE WOMAN IN THE DARK' },
+    { src: 'https://www.youtube.com/embed/MBY4pEk1gk8', href: 'https://youtu.be/MBY4pEk1gk8', title: 'DEAD SPACE LOST' },
   ];
 
   // Translate vertical wheel/trackpad scroll into horizontal glide
@@ -92,17 +162,17 @@ export default function CreativeDivisionHome() {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl px-4">
               <div className="glass-effect rounded-lg p-6 text-center">
-                <Icon icon={movieOpenIcon} width={32} height={32} className="text-yellow-400 mx-auto mb-3" />
+                <Icon icon={movieOpenIcon} width={32} height={32} className="mx-auto mb-3" style={{ color: 'oklch(84.1% 0.238 128.85)' }} />
                 <div className="font-heading text-2xl font-bold text-white mb-1">100+</div>
                 <div className="font-body text-white/70 text-sm">AI Films</div>
               </div>
               <div className="glass-effect rounded-lg p-6 text-center">
-                <Icon icon={musicNoteIcon} width={32} height={32} className="text-yellow-400 mx-auto mb-3" />
+                <Icon icon={musicNoteIcon} width={32} height={32} className="mx-auto mb-3" style={{ color: 'oklch(84.1% 0.238 128.85)' }} />
                 <div className="font-heading text-2xl font-bold text-white mb-1">50+</div>
                 <div className="font-body text-white/70 text-sm">Soundtracks</div>
               </div>
               <div className="glass-effect rounded-lg p-6 text-center">
-                <Icon icon={cameraIcon} width={32} height={32} className="text-yellow-400 mx-auto mb-3" />
+                <Icon icon={cameraIcon} width={32} height={32} className="mx-auto mb-3" style={{ color: 'oklch(84.1% 0.238 128.85)' }} />
                 <div className="font-heading text-2xl font-bold text-white mb-1">24/7</div>
                 <div className="font-body text-white/70 text-sm">Production</div>
               </div>
@@ -125,8 +195,8 @@ export default function CreativeDivisionHome() {
           <div className="mb-14">
             {/* Label row */}
             <div className="flex items-center gap-4 mb-8">
-              <div className="w-6 h-px bg-amber-400/70" />
-              <span className="text-xs font-mono text-amber-400/70 tracking-[0.3em] uppercase">A Dark Orchestra Films</span>
+              <div className="w-6 h-px" style={{ backgroundColor: 'oklch(84.1% 0.238 128.85 / 0.7)' }} />
+              <span className="text-xs font-mono tracking-[0.3em] uppercase" style={{ color: 'oklch(84.1% 0.238 128.85 / 0.7)' }}>A Dark Orchestra Films</span>
             </div>
 
             {/* Headline — two stacked lines */}
@@ -142,10 +212,10 @@ export default function CreativeDivisionHome() {
               </span>
             </h2>
 
-            {/* Divider with amber accent */}
+            {/* Divider with teal accent */}
             <div className="flex items-center gap-0 mt-10">
               <div className="h-px flex-1 bg-white/8" />
-              <div className="w-16 h-px bg-amber-400/50" />
+              <div className="w-16 h-px" style={{ backgroundColor: 'oklch(84.1% 0.238 128.85 / 0.5)' }} />
             </div>
           </div>
 
@@ -183,7 +253,10 @@ export default function CreativeDivisionHome() {
                         href={v.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group/btn flex items-center justify-between gap-4 w-full md:w-auto px-6 py-4 border border-white/20 text-white text-xs font-bold tracking-[0.15em] uppercase transition-all duration-300 hover:bg-amber-400 hover:text-black hover:border-amber-400"
+                        className="group/btn flex items-center justify-between gap-4 w-full md:w-auto px-6 py-4 border border-white/20 text-white text-xs font-bold tracking-[0.15em] uppercase transition-all duration-300 hover:text-black"
+                        style={{ '--hover-bg': 'oklch(84.1% 0.238 128.85)' } as React.CSSProperties}
+                        onMouseEnter={e => { e.currentTarget.style.backgroundColor = 'oklch(84.1% 0.238 128.85)'; e.currentTarget.style.borderColor = 'oklch(84.1% 0.238 128.85)'; }}
+                        onMouseLeave={e => { e.currentTarget.style.backgroundColor = ''; e.currentTarget.style.borderColor = ''; }}
                       >
                         Watch on YouTube
                         <ArrowRight className="w-3.5 h-3.5 transition-transform duration-300 group-hover/btn:translate-x-1" />
