@@ -264,39 +264,39 @@ export default function RoboticsDivisionHome() {
         {/* Asymmetric collage grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-2 gap-2" style={{ height: 'clamp(420px, 55vw, 680px)' }}>
           {/* Large left — spans 2 rows */}
-          <div className="row-span-2 overflow-hidden rounded-lg">
+          <div className="row-span-2 overflow-hidden rounded-lg robo-img-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/Serve-Gen-2-left-and-Gen-3-robots.jpg"
               alt="Sidewalk delivery robots — two generations side by side"
-              className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
+              className="robo-img"
             />
           </div>
           {/* Top center */}
-          <div className="overflow-hidden rounded-lg">
+          <div className="overflow-hidden rounded-lg robo-img-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/image.webp"
               alt="Autonomous delivery robot on urban route"
-              className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
+              className="robo-img"
             />
           </div>
           {/* Top right */}
-          <div className="overflow-hidden rounded-lg">
+          <div className="overflow-hidden rounded-lg robo-img-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/file-20180202-162066-1cj3sym.avif"
               alt="Aerial delivery drone in flight"
-              className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
+              className="robo-img"
             />
           </div>
           {/* Bottom center — spans 2 columns */}
-          <div className="col-span-2 overflow-hidden rounded-lg">
+          <div className="col-span-2 overflow-hidden rounded-lg robo-img-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/DoorDash_Dot-04__1__1__1_.png"
               alt="Road-capable autonomous delivery bot"
-              className="w-full h-full object-cover object-top opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
+              className="robo-img"
             />
           </div>
         </div>
@@ -311,49 +311,49 @@ export default function RoboticsDivisionHome() {
         {/* Row 1: wide hero + 2 stacked | Row 2: 3 equal */}
         <div className="grid grid-cols-3 gap-2" style={{ gridTemplateRows: 'repeat(2, clamp(180px, 22vw, 300px))' }}>
           {/* Large hero — spans 2 cols, 2 rows */}
-          <div className="col-span-2 row-span-2 overflow-hidden rounded-lg">
+          <div className="col-span-2 row-span-2 overflow-hidden rounded-lg robo-img-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/df9f333424ff6cc6164ce421b019fb94_a6f832b0-479e-4294-ac75-6516208b91f4_1296x.webp"
               alt="Humanoid robot in operational environment"
-              className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
+              className="robo-img"
             />
           </div>
           {/* Top right */}
-          <div className="overflow-hidden rounded-lg">
+          <div className="overflow-hidden rounded-lg robo-img-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/1_deeaa3cc-08f5-454f-bfcb-1a477b30adb4_900x.webp"
               alt="Humanoid robot navigating indoor space"
-              className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
+              className="robo-img"
             />
           </div>
           {/* Bottom right */}
-          <div className="overflow-hidden rounded-lg">
+          <div className="overflow-hidden rounded-lg robo-img-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/2_3769ceea-b323-4ebc-a1f4-e27a9624706b_900x.jpg"
               alt="Humanoid robot system detail"
-              className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
+              className="robo-img"
             />
           </div>
         </div>
         {/* Row 2: 3 equal-width images */}
         <div className="grid grid-cols-3 gap-2 mt-2" style={{ height: 'clamp(160px, 18vw, 240px)' }}>
-          <div className="overflow-hidden rounded-lg">
+          <div className="overflow-hidden rounded-lg robo-img-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/3_d9687814-d553-451b-9429-c224a20f3b3a_900x.webp"
               alt="Humanoid robot in service environment"
-              className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
+              className="robo-img"
             />
           </div>
-          <div className="overflow-hidden rounded-lg">
+          <div className="overflow-hidden rounded-lg robo-img-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/5_eb271a12-e794-439d-ade5-d60ec009e81a_900x.webp"
               alt="Humanoid robotics platform"
-              className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
+              className="robo-img"
             />
           </div>
           <div className="overflow-hidden rounded-lg" style={{ background: 'rgba(10,24,20,0.6)', border: '1px solid rgba(26,61,53,0.4)' }}>
@@ -374,40 +374,40 @@ export default function RoboticsDivisionHome() {
         {/* Top: hero wide + tall right */}
         <div className="grid grid-cols-3 gap-2" style={{ gridTemplateRows: 'repeat(2, clamp(180px, 22vw, 300px))' }}>
           {/* Hero — 2 cols × 2 rows */}
-          <div className="col-span-2 row-span-2 overflow-hidden rounded-lg">
+          <div className="col-span-2 row-span-2 overflow-hidden rounded-lg robo-img-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/drones_hero.webp"
               alt="Autonomous delivery drone in flight over urban area"
-              className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
+              className="robo-img"
             />
           </div>
           {/* Top right */}
-          <div className="overflow-hidden rounded-lg">
+          <div className="overflow-hidden rounded-lg robo-img-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/DHL_Drone_Delivery_855666c6-cb8b-4e34-841e-fffe73da729d_1400x.webp"
               alt="Drone making a commercial delivery"
-              className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
+              className="robo-img"
             />
           </div>
           {/* Bottom right */}
-          <div className="overflow-hidden rounded-lg">
+          <div className="overflow-hidden rounded-lg robo-img-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/Shutter2U___stock.adobe.com.62c8617809a24.avif"
               alt="Delivery drone descending to drop zone"
-              className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
+              className="robo-img"
             />
           </div>
         </div>
         {/* Bottom: full-width banner */}
-        <div className="mt-2 overflow-hidden rounded-lg" style={{ height: 'clamp(140px, 16vw, 220px)' }}>
+        <div className="mt-2 overflow-hidden rounded-lg robo-img-wrap" style={{ height: 'clamp(140px, 16vw, 220px)' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/media/Fltrex-image3-e1723551928941.jpg"
             alt="Fleet of delivery drones in operation"
-            className="w-full h-full object-cover object-center opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
+            className="robo-img"
           />
         </div>
       </section>
@@ -420,40 +420,40 @@ export default function RoboticsDivisionHome() {
         </p>
         <div className="grid grid-cols-3 gap-2" style={{ gridTemplateRows: 'repeat(2, clamp(180px, 22vw, 300px))' }}>
           {/* Hero — 2 cols × 2 rows */}
-          <div className="col-span-2 row-span-2 overflow-hidden rounded-lg">
+          <div className="col-span-2 row-span-2 overflow-hidden rounded-lg robo-img-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/Robotic-Sorting-as-a-Service-B3A7940.webp"
               alt="Robotic sorting system operating on warehouse floor"
-              className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
+              className="robo-img"
             />
           </div>
           {/* Top right */}
-          <div className="overflow-hidden rounded-lg">
+          <div className="overflow-hidden rounded-lg robo-img-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/de41b3ea93135793d5885b95c0005b8e.avif"
               alt="Autonomous forklift bot in operation"
-              className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
+              className="robo-img"
             />
           </div>
           {/* Bottom right */}
-          <div className="overflow-hidden rounded-lg">
+          <div className="overflow-hidden rounded-lg robo-img-wrap">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/f6f77a1616e27fc34eb1a81aa7dc6262.jpg"
               alt="Warehouse autonomous mobile robot"
-              className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
+              className="robo-img"
             />
           </div>
         </div>
         {/* Bottom: full-width banner */}
-        <div className="mt-2 overflow-hidden rounded-lg" style={{ height: 'clamp(140px, 16vw, 220px)' }}>
+        <div className="mt-2 overflow-hidden rounded-lg robo-img-wrap" style={{ height: 'clamp(140px, 16vw, 220px)' }}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/media/DELIVERY-AUTOMATION-10-tzjm-jumbo.jpg"
             alt="Automated delivery and fulfillment system at scale"
-            className="w-full h-full object-cover object-center opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
+            className="robo-img"
           />
         </div>
       </section>
