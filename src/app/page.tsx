@@ -285,9 +285,7 @@ export default function SoftwareDivisionHome() {
               className="leading-[0.92] text-[#111] tracking-tight font-semibold"
               style={{ fontSize: 'clamp(2.5rem, 7vw, 5.5rem)' }}
             >
-              What We Do
-              <br />
-              at Deeptech.
+              What We Do.
             </h2>
 
             <div className="mt-10 pt-8 border-t border-[#e5e5e5]">
