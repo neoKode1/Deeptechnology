@@ -302,11 +302,11 @@ export default function RoboticsDivisionHome() {
         </div>
       </section>
 
-      {/* ── WAREHOUSE SYSTEMS COLLAGE ── */}
-      <section id="warehouse-systems" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
-        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">Warehouse &amp; Distribution</p>
+      {/* ── HUMANOID ROBOTICS COLLAGE ── */}
+      <section id="humanoid-systems" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
+        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">Humanoid Robotics</p>
         <p className="text-white/30 text-sm max-w-lg leading-relaxed mb-12">
-          Autonomous systems inside distribution centers, fulfillment floors, and B2B logistics networks.
+          Bipedal and humanoid systems designed for environments built around people — retail floors, hospitality, and customer-facing operations.
         </p>
         {/* Row 1: wide hero + 2 stacked | Row 2: 3 equal */}
         <div className="grid grid-cols-3 gap-2" style={{ gridTemplateRows: 'repeat(2, clamp(180px, 22vw, 300px))' }}>
@@ -315,7 +315,7 @@ export default function RoboticsDivisionHome() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/df9f333424ff6cc6164ce421b019fb94_a6f832b0-479e-4294-ac75-6516208b91f4_1296x.webp"
-              alt="Warehouse autonomous mobile robot fleet"
+              alt="Humanoid robot in operational environment"
               className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
             />
           </div>
@@ -324,7 +324,7 @@ export default function RoboticsDivisionHome() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/1_deeaa3cc-08f5-454f-bfcb-1a477b30adb4_900x.webp"
-              alt="AMR navigating warehouse aisle"
+              alt="Humanoid robot navigating indoor space"
               className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
             />
           </div>
@@ -333,7 +333,7 @@ export default function RoboticsDivisionHome() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/2_3769ceea-b323-4ebc-a1f4-e27a9624706b_900x.jpg"
-              alt="Autonomous picking system in distribution center"
+              alt="Humanoid robot system detail"
               className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
             />
           </div>
@@ -344,7 +344,7 @@ export default function RoboticsDivisionHome() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/3_d9687814-d553-451b-9429-c224a20f3b3a_900x.webp"
-              alt="Robotic fulfillment system"
+              alt="Humanoid robot in service environment"
               className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
             />
           </div>
@@ -352,7 +352,7 @@ export default function RoboticsDivisionHome() {
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/5_eb271a12-e794-439d-ade5-d60ec009e81a_900x.webp"
-              alt="Warehouse drone fleet overhead view"
+              alt="Humanoid robotics platform"
               className="w-full h-full object-cover opacity-80 hover:opacity-100 hover:scale-105 transition-all duration-700 ease-in-out"
             />
           </div>
