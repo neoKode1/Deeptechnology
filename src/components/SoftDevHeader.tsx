@@ -49,18 +49,21 @@ const SoftDevHeader = () => {
           isHidden ? 'opacity-0 pointer-events-none -translate-y-1' : 'opacity-100 translate-y-0'
         }`}
       >
-        <div className="flex items-center justify-between px-6 py-5 md:px-12 lg:px-20">
+        {/* 3-column grid: left and right are equal width so the center is always pixel-perfect center */}
+        <div className="grid grid-cols-3 items-center px-6 py-5 md:px-12 lg:px-20">
 
-          {/* Left — Brand */}
-          <Link
-            href="/"
-            className={`font-manrope text-sm font-light tracking-[0.25em] uppercase ${textColor}`}
-          >
-            Deeptech
-          </Link>
+          {/* Col 1 — Brand (left-aligned) */}
+          <div className="flex items-center">
+            <Link
+              href="/"
+              className={`font-manrope text-sm font-light tracking-[0.25em] uppercase ${textColor}`}
+            >
+              Deeptech
+            </Link>
+          </div>
 
-          {/* Center — Division switcher (no container, just spaced links) */}
-          <div className="hidden sm:flex items-center gap-6">
+          {/* Col 2 — Division switcher (always centered) */}
+          <div className="hidden sm:flex items-center justify-center gap-6">
             <Link href="/" className={`flex items-center gap-1.5 text-xs transition-colors duration-200 ${isSoftDev ? pillActive : pillInactive}`}>
               <Code2 className="w-3 h-3" />
               Software Dev
@@ -75,23 +78,19 @@ const SoftDevHeader = () => {
             </Link>
           </div>
 
-          {/* Right — Nav links + CTA + hamburger (software dev only) */}
-          <div className="flex items-center gap-6">
-            {isSoftDev && (
-              <>
-                <div className="hidden md:flex items-center gap-6 text-sm">
-                  <Link href="/#services" className={`transition-colors ${textMuted}`}>Services</Link>
-                  <Link href="/#work" className={`transition-colors ${textMuted}`}>Work</Link>
-                  <Link href="/contact" className={`transition-colors ${textMuted}`}>Contact</Link>
-                </div>
-                <Link
-                  href="/contact"
-                  className={`hidden md:flex items-center gap-2 text-sm transition-colors ${textColor}`}
-                >
-                  Let&apos;s talk <ArrowUpRight className="w-4 h-4" />
-                </Link>
-              </>
-            )}
+          {/* Col 3 — Nav links + CTA + hamburger (right-aligned) */}
+          <div className="flex items-center justify-end gap-6">
+            <div className="hidden md:flex items-center gap-6 text-sm">
+              <Link href="/#services" className={`transition-colors ${textMuted}`}>Services</Link>
+              <Link href="/#work" className={`transition-colors ${textMuted}`}>Work</Link>
+              <Link href="/contact" className={`transition-colors ${textMuted}`}>Contact</Link>
+            </div>
+            <Link
+              href="/contact"
+              className={`hidden md:flex items-center gap-2 text-sm transition-colors ${textColor}`}
+            >
+              Let&apos;s talk <ArrowUpRight className="w-4 h-4" />
+            </Link>
             <button
               className={`md:hidden ${textColor}`}
               onClick={() => setIsMenuOpen(!isMenuOpen)}
