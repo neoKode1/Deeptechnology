@@ -391,15 +391,23 @@ export default function SoftwareDivisionHome() {
         </div>
       </section>
 
-      {/* ── CONTACT MARQUEE ── */}
-      <section id="contact" className="bg-[#eee] py-16 md:py-20 overflow-hidden">
-        <div style={{ display: 'flex', width: 'max-content', animation: 'marquee-scroll 20s linear infinite' }}>
-          {['Get in Touch', 'Get in Touch', 'Get in Touch', 'Get in Touch'].map((t, i) => (
+      {/* ── LLM CAROUSEL ── */}
+      <section className="bg-[#eee] py-16 md:py-20 overflow-hidden">
+        <p className="text-center text-xs uppercase tracking-[0.25em] text-[#999] font-manrope mb-8">
+          Models &amp; Platforms We Integrate
+        </p>
+        <div style={{ display: 'flex', width: 'max-content', animation: 'marquee-scroll 30s linear infinite' }}>
+          {[
+            'Claude', 'GPT-4o', 'Gemini', 'Llama 3', 'Mistral', 'Grok',
+            'DeepSeek', 'Phi-4', 'Command R+', 'Qwen', 'Stable Diffusion', 'DALL·E',
+            'Claude', 'GPT-4o', 'Gemini', 'Llama 3', 'Mistral', 'Grok',
+            'DeepSeek', 'Phi-4', 'Command R+', 'Qwen', 'Stable Diffusion', 'DALL·E',
+          ].map((model, i) => (
             <span
               key={i}
               className="font-manrope font-medium text-[4rem] md:text-[6rem] uppercase tracking-tighter text-[#111] whitespace-nowrap px-8"
             >
-              {t}
+              {model}
             </span>
           ))}
         </div>
