@@ -300,6 +300,15 @@ export default function RoboticsDivisionHome() {
             />
           </div>
         </div>
+        {/* Additional delivery bot */}
+        <div className="mt-2 overflow-hidden rounded-lg robo-img-wrap" style={{ height: 'clamp(180px, 22vw, 300px)' }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/media/del-bot-quad.webp"
+            alt="Autonomous delivery robot — quad platform"
+            className="robo-img"
+          />
+        </div>
       </section>
 
       {/* ── HUMANOID ROBOTICS COLLAGE ── */}
