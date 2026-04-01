@@ -105,15 +105,20 @@ const SYSTEMS = [
 export default function RoboticsDivisionHome() {
   return (
     // Page bg uses the NOMA shader's darkest teal-black tone
-    <div className="min-h-screen overflow-x-hidden text-white bg-transparent">
-
-      {/* ── FIXED background canvas — stays centered during scroll ── */}
-      <NomaCanvas className="fixed inset-0 w-full h-full -z-10" />
+    <div className="min-h-screen overflow-x-hidden text-white bg-black">
 
       <SoftDevHeader />
 
-      {/* ── HERO ── */}
+      {/* ── HERO — Spline 3D robot background ── */}
       <section className="relative w-full h-[100svh] flex flex-col justify-end overflow-hidden">
+        {/* Spline 3D robot scene */}
+        <iframe
+          src="https://my.spline.design/nexbotrobotcharacterconcept-kLwr8f6hgKgaa5gmU6oB00Si"
+          className="absolute inset-0 w-full h-full -z-10 pointer-events-none"
+          style={{ border: 'none' }}
+          title="3D Robot Scene"
+          loading="eager"
+        />
         {/* Bottom gradient so text stays legible */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
 
@@ -158,6 +163,10 @@ export default function RoboticsDivisionHome() {
         </div>
       </div>
 
+      {/* ── NomaCanvas background for remaining sections ── */}
+      <div className="relative">
+        <NomaCanvas className="absolute inset-0 w-full h-full -z-10" />
+
       {/* ── ABOUT ── */}
       <section id="about" className="px-6 md:px-12 lg:px-20 py-24 max-w-[82rem] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
@@ -190,25 +199,6 @@ export default function RoboticsDivisionHome() {
         </div>
       </section>
 
-      {/* ── ENVIRONMENTS ── */}
-      <section id="environments" className="px-6 md:px-12 lg:px-20 py-16 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
-        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">Environments We Deploy Into</p>
-        <p className="text-white/30 text-sm max-w-lg leading-relaxed mb-12">
-          Different environments demand different machines.
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px" style={{ background: 'rgba(26,61,53,0.35)' }}>
-          {ENVIRONMENTS.map((e) => (
-            <div key={e.env} className="p-7 flex flex-col gap-3" style={{ background: '#080e10' }}>
-              <div className="flex items-start justify-between gap-4">
-                <h3 className="font-manrope text-base font-semibold text-white leading-snug">{e.env}</h3>
-              </div>
-              <p className="text-xs font-medium uppercase tracking-widest" style={{ color: 'rgba(130,185,165,0.6)' }}>{e.fit}</p>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(190,220,210,0.45)' }}>{e.detail}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
       {/* ── SERVICES ── */}
       <section id="services" className="px-6 md:px-12 lg:px-20 py-16 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
         <p className="text-xs tracking-widest uppercase mb-12 font-manrope text-white">Capabilities</p>
@@ -230,84 +220,41 @@ export default function RoboticsDivisionHome() {
         </div>
       </section>
 
-      {/* ── SUPPLIED SYSTEMS ── */}
-      <section id="systems" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
-        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">Systems We Source &amp; Supply</p>
-        <p className="text-white/30 text-sm max-w-xl leading-relaxed mb-14">
-          We know which system fits your operation and why. These are the categories in active deployment today.
-        </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-px" style={{ background: 'rgba(26,61,53,0.3)' }}>
-          {SYSTEMS.map((sys) => (
-            <div key={sys.type} className="p-8 flex flex-col gap-5" style={{ background: '#080e10' }}>
-              <div className="flex items-center gap-3">
-                <span className="text-[10px] font-semibold tracking-widest uppercase px-2.5 py-1 rounded" style={{ background: 'rgba(26,61,53,0.6)', color: 'rgba(130,185,165,0.85)', border: '1px solid rgba(26,61,53,0.9)' }}>
-                  {sys.type}
-                </span>
+      {/* ── DELIVERY SYSTEMS ── */}
+      <section id="delivery-systems" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-8 items-start">
+          {/* Left: description card */}
+          <div className="lg:sticky lg:top-24 p-6 rounded-lg border border-[#1a3d35]/60 bg-[#0a1814]/60">
+            <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">In the Field</p>
+            <p className="text-sm leading-relaxed" style={{ color: 'rgba(190,220,210,0.55)' }}>
+              Sidewalk bots, road hybrids, and autonomous delivery vehicles — operating across urban corridors, bike lanes, and last-mile routes.
+            </p>
+          </div>
+          {/* Right: image collage */}
+          <div className="flex flex-col gap-2">
+            <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-2 gap-2" style={{ height: 'clamp(420px, 55vw, 680px)' }}>
+              <div className="row-span-2 overflow-hidden rounded-lg robo-img-wrap">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/media/Serve-Gen-2-left-and-Gen-3-robots.jpg" alt="Sidewalk delivery robots — two generations side by side" className="robo-img" />
               </div>
-              <h3 className="font-manrope text-lg font-semibold text-white leading-snug">{sys.label}</h3>
-              <p className="text-sm leading-relaxed" style={{ color: 'rgba(190,220,210,0.5)' }}>{sys.desc}</p>
-              <div className="pt-3" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
-                <p className="text-[10px] uppercase tracking-widest mb-2" style={{ color: 'rgba(130,185,165,0.35)' }}>Best for</p>
-                <p className="text-xs leading-relaxed" style={{ color: 'rgba(160,200,185,0.5)' }}>{sys.when}</p>
+              <div className="overflow-hidden rounded-lg robo-img-wrap">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/media/image.webp" alt="Autonomous delivery robot on urban route" className="robo-img" />
+              </div>
+              <div className="overflow-hidden rounded-lg robo-img-wrap">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/media/file-20180202-162066-1cj3sym.avif" alt="Aerial delivery drone in flight" className="robo-img" />
+              </div>
+              <div className="col-span-2 overflow-hidden rounded-lg robo-img-wrap">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img src="/media/DoorDash_Dot-04__1__1__1_.png" alt="Road-capable autonomous delivery bot" className="robo-img" />
               </div>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── DELIVERY SYSTEMS COLLAGE ── */}
-      <section id="delivery-systems" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto" style={{ borderTop: '1px solid rgba(26,61,53,0.5)' }}>
-        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-white">In the Field</p>
-        <p className="text-white/30 text-sm max-w-lg leading-relaxed mb-12">
-          Systems we assess, source, and integrate — operating across sidewalks, bike lanes, and urban corridors.
-        </p>
-        {/* Asymmetric collage grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 grid-rows-2 gap-2" style={{ height: 'clamp(420px, 55vw, 680px)' }}>
-          {/* Large left — spans 2 rows */}
-          <div className="row-span-2 overflow-hidden rounded-lg robo-img-wrap">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/media/Serve-Gen-2-left-and-Gen-3-robots.jpg"
-              alt="Sidewalk delivery robots — two generations side by side"
-              className="robo-img"
-            />
+            <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ height: 'clamp(180px, 22vw, 300px)' }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/media/del-bot-quad.webp" alt="Autonomous delivery robot — quad platform" className="robo-img" />
+            </div>
           </div>
-          {/* Top center */}
-          <div className="overflow-hidden rounded-lg robo-img-wrap">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/media/image.webp"
-              alt="Autonomous delivery robot on urban route"
-              className="robo-img"
-            />
-          </div>
-          {/* Top right */}
-          <div className="overflow-hidden rounded-lg robo-img-wrap">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/media/file-20180202-162066-1cj3sym.avif"
-              alt="Aerial delivery drone in flight"
-              className="robo-img"
-            />
-          </div>
-          {/* Bottom center — spans 2 columns */}
-          <div className="col-span-2 overflow-hidden rounded-lg robo-img-wrap">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src="/media/DoorDash_Dot-04__1__1__1_.png"
-              alt="Road-capable autonomous delivery bot"
-              className="robo-img"
-            />
-          </div>
-        </div>
-        {/* Additional delivery bot */}
-        <div className="mt-2 overflow-hidden rounded-lg robo-img-wrap" style={{ height: 'clamp(180px, 22vw, 300px)' }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/media/del-bot-quad.webp"
-            alt="Autonomous delivery robot — quad platform"
-            className="robo-img"
-          />
         </div>
       </section>
 
@@ -515,6 +462,7 @@ export default function RoboticsDivisionHome() {
           </div>
         </div>
       </footer>
+      </div>{/* end NomaCanvas wrapper */}
     </div>
   );
 }
