@@ -363,6 +363,25 @@ export default function RoboticsDivisionHome() {
             </div>
           </div>
         </div>
+        {/* Row 3: 2 new humanoid images */}
+        <div className="grid grid-cols-2 gap-2 mt-2" style={{ height: 'clamp(180px, 22vw, 300px)' }}>
+          <div className="overflow-hidden rounded-lg robo-img-wrap">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/media/fauna_sprout_3.webp"
+              alt="Humanoid robot — fauna sprout platform"
+              className="robo-img"
+            />
+          </div>
+          <div className="overflow-hidden rounded-lg robo-img-wrap">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/media/amazon1.jpg"
+              alt="Humanoid robot in logistics environment"
+              className="robo-img"
+            />
+          </div>
+        </div>
       </section>
 
       {/* ── FLIGHT DRONES COLLAGE ── */}
