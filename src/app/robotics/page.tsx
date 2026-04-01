@@ -104,20 +104,21 @@ const SYSTEMS = [
 export default function RoboticsDivisionHome() {
   return (
     // Page bg uses the NOMA shader's darkest teal-black tone
-    <div className="min-h-screen overflow-x-hidden text-white bg-black">
+    <div className="min-h-screen overflow-x-hidden text-white bg-white">
+
+      {/* ── FIXED Spline 3D robot — stays centered during scroll ── */}
+      <iframe
+        src="https://my.spline.design/nexbotrobotcharacterconcept-FDt7cww2KDcL0RxmRfz1cZG7/"
+        className="fixed inset-0 w-full h-full -z-10 pointer-events-none"
+        style={{ border: 'none' }}
+        title="3D Robot Scene"
+        loading="eager"
+      />
 
       <SoftDevHeader />
 
-      {/* ── HERO — Spline 3D robot background ── */}
+      {/* ── HERO ── */}
       <section className="relative w-full h-[100svh] flex flex-col justify-end overflow-hidden">
-        {/* Spline 3D robot scene */}
-        <iframe
-          src="https://my.spline.design/nexbotrobotcharacterconcept-FDt7cww2KDcL0RxmRfz1cZG7/"
-          className="absolute inset-0 w-full h-full -z-10 pointer-events-none"
-          style={{ border: 'none' }}
-          title="3D Robot Scene"
-          loading="eager"
-        />
         {/* Bottom gradient so text stays legible on white bg */}
         <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/20 to-transparent pointer-events-none" />
 
