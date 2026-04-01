@@ -198,7 +198,7 @@ export default function CreativeDivisionHome() {
       </section>
 
       {/* ── LATEST PRODUCTIONS — Dark Feature Carousel ── */}
-      <section className="bg-[#050505]/80 backdrop-blur-sm pt-24 pb-24 px-6 relative z-10">
+      <section className="pt-24 pb-24 px-6 relative z-10">
         <div className="w-full max-w-[1800px] mx-auto">
 
           {/* Section header */}
