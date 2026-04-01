@@ -162,7 +162,7 @@ export default function RoboticsDivisionHome() {
       <section id="about" className="px-6 md:px-12 lg:px-20 py-24 max-w-[82rem] mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
           <div>
-            <p className="text-xs tracking-widest uppercase mb-4 font-manrope" style={{ color: 'rgba(130,185,165,0.5)' }}>Robotics Division</p>
+            <p className="text-xs tracking-widest uppercase mb-4 font-manrope" style={{ color: 'rgba(160,210,190,0.85)' }}>Robotics Division</p>
             <h2 className="font-manrope text-4xl md:text-5xl font-semibold tracking-tight text-white mb-6">
               We read the environment first.<br />Then we pick the machine.
             </h2>
