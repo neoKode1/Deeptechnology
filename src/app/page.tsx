@@ -315,13 +315,7 @@ export default function SoftwareDivisionHome() {
           {/* Right — bio */}
           <div className="lg:col-span-7 flex flex-col gap-8 pt-2">
             <p className="text-[1.25rem] md:text-[1.5rem] leading-relaxed text-[#222] tracking-tight">
-              We specialize in AI-driven modernization of production systems — embedding intelligent capabilities into existing codebases, accelerating feature delivery, and migrating legacy infrastructure to scalable, AI-native architecture without a full rebuild.
-            </p>
-            <p className="text-base leading-relaxed text-[#555]">
-              Whether layering a language model into an existing workflow, integrating an autonomous agent onto a live API, or replacing a fragile pipeline with AI-native architecture — the work happens inside your existing system. TypeScript and Python, deployed on Cloudflare Workers, with integrations spanning Anthropic, Ollama, and the broader open-source model ecosystem.
-            </p>
-            <p className="text-base leading-relaxed text-[#555]">
-              Beyond software, we direct AI-assisted film and music video productions and advise on robotic deployment strategy for distribution and last-mile logistics — helping organizations identify and integrate the right autonomous systems for their operational environment.
+              We specialize in the modernization of existing production software systems. Embedding intelligent capabilities into existing codebases, accelerating feature delivery, and migrating legacy components to scalable AI-native architecture without the full platform rebuild.
             </p>
 
             {/* Stat row */}
