@@ -1,5 +1,4 @@
 import SoftDevHeader from '@/components/SoftDevHeader';
-import NomaCanvas from '@/components/NomaCanvas';
 import { ArrowUpRight } from 'lucide-react';
 
 /* ── Marquee items ── */
@@ -113,38 +112,38 @@ export default function RoboticsDivisionHome() {
       <section className="relative w-full h-[100svh] flex flex-col justify-end overflow-hidden">
         {/* Spline 3D robot scene */}
         <iframe
-          src="https://my.spline.design/nexbotrobotcharacterconcept-kLwr8f6hgKgaa5gmU6oB00Si"
+          src="https://my.spline.design/nexbotrobotcharacterconcept-FDt7cww2KDcL0RxmRfz1cZG7/"
           className="absolute inset-0 w-full h-full -z-10 pointer-events-none"
           style={{ border: 'none' }}
           title="3D Robot Scene"
           loading="eager"
         />
-        {/* Bottom gradient so text stays legible */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent pointer-events-none" />
+        {/* Bottom gradient so text stays legible on white bg */}
+        <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/20 to-transparent pointer-events-none" />
 
         <div className="relative z-10 px-6 md:px-12 lg:px-20 pb-16 md:pb-24 max-w-[82rem] mx-auto w-full">
-          <p className="text-white/40 text-xs tracking-widest uppercase mb-6 font-manrope">
+          <p className="text-black/40 text-xs tracking-widest uppercase mb-6 font-manrope">
             Deeptech · Robotics Division
           </p>
-          <h1 className="font-manrope font-semibold text-[3.5rem] md:text-[6.5rem] leading-[1.02] tracking-tighter text-white">
+          <h1 className="font-manrope font-semibold text-[3.5rem] md:text-[6.5rem] leading-[1.02] tracking-tighter text-black">
             Built for your
           </h1>
-          <h1 className="font-manrope font-semibold text-[3.5rem] md:text-[6.5rem] leading-[1.02] tracking-tighter text-white/25">
+          <h1 className="font-manrope font-semibold text-[3.5rem] md:text-[6.5rem] leading-[1.02] tracking-tighter text-black/25">
             environment.
           </h1>
-          <p className="mt-6 text-base md:text-lg text-white/50 max-w-xl leading-relaxed font-manrope font-light">
+          <p className="mt-6 text-base md:text-lg text-black/50 max-w-xl leading-relaxed font-manrope font-light">
             We read your space — terrain, traffic, payload, conditions — then source the autonomous system built for it.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
             <a
               href="#services"
-              className="inline-flex items-center gap-2 bg-white/90 text-black rounded-full py-3 px-6 text-sm font-medium hover:bg-white transition-colors w-fit"
+              className="inline-flex items-center gap-2 bg-black/90 text-white rounded-full py-3 px-6 text-sm font-medium hover:bg-black transition-colors w-fit"
             >
               Our Services <ArrowUpRight className="w-4 h-4" />
             </a>
             <a
               href="#contact"
-              className="inline-flex items-center gap-2 border border-white/25 text-white/80 rounded-full py-3 px-6 text-sm font-normal hover:border-white/50 hover:text-white transition-colors w-fit"
+              className="inline-flex items-center gap-2 border border-black/25 text-black/80 rounded-full py-3 px-6 text-sm font-normal hover:border-black/50 hover:text-black transition-colors w-fit"
             >
               Start a Consultation
             </a>
@@ -163,9 +162,7 @@ export default function RoboticsDivisionHome() {
         </div>
       </div>
 
-      {/* ── NomaCanvas background for remaining sections ── */}
-      <div className="relative">
-        <NomaCanvas className="absolute inset-0 w-full h-full -z-10" />
+
 
       {/* ── ABOUT ── */}
       <section id="about" className="px-6 md:px-12 lg:px-20 py-24 max-w-[82rem] mx-auto">
@@ -462,7 +459,6 @@ export default function RoboticsDivisionHome() {
           </div>
         </div>
       </footer>
-      </div>{/* end NomaCanvas wrapper */}
     </div>
   );
 }
