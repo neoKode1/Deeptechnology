@@ -33,7 +33,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const quote = getQuote(quoteId);
+    const quote = await getQuote(quoteId);
     if (!quote) {
       return NextResponse.json(
         { success: false, message: 'Quote not found.' },
@@ -50,7 +50,7 @@ export async function POST(request: Request) {
 
     // Check expiration
     if (new Date(quote.expiresAt) < new Date()) {
-      updateQuote(quoteId, { status: 'expired' });
+      await updateQuote(quoteId, { status: 'expired' });
       return NextResponse.json(
         { success: false, message: 'This quote has expired. Please request a new one.' },
         { status: 410 }

@@ -1,33 +1,42 @@
-import fs from 'fs';
-import path from 'path';
+import { Redis } from '@upstash/redis';
 import { randomUUID } from 'crypto';
 import type { Quote, CreateQuotePayload, UpdateQuotePayload, LineItem } from './types';
 
-/** Directory where quote JSON files are stored */
-const QUOTES_DIR = path.resolve(process.cwd(), '.data', 'quotes');
+/**
+ * Upstash Redis client (REST-based, works in Vercel serverless).
+ * Requires UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN env vars.
+ */
+let redis: Redis | null = null;
 
-/** Ensure the quotes directory exists */
-function ensureDir(): void {
-  if (!fs.existsSync(QUOTES_DIR)) {
-    fs.mkdirSync(QUOTES_DIR, { recursive: true });
+function getRedis(): Redis {
+  if (!redis) {
+    const url = process.env.UPSTASH_REDIS_REST_URL;
+    const token = process.env.UPSTASH_REDIS_REST_TOKEN;
+    if (!url || !token) {
+      throw new Error('Missing UPSTASH_REDIS_REST_URL or UPSTASH_REDIS_REST_TOKEN');
+    }
+    redis = new Redis({ url, token });
   }
+  return redis;
 }
 
-/** File path for a given quote ID */
-function quotePath(id: string): string {
-  return path.join(QUOTES_DIR, `${id}.json`);
+/** Redis key for a quote */
+function quoteKey(id: string): string {
+  return `quote:${id}`;
 }
+
+/** Redis key for the sorted set of all quote IDs (sorted by createdAt) */
+const QUOTES_INDEX = 'quotes:index';
 
 /**
  * Create a new quote from the provided payload.
  * Applies default 15% markup and calculates totals.
  */
-export function createQuote(payload: CreateQuotePayload): Quote {
-  ensureDir();
-
+export async function createQuote(payload: CreateQuotePayload): Promise<Quote> {
+  const r = getRedis();
   const id = `quote-${randomUUID().slice(0, 8)}`;
   const now = new Date().toISOString();
-  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(); // 7 days
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
 
   const lineItems: LineItem[] = payload.lineItems.map((item) => {
     const markup = item.markup ?? 0.15;
@@ -62,7 +71,10 @@ export function createQuote(payload: CreateQuotePayload): Quote {
     notes: payload.notes,
   };
 
-  fs.writeFileSync(quotePath(id), JSON.stringify(quote, null, 2), 'utf-8');
+  // Store quote JSON and add to sorted index (score = timestamp for ordering)
+  await r.set(quoteKey(id), JSON.stringify(quote));
+  await r.zadd(QUOTES_INDEX, { score: Date.now(), member: id });
+
   console.log(`[quotes] Created quote ${id} for ${payload.customerEmail}`);
   return quote;
 }
@@ -70,19 +82,19 @@ export function createQuote(payload: CreateQuotePayload): Quote {
 /**
  * Get a quote by ID. Returns null if not found.
  */
-export function getQuote(id: string): Quote | null {
-  const fp = quotePath(id);
-  if (!fs.existsSync(fp)) return null;
-  const raw = fs.readFileSync(fp, 'utf-8');
-  return JSON.parse(raw) as Quote;
+export async function getQuote(id: string): Promise<Quote | null> {
+  const r = getRedis();
+  const raw = await r.get<string>(quoteKey(id));
+  if (!raw) return null;
+  return (typeof raw === 'string' ? JSON.parse(raw) : raw) as Quote;
 }
 
 /**
  * Update a quote's mutable fields (status, routing, notes, lineItems).
  * Recalculates totals if lineItems are updated.
  */
-export function updateQuote(id: string, payload: UpdateQuotePayload): Quote | null {
-  const quote = getQuote(id);
+export async function updateQuote(id: string, payload: UpdateQuotePayload): Promise<Quote | null> {
+  const quote = await getQuote(id);
   if (!quote) return null;
 
   if (payload.status) quote.status = payload.status;
@@ -102,7 +114,8 @@ export function updateQuote(id: string, payload: UpdateQuotePayload): Quote | nu
   }
 
   quote.updatedAt = new Date().toISOString();
-  fs.writeFileSync(quotePath(id), JSON.stringify(quote, null, 2), 'utf-8');
+  const r = getRedis();
+  await r.set(quoteKey(id), JSON.stringify(quote));
   console.log(`[quotes] Updated quote ${id} → ${quote.status}`);
   return quote;
 }
@@ -111,15 +124,23 @@ export function updateQuote(id: string, payload: UpdateQuotePayload): Quote | nu
  * List all quotes, optionally filtered by status.
  * Returns newest first.
  */
-export function listQuotes(status?: string): Quote[] {
-  ensureDir();
-  const files = fs.readdirSync(QUOTES_DIR).filter((f) => f.endsWith('.json'));
-  const quotes: Quote[] = files.map((f) => {
-    const raw = fs.readFileSync(path.join(QUOTES_DIR, f), 'utf-8');
-    return JSON.parse(raw) as Quote;
-  });
+export async function listQuotes(status?: string): Promise<Quote[]> {
+  const r = getRedis();
+  // Get all quote IDs from sorted set, newest first
+  const ids = await r.zrange(QUOTES_INDEX, 0, -1, { rev: true }) as string[];
 
-  const filtered = status ? quotes.filter((q) => q.status === status) : quotes;
-  return filtered.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  if (ids.length === 0) return [];
+
+  // Fetch all quotes in parallel
+  const quotes = await Promise.all(
+    ids.map(async (id) => {
+      const raw = await r.get<string>(quoteKey(id));
+      if (!raw) return null;
+      return (typeof raw === 'string' ? JSON.parse(raw) : raw) as Quote;
+    })
+  );
+
+  const valid = quotes.filter((q): q is Quote => q !== null);
+  return status ? valid.filter((q) => q.status === status) : valid;
 }
 

@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getQuote, updateQuote } from '@/lib/quotes/store';
 import { sendQuoteEmail } from '@/lib/quotes/email';
+import { isAuthorizedRequest, unauthorizedResponse } from '@/lib/admin-auth';
 import type { UpdateQuotePayload } from '@/lib/quotes/types';
 
 /**
@@ -12,7 +13,7 @@ export async function GET(
   { params }: { params: { id: string } }
 ) {
   try {
-    const quote = getQuote(params.id);
+    const quote = await getQuote(params.id);
 
     if (!quote) {
       return NextResponse.json(
@@ -45,9 +46,13 @@ export async function PATCH(
   request: Request,
   { params }: { params: { id: string } }
 ) {
+  if (!isAuthorizedRequest(request)) {
+    return unauthorizedResponse();
+  }
+
   try {
     const body = (await request.json()) as UpdateQuotePayload;
-    const quote = updateQuote(params.id, body);
+    const quote = await updateQuote(params.id, body);
 
     if (!quote) {
       return NextResponse.json(

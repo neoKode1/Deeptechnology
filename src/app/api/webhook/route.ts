@@ -3,6 +3,13 @@ import Stripe from 'stripe';
 import { getQuote, updateQuote } from '@/lib/quotes/store';
 
 /**
+ * In-memory set of processed Stripe event IDs to prevent double-processing.
+ * This survives within a single serverless instance's lifetime.
+ * Combined with the status check below, this provides sufficient idempotency.
+ */
+const processedEvents = new Set<string>();
+
+/**
  * POST /api/webhook
  *
  * Stripe webhook endpoint. Verifies signature, then processes events.
@@ -43,6 +50,12 @@ export async function POST(request: Request) {
 
   switch (event.type) {
     case 'checkout.session.completed': {
+      // Idempotency: skip if we've already processed this event
+      if (processedEvents.has(event.id)) {
+        console.log(`[webhook] Skipping duplicate event ${event.id}`);
+        break;
+      }
+
       const session = event.data.object as Stripe.Checkout.Session;
       const quoteId = session.metadata?.quoteId;
 
@@ -51,19 +64,27 @@ export async function POST(request: Request) {
         break;
       }
 
-      const quote = getQuote(quoteId);
+      const quote = await getQuote(quoteId);
       if (!quote) {
         console.warn(`[webhook] Quote ${quoteId} not found`);
         break;
       }
 
+      // Status-based idempotency: if already ordered or beyond, skip
+      if (['ordered', 'procurement', 'shipped', 'in_transit', 'delivered', 'deployed'].includes(quote.status)) {
+        console.log(`[webhook] Quote ${quoteId} already in status "${quote.status}" — skipping`);
+        processedEvents.add(event.id);
+        break;
+      }
+
       // Mark as accepted, then ordered (payment received = order confirmed)
-      updateQuote(quoteId, {
+      await updateQuote(quoteId, {
         status: 'accepted',
         notes: `${quote.notes ? quote.notes + '\n' : ''}Stripe payment received: ${session.payment_intent} (${session.amount_total ? '$' + (session.amount_total / 100).toFixed(2) : 'N/A'})`,
       });
-      updateQuote(quoteId, { status: 'ordered' });
+      await updateQuote(quoteId, { status: 'ordered' });
 
+      processedEvents.add(event.id);
       console.log(`[webhook] Quote ${quoteId} → ordered (payment: ${session.payment_intent})`);
       break;
     }

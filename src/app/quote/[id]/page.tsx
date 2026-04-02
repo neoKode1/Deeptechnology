@@ -26,7 +26,6 @@ const STATUS_MAP: Record<string, { label: string; color: string; icon: React.Rea
 
 const fmt = (n: number) =>
   new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(n);
-const pct = (n: number) => `${Math.round(n * 100)}%`;
 const fmtDate = (iso: string) =>
   new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
 
@@ -77,13 +76,7 @@ function LineItemsBreakdown({ lineItems, total }: { lineItems: Quote['lineItems'
               </div>
               <p className="text-white font-mono font-semibold text-lg whitespace-nowrap">{fmt(li.clientPrice)}</p>
             </div>
-            <div className="mt-3 flex items-center gap-3 text-xs">
-              <span className="text-zinc-500">Base: <span className="text-zinc-400 font-mono">{fmt(li.vendorCost)}</span></span>
-              <span className="text-zinc-600">+</span>
-              <span className="text-zinc-500">Service fee: <span className="text-zinc-400 font-mono">{pct(li.markup)}</span></span>
-              <span className="text-zinc-600">=</span>
-              <span className="text-zinc-400 font-mono">{fmt(li.clientPrice)}</span>
-            </div>
+
           </div>
         ))}
       </div>

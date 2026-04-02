@@ -28,7 +28,7 @@ export async function POST(request: Request) {
   }
 
   // Look up order if provided
-  const order = orderId ? getQuote(orderId) : null;
+  const order = orderId ? await getQuote(orderId) : null;
   const systemPrompt = buildSystemPrompt(order);
 
   try {

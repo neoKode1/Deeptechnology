@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { createQuote, listQuotes } from '@/lib/quotes/store';
+import { isAuthorizedRequest, unauthorizedResponse } from '@/lib/admin-auth';
 import type { CreateQuotePayload } from '@/lib/quotes/types';
 
 /**
@@ -7,10 +8,14 @@ import type { CreateQuotePayload } from '@/lib/quotes/types';
  * List all quotes, optionally filtered by status.
  */
 export async function GET(request: Request) {
+  if (!isAuthorizedRequest(request)) {
+    return unauthorizedResponse();
+  }
+
   try {
     const { searchParams } = new URL(request.url);
     const status = searchParams.get('status') ?? undefined;
-    const quotes = listQuotes(status);
+    const quotes = await listQuotes(status);
 
     return NextResponse.json({ success: true, quotes });
   } catch (err) {
@@ -28,6 +33,10 @@ export async function GET(request: Request) {
  * or manually by admin for testing.
  */
 export async function POST(request: Request) {
+  if (!isAuthorizedRequest(request)) {
+    return unauthorizedResponse();
+  }
+
   try {
     const body = (await request.json()) as CreateQuotePayload;
 
@@ -38,7 +47,7 @@ export async function POST(request: Request) {
       );
     }
 
-    const quote = createQuote(body);
+    const quote = await createQuote(body);
 
     return NextResponse.json({ success: true, quote }, { status: 201 });
   } catch (err) {

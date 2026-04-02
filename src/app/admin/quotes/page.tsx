@@ -43,17 +43,56 @@ export default function AdminQuotesPage() {
   const [filter, setFilter] = useState('');
   const [loading, setLoading] = useState(true);
   const [actionQuote, setActionQuote] = useState<string | null>(null);
+  const [authed, setAuthed] = useState(false);
+  const [loginSecret, setLoginSecret] = useState('');
+  const [loginError, setLoginError] = useState('');
 
   const fetchQuotes = useCallback(() => {
     setLoading(true);
     const url = filter ? '/api/quotes?status=' + filter : '/api/quotes';
     fetch(url)
-      .then((r) => r.json())
-      .then((data) => { setQuotes(data.quotes || []); setLoading(false); })
+      .then((r) => {
+        if (r.status === 401) { setAuthed(false); setLoading(false); return null; }
+        return r.json();
+      })
+      .then((data) => { if (data) { setQuotes(data.quotes || []); setAuthed(true); } setLoading(false); })
       .catch(() => setLoading(false));
   }, [filter]);
 
   useEffect(() => { fetchQuotes(); }, [fetchQuotes]);
+
+  async function handleLogin(e: React.FormEvent) {
+    e.preventDefault();
+    setLoginError('');
+    const res = await fetch('/api/admin/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ secret: loginSecret }),
+    });
+    if (res.ok) {
+      setAuthed(true);
+      fetchQuotes();
+    } else {
+      setLoginError('Invalid credentials');
+    }
+  }
+
+  if (!authed && !loading) {
+    return (
+      <main className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center">
+        <form onSubmit={handleLogin} className="bg-zinc-900 border border-zinc-800 rounded-lg p-8 w-full max-w-sm">
+          <h2 className="text-lg font-semibold mb-4">Admin Access</h2>
+          <input type="password" value={loginSecret} onChange={e => setLoginSecret(e.target.value)}
+            placeholder="Enter admin secret" required
+            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-zinc-200 placeholder:text-zinc-600 outline-none focus:border-zinc-500 transition mb-3" />
+          {loginError && <p className="text-red-400 text-sm mb-3">{loginError}</p>}
+          <button type="submit" className="w-full bg-white text-black font-semibold py-2.5 rounded-lg hover:bg-zinc-200 transition text-sm">
+            Sign In
+          </button>
+        </form>
+      </main>
+    );
+  }
 
   async function updateStatus(id: string, status: QuoteStatus) {
     setActionQuote(id);
