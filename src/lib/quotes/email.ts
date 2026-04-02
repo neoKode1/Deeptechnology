@@ -142,7 +142,7 @@ Questions? Reply to this email.
 
   try {
     const { error } = await resend.emails.send({
-      from: 'Deep Tech <onboarding@resend.dev>',
+      from: 'Deep Tech <info@varyai.link>',
       to: quote.customerEmail,
       subject: `Your Deep Tech Quote — ${fmt(quote.total)}`,
       html,

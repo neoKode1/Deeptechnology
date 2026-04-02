@@ -3,8 +3,9 @@
 import { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, CheckCircle2, Clock, AlertCircle, Package, MessageSquare, Mail } from 'lucide-react';
-import type { Quote } from '@/lib/quotes/types';
+import { ArrowLeft, CheckCircle2, Clock, AlertCircle, Package, MessageSquare, Mail, Cog, Truck, MapPin, Rocket, Send } from 'lucide-react';
+import type { Quote, QuoteMessage } from '@/lib/quotes/types';
+import { FULFILLMENT_STAGES, STAGE_LABELS } from '@/lib/quotes/types';
 
 
 type FetchState = 'loading' | 'ready' | 'error' | 'not_found';
@@ -88,33 +89,74 @@ function LineItemsBreakdown({ lineItems, total }: { lineItems: Quote['lineItems'
   );
 }
 
-/** Inline reply form — sends through /api/contact with quote context */
-function ReplySection({ quote }: { quote: Quote }) {
+/** Fulfillment progress timeline for post-payment orders */
+function FulfillmentTimeline({ status }: { status: string }) {
+  const currentIdx = FULFILLMENT_STAGES.indexOf(status as typeof FULFILLMENT_STAGES[number]);
+  const activeIdx = currentIdx >= 0 ? currentIdx : 0;
+  const progress = activeIdx / (FULFILLMENT_STAGES.length - 1);
+  const icons = [
+    <CheckCircle2 key="o" size={18} />, <Cog key="p" size={18} />, <Package key="s" size={18} />,
+    <Truck key="t" size={18} />, <MapPin key="d" size={18} />, <Rocket key="dep" size={18} />,
+  ];
+  const lerp = (p: number) => {
+    const r = Math.round(249 + (34 - 249) * p), g = Math.round(115 + (197 - 115) * p), b = Math.round(22 + (94 - 22) * p);
+    return `rgb(${r},${g},${b})`;
+  };
+
+  return (
+    <div className="mb-10">
+      <h2 className="text-lg font-semibold text-white mb-6">Order Progress</h2>
+      <div className="relative">
+        <div className="absolute top-5 left-5 right-5 h-1 bg-zinc-800 rounded-full" />
+        <div className="absolute top-5 left-5 h-1 rounded-full transition-all duration-700"
+          style={{ width: `calc(${progress * 100}% - ${progress * 40}px)`, backgroundColor: lerp(progress) }} />
+        <div className="relative flex justify-between">
+          {FULFILLMENT_STAGES.map((stage, i) => {
+            const done = i <= activeIdx;
+            const isCurrent = i === activeIdx;
+            const dotColor = done ? lerp(i / (FULFILLMENT_STAGES.length - 1)) : '#3f3f46';
+            return (
+              <div key={stage} className="flex flex-col items-center" style={{ width: 80 }}>
+                <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all duration-500 ${isCurrent ? 'ring-2 ring-offset-2 ring-offset-[#0a0a0a]' : ''}`}
+                  style={{ backgroundColor: dotColor, color: done ? '#fff' : '#71717a' } as React.CSSProperties}>
+                  {icons[i]}
+                </div>
+                <span className={`text-[10px] mt-2 text-center leading-tight ${done ? 'text-zinc-200 font-medium' : 'text-zinc-600'}`}>
+                  {STAGE_LABELS[stage]}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/** Two-way messaging section — customer can send messages that log into the quote thread */
+function ReplySection({ quote, onMessageSent }: { quote: Quote; onMessageSent?: () => void }) {
   const [open, setOpen] = useState(false);
   const [replyForm, setReplyForm] = useState({ name: quote.customerName || '', email: quote.customerEmail || '', message: '' });
   const [replyStatus, setReplyStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const [replyError, setReplyError] = useState('');
+
+  const messages = (quote.messages || []).filter((m: QuoteMessage) => m.from !== 'system');
 
   async function handleReplySubmit(e: React.FormEvent) {
     e.preventDefault();
     setReplyStatus('sending');
     setReplyError('');
     try {
-      const contextMessage = `[Quote Reply — ${quote.id}]\nQuote: ${quote.summary}\nTotal: ${fmt(quote.total)}\n\n${replyForm.message}`;
-      const res = await fetch('/api/contact', {
+      const res = await fetch(`/api/quotes/${quote.id}/message`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: replyForm.name,
-          email: replyForm.email,
-          inquiry: 'Quote reply',
-          message: contextMessage,
-        }),
+        body: JSON.stringify({ name: replyForm.name, email: replyForm.email, message: replyForm.message }),
       });
       const data = await res.json();
-      if (!res.ok || !data.success) throw new Error(data.message || 'Failed to send.');
+      if (!res.ok) throw new Error(data.error || 'Failed to send.');
       setReplyStatus('sent');
       setReplyForm(prev => ({ ...prev, message: '' }));
+      onMessageSent?.();
     } catch (err: unknown) {
       setReplyStatus('error');
       setReplyError(err instanceof Error ? err.message : 'Failed to send. Please try again.');
@@ -125,18 +167,35 @@ function ReplySection({ quote }: { quote: Quote }) {
     <div className="border border-zinc-800 rounded-lg p-6 mb-8">
       <div className="flex items-center gap-2 mb-3">
         <MessageSquare size={18} className="text-zinc-400" />
-        <h3 className="text-white font-semibold">Questions or Feedback</h3>
+        <h3 className="text-white font-semibold">Messages</h3>
+        {messages.length > 0 && <span className="text-xs text-zinc-500">{messages.length} message{messages.length !== 1 ? 's' : ''}</span>}
       </div>
-      <p className="text-zinc-400 text-sm mb-4 leading-relaxed">
-        Have questions about this quote? Want to discuss pricing, adjust scope, or negotiate terms?
-        Our team is happy to work with you to find the right fit.
-      </p>
+
+      {/* Message thread */}
+      {messages.length > 0 && (
+        <div className="space-y-3 mb-6 max-h-64 overflow-y-auto">
+          {messages.map((m: QuoteMessage) => (
+            <div key={m.id} className={`text-sm p-3 rounded-lg ${m.from === 'customer' ? 'bg-zinc-800/50 border-l-2 border-blue-600' : 'bg-zinc-900 border-l-2 border-cyan-600'}`}>
+              <div className="flex justify-between text-xs text-zinc-500 mb-1">
+                <span className="font-medium">{m.from === 'customer' ? 'You' : 'Deep Tech'}</span>
+                <span>{new Date(m.sentAt).toLocaleString()}</span>
+              </div>
+              <p className="text-zinc-300 whitespace-pre-wrap">{m.body}</p>
+            </div>
+          ))}
+        </div>
+      )}
 
       {!open && replyStatus !== 'sent' && (
-        <button onClick={() => setOpen(true)}
-          className="inline-flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white font-medium px-6 py-3 rounded-lg transition text-sm">
-          <Mail size={16} /> Reply to This Quote
-        </button>
+        <div>
+          <p className="text-zinc-400 text-sm mb-4 leading-relaxed">
+            Have questions about this quote? Want to discuss pricing, adjust scope, or negotiate terms?
+          </p>
+          <button onClick={() => setOpen(true)}
+            className="inline-flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white font-medium px-6 py-3 rounded-lg transition text-sm">
+            <Send size={16} /> Send a Message
+          </button>
+        </div>
       )}
 
       {replyStatus === 'sent' && (
@@ -164,7 +223,7 @@ function ReplySection({ quote }: { quote: Quote }) {
           <div className="flex flex-col gap-1.5">
             <label className="text-[10px] uppercase tracking-widest text-zinc-500">Message *</label>
             <textarea required rows={4} value={replyForm.message} onChange={e => setReplyForm(p => ({ ...p, message: e.target.value }))}
-              className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-zinc-200 placeholder:text-zinc-600 outline-none focus:border-zinc-500 transition resize-none" placeholder="Your question or feedback about this quote..." />
+              className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-zinc-200 placeholder:text-zinc-600 outline-none focus:border-zinc-500 transition resize-none" placeholder="Your question or feedback..." />
           </div>
           <p className="text-zinc-600 text-xs">Re: Quote {quote.id} — {fmt(quote.total)}</p>
           {replyStatus === 'error' && <p className="text-red-400 text-sm">{replyError}</p>}
@@ -279,6 +338,14 @@ export default function QuotePage() {
   const status = STATUS_MAP[quote.status] ?? STATUS_MAP.draft;
   const isExpired = new Date(quote.expiresAt) < new Date() && quote.status === 'sent';
   const canAccept = quote.status === 'sent' && !isExpired;
+  const isFulfillment = FULFILLMENT_STAGES.includes(quote.status as typeof FULFILLMENT_STAGES[number]);
+
+  /** Re-fetch quote to get updated messages */
+  function refreshQuote() {
+    fetch('/api/quotes/' + id)
+      .then(r => r.ok ? r.json() : null)
+      .then(data => { if (data?.quote) setQuote(data.quote); });
+  }
 
   return (
     <Shell>
@@ -289,7 +356,9 @@ export default function QuotePage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
         <div>
-          <h1 className="text-2xl font-semibold text-white tracking-tight">Quote for {quote.customerName}</h1>
+          <h1 className="text-2xl font-semibold text-white tracking-tight">
+            {isFulfillment ? 'Order' : 'Quote'} for {quote.customerName}
+          </h1>
           <p className="text-zinc-400 text-sm mt-1">{quote.summary}</p>
         </div>
         <div className={'flex items-center gap-2 text-sm font-medium ' + status.color}>
@@ -297,19 +366,22 @@ export default function QuotePage() {
         </div>
       </div>
 
+      {/* Fulfillment Timeline — shows for paid/ordered quotes */}
+      {isFulfillment && <FulfillmentTimeline status={quote.status} />}
+
       {/* Meta cards */}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-8 text-sm">
         <MetaCard label="Quote ID" value={quote.id} />
         <MetaCard label="Type" value={quote.inquiryType} />
         <MetaCard label="Created" value={fmtDate(quote.createdAt)} />
-        <MetaCard label="Valid Until" value={fmtDate(quote.expiresAt)} />
+        <MetaCard label={isFulfillment ? 'Paid' : 'Valid Until'} value={fmtDate(quote.paidAt || quote.expiresAt)} />
       </div>
 
       {/* Detailed line items breakdown */}
       <LineItemsBreakdown lineItems={quote.lineItems} total={quote.total} />
 
-      {/* Reply / feedback */}
-      <ReplySection quote={quote} />
+      {/* Messages / Reply */}
+      <ReplySection quote={quote} onMessageSent={refreshQuote} />
 
       {/* Accept / status */}
       <AcceptSection quote={quote} canAccept={canAccept} isExpired={isExpired} accepting={accepting} onAccept={handleAccept} checkoutError={checkoutError} />

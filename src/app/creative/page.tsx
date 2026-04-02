@@ -291,7 +291,7 @@ export default function CreativeDivisionHome() {
                 Cinematic
               </span>
               <span className="block text-5xl md:text-7xl lg:text-8xl mt-1" style={{
-                WebkitTextStroke: '1px rgba(251,191,36,0.35)',
+                WebkitTextStroke: '1.5px rgba(255,255,255,0.5)',
                 color: 'transparent',
               }}>
                 Universe.

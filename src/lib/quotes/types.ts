@@ -50,6 +50,17 @@ export interface LineItem {
   notes?: string;
 }
 
+/** A message in the quote conversation thread (admin ↔ customer ↔ system) */
+export interface QuoteMessage {
+  id: string;              // msg-{uuid}
+  from: 'admin' | 'system' | 'customer';
+  to: string;              // email address
+  subject: string;
+  body: string;            // plain text or markdown
+  sentAt: string;          // ISO 8601
+  sentBy?: string;         // admin identifier or customer email
+}
+
 export interface Quote {
   id: string;              // quote-{uuid}
   requestId: string;       // links to original sourcing session
@@ -62,10 +73,14 @@ export interface Quote {
   total: number;           // Final total (same as subtotal for now; room for tax/fees later)
   status: QuoteStatus;
   routing?: QuoteRouting;  // Admin triage decision
+  messages: QuoteMessage[];// Conversation thread (admin replies, system notifications)
   createdAt: string;       // ISO 8601
   updatedAt: string;       // ISO 8601
   expiresAt: string;       // ISO 8601 — typically 7 days after sent
   acceptedAt?: string;     // ISO 8601
+  paidAt?: string;         // ISO 8601 — Stripe payment confirmed
+  workOrderStartedAt?: string; // ISO 8601 — admin clicked "Start Work Order"
+  stripePaymentIntent?: string; // pi_... from Stripe
   notes?: string;          // Admin notes
 }
 

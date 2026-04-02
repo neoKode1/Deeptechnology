@@ -1,6 +1,6 @@
 import { Redis } from '@upstash/redis';
 import { randomUUID } from 'crypto';
-import type { Quote, CreateQuotePayload, UpdateQuotePayload, LineItem } from './types';
+import type { Quote, QuoteMessage, CreateQuotePayload, UpdateQuotePayload, LineItem } from './types';
 
 /**
  * Upstash Redis client (REST-based, works in Vercel serverless).
@@ -65,6 +65,7 @@ export async function createQuote(payload: CreateQuotePayload): Promise<Quote> {
     subtotal,
     total: subtotal,
     status: 'draft',
+    messages: [],
     createdAt: now,
     updatedAt: now,
     expiresAt,
@@ -86,7 +87,10 @@ export async function getQuote(id: string): Promise<Quote | null> {
   const r = getRedis();
   const raw = await r.get<string>(quoteKey(id));
   if (!raw) return null;
-  return (typeof raw === 'string' ? JSON.parse(raw) : raw) as Quote;
+  const quote = (typeof raw === 'string' ? JSON.parse(raw) : raw) as Quote;
+  // Backfill messages array for quotes created before this field existed
+  if (!quote.messages) quote.messages = [];
+  return quote;
 }
 
 /**
@@ -141,6 +145,36 @@ export async function listQuotes(status?: string): Promise<Quote[]> {
   );
 
   const valid = quotes.filter((q): q is Quote => q !== null);
+  // Ensure messages array exists for older quotes created before this field
+  for (const q of valid) {
+    if (!q.messages) q.messages = [];
+  }
   return status ? valid.filter((q) => q.status === status) : valid;
+}
+
+/**
+ * Add a message to a quote's conversation thread.
+ */
+export async function addMessage(
+  quoteId: string,
+  message: Omit<QuoteMessage, 'id' | 'sentAt'>
+): Promise<QuoteMessage | null> {
+  const quote = await getQuote(quoteId);
+  if (!quote) return null;
+
+  const msg: QuoteMessage = {
+    ...message,
+    id: `msg-${randomUUID().slice(0, 8)}`,
+    sentAt: new Date().toISOString(),
+  };
+
+  if (!quote.messages) quote.messages = [];
+  quote.messages.push(msg);
+  quote.updatedAt = new Date().toISOString();
+
+  const r = getRedis();
+  await r.set(quoteKey(quoteId), JSON.stringify(quote));
+  console.log(`[quotes] Added message ${msg.id} to quote ${quoteId}`);
+  return msg;
 }
 

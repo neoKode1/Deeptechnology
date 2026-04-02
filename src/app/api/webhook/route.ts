@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
-import { getQuote, updateQuote } from '@/lib/quotes/store';
+import { Resend } from 'resend';
+import { getQuote, updateQuote, addMessage } from '@/lib/quotes/store';
 
 /**
  * In-memory set of processed Stripe event IDs to prevent double-processing.
@@ -78,11 +79,72 @@ export async function POST(request: Request) {
       }
 
       // Mark as accepted, then ordered (payment received = order confirmed)
+      const paymentAmount = session.amount_total ? '$' + (session.amount_total / 100).toFixed(2) : 'N/A';
       await updateQuote(quoteId, {
         status: 'accepted',
-        notes: `${quote.notes ? quote.notes + '\n' : ''}Stripe payment received: ${session.payment_intent} (${session.amount_total ? '$' + (session.amount_total / 100).toFixed(2) : 'N/A'})`,
+        notes: `${quote.notes ? quote.notes + '\n' : ''}Stripe payment received: ${session.payment_intent} (${paymentAmount})`,
       });
       await updateQuote(quoteId, { status: 'ordered' });
+
+      // Store payment metadata directly on the quote
+      try {
+        const { Redis } = await import('@upstash/redis');
+        const redis = new Redis({
+          url: process.env.UPSTASH_REDIS_REST_URL!,
+          token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+        });
+        const updated = await getQuote(quoteId);
+        if (updated) {
+          updated.paidAt = new Date().toISOString();
+          updated.stripePaymentIntent = session.payment_intent as string;
+          await redis.set(`quote:${quoteId}`, JSON.stringify(updated));
+        }
+      } catch (e) {
+        console.error('[webhook] Failed to store payment metadata:', e);
+      }
+
+      // Log system message
+      await addMessage(quoteId, {
+        from: 'system',
+        to: quote.customerEmail,
+        subject: 'Payment Received',
+        body: `Payment of ${paymentAmount} received via Stripe (${session.payment_intent}). Quote is now a confirmed order.`,
+      });
+
+      // Send admin notification email
+      try {
+        const resend = new Resend(process.env.RESEND_API_KEY);
+        const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptech.varyai.link';
+
+        await resend.emails.send({
+          from: 'Deep Tech <info@varyai.link>',
+          to: adminEmail,
+          subject: `💰 Payment Received — ${quote.customerName} (${paymentAmount})`,
+          html: `<div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#0a0a0a;color:#ccc;border-radius:8px;border:1px solid #222;">
+            <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#666;margin:0 0 16px;">Work Order Notification</p>
+            <h2 style="color:#22c55e;margin:0 0 8px;font-size:20px;">✅ Payment Confirmed</h2>
+            <p style="font-size:14px;color:#eee;margin:0 0 20px;">${quote.customerName} has paid <strong>${paymentAmount}</strong> for their quote.</p>
+            <table style="width:100%;font-size:13px;color:#aaa;">
+              <tr><td style="padding:6px 0;color:#666;">Quote ID</td><td style="padding:6px 0;color:#eee;">${quoteId}</td></tr>
+              <tr><td style="padding:6px 0;color:#666;">Customer</td><td style="padding:6px 0;color:#eee;">${quote.customerName} (${quote.customerEmail})</td></tr>
+              <tr><td style="padding:6px 0;color:#666;">Type</td><td style="padding:6px 0;color:#eee;">${quote.inquiryType}</td></tr>
+              <tr><td style="padding:6px 0;color:#666;">Summary</td><td style="padding:6px 0;color:#eee;">${quote.summary}</td></tr>
+              <tr><td style="padding:6px 0;color:#666;">Stripe PI</td><td style="padding:6px 0;color:#eee;font-family:monospace;font-size:11px;">${session.payment_intent}</td></tr>
+            </table>
+            <div style="margin-top:24px;">
+              <a href="${baseUrl}/admin/quotes" style="display:inline-block;background:#22c55e;color:#000;font-size:13px;font-weight:600;text-decoration:none;padding:12px 28px;border-radius:4px;">
+                View Work Orders →
+              </a>
+            </div>
+            <p style="font-size:12px;color:#555;margin-top:20px;">This work order is ready to start. Visit the admin dashboard to reply to the customer or start the work order.</p>
+          </div>`,
+          text: `Payment Received!\n\n${quote.customerName} paid ${paymentAmount} for quote ${quoteId}.\nType: ${quote.inquiryType}\nSummary: ${quote.summary}\nStripe PI: ${session.payment_intent}\n\nVisit ${baseUrl}/admin/quotes to manage work orders.`,
+        });
+        console.log(`[webhook] Admin notification sent for quote ${quoteId}`);
+      } catch (emailErr) {
+        console.error('[webhook] Failed to send admin notification:', emailErr);
+      }
 
       processedEvents.add(event.id);
       console.log(`[webhook] Quote ${quoteId} → ordered (payment: ${session.payment_intent})`);

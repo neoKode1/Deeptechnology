@@ -224,7 +224,7 @@ export async function POST(request: Request) {
 </html>`;
 
     const { error } = await resend.emails.send({
-      from: 'Deeptech <onboarding@resend.dev>',
+      from: 'Deep Tech <info@varyai.link>',
       to: '1deeptechnology@gmail.com',
       replyTo: email,
       subject: `[${inquiry}] New message from ${name}`,
