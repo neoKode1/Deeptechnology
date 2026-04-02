@@ -18,6 +18,7 @@ export type QuoteStatus =
   | 'in_transit'      // En route to customer / deployment site
   | 'delivered'       // Hardware received at destination
   | 'deployed'        // On-site, operational, in the field
+  | 'cancelled'       // Work order cancelled — service fee retained, vendor costs refunded
   | 'rejected';       // Admin or user declined
 
 /** Ordered stages for the fulfillment timeline (post-payment) */
@@ -82,6 +83,19 @@ export interface Quote {
   workOrderStartedAt?: string; // ISO 8601 — admin clicked "Start Work Order"
   stripePaymentIntent?: string; // pi_... from Stripe
   notes?: string;          // Admin notes
+  // Cancellation fields
+  cancelledAt?: string;        // ISO 8601
+  cancellation?: CancellationRecord;
+}
+
+/** Record of a work order cancellation */
+export interface CancellationRecord {
+  reason: string;              // Admin-provided reason
+  serviceFeeRetained: number;  // The markup amount Deep Tech keeps (service fee)
+  vendorCostRefunded: number;  // The vendor cost portion refunded to customer
+  refundTotal: number;         // Amount actually refunded via Stripe
+  stripeRefundId?: string;     // re_... from Stripe
+  cancelledBy: string;         // admin identifier
 }
 
 /** Admin routing decision — where does this work go? */

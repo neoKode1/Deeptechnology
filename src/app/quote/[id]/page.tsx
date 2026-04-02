@@ -22,6 +22,7 @@ const STATUS_MAP: Record<string, { label: string; color: string; icon: React.Rea
   in_transit:     { label: 'In Transit',         color: 'text-green-400',  icon: <Package size={16} /> },
   delivered:      { label: 'Delivered',          color: 'text-green-400',  icon: <CheckCircle2 size={16} /> },
   deployed:       { label: 'Deployed',           color: 'text-green-400',  icon: <CheckCircle2 size={16} /> },
+  cancelled:      { label: 'Cancelled',          color: 'text-red-400',    icon: <AlertCircle size={16} /> },
   rejected:       { label: 'Declined',           color: 'text-red-400',    icon: <AlertCircle size={16} /> },
 };
 
@@ -262,6 +263,33 @@ function AcceptSection({ quote, canAccept, isExpired, accepting, onAccept, check
         <CheckCircle2 className="mx-auto mb-2 text-green-400" size={28} />
         <p className="text-green-300 font-medium">Quote accepted{quote.acceptedAt ? ' on ' + fmtDate(quote.acceptedAt) : ''}</p>
         <p className="text-zinc-400 text-sm mt-1">Our team will be in touch shortly.</p>
+      </div>
+    );
+  }
+  if (quote.status === 'cancelled') {
+    const c = quote.cancellation;
+    return (
+      <div className="border border-red-800/40 bg-red-950/20 rounded-lg p-6">
+        <div className="text-center mb-4">
+          <AlertCircle className="mx-auto mb-2 text-red-400" size={28} />
+          <p className="text-red-300 font-medium">This order has been cancelled</p>
+          {quote.cancelledAt && <p className="text-zinc-500 text-xs mt-1">Cancelled on {fmtDate(quote.cancelledAt)}</p>}
+        </div>
+        {c && (
+          <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 mt-4 text-sm">
+            {c.reason && <p className="text-zinc-400 mb-3"><span className="text-zinc-500">Reason:</span> {c.reason}</p>}
+            <div className="flex justify-between mb-1">
+              <span className="text-zinc-500">Vendor costs refunded</span>
+              <span className="text-green-400 font-mono">{fmt(c.vendorCostRefunded)}</span>
+            </div>
+            <div className="flex justify-between mb-1">
+              <span className="text-zinc-500">Service fee (non-refundable)</span>
+              <span className="text-amber-400 font-mono">{fmt(c.serviceFeeRetained)}</span>
+            </div>
+            <p className="text-zinc-500 text-xs mt-3">Refunds typically appear within 5–10 business days.</p>
+          </div>
+        )}
+        <p className="text-center text-zinc-500 text-xs mt-4">Questions? <Link href="/contact" className="underline hover:text-white">Contact us</Link></p>
       </div>
     );
   }
