@@ -11,25 +11,38 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 /**
  * POST /api/quotes/[id]/cancel
  *
- * Admin cancels a work order. Deep Tech retains the service fee (markup)
- * and refunds the vendor cost portion to the customer via Stripe.
+ * Cancel a work order. Supports both admin and customer-initiated cancellations.
+ * Deep Tech retains the service fee (markup) and refunds the vendor cost portion
+ * to the customer via Stripe.
  *
- * Body: { reason: string }
+ * Admin: authenticated via admin_secret cookie
+ * Customer: authenticated by knowing the quote ID + providing matching email
+ *
+ * Body: { reason: string, email?: string }
  */
 export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await params;
+  const body = await request.json();
+  const { reason, email } = body;
+
+  // Determine if this is admin or customer
   const cookieStore = await cookies();
   const secret = cookieStore.get('admin_secret')?.value;
-  if (!secret || secret !== process.env.ADMIN_SECRET) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  const isAdmin = secret && secret === process.env.ADMIN_SECRET;
 
-  const { id } = await params;
   const quote = await getQuote(id);
   if (!quote) {
     return NextResponse.json({ error: 'Quote not found' }, { status: 404 });
+  }
+
+  // Customer auth: must provide matching email
+  if (!isAdmin) {
+    if (!email || email.toLowerCase() !== quote.customerEmail.toLowerCase()) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
   }
 
   // Can only cancel paid orders that aren't already cancelled/deployed
@@ -41,7 +54,6 @@ export async function POST(
     );
   }
 
-  const { reason } = await request.json();
   if (!reason) {
     return NextResponse.json({ error: 'Cancellation reason is required' }, { status: 400 });
   }
@@ -59,7 +71,7 @@ export async function POST(
     serviceFeeRetained: serviceFee,
     vendorCostRefunded: vendorCostTotal,
     refundTotal: vendorCostTotal,
-    cancelledBy: 'admin',
+    cancelledBy: isAdmin ? 'admin' : 'customer',
   };
 
   // Issue Stripe refund if we have a payment intent

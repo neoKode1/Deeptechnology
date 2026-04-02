@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, CheckCircle2, Clock, AlertCircle, Package, MessageSquare, Mail, Cog, Truck, MapPin, Rocket, Send } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Clock, AlertCircle, Package, MessageSquare, Mail, Cog, Truck, MapPin, Rocket, Send, XCircle } from 'lucide-react';
 import type { Quote, QuoteMessage } from '@/lib/quotes/types';
 import { FULFILLMENT_STAGES, STAGE_LABELS } from '@/lib/quotes/types';
 
@@ -241,6 +241,90 @@ function ReplySection({ quote, onMessageSent }: { quote: Quote; onMessageSent?: 
   );
 }
 
+/** Customer-initiated cancellation section for active work orders */
+function CancelOrderSection({ quote, onCancelled }: { quote: Quote; onCancelled: () => void }) {
+  const [showConfirm, setShowConfirm] = useState(false);
+  const [reason, setReason] = useState('');
+  const [email, setEmail] = useState(quote.customerEmail || '');
+  const [status, setStatus] = useState<'idle' | 'cancelling' | 'error'>('idle');
+  const [error, setError] = useState('');
+
+  const vendorCostTotal = quote.lineItems.reduce((sum, li) => sum + li.vendorCost, 0);
+  const serviceFee = Math.round((quote.total - vendorCostTotal) * 100) / 100;
+
+  async function handleCancel(e: React.FormEvent) {
+    e.preventDefault();
+    setStatus('cancelling');
+    setError('');
+    try {
+      const res = await fetch(`/api/quotes/${quote.id}/cancel`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ reason, email }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Cancellation failed');
+      onCancelled();
+    } catch (err: unknown) {
+      setStatus('error');
+      setError(err instanceof Error ? err.message : 'Something went wrong');
+    }
+  }
+
+  if (!showConfirm) {
+    return (
+      <div className="border border-zinc-800 rounded-lg p-6 mt-6">
+        <div className="flex items-center justify-between">
+          <div>
+            <p className="text-zinc-400 text-sm">Need to cancel this order?</p>
+            <p className="text-zinc-600 text-xs mt-1">Vendor costs will be refunded. Service fee is non-refundable.</p>
+          </div>
+          <button onClick={() => setShowConfirm(true)}
+            className="inline-flex items-center gap-2 text-red-400 hover:text-red-300 border border-red-800/50 hover:border-red-700 px-4 py-2 rounded-lg text-sm transition">
+            <XCircle size={16} /> Cancel Order
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="border border-red-800/40 bg-red-950/10 rounded-lg p-6 mt-6">
+      <h3 className="text-red-400 font-semibold mb-4 flex items-center gap-2"><XCircle size={18} /> Cancel Order</h3>
+      <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-4 mb-4 text-sm">
+        <div className="flex justify-between mb-1">
+          <span className="text-zinc-500">You will be refunded (vendor costs)</span>
+          <span className="text-green-400 font-mono">{fmt(vendorCostTotal)}</span>
+        </div>
+        <div className="flex justify-between">
+          <span className="text-zinc-500">Service fee (non-refundable)</span>
+          <span className="text-amber-400 font-mono">{fmt(serviceFee)}</span>
+        </div>
+      </div>
+      <form onSubmit={handleCancel} className="space-y-4">
+        <div className="flex flex-col gap-1.5">
+          <label className="text-[10px] uppercase tracking-widest text-zinc-500">Confirm your email *</label>
+          <input required type="email" value={email} onChange={e => setEmail(e.target.value)}
+            className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-zinc-200 placeholder:text-zinc-600 outline-none focus:border-zinc-500 transition" placeholder="you@company.com" />
+        </div>
+        <div className="flex flex-col gap-1.5">
+          <label className="text-[10px] uppercase tracking-widest text-zinc-500">Reason for cancellation *</label>
+          <textarea required rows={3} value={reason} onChange={e => setReason(e.target.value)}
+            className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-zinc-200 placeholder:text-zinc-600 outline-none focus:border-zinc-500 transition resize-none" placeholder="Please let us know why you're cancelling..." />
+        </div>
+        {status === 'error' && <p className="text-red-400 text-sm">{error}</p>}
+        <div className="flex items-center gap-3">
+          <button type="submit" disabled={status === 'cancelling'}
+            className="inline-flex items-center gap-2 bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2.5 rounded-lg transition text-sm disabled:opacity-50">
+            {status === 'cancelling' ? 'Processing...' : 'Confirm Cancellation'}
+          </button>
+          <button type="button" onClick={() => setShowConfirm(false)} className="text-zinc-500 text-sm hover:text-zinc-300 transition">Go back</button>
+        </div>
+      </form>
+    </div>
+  );
+}
+
 function AcceptSection({ quote, canAccept, isExpired, accepting, onAccept, checkoutError }: {
   quote: Quote; canAccept: boolean; isExpired: boolean; accepting: boolean; onAccept: () => void; checkoutError?: string;
 }) {
@@ -413,6 +497,11 @@ export default function QuotePage() {
 
       {/* Accept / status */}
       <AcceptSection quote={quote} canAccept={canAccept} isExpired={isExpired} accepting={accepting} onAccept={handleAccept} checkoutError={checkoutError} />
+
+      {/* Customer cancel — visible for active fulfillment orders */}
+      {isFulfillment && quote.status !== 'cancelled' && (
+        <CancelOrderSection quote={quote} onCancelled={refreshQuote} />
+      )}
 
       {/* Footer note */}
       <p className="text-center text-zinc-600 text-xs mt-12">
