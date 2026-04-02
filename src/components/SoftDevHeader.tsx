@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ArrowUp } from 'lucide-react';
 
 /**
  * Universal header used across all three divisions.
@@ -14,11 +14,19 @@ import { Menu, X } from 'lucide-react';
 const SoftDevHeader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
+  const [showBackToTop, setShowBackToTop] = useState(false);
   const pathname = usePathname();
 
   useEffect(() => {
-    // Fade the header away as soon as the user scrolls past 60px
-    const onScroll = () => setIsHidden(window.scrollY > 60);
+    const onScroll = () => {
+      // Fade the header away as soon as the user scrolls past 60px
+      setIsHidden(window.scrollY > 60);
+
+      // Show back-to-top when user is near the bottom (within 300px of footer)
+      const scrolledToBottom =
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 300;
+      setShowBackToTop(scrolledToBottom);
+    };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
@@ -51,13 +59,13 @@ const SoftDevHeader = () => {
         }`}
       >
         {/* 3-column grid: left and right are equal width so the center is always pixel-perfect center */}
-        <div className="grid grid-cols-3 items-center px-6 py-5 md:px-12 lg:px-20">
+        <div className="grid grid-cols-[auto_1fr_auto] sm:grid-cols-3 items-center px-4 sm:px-6 py-4 sm:py-5 md:px-12 lg:px-20">
 
           {/* Col 1 — Brand (left-aligned) */}
           <div className="flex items-center">
             <Link
               href="/"
-              className={`font-manrope text-sm font-light tracking-[0.25em] uppercase ${textColor}`}
+              className={`font-manrope text-xs sm:text-sm font-light tracking-[0.2em] sm:tracking-[0.25em] uppercase ${textColor}`}
             >
               Deeptech
             </Link>
@@ -105,9 +113,20 @@ const SoftDevHeader = () => {
         </div>
       </header>
 
+      {/* Floating back-to-top button — appears near the footer */}
+      <button
+        onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+        aria-label="Back to top"
+        className={`fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-[9997] w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center border border-white/20 bg-black/60 backdrop-blur-md text-white/60 hover:text-white hover:border-white/40 hover:bg-black/80 transition-all duration-300 ${
+          showBackToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
+        }`}
+      >
+        <ArrowUp className="w-4 h-4 sm:w-5 sm:h-5" />
+      </button>
+
       {/* Mobile menu — minimal, no heavy bg */}
       {isMenuOpen && (
-        <div className={`md:hidden fixed inset-0 top-[65px] z-[9998] flex flex-col px-6 py-8 gap-8 ${isDark ? 'bg-black/80 backdrop-blur-md' : 'bg-white/90 backdrop-blur-md'}`}>
+        <div className={`md:hidden fixed inset-0 top-[57px] sm:top-[65px] z-[9998] flex flex-col px-6 py-8 gap-6 ${isDark ? 'bg-black/90 backdrop-blur-md' : 'bg-white/95 backdrop-blur-md'}`}>
           {/* Division switcher — only shown on xs screens where header doesn't already show it */}
           <div className="sm:hidden flex items-center gap-6">
             <Link href="/software" onClick={() => setIsMenuOpen(false)} className={`text-xs transition-colors ${isSoftware ? pillActive : pillInactive}`}>
@@ -120,8 +139,8 @@ const SoftDevHeader = () => {
               Media
             </Link>
           </div>
-          {/* Nav links — software dev only */}
-          {isSoftDev && [['/#services', 'Services'], ['/software#work', 'Work'], ['/contact', 'Contact']].map(([href, label]) => (
+          {/* Nav links — always shown on mobile */}
+          {[['/#services', 'Services'], ['/software#work', 'Work'], ['/contact', 'Contact']].map(([href, label]) => (
             <Link key={href} href={href} className={`text-2xl font-manrope font-light ${textColor}`} onClick={() => setIsMenuOpen(false)}>
               {label}
             </Link>

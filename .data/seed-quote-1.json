@@ -1,0 +1,30 @@
+{
+  "requestId": "sourcing-test-001",
+  "customerName": "Sarah Chen",
+  "customerEmail": "sarah@example.com",
+  "inquiryType": "Software solutions",
+  "summary": "Custom inventory management SaaS platform with barcode scanning and real-time analytics dashboard",
+  "lineItems": [
+    {
+      "description": "Full-stack SaaS development (Next.js + PostgreSQL) - 8 week build",
+      "vendor": "Deeptech Engineering",
+      "vendorCost": 24000,
+      "markup": 0.15,
+      "notes": "Candidate for Noelle automated build"
+    },
+    {
+      "description": "Barcode scanning SDK license (annual)",
+      "vendor": "Scandit",
+      "vendorUrl": "https://scandit.com",
+      "vendorCost": 2400,
+      "markup": 0.15
+    },
+    {
+      "description": "Cloud hosting setup + first year (Vercel Pro + Supabase)",
+      "vendor": "Infrastructure",
+      "vendorCost": 1800,
+      "markup": 0.15
+    }
+  ],
+  "notes": "Simple enough for Noelle to handle the frontend; manual review needed for backend architecture"
+}

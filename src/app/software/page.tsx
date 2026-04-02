@@ -42,6 +42,30 @@ function SectionDivider({ label, speed }: { label: string; speed?: string }) {
 /* ── Featured projects ── */
 const PROJECTS = [
   {
+    title: '12 Monkeys',
+    desc: 'Agent orchestration platform with cross-registry discovery via the NANDA Index — enabling teams to build, deploy, and interconnect AI agents across heterogeneous service registries through a unified conversational interface.',
+    tags: ['Agents', 'TypeScript', 'NANDA', '2026'],
+    link: 'https://github.com/neoKode1/plus12monkeys',
+    domain: 'https://plus12monkeys.com',
+    img: '/media/Plus 12 monkeys..png',
+  },
+  {
+    title: 'TheNoelleApp',
+    desc: 'AI-powered PR generation and MCP server tooling for developers. Paste a GitHub repo URL, describe a change in plain English, and Noelle opens a build-validated, review-ready pull request — no setup, no configuration. Also generates ready-to-use MCP servers from any repo so AI tools talk directly to your code.',
+    tags: ['AI', 'MCP', 'GitHub', 'SvelteKit', '2026'],
+    link: 'https://github.com/neoKode1/noelle',
+    domain: 'https://thenoelle.app',
+    img: '/media/theNoelleapp.png',
+  },
+  {
+    title: 'Breach',
+    desc: 'AI-first open intelligence platform — maps relationships between facilities, funding, research, equipment, and people. Public REST API, TypeScript & Python SDKs, MCP server with 27 tools, and an agentic AI assistant powered by knowledge-graph traversal. Open-source Palantir for builders.',
+    tags: ['Intelligence', 'AI', 'Knowledge Graph', 'MCP', '2026'],
+    link: 'https://github.com/neoKode1/breach',
+    domain: 'https://94breach.com',
+    img: '/media/breach_screenshot.png',
+  },
+  {
     title: 'EdgeQuanta',
     desc: 'Production-grade edge infrastructure with an integrated quantum compute layer. A unified API routes workloads to real 180-qubit superconducting chips — near-zero cold start, global multi-region failover, full TypeScript type safety.',
     tags: ['Cloudflare', 'Quantum', 'Edge Compute', 'TypeScript', '2025'],
@@ -49,46 +73,27 @@ const PROJECTS = [
     img: '/media/Edge Quanta.png',
   },
   {
-    title: 'Breach',
-    desc: 'AI-first open intelligence platform — maps relationships between facilities, funding, research, equipment, and people. Public REST API, TypeScript & Python SDKs, MCP server with 27 tools, and an agentic AI assistant powered by knowledge-graph traversal. Open-source Palantir for builders.',
-    tags: ['Intelligence', 'AI', 'Knowledge Graph', 'MCP', '2026'],
-    link: 'https://github.com/neoKode1/breach',
-    img: '/media/breach_screenshot.png',
-  },
-  {
-    title: '12 Monkeys',
-    desc: 'Agent orchestration platform with cross-registry discovery via the NANDA Index — enabling teams to build, deploy, and interconnect AI agents across heterogeneous service registries through a unified conversational interface.',
-    tags: ['Agents', 'TypeScript', 'NANDA', '2026'],
-    link: 'https://github.com/neoKode1/plus12monkeys',
-    img: '/media/Plus 12 monkeys..png',
+    title: 'Scam Likely',
+    desc: 'Real-time check fraud detection and cross-branch intelligence sharing for community banks. Zero-knowledge architecture — only SHA-256 fingerprints stored, never customer PII. Python SDK with local ML models, FastAPI central hub with WebSocket alerts, and a React dashboard for live fraud monitoring. 196 tests passing.',
+    tags: ['FinTech', 'Python', 'ML', 'React', 'FastAPI', '2026'],
+    link: 'https://github.com/neoKode1/Scam-likely',
+    img: '/media/scam-likely.png',
   },
   {
     title: "Director's Chair",
     desc: 'A browser-native cinematic AI studio. Describe a scene and the system generates synchronized images, video, and audio — full production-team capability with no timeline editors, no render queues.',
     tags: ['AI / Studio', 'SvelteKit', '2025'],
     link: 'https://github.com/neoKode1/DirectorchairAi',
+    domain: 'https://directorchairai.com',
     img: '/media/DirectorChair.png',
-  },
-  {
-    title: 'TheNoelleApp',
-    desc: 'AI-powered PR generation and MCP server tooling for developers. Paste a GitHub repo URL, describe a change in plain English, and Noelle opens a build-validated, review-ready pull request — no setup, no configuration. Also generates ready-to-use MCP servers from any repo so AI tools talk directly to your code.',
-    tags: ['AI', 'MCP', 'GitHub', 'SvelteKit', '2026'],
-    link: 'https://github.com/neoKode1/noelle',
-    img: '/media/theNoelleapp.png',
   },
   {
     title: 'NEO',
     desc: 'Nexartis Eco Observability — powered by Nimbus, an autonomous Claude-based agent that lives inside the platform. Nimbus monitors every production system in real time, reads the actual source code when errors surface, and generates line-by-line fixes. It sweeps the entire GitHub org for open vulnerabilities and opens fix PRs in parallel — one click remediates the whole org. Issues auto-create Linear tickets pre-filled with AI diagnosis, severity, and a suggested patch.',
     tags: ['Observability', 'AI Agent', 'Security', 'Claude', '2025'],
     link: 'https://github.com/Nexartis/neo-observability',
+    domain: 'https://www.28neo.com',
     img: '/media/Neo_nimbus.png',
-  },
-  {
-    title: 'Scam Likely',
-    desc: 'Real-time check fraud detection and cross-branch intelligence sharing for community banks. Zero-knowledge architecture — only SHA-256 fingerprints stored, never customer PII. Python SDK with local ML models, FastAPI central hub with WebSocket alerts, and a React dashboard for live fraud monitoring. 196 tests passing.',
-    tags: ['FinTech', 'Python', 'ML', 'React', 'FastAPI', '2026'],
-    link: 'https://github.com/neoKode1/Scam-likely',
-    img: '/media/scam-likely.png',
   },
 ];
 
@@ -137,21 +142,30 @@ export default function SoftwareDivisionPage() {
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
             {PROJECTS.map((proj) => (
-              <a
+              <div
                 key={proj.title}
-                href={proj.link}
-                target="_blank"
-                rel="noopener noreferrer"
                 className="flex flex-col border border-[#e5e5e5] bg-white rounded-lg group overflow-hidden hover:border-[#ccc] hover:shadow-lg transition-all duration-300"
               >
-                <div className="w-full h-52 overflow-hidden shrink-0">
+                {/* Image area — links to deployed domain if available, otherwise GitHub */}
+                <a
+                  href={proj.domain || proj.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="relative block w-full h-52 overflow-hidden shrink-0 cursor-pointer"
+                >
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={proj.img}
                     alt={proj.title}
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-in-out"
                   />
-                </div>
+                  {proj.domain && (
+                    <span className="absolute top-3 right-3 bg-black/70 text-white text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
+                      Visit site ↗
+                    </span>
+                  )}
+                </a>
+                {/* Details area — shows info, links to GitHub */}
                 <div className="p-5 flex flex-col gap-3">
                   <h3 className="font-manrope text-lg font-semibold text-[#111] tracking-tight">{proj.title}</h3>
                   <p className="text-sm text-[#555] leading-relaxed">{proj.desc}</p>
@@ -161,12 +175,17 @@ export default function SoftwareDivisionPage() {
                         <span key={t} className="sd-pill">{t}</span>
                       ))}
                     </div>
-                    <span className="inline-flex items-center gap-1.5 text-xs text-[#999] group-hover:text-[#111] transition-colors shrink-0">
+                    <a
+                      href={proj.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-xs text-[#999] hover:text-[#111] transition-colors shrink-0"
+                    >
                       GitHub <ArrowUpRight className="w-3.5 h-3.5" />
-                    </span>
+                    </a>
                   </div>
                 </div>
-              </a>
+              </div>
             ))}
           </div>
         </div>
@@ -197,19 +216,19 @@ export default function SoftwareDivisionPage() {
 
 
       {/* ── FOOTER ── */}
-      <footer className="bg-[#0a0a0a] text-white pt-24 pb-8 px-6 md:px-12 lg:px-20">
+      <footer className="bg-[#0a0a0a] text-white pt-16 sm:pt-24 pb-8 px-4 sm:px-6 md:px-12 lg:px-20">
         <div className="max-w-[82rem] mx-auto flex flex-col">
-          <div className="flex flex-col lg:flex-row justify-between items-start gap-16 mb-24">
-            <div className="flex flex-col gap-8 max-w-lg">
-              <h2 className="font-manrope text-[2rem] md:text-[2.5rem] font-medium tracking-tight leading-snug">
+          <div className="flex flex-col lg:flex-row justify-between items-start gap-10 sm:gap-16 mb-16 sm:mb-24">
+            <div className="flex flex-col gap-6 sm:gap-8 max-w-lg">
+              <h2 className="font-manrope text-[1.5rem] sm:text-[2rem] md:text-[2.5rem] font-medium tracking-tight leading-snug">
                 Ready to modernize your stack?
               </h2>
               <a
                 href="mailto:1deeptechnology@gmail.com"
-                className="inline-flex items-center gap-2 border border-white text-white rounded-full py-2.5 px-6 hover:bg-white hover:text-[#111] transition-colors w-max group text-sm"
+                className="inline-flex items-center gap-2 border border-white text-white rounded-full py-2.5 px-4 sm:px-6 hover:bg-white hover:text-[#111] transition-colors w-max group text-xs sm:text-sm"
               >
-                1deeptechnology@gmail.com
-                <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <span className="truncate">1deeptechnology@gmail.com</span>
+                <ArrowUpRight className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </div>
 
@@ -251,7 +270,7 @@ export default function SoftwareDivisionPage() {
               <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
               <Link href="/creative" className="hover:text-white transition-colors">Creative Division</Link>
             </div>
-            <a href="#" className="hover:text-white transition-colors">Back to Top ↑</a>
+
           </div>
         </div>
       </footer>

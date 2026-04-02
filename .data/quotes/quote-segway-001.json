@@ -1,0 +1,44 @@
+{
+  "id": "quote-segway-001",
+  "requestId": "req-segway-001",
+  "customerName": "Enterprise Client",
+  "customerEmail": "procurement@deeptech.com",
+  "inquiryType": "Autonomous solutions",
+  "summary": "Segway E1 Outdoor Delivery Robot — 2 Units",
+  "lineItems": [
+    {
+      "description": "Segway E1 Outdoor Delivery Robot × 2",
+      "vendor": "Segway Robotics",
+      "vendorUrl": "https://robotics.segway.com/e1",
+      "vendorCost": 19800,
+      "markup": 0.15,
+      "clientPrice": 22770,
+      "notes": "44kg payload, ROS compatible, Nvidia Jetson, ~$9,900/unit"
+    },
+    {
+      "description": "LiDAR + RTK Navigation Upgrade",
+      "vendor": "Segway Robotics",
+      "vendorUrl": "https://robotics.segway.com/e1",
+      "vendorCost": 4200,
+      "markup": 0.15,
+      "clientPrice": 4830,
+      "notes": "Precision autonomous navigation"
+    },
+    {
+      "description": "12-month Support Plan",
+      "vendor": "Segway Robotics",
+      "vendorUrl": "https://robotics.segway.com/e1",
+      "vendorCost": 2400,
+      "markup": 0.15,
+      "clientPrice": 2760,
+      "notes": "Remote diagnostics, firmware updates"
+    }
+  ],
+  "subtotal": 30360,
+  "total": 30360,
+  "status": "sent",
+  "createdAt": "2026-04-02T19:01:00.000Z",
+  "updatedAt": "2026-04-02T19:01:05.000Z",
+  "expiresAt": "2026-04-09T19:01:00.000Z",
+  "notes": "Campus delivery — reliable, lower price point"
+}

@@ -16,7 +16,12 @@ const STATUS_MAP: Record<string, { label: string; color: string; icon: React.Rea
   sent:           { label: 'Awaiting Response',  color: 'text-cyan-400',   icon: <Clock size={16} /> },
   accepted:       { label: 'Accepted',           color: 'text-green-400',  icon: <CheckCircle2 size={16} /> },
   expired:        { label: 'Expired',            color: 'text-red-400',    icon: <AlertCircle size={16} /> },
-  ordered:        { label: 'Order Placed',       color: 'text-green-400',  icon: <Package size={16} /> },
+  ordered:        { label: 'Order Confirmed',    color: 'text-green-400',  icon: <Package size={16} /> },
+  procurement:    { label: 'Procurement',        color: 'text-green-400',  icon: <Package size={16} /> },
+  shipped:        { label: 'Shipped',            color: 'text-green-400',  icon: <Package size={16} /> },
+  in_transit:     { label: 'In Transit',         color: 'text-green-400',  icon: <Package size={16} /> },
+  delivered:      { label: 'Delivered',          color: 'text-green-400',  icon: <CheckCircle2 size={16} /> },
+  deployed:       { label: 'Deployed',           color: 'text-green-400',  icon: <CheckCircle2 size={16} /> },
   rejected:       { label: 'Declined',           color: 'text-red-400',    icon: <AlertCircle size={16} /> },
 };
 

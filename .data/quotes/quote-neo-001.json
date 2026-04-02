@@ -1,0 +1,35 @@
+{
+  "id": "quote-neo-001",
+  "requestId": "req-neo-001",
+  "customerName": "Enterprise Client",
+  "customerEmail": "procurement@deeptech.com",
+  "inquiryType": "Autonomous solutions",
+  "summary": "1X NEO Humanoid Robot — Early Access",
+  "lineItems": [
+    {
+      "description": "1X NEO Humanoid Robot — Early Access",
+      "vendor": "1X Technologies",
+      "vendorUrl": "https://1x.tech/order",
+      "vendorCost": 20000,
+      "markup": 0.15,
+      "clientPrice": 23000,
+      "notes": "180cm full-size humanoid, priority 2026 delivery"
+    },
+    {
+      "description": "Extended Warranty — 24 months",
+      "vendor": "1X Technologies",
+      "vendorUrl": "https://1x.tech",
+      "vendorCost": 2400,
+      "markup": 0.15,
+      "clientPrice": 2760,
+      "notes": "Firmware updates, mechanical servicing, parts"
+    }
+  ],
+  "subtotal": 25760,
+  "total": 25760,
+  "status": "sent",
+  "createdAt": "2026-04-02T19:03:00.000Z",
+  "updatedAt": "2026-04-02T19:03:05.000Z",
+  "expiresAt": "2026-04-09T19:03:00.000Z",
+  "notes": "Consumer/commercial humanoid — hospitality, retail"
+}

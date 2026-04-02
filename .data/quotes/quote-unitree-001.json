@@ -1,0 +1,44 @@
+{
+  "id": "quote-unitree-001",
+  "requestId": "req-unitree-001",
+  "customerName": "Enterprise Client",
+  "customerEmail": "procurement@deeptech.com",
+  "inquiryType": "Autonomous solutions",
+  "summary": "Unitree G1 Humanoid Robot — EDU Standard",
+  "lineItems": [
+    {
+      "description": "Unitree G1 EDU Standard Humanoid",
+      "vendor": "Unitree Robotics",
+      "vendorUrl": "https://shop.unitree.com",
+      "vendorCost": 43500,
+      "markup": 0.15,
+      "clientPrice": 50025,
+      "notes": "127cm, 35kg, 43 DOF, SDK access, ships 2-4 weeks"
+    },
+    {
+      "description": "Spare Battery Pack (72V Li-ion)",
+      "vendor": "Unitree Robotics",
+      "vendorUrl": "https://shop.unitree.com",
+      "vendorCost": 1290,
+      "markup": 0.15,
+      "clientPrice": 1483.5,
+      "notes": "500-cycle rated proprietary pack"
+    },
+    {
+      "description": "Developer Onboarding (40hrs)",
+      "vendor": "Deeptech Engineering",
+      "vendorUrl": "https://deeptech.com",
+      "vendorCost": 5000,
+      "markup": 0.0,
+      "clientPrice": 5000,
+      "notes": "C++/Python SDK setup, ROS 2 integration"
+    }
+  ],
+  "subtotal": 56508.5,
+  "total": 56508.5,
+  "status": "sent",
+  "createdAt": "2026-04-02T19:02:00.000Z",
+  "updatedAt": "2026-04-02T19:02:05.000Z",
+  "expiresAt": "2026-04-09T19:02:00.000Z",
+  "notes": "Research-grade humanoid for education and R&D"
+}

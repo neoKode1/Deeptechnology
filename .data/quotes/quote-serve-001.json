@@ -1,0 +1,44 @@
+{
+  "id": "quote-serve-001",
+  "requestId": "req-serve-001",
+  "customerName": "Enterprise Client",
+  "customerEmail": "procurement@deeptech.com",
+  "inquiryType": "Autonomous solutions",
+  "summary": "Serve Robotics Gen-3 Delivery Robot — 3-Unit Fleet",
+  "lineItems": [
+    {
+      "description": "Serve Robotics Gen-3 Delivery Robot × 3",
+      "vendor": "Serve Robotics",
+      "vendorUrl": "https://www.serverobotics.com",
+      "vendorCost": 66900,
+      "markup": 0.15,
+      "clientPrice": 76935,
+      "notes": "Autonomous sidewalk delivery, Uber Eats integrated, ~$22,300/unit"
+    },
+    {
+      "description": "Fleet Management Software — 12mo",
+      "vendor": "Serve Robotics",
+      "vendorUrl": "https://www.serverobotics.com",
+      "vendorCost": 7200,
+      "markup": 0.15,
+      "clientPrice": 8280,
+      "notes": "Cloud dashboard, route optimization"
+    },
+    {
+      "description": "Deployment & Route Mapping",
+      "vendor": "Serve Robotics",
+      "vendorUrl": "https://www.serverobotics.com",
+      "vendorCost": 3500,
+      "markup": 0.15,
+      "clientPrice": 4025,
+      "notes": "On-site sidewalk mapping and geofencing"
+    }
+  ],
+  "subtotal": 89240,
+  "total": 89240,
+  "status": "sent",
+  "createdAt": "2026-04-02T19:00:00.000Z",
+  "updatedAt": "2026-04-02T19:00:05.000Z",
+  "expiresAt": "2026-04-09T19:00:00.000Z",
+  "notes": "Last-mile food delivery fleet"
+}

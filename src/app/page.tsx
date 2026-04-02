@@ -92,7 +92,7 @@ export default function SoftwareDivisionHome() {
 
       {/* ── HERO ── */}
       <section
-        className="relative overflow-hidden px-6 md:px-12 lg:px-20 pt-16 md:pt-24 pb-20"
+        className="relative overflow-hidden px-4 sm:px-6 md:px-12 lg:px-20 pt-20 sm:pt-16 md:pt-24 pb-12 sm:pb-20"
         style={{ maxWidth: '82rem', margin: '0 auto', minHeight: '80vh' }}
       >
         {/* Spline 3D animation — right-of-center, non-blocking; hidden on small screens */}
@@ -172,28 +172,28 @@ export default function SoftwareDivisionHome() {
           </p>
 
           {/* Body copy + buttons — normal rendering below the blend-mode headlines */}
-          <p className="mt-10 text-lg md:text-xl text-[#333] max-w-xl font-normal leading-relaxed" style={{ position: 'relative', zIndex: 2 }}>
+          <p className="mt-6 sm:mt-10 text-base sm:text-lg md:text-xl text-[#333] max-w-xl font-normal leading-relaxed" style={{ position: 'relative', zIndex: 2 }}>
             We modify existing production systems with enhanced AI integrations.
           </p>
 
           {/* Entry-point prompt */}
-          <div className="mt-8 mb-2" style={{ position: 'relative', zIndex: 2 }}>
-            <p className="text-sm text-[#888] uppercase tracking-widest font-manrope">
+          <div className="mt-6 sm:mt-8 mb-2" style={{ position: 'relative', zIndex: 2 }}>
+            <p className="text-xs sm:text-sm text-[#888] uppercase tracking-widest font-manrope">
               Don&apos;t know where to start?{' '}
               <Link href="/contact" className="text-[#111] font-semibold hover:underline underline-offset-4 transition-all">
                 Start here.
               </Link>
             </p>
-            <p className="mt-1 text-xs text-[#aaa] tracking-widest uppercase font-manrope">
+            <p className="mt-1 text-[10px] sm:text-xs text-[#aaa] tracking-widest uppercase font-manrope">
               Retool your existing infrastructure.
             </p>
           </div>
 
-          <div className="mt-6 flex gap-4 flex-wrap" style={{ position: 'relative', zIndex: 2 }}>
-            <Link href="/software" className="sd-btn-primary">
+          <div className="mt-5 sm:mt-6 flex gap-3 sm:gap-4 flex-wrap" style={{ position: 'relative', zIndex: 2 }}>
+            <Link href="/software" className="sd-btn-primary text-xs sm:text-sm">
               Explore Our Work <ArrowUpRight className="w-4 h-4" />
             </Link>
-            <Link href="/contact" className="sd-btn-outline">
+            <Link href="/contact" className="sd-btn-outline text-xs sm:text-sm">
               Work With Us <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -309,19 +309,19 @@ export default function SoftwareDivisionHome() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="bg-[#0a0a0a] text-white pt-24 pb-8 px-6 md:px-12 lg:px-20">
+      <footer className="bg-[#0a0a0a] text-white pt-16 sm:pt-24 pb-8 px-4 sm:px-6 md:px-12 lg:px-20">
         <div className="max-w-[82rem] mx-auto flex flex-col">
-          <div className="flex flex-col lg:flex-row justify-between items-start gap-16 mb-24">
-            <div className="flex flex-col gap-8 max-w-lg">
-              <h2 className="font-manrope text-[2rem] md:text-[2.5rem] font-medium tracking-tight leading-snug">
+          <div className="flex flex-col lg:flex-row justify-between items-start gap-10 sm:gap-16 mb-16 sm:mb-24">
+            <div className="flex flex-col gap-6 sm:gap-8 max-w-lg">
+              <h2 className="font-manrope text-[1.5rem] sm:text-[2rem] md:text-[2.5rem] font-medium tracking-tight leading-snug">
                 Ready to modernize your stack?
               </h2>
               <a
                 href="mailto:1deeptechnology@gmail.com"
-                className="inline-flex items-center gap-2 border border-white text-white rounded-full py-2.5 px-6 hover:bg-white hover:text-[#111] transition-colors w-max group text-sm"
+                className="inline-flex items-center gap-2 border border-white text-white rounded-full py-2.5 px-4 sm:px-6 hover:bg-white hover:text-[#111] transition-colors w-max group text-xs sm:text-sm break-all"
               >
-                1deeptechnology@gmail.com
-                <ArrowUpRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                <span className="truncate">1deeptechnology@gmail.com</span>
+                <ArrowUpRight className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </div>
 
@@ -364,7 +364,7 @@ export default function SoftwareDivisionHome() {
               <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
               <Link href="/creative" className="hover:text-white transition-colors">Creative Division</Link>
             </div>
-            <a href="#" className="hover:text-white transition-colors">Back to Top ↑</a>
+
           </div>
         </div>
       </footer>

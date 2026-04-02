@@ -1,0 +1,40 @@
+{
+  "id": "quote-test-sw1",
+  "requestId": "sourcing-test-001",
+  "customerName": "Sarah Chen",
+  "customerEmail": "sarah@example.com",
+  "inquiryType": "Software solutions",
+  "summary": "Custom inventory management SaaS platform with barcode scanning and real-time analytics dashboard",
+  "lineItems": [
+    {
+      "description": "Full-stack SaaS development (Next.js + PostgreSQL) - 8 week build",
+      "vendor": "Deeptech Engineering",
+      "vendorCost": 24000,
+      "markup": 0.15,
+      "clientPrice": 27600,
+      "notes": "Candidate for Noelle automated build"
+    },
+    {
+      "description": "Barcode scanning SDK license (annual)",
+      "vendor": "Scandit",
+      "vendorUrl": "https://scandit.com",
+      "vendorCost": 2400,
+      "markup": 0.15,
+      "clientPrice": 2760
+    },
+    {
+      "description": "Cloud hosting setup + first year",
+      "vendor": "Infrastructure",
+      "vendorCost": 1800,
+      "markup": 0.15,
+      "clientPrice": 2070
+    }
+  ],
+  "subtotal": 32430,
+  "total": 32430,
+  "status": "sent",
+  "createdAt": "2026-03-29T14:00:00.000Z",
+  "updatedAt": "2026-03-30T10:00:00.000Z",
+  "expiresAt": "2026-04-06T14:00:00.000Z",
+  "notes": "Simple enough for Noelle to handle the frontend; manual review needed for backend architecture"
+}

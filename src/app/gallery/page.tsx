@@ -310,13 +310,13 @@ export default function Gallery() {
       </div>
 
       {/* Hero Section */}
-      <section className="relative h-[40vh] sm:h-[50vh] text-white">
-        <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-end pb-12">
-          <p className="text-xs uppercase tracking-[0.25em] mb-3" style={{ color: 'oklch(84.1% 0.238 128.85 / 0.7)' }}>A Dark Orchestra Films</p>
-          <h1 className="font-heading text-5xl md:text-7xl font-bold mb-4 text-white">
+      <section className="relative h-[40vh] sm:h-[50vh] text-white pt-16 sm:pt-0">
+        <div className="relative z-10 container mx-auto px-4 h-full flex flex-col justify-end pb-8 sm:pb-12">
+          <p className="text-[10px] sm:text-xs uppercase tracking-[0.2em] sm:tracking-[0.25em] mb-2 sm:mb-3" style={{ color: 'oklch(84.1% 0.238 128.85 / 0.7)' }}>A Dark Orchestra Films</p>
+          <h1 className="font-heading text-4xl sm:text-5xl md:text-7xl font-bold mb-3 sm:mb-4 text-white">
             Gallery
           </h1>
-          <p className="font-body text-lg max-w-2xl text-white/60">
+          <p className="font-body text-base sm:text-lg max-w-2xl text-white/60">
             AI-generated films, visual artwork, and cinematic production stills
           </p>
         </div>
@@ -334,14 +334,14 @@ export default function Gallery() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
             {images.map((image, index) => (
-              <div 
-                key={index} 
-                className="group relative overflow-hidden rounded-2xl card-hover cursor-pointer"
+              <div
+                key={index}
+                className="group relative overflow-hidden rounded-xl sm:rounded-2xl card-hover cursor-pointer"
                 onClick={() => openFullscreen(index)}
               >
-                <div className="relative h-64 md:h-80">
+                <div className="relative h-40 sm:h-64 md:h-80">
                   <Image
                     src={image.src}
                     alt={image.alt}
@@ -368,10 +368,10 @@ export default function Gallery() {
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-8">
             {videos.map((video, index) => (
-              <div key={index} className="group relative overflow-hidden rounded-2xl card-hover">
-                <div className="relative h-80">
+              <div key={index} className="group relative overflow-hidden rounded-xl sm:rounded-2xl card-hover">
+                <div className="relative h-52 sm:h-80">
                   <iframe
                     className="w-full h-full rounded-2xl"
                     src={`https://www.youtube.com/embed/${video.youtubeId}`}

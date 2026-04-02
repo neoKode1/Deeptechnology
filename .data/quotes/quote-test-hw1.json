@@ -1,0 +1,47 @@
+{
+  "id": "quote-test-hw1",
+  "requestId": "sourcing-test-002",
+  "customerName": "Marcus Rivera",
+  "customerEmail": "marcus@techcorp.io",
+  "inquiryType": "Autonomous solutions",
+  "summary": "Warehouse inspection quadruped robot with thermal imaging for facility monitoring",
+  "lineItems": [
+    {
+      "description": "Unitree B2 Industrial Quadruped Robot",
+      "vendor": "Unitree Robotics",
+      "vendorUrl": "https://shop.unitree.com",
+      "vendorCost": 100000,
+      "markup": 0.15,
+      "clientPrice": 115000
+    },
+    {
+      "description": "FLIR Thermal Imaging Payload Module",
+      "vendor": "Teledyne FLIR",
+      "vendorUrl": "https://flir.com",
+      "vendorCost": 8500,
+      "markup": 0.15,
+      "clientPrice": 9775
+    },
+    {
+      "description": "Custom autonomy software integration + 3-month support",
+      "vendor": "Deeptech Engineering",
+      "vendorCost": 35000,
+      "markup": 0.15,
+      "clientPrice": 40250
+    },
+    {
+      "description": "On-site deployment, calibration, and operator training (1 week)",
+      "vendor": "Deeptech Engineering",
+      "vendorCost": 12000,
+      "markup": 0.15,
+      "clientPrice": 13800
+    }
+  ],
+  "subtotal": 178825,
+  "total": 178825,
+  "status": "draft",
+  "createdAt": "2026-03-31T09:00:00.000Z",
+  "updatedAt": "2026-03-31T09:00:00.000Z",
+  "expiresAt": "2026-04-07T09:00:00.000Z",
+  "notes": "Enterprise client - potential for multi-unit deployment. Requires vendor order from Unitree (sales contact)."
+}

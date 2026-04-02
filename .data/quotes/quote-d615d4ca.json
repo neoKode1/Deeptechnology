@@ -1,0 +1,40 @@
+{
+  "id": "quote-d615d4ca",
+  "requestId": "email-test-001",
+  "customerName": "Chad Neo",
+  "customerEmail": "1deeptechnology@gmail.com",
+  "inquiryType": "Software solutions",
+  "summary": "Custom AI-powered content management platform with automated video transcription, smart tagging, and analytics dashboard",
+  "lineItems": [
+    {
+      "description": "Full-stack web application (Next.js + Supabase) — 6 week build",
+      "vendor": "Deep Tech Engineering",
+      "vendorCost": 18000,
+      "markup": 0.15,
+      "clientPrice": 20700,
+      "notes": "Includes admin dashboard and API layer"
+    },
+    {
+      "description": "AI transcription integration (Whisper API)",
+      "vendor": "OpenAI",
+      "vendorUrl": "https://openai.com",
+      "vendorCost": 1200,
+      "markup": 0.1,
+      "clientPrice": 1320
+    },
+    {
+      "description": "Cloud infrastructure setup + 12-month hosting",
+      "vendor": "Infrastructure",
+      "vendorCost": 2400,
+      "markup": 0.15,
+      "clientPrice": 2760
+    }
+  ],
+  "subtotal": 24780,
+  "total": 24780,
+  "status": "sent",
+  "createdAt": "2026-04-02T16:18:45.307Z",
+  "updatedAt": "2026-04-02T16:18:45.335Z",
+  "expiresAt": "2026-04-09T16:18:45.307Z",
+  "notes": "Email delivery test"
+}

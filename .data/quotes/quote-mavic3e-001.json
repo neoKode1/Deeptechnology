@@ -1,0 +1,44 @@
+{
+  "id": "quote-mavic3e-001",
+  "requestId": "req-mavic3e-001",
+  "customerName": "Enterprise Client",
+  "customerEmail": "procurement@deeptech.com",
+  "inquiryType": "Autonomous solutions",
+  "summary": "DJI Mavic 3 Enterprise — Compact Drone Kit",
+  "lineItems": [
+    {
+      "description": "DJI Mavic 3E Thermal Edition",
+      "vendor": "DJI Enterprise",
+      "vendorUrl": "https://www.dji.com/mavic-3-enterprise",
+      "vendorCost": 4509,
+      "markup": 0.15,
+      "clientPrice": 5185.35,
+      "notes": "56× zoom, thermal, 45-min flight"
+    },
+    {
+      "description": "RC Pro Enterprise Controller",
+      "vendor": "DJI Enterprise",
+      "vendorUrl": "https://www.dji.com",
+      "vendorCost": 1199,
+      "markup": 0.15,
+      "clientPrice": 1378.85,
+      "notes": "5.5-inch screen, O3 transmission"
+    },
+    {
+      "description": "Fly More Kit (3 batteries + hub + case)",
+      "vendor": "DJI Enterprise",
+      "vendorUrl": "https://www.dji.com",
+      "vendorCost": 899,
+      "markup": 0.15,
+      "clientPrice": 1033.85,
+      "notes": "3× flight capacity for field ops"
+    }
+  ],
+  "subtotal": 7598.05,
+  "total": 7598.05,
+  "status": "sent",
+  "createdAt": "2026-04-02T19:06:00.000Z",
+  "updatedAt": "2026-04-02T19:06:05.000Z",
+  "expiresAt": "2026-04-09T19:06:00.000Z",
+  "notes": "Budget enterprise drone — mapping, inspection, survey"
+}

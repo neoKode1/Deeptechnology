@@ -70,10 +70,10 @@ function CheckoutSuccessContent() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             {quoteId && (
               <Link
-                href={`/quote/${quoteId}`}
+                href={`/orders/${quoteId}`}
                 className="inline-flex items-center gap-2 border border-[#ccc] text-[#111] rounded-none px-6 py-3 text-sm font-medium hover:border-[#111] transition-colors font-manrope"
               >
-                View Order Details <ArrowRight className="w-4 h-4" />
+                Track Your Order <ArrowRight className="w-4 h-4" />
               </Link>
             )}
             <Link

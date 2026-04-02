@@ -1,0 +1,44 @@
+{
+  "id": "quote-skydio-001",
+  "requestId": "req-skydio-001",
+  "customerName": "Enterprise Client",
+  "customerEmail": "procurement@deeptech.com",
+  "inquiryType": "Autonomous solutions",
+  "summary": "Skydio X10 Autonomous Drone — Dual Kit",
+  "lineItems": [
+    {
+      "description": "Skydio X10 Enterprise × 2",
+      "vendor": "Skydio",
+      "vendorUrl": "https://www.skydio.com",
+      "vendorCost": 34600,
+      "markup": 0.15,
+      "clientPrice": 39790,
+      "notes": "AI autonomy, 40-min flight, IP55, ~$17,300/unit"
+    },
+    {
+      "description": "Skydio Dock — Charging Station",
+      "vendor": "Skydio",
+      "vendorUrl": "https://www.skydio.com",
+      "vendorCost": 12000,
+      "markup": 0.15,
+      "clientPrice": 13800,
+      "notes": "Remote launch/land, weatherproof"
+    },
+    {
+      "description": "Skydio Cloud — 12mo License",
+      "vendor": "Skydio",
+      "vendorUrl": "https://www.skydio.com",
+      "vendorCost": 4800,
+      "markup": 0.15,
+      "clientPrice": 5520,
+      "notes": "Fleet management, 3D scans, analytics"
+    }
+  ],
+  "subtotal": 59110,
+  "total": 59110,
+  "status": "sent",
+  "createdAt": "2026-04-02T19:05:00.000Z",
+  "updatedAt": "2026-04-02T19:05:05.000Z",
+  "expiresAt": "2026-04-09T19:05:00.000Z",
+  "notes": "American-made autonomous drone — inspection, security"
+}

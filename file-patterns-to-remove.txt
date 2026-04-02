@@ -1,9 +1,0 @@
-\.mp4$
-\.mov$
-\.avi$
-\.wmv$
-\.flv$
-\.webm$
-media/images/
-media/videos/
-public/media/images/ 

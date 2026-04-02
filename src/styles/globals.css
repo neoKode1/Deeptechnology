@@ -149,10 +149,16 @@
 
   @media (max-width: 768px) {
     .mega-title {
-      font-size: clamp(2.875rem, 8vw, 8rem);
+      font-size: clamp(2.5rem, 10vw, 5rem);
       line-height: 0.9;
       white-space: normal;
       word-break: break-word;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .mega-title {
+      font-size: clamp(2rem, 9vw, 3.5rem);
     }
   }
 

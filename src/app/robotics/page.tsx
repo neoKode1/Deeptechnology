@@ -115,21 +115,23 @@ export default function RoboticsDivisionHome() {
       <SoftDevHeader />
 
       {/* ── HERO ── */}
-      <section className="relative w-full h-[100svh] flex flex-col justify-end overflow-hidden">
+      <section className="relative w-full h-[100svh] flex flex-col justify-start sm:justify-end overflow-hidden">
         {/* Bottom gradient so text stays legible */}
         <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/20 to-transparent pointer-events-none" />
 
-        <div className="relative z-10 px-6 md:px-12 lg:px-20 pb-16 md:pb-24 max-w-[82rem] mx-auto w-full">
+        <div className="relative z-10 px-6 md:px-12 lg:px-20 pt-24 sm:pt-0 pb-8 sm:pb-16 md:pb-24 max-w-[82rem] mx-auto w-full">
+          {/* Frosted backdrop on mobile so text stays readable over robot */}
+          <div className="sm:bg-transparent bg-white/70 backdrop-blur-md sm:backdrop-blur-none rounded-2xl sm:rounded-none p-5 sm:p-0 -mx-1 sm:mx-0">
           <p className="text-black/40 text-xs tracking-widest uppercase mb-6 font-manrope">
             Deeptech · Robotics Division
           </p>
-          <h1 className="font-manrope font-semibold text-[2.25rem] sm:text-[3.5rem] md:text-[6.5rem] leading-[1.02] tracking-tighter text-black">
+          <h1 className="font-manrope font-semibold text-[2.25rem] sm:text-[3.5rem] md:text-[6.5rem] leading-[1.02] tracking-tighter text-black drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)]">
             The right deployment
           </h1>
-          <h1 className="font-manrope font-semibold text-[2.25rem] sm:text-[3.5rem] md:text-[6.5rem] leading-[1.02] tracking-tighter text-black/25">
+          <h1 className="font-manrope font-semibold text-[2.25rem] sm:text-[3.5rem] md:text-[6.5rem] leading-[1.02] tracking-tighter text-black/30 drop-shadow-[0_1px_2px_rgba(255,255,255,0.6)]">
             for the right environment.
           </h1>
-          <p className="mt-6 text-base md:text-lg text-black/50 max-w-xl leading-relaxed font-manrope font-light">
+          <p className="mt-6 text-base md:text-lg text-black/60 max-w-xl leading-relaxed font-manrope font-light">
             We read your space — terrain, traffic, payload, conditions — then source the right robotics platform for it.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
@@ -146,6 +148,7 @@ export default function RoboticsDivisionHome() {
               Start a Consultation
             </a>
           </div>
+          </div>{/* end frosted backdrop */}
         </div>
       </section>
 
@@ -163,31 +166,31 @@ export default function RoboticsDivisionHome() {
 
 
       {/* ── ABOUT ── */}
-      <section id="about" className="px-6 md:px-12 lg:px-20 py-24 max-w-[82rem] mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-start">
+      <section id="about" className="px-4 sm:px-6 md:px-12 lg:px-20 py-16 sm:py-24 max-w-[82rem] mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 sm:gap-16 items-start">
           <div>
-            <p className="text-xs tracking-widest uppercase mb-4 font-manrope text-neutral-400">Robotics Division</p>
-            <h2 className="font-manrope text-4xl md:text-5xl font-semibold tracking-tight text-neutral-900 mb-6">
-              We read your environment first,<br />then source the right machine.
+            <p className="text-[10px] sm:text-xs tracking-widest uppercase mb-3 sm:mb-4 font-manrope text-neutral-400">Robotics Division</p>
+            <h2 className="font-manrope text-2xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-neutral-900 mb-4 sm:mb-6">
+              We read your environment first,<br className="hidden sm:block" /> then source the right machine.
             </h2>
-            <p className="text-lg leading-relaxed mb-4 text-neutral-600">
+            <p className="text-base sm:text-lg leading-relaxed mb-4 text-neutral-600">
               Every environment has its own rules — terrain, foot traffic, payload weight, weather exposure, customer proximity. The wrong robot in the wrong space fails. We source the best autonomous solutions for your environment.
             </p>
-            <p className="text-base leading-relaxed text-neutral-500">
+            <p className="text-sm sm:text-base leading-relaxed text-neutral-500">
               We are not tied to any brand or platform. We assess your specific conditions, cross-reference the full hardware market, and integrate the system — drone, bot, or AMR — that is engineered for exactly where you need it to operate.
             </p>
           </div>
           {/* Stat grid */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-2 gap-3 sm:gap-4">
             {[
               ['Environment-First', 'Our methodology'],
               ['Vendor-Agnostic', 'No manufacturer bias'],
               ['6+', 'Environment types deployed'],
               ['End-to-End', 'Assess · Source · Integrate'],
             ].map(([stat, label]) => (
-              <div key={label} className="p-6 rounded-xl border border-neutral-200 bg-white/70 backdrop-blur-md shadow-sm">
-                <div className="font-manrope text-xl font-semibold text-neutral-900 mb-1 leading-tight">{stat}</div>
-                <div className="text-sm text-neutral-500">{label}</div>
+              <div key={label} className="p-4 sm:p-6 rounded-xl border border-neutral-200 bg-white/70 backdrop-blur-md shadow-sm">
+                <div className="font-manrope text-base sm:text-xl font-semibold text-neutral-900 mb-1 leading-tight">{stat}</div>
+                <div className="text-xs sm:text-sm text-neutral-500">{label}</div>
               </div>
             ))}
           </div>
@@ -195,28 +198,28 @@ export default function RoboticsDivisionHome() {
       </section>
 
       {/* ── SERVICES ── */}
-      <section id="services" className="px-6 md:px-12 lg:px-20 py-16 max-w-[82rem] mx-auto border-t border-neutral-200">
-        <p className="text-xs tracking-widest uppercase mb-12 font-manrope text-neutral-400">Capabilities</p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <section id="services" className="px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-16 max-w-[82rem] mx-auto border-t border-neutral-200">
+        <p className="text-[10px] sm:text-xs tracking-widest uppercase mb-8 sm:mb-12 font-manrope text-neutral-400">Capabilities</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-6">
           {SERVICES.map((svc) => (
-            <div key={svc.num} className="p-8 rounded-xl transition-all duration-200 border border-neutral-200 bg-white/70 backdrop-blur-md shadow-sm hover:shadow-md hover:border-neutral-300">
-              <div className="flex items-start justify-between mb-4">
-                <span className="text-sm font-manrope text-neutral-300 font-medium">{svc.num}</span>
-                <div className="flex flex-wrap gap-2 justify-end">
+            <div key={svc.num} className="p-5 sm:p-8 rounded-xl transition-all duration-200 border border-neutral-200 bg-white/70 backdrop-blur-md shadow-sm hover:shadow-md hover:border-neutral-300">
+              <div className="flex items-start justify-between mb-3 sm:mb-4">
+                <span className="text-xs sm:text-sm font-manrope text-neutral-300 font-medium">{svc.num}</span>
+                <div className="flex flex-wrap gap-1.5 sm:gap-2 justify-end">
                   {svc.tags.map((t) => (
-                    <span key={t} className="rounded-full px-3 py-1 text-xs border border-neutral-200 text-neutral-500 bg-neutral-50/80">{t}</span>
+                    <span key={t} className="rounded-full px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-xs border border-neutral-200 text-neutral-500 bg-neutral-50/80">{t}</span>
                   ))}
                 </div>
               </div>
-              <h3 className="font-manrope text-xl font-semibold text-neutral-900 mb-3">{svc.title}</h3>
-              <p className="text-sm leading-relaxed text-neutral-500">{svc.desc}</p>
+              <h3 className="font-manrope text-lg sm:text-xl font-semibold text-neutral-900 mb-2 sm:mb-3">{svc.title}</h3>
+              <p className="text-xs sm:text-sm leading-relaxed text-neutral-500">{svc.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ── DELIVERY SYSTEMS ── */}
-      <section id="delivery-systems" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
+      <section id="delivery-systems" className="px-4 sm:px-6 md:px-12 lg:px-20 py-14 sm:py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 md:gap-8 items-start">
           {/* Left: description card */}
           <div className="lg:sticky lg:top-24 p-6 rounded-xl border border-neutral-200 bg-white/70 backdrop-blur-md shadow-sm">
@@ -254,7 +257,7 @@ export default function RoboticsDivisionHome() {
       </section>
 
       {/* ── HUMANOID ROBOTICS COLLAGE ── */}
-      <section id="humanoid-systems" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
+      <section id="humanoid-systems" className="px-4 sm:px-6 md:px-12 lg:px-20 py-14 sm:py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
         <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-400">Humanoid Robotics</p>
         <p className="text-neutral-500 text-sm max-w-lg leading-relaxed mb-12">
           Bipedal and humanoid systems designed for environments built around people — retail floors, hospitality, and customer-facing operations.
@@ -336,7 +339,7 @@ export default function RoboticsDivisionHome() {
       </section>
 
       {/* ── FLIGHT DRONES COLLAGE ── */}
-      <section id="flight-drones" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
+      <section id="flight-drones" className="px-4 sm:px-6 md:px-12 lg:px-20 py-14 sm:py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
         <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-400">Aerial Delivery Systems</p>
         <p className="text-neutral-500 text-sm max-w-lg leading-relaxed mb-12">
           UAV systems for direct delivery — suburban neighborhoods, campuses, and short flight corridors where ground routing falls short.
@@ -387,7 +390,7 @@ export default function RoboticsDivisionHome() {
       </section>
 
       {/* ── FORKLIFT BOTS COLLAGE ── */}
-      <section id="forklift-bots" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
+      <section id="forklift-bots" className="px-4 sm:px-6 md:px-12 lg:px-20 py-14 sm:py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
         <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-400">Warehouse Forklift &amp; Sorting Bots</p>
         <p className="text-neutral-500 text-sm max-w-lg leading-relaxed mb-12">
           Autonomous forklift and sorting systems for pallet movement, stacking, and high-throughput fulfillment — no driver required.
@@ -458,7 +461,7 @@ export default function RoboticsDivisionHome() {
       </section>
 
       {/* ── FOOTER ── */}
-      <footer className="px-6 md:px-12 lg:px-20 py-12 max-w-[82rem] mx-auto border-t border-neutral-200">
+      <footer className="px-4 sm:px-6 md:px-12 lg:px-20 py-10 sm:py-12 max-w-[82rem] mx-auto border-t border-neutral-200">
         <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-neutral-400">
           <div>© {new Date().getFullYear()} Deeptech Robotics. All rights reserved.</div>
           <div className="flex gap-6">

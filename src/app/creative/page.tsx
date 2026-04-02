@@ -11,6 +11,29 @@ import videoCamIcon from '@iconify/icons-mdi/video';
 import SoftDevHeader from '@/components/SoftDevHeader';
 import CreativeCanvas from '@/components/CreativeCanvas';
 
+/* ── Generative AI models marquee ── */
+const AI_MODELS_ROW1 = [
+  // Video models
+  'Luma Dream Machine', 'Luma Ray2', 'Runway Gen-4', 'Kling 2.0', 'Google Veo 3',
+  'Pika 2.0', 'HailuoAI MiniMax', 'Sora', 'Wan (Alibaba)', 'Vidu',
+  'Genmo Mochi', 'Hotshot', 'Morph Studio', 'Haiper',
+  // Duplicate for seamless loop
+  'Luma Dream Machine', 'Luma Ray2', 'Runway Gen-4', 'Kling 2.0', 'Google Veo 3',
+  'Pika 2.0', 'HailuoAI MiniMax', 'Sora', 'Wan (Alibaba)', 'Vidu',
+  'Genmo Mochi', 'Hotshot', 'Morph Studio', 'Haiper',
+];
+const AI_MODELS_ROW2 = [
+  // Image models
+  'Midjourney', 'DALL·E 3', 'Stable Diffusion XL', 'Flux Pro', 'Ideogram',
+  'Leonardo AI', 'Adobe Firefly', 'Playground',
+  // Audio / Music models
+  'ElevenLabs', 'Suno', 'Udio',
+  // Duplicate for seamless loop
+  'Midjourney', 'DALL·E 3', 'Stable Diffusion XL', 'Flux Pro', 'Ideogram',
+  'Leonardo AI', 'Adobe Firefly', 'Playground',
+  'ElevenLabs', 'Suno', 'Udio',
+];
+
 /**
  * Creative Division home — A Dark Orchestra Films.
  * This is the original film/multimedia content, now accessible
@@ -160,49 +183,49 @@ export default function CreativeDivisionHome() {
       <div className="min-h-screen overflow-x-hidden text-white">
         <SoftDevHeader />
         {/* Hero Section */}
-        <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
+        <section className="relative min-h-screen flex items-end sm:items-center justify-center overflow-hidden pt-24 sm:pt-0 pb-12 sm:pb-0">
           {/* Subtle vignette so text stays readable */}
           <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/60" />
 
-        <div className="relative z-10 container mx-auto px-4">
+        <div className="relative z-10 container mx-auto px-4 sm:px-6">
           <div className="w-full">
-            <div className="mb-8">
+            <div className="mb-6 sm:mb-8">
               <h1 className="mega-title font-heading font-black text-red-500/70 leading-none text-left" style={{ textShadow: '0 0 30px rgba(239, 68, 68, 0.8)' }}>
                 A DARK<br />ORCHESTRA
               </h1>
             </div>
 
-            <p className="font-body text-base sm:text-lg md:text-xl text-white/70 mb-8 sm:mb-12 max-w-3xl leading-relaxed px-4 text-left">
+            <p className="font-body text-sm sm:text-lg md:text-xl text-white/70 mb-6 sm:mb-12 max-w-3xl leading-relaxed text-left">
               Revolutionary multimedia AI film company creating cutting-edge content through artificial intelligence.
               Created by The AI Visionary Filmmaker Chad Neo.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-6 items-start mb-16 px-4">
-              <Link href="/about" className="button-primary group flex items-center space-x-2">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 items-start mb-10 sm:mb-16">
+              <Link href="/about" className="button-primary group flex items-center space-x-2 text-sm sm:text-base">
                 <span>Discover Our Vision</span>
-                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" />
+                <ArrowRight className="w-4 h-4 sm:w-5 sm:h-5 group-hover:translate-x-1 transition-transform duration-300" />
               </Link>
-              <Link href="/gallery" className="button-secondary group flex items-center space-x-2">
-                <Icon icon={videoCamIcon} width={20} height={20} />
+              <Link href="/gallery" className="button-secondary group flex items-center space-x-2 text-sm sm:text-base">
+                <Icon icon={videoCamIcon} width={18} height={18} />
                 <span>View Gallery</span>
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl px-4">
-              <div className="glass-effect rounded-lg p-6 text-center">
-                <Icon icon={videoCamIcon} width={32} height={32} className="mx-auto mb-3" style={{ color: 'oklch(84.1% 0.238 128.85)' }} />
-                <div className="font-heading text-2xl font-bold text-white mb-1">{ytStats ? fmt(ytStats.viewCount) : '—'}</div>
-                <div className="font-body text-white/70 text-sm">Total Views</div>
+            <div className="grid grid-cols-3 gap-3 sm:gap-8 max-w-2xl">
+              <div className="glass-effect rounded-lg p-3 sm:p-6 text-center">
+                <Icon icon={videoCamIcon} width={24} height={24} className="mx-auto mb-2 sm:mb-3 w-5 h-5 sm:w-8 sm:h-8" style={{ color: 'oklch(84.1% 0.238 128.85)' }} />
+                <div className="font-heading text-lg sm:text-2xl font-bold text-white mb-1">{ytStats ? fmt(ytStats.viewCount) : '—'}</div>
+                <div className="font-body text-white/70 text-[10px] sm:text-sm">Total Views</div>
               </div>
-              <div className="glass-effect rounded-lg p-6 text-center">
-                <Icon icon={musicNoteIcon} width={32} height={32} className="mx-auto mb-3" style={{ color: 'oklch(84.1% 0.238 128.85)' }} />
-                <div className="font-heading text-2xl font-bold text-white mb-1">{ytStats ? fmt(ytStats.subscriberCount) : '—'}</div>
-                <div className="font-body text-white/70 text-sm">Subscribers</div>
+              <div className="glass-effect rounded-lg p-3 sm:p-6 text-center">
+                <Icon icon={musicNoteIcon} width={24} height={24} className="mx-auto mb-2 sm:mb-3 w-5 h-5 sm:w-8 sm:h-8" style={{ color: 'oklch(84.1% 0.238 128.85)' }} />
+                <div className="font-heading text-lg sm:text-2xl font-bold text-white mb-1">{ytStats ? fmt(ytStats.subscriberCount) : '—'}</div>
+                <div className="font-body text-white/70 text-[10px] sm:text-sm">Subscribers</div>
               </div>
-              <div className="glass-effect rounded-lg p-6 text-center">
-                <Icon icon={movieOpenIcon} width={32} height={32} className="mx-auto mb-3" style={{ color: 'oklch(84.1% 0.238 128.85)' }} />
-                <div className="font-heading text-2xl font-bold text-white mb-1">{ytStats ? fmt(ytStats.videoCount) : '—'}</div>
-                <div className="font-body text-white/70 text-sm">Videos</div>
+              <div className="glass-effect rounded-lg p-3 sm:p-6 text-center">
+                <Icon icon={movieOpenIcon} width={24} height={24} className="mx-auto mb-2 sm:mb-3 w-5 h-5 sm:w-8 sm:h-8" style={{ color: 'oklch(84.1% 0.238 128.85)' }} />
+                <div className="font-heading text-lg sm:text-2xl font-bold text-white mb-1">{ytStats ? fmt(ytStats.videoCount) : '—'}</div>
+                <div className="font-body text-white/70 text-[10px] sm:text-sm">Videos</div>
               </div>
             </div>
           </div>
@@ -211,6 +234,41 @@ export default function CreativeDivisionHome() {
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
           <div className="w-6 h-10 border-2 border-white/20 rounded-full flex justify-center">
             <div className="w-1 h-3 bg-white/40 rounded-full mt-2 animate-pulse" />
+          </div>
+        </div>
+      </section>
+
+      {/* ── AI MODELS MARQUEE ── */}
+      <section className="relative z-10 py-12 overflow-hidden border-y border-white/10">
+        <p className="text-center text-xs font-mono tracking-[0.3em] uppercase text-white/30 mb-8">
+          Powered by generative AI
+        </p>
+
+        {/* Row 1 — Video models (scroll left) */}
+        <div className="mb-4 overflow-hidden">
+          <div
+            className="flex whitespace-nowrap"
+            style={{ width: 'max-content', animation: 'marquee-scroll 40s linear infinite' }}
+          >
+            {AI_MODELS_ROW1.map((m, i) => (
+              <span key={i} className="font-manrope text-white/15 text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight px-4 sm:px-6">
+                {m}
+              </span>
+            ))}
+          </div>
+        </div>
+
+        {/* Row 2 — Image & audio models (scroll right) */}
+        <div className="overflow-hidden">
+          <div
+            className="flex whitespace-nowrap"
+            style={{ width: 'max-content', animation: 'marquee-scroll 35s linear infinite reverse' }}
+          >
+            {AI_MODELS_ROW2.map((m, i) => (
+              <span key={i} className="font-manrope text-white/15 text-2xl sm:text-3xl md:text-4xl font-semibold tracking-tight px-4 sm:px-6">
+                {m}
+              </span>
+            ))}
           </div>
         </div>
       </section>
@@ -339,6 +397,59 @@ export default function CreativeDivisionHome() {
           </div>
         </div>
       </section>
+
+      {/* ── FOOTER ── */}
+      <footer className="bg-[#0a0a0a] text-white pt-16 sm:pt-24 pb-8 px-4 sm:px-6 md:px-12 lg:px-20 relative z-10">
+        <div className="max-w-[82rem] mx-auto flex flex-col">
+          <div className="flex flex-col lg:flex-row justify-between items-start gap-10 sm:gap-16 mb-16 sm:mb-24">
+            <div className="flex flex-col gap-6 sm:gap-8 max-w-lg">
+              <h2 className="font-manrope text-[1.5rem] sm:text-[2rem] md:text-[2.5rem] font-medium tracking-tight leading-snug">
+                Let&apos;s create something unforgettable.
+              </h2>
+              <a
+                href="mailto:1deeptechnology@gmail.com"
+                className="inline-flex items-center gap-2 border border-white text-white rounded-full py-2.5 px-4 sm:px-6 hover:bg-white hover:text-[#111] transition-colors w-max group text-xs sm:text-sm"
+              >
+                1deeptechnology@gmail.com
+                <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+              </a>
+            </div>
+
+            <div className="grid grid-cols-2 gap-8 sm:gap-12 lg:gap-24">
+              <div className="flex flex-col gap-6">
+                <h4 className="font-manrope text-lg font-medium">Navigate</h4>
+                <div className="flex flex-col gap-3 text-sm text-[#999]">
+                  <Link href="/" className="hover:text-white transition-colors">Home</Link>
+                  <Link href="/#about" className="hover:text-white transition-colors">About</Link>
+                  <Link href="/#services" className="hover:text-white transition-colors">Services</Link>
+                  <Link href="/software#work" className="hover:text-white transition-colors">Work</Link>
+                  <Link href="/creative" className="hover:text-white transition-colors">Creative Division</Link>
+                </div>
+              </div>
+              <div className="flex flex-col gap-6">
+                <h4 className="font-manrope text-lg font-medium">Connect</h4>
+                <div className="flex flex-col gap-3 text-sm text-[#999]">
+                  <a href="https://x.com/JusChadneo" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Twitter / X</a>
+                  <a href="https://www.instagram.com/a_dark_orchestra/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Instagram</a>
+                  <a href="https://linkedin.com/company/deeptech-ai" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
+                  <a href="https://github.com/neoKode1" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="h-[1px] w-full bg-[#2d2c2c] my-8" />
+
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-[#999]">
+            <div>© {new Date().getFullYear()} Deeptech. All rights reserved.</div>
+            <div className="flex flex-wrap justify-center gap-6">
+              <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+              <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+              <Link href="/" className="hover:text-white transition-colors">Software Division</Link>
+            </div>
+          </div>
+        </div>
+      </footer>
       </div>
     </div>
   );

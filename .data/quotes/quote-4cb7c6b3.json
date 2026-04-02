@@ -1,0 +1,36 @@
+{
+  "id": "quote-4cb7c6b3",
+  "requestId": "req-test-001",
+  "customerName": "Kamasi Mahone",
+  "customerEmail": "kamasi@deeptech.com",
+  "inquiryType": "Autonomous solutions",
+  "summary": "Kiwibot S3 Sidewalk Delivery Robot — 1 unit lease (monthly)",
+  "lineItems": [
+    {
+      "description": "Kiwibot S3 Delivery Robot — Monthly Lease",
+      "vendor": "Kiwibot Inc.",
+      "vendorUrl": "https://www.kiwibot.com",
+      "vendorCost": 780,
+      "markup": 0.15,
+      "clientPrice": 897,
+      "notes": "Includes remote monitoring dashboard"
+    },
+    {
+      "description": "Onboarding & Route Configuration",
+      "vendor": "Kiwibot Inc.",
+      "vendorUrl": "https://www.kiwibot.com",
+      "vendorCost": 250,
+      "markup": 0.15,
+      "clientPrice": 287.5,
+      "notes": "One-time setup fee"
+    }
+  ],
+  "subtotal": 1184.5,
+  "total": 1184.5,
+  "status": "ordered",
+  "createdAt": "2026-04-02T18:00:10.741Z",
+  "updatedAt": "2026-04-02T18:01:54.098Z",
+  "expiresAt": "2026-04-09T18:00:10.741Z",
+  "notes": "First delivery robot pilot — campus deployment\nStripe payment received: pi_3THpYwBch0RxTiGx0RoEE5IF ($1184.50)",
+  "acceptedAt": "2026-04-02T18:01:54.098Z"
+}

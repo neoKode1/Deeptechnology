@@ -31,10 +31,21 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: 'A Dark Orchestra Films - Multimedia AI Film Company',
-  description: 'Revolutionary multimedia AI film company creating cutting-edge content through artificial intelligence, created by visionary filmmaker Chad Neo. Experience the future of filmmaking.',
-  keywords: 'AI film, multimedia, dark orchestra, Chad Neo, artificial intelligence, filmmaking, content creation, videography',
-  authors: [{ name: 'A Dark Orchestra Films' }],
+  title: 'Deep Tech — Software, Robotics & Creative Technology',
+  description: 'A multi-disciplinary technology company building at the intersection of AI and real-world systems. Software development, robotics consulting, and AI-native creative production.',
+  keywords: 'Deep Tech, AI, software development, robotics, automation, creative technology, AI agents, edge compute, Chad Neo',
+  authors: [{ name: 'Deep Tech' }],
+  openGraph: {
+    title: 'Deep Tech',
+    description: 'Software, Robotics & Creative Technology — building at the intersection of AI and real-world systems.',
+    siteName: 'Deep Tech',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Deep Tech',
+    description: 'Software, Robotics & Creative Technology — building at the intersection of AI and real-world systems.',
+  },
 };
 
 export const viewport = {

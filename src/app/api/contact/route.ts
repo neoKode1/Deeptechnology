@@ -1,16 +1,111 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { forwardToNimbus } from '@/lib/nimbus';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
+
+/** Intake fields sent from the conditional form sections */
+interface IntakeFields {
+  environmentType?: string;
+  systemCategory?: string;
+  payloadDescription?: string;
+  terrainSurface?: string;
+  deploymentScale?: string;
+  integrationNeeds?: string[];
+  projectType?: string;
+  techStack?: string;
+  contentType?: string;
+  deliverables?: string;
+  styleReferences?: string;
+  budgetRange?: string;
+  timeline?: string;
+}
+
+/** Build a human-readable summary of intake fields for the email */
+function formatIntakeSummary(inquiry: string, intake: IntakeFields): string {
+  const lines: string[] = [];
+  const add = (label: string, val: string | string[] | undefined) => {
+    if (!val || (Array.isArray(val) && val.length === 0)) return;
+    lines.push(`${label}: ${Array.isArray(val) ? val.join(', ') : val}`);
+  };
+
+  if (inquiry === 'Autonomous solutions') {
+    add('Environment', intake.environmentType);
+    add('System Category', intake.systemCategory);
+    add('Payload', intake.payloadDescription);
+    add('Terrain', intake.terrainSurface);
+    add('Scale', intake.deploymentScale);
+    add('Integrations', intake.integrationNeeds);
+  } else if (inquiry === 'Software solutions') {
+    add('Project Type', intake.projectType);
+    add('Tech Stack', intake.techStack);
+  } else if (inquiry === 'Media solutions') {
+    add('Content Type', intake.contentType);
+    add('Deliverables', intake.deliverables);
+    add('Style References', intake.styleReferences);
+  }
+  add('Budget', intake.budgetRange);
+  add('Timeline', intake.timeline);
+
+  return lines.length > 0 ? lines.join('\n') : '';
+}
+
+/** Build HTML rows for intake fields */
+function formatIntakeHtml(inquiry: string, intake: IntakeFields): string {
+  const rows: string[] = [];
+  const add = (label: string, val: string | string[] | undefined) => {
+    if (!val || (Array.isArray(val) && val.length === 0)) return;
+    const display = Array.isArray(val) ? val.join(', ') : val;
+    rows.push(`
+      <tr>
+        <td style="padding:6px 0;vertical-align:top;">
+          <p style="margin:0;font-size:11px;letter-spacing:0.15em;text-transform:uppercase;color:#999999;font-weight:500;">${label}</p>
+        </td>
+        <td style="padding:6px 0 6px 16px;vertical-align:top;">
+          <p style="margin:0;font-size:14px;color:#111111;font-weight:500;">${display}</p>
+        </td>
+      </tr>`);
+  };
+
+  if (inquiry === 'Autonomous solutions') {
+    add('Environment', intake.environmentType);
+    add('System Category', intake.systemCategory);
+    add('Payload', intake.payloadDescription);
+    add('Terrain', intake.terrainSurface);
+    add('Scale', intake.deploymentScale);
+    add('Integrations', intake.integrationNeeds);
+  } else if (inquiry === 'Software solutions') {
+    add('Project Type', intake.projectType);
+    add('Tech Stack', intake.techStack);
+  } else if (inquiry === 'Media solutions') {
+    add('Content Type', intake.contentType);
+    add('Deliverables', intake.deliverables);
+    add('Style References', intake.styleReferences);
+  }
+  add('Budget', intake.budgetRange);
+  add('Timeline', intake.timeline);
+
+  if (rows.length === 0) return '';
+  return `
+    <tr>
+      <td style="padding:28px 40px 0;">
+        <p style="margin:0 0 12px;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#999999;font-weight:500;">Sourcing Parameters</p>
+        <table width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #eeeeee;padding-top:8px;">
+          ${rows.join('')}
+        </table>
+      </td>
+    </tr>`;
+}
 
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, inquiry, message } = body as {
+    const { name, email, inquiry, message, intake } = body as {
       name: string;
       email: string;
       inquiry: string;
       message: string;
+      intake?: IntakeFields;
     };
 
     if (!name || !email || !inquiry || !message) {
@@ -19,6 +114,9 @@ export async function POST(request: Request) {
         { status: 400 }
       );
     }
+
+    const intakeSummary = intake ? formatIntakeSummary(inquiry, intake) : '';
+    const intakeHtml = intake ? formatIntakeHtml(inquiry, intake) : '';
 
     const timestamp = new Date().toLocaleString('en-US', {
       weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
@@ -71,6 +169,8 @@ export async function POST(request: Request) {
               <p style="margin:0;font-size:15px;color:#111111;font-weight:600;">${inquiry}</p>
             </td>
           </tr>
+
+          ${intakeHtml}
 
           <!-- Divider -->
           <tr>
@@ -128,7 +228,7 @@ export async function POST(request: Request) {
       to: '1deeptechnology@gmail.com',
       replyTo: email,
       subject: `[${inquiry}] New message from ${name}`,
-      text: `From: ${name}\nEmail: ${email}\nInquiry: ${inquiry}\n\n${message}\n\n---\nReceived ${timestamp}`,
+      text: `From: ${name}\nEmail: ${email}\nInquiry: ${inquiry}${intakeSummary ? `\n\nSourcing Parameters:\n${intakeSummary}` : ''}\n\n${message}\n\n---\nReceived ${timestamp}`,
       html: htmlTemplate,
     });
 
@@ -139,6 +239,10 @@ export async function POST(request: Request) {
         { status: 500 }
       );
     }
+
+    /* Fire-and-forget: forward structured data to Nimbus for sourcing */
+    const nimbusRequestId = forwardToNimbus({ name, email, inquiry, message, intake });
+    console.log(`[contact] Nimbus sourcing initiated: ${nimbusRequestId}`);
 
     return NextResponse.json({ success: true, message: 'Message sent!' });
   } catch (err) {

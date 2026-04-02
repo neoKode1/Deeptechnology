@@ -1,0 +1,53 @@
+{
+  "id": "quote-m400-001",
+  "requestId": "req-m400-001",
+  "customerName": "Enterprise Client",
+  "customerEmail": "procurement@deeptech.com",
+  "inquiryType": "Autonomous solutions",
+  "summary": "DJI Matrice 400 — Full Inspection Kit",
+  "lineItems": [
+    {
+      "description": "DJI Matrice 400 Enterprise Drone",
+      "vendor": "DJI Enterprise",
+      "vendorUrl": "https://store.dji.com",
+      "vendorCost": 10450,
+      "markup": 0.15,
+      "clientPrice": 12017.5,
+      "notes": "59-min flight, 6kg payload, IP55"
+    },
+    {
+      "description": "Zenmuse H30T Thermal/Zoom Payload",
+      "vendor": "DJI Enterprise",
+      "vendorUrl": "https://store.dji.com",
+      "vendorCost": 8900,
+      "markup": 0.15,
+      "clientPrice": 10235,
+      "notes": "Wide + zoom + thermal + laser rangefinder"
+    },
+    {
+      "description": "TB100 Battery × 2",
+      "vendor": "DJI Enterprise",
+      "vendorUrl": "https://store.dji.com",
+      "vendorCost": 3784,
+      "markup": 0.15,
+      "clientPrice": 4351.6,
+      "notes": "Hot-swappable, $1,892 each"
+    },
+    {
+      "description": "DJI Care Enterprise Plus — 1yr",
+      "vendor": "DJI Enterprise",
+      "vendorUrl": "https://store.dji.com",
+      "vendorCost": 1200,
+      "markup": 0.15,
+      "clientPrice": 1380,
+      "notes": "Crash/water coverage, 2 replacements"
+    }
+  ],
+  "subtotal": 27984.1,
+  "total": 27984.1,
+  "status": "sent",
+  "createdAt": "2026-04-02T19:04:00.000Z",
+  "updatedAt": "2026-04-02T19:04:05.000Z",
+  "expiresAt": "2026-04-09T19:04:00.000Z",
+  "notes": "Heavy-lift inspection — infrastructure, energy, public safety"
+}
