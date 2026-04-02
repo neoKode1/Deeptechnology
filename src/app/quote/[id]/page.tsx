@@ -252,6 +252,21 @@ function CancelOrderSection({ quote, onCancelled }: { quote: Quote; onCancelled:
   const vendorCostTotal = quote.lineItems.reduce((sum, li) => sum + li.vendorCost, 0);
   const serviceFee = Math.round((quote.total - vendorCostTotal) * 100) / 100;
 
+  // 72-hour cancellation window from payment
+  const CANCEL_WINDOW_MS = 72 * 60 * 60 * 1000;
+  const paidTime = quote.paidAt ? new Date(quote.paidAt).getTime() : Date.now();
+  const deadline = paidTime + CANCEL_WINDOW_MS;
+  const remaining = deadline - Date.now();
+  const windowExpired = remaining <= 0;
+
+  const formatRemaining = (ms: number) => {
+    const hrs = Math.floor(ms / (1000 * 60 * 60));
+    const mins = Math.floor((ms % (1000 * 60 * 60)) / (1000 * 60));
+    if (hrs > 24) return `${Math.floor(hrs / 24)}d ${hrs % 24}h remaining`;
+    if (hrs > 0) return `${hrs}h ${mins}m remaining`;
+    return `${mins}m remaining`;
+  };
+
   async function handleCancel(e: React.FormEvent) {
     e.preventDefault();
     setStatus('cancelling');
@@ -271,6 +286,15 @@ function CancelOrderSection({ quote, onCancelled }: { quote: Quote; onCancelled:
     }
   }
 
+  // Window expired — show contact info instead
+  if (windowExpired) {
+    return (
+      <div className="border border-zinc-800 rounded-lg p-6 mt-6">
+        <p className="text-zinc-500 text-sm">The 72-hour cancellation window has passed. Need to cancel? <Link href="/contact" className="underline text-zinc-300 hover:text-white">Contact us</Link> directly.</p>
+      </div>
+    );
+  }
+
   if (!showConfirm) {
     return (
       <div className="border border-zinc-800 rounded-lg p-6 mt-6">
@@ -278,6 +302,7 @@ function CancelOrderSection({ quote, onCancelled }: { quote: Quote; onCancelled:
           <div>
             <p className="text-zinc-400 text-sm">Need to cancel this order?</p>
             <p className="text-zinc-600 text-xs mt-1">Vendor costs will be refunded. Service fee is non-refundable.</p>
+            <p className="text-amber-500/70 text-xs mt-1">⏱ Cancellation window: {formatRemaining(remaining)}</p>
           </div>
           <button onClick={() => setShowConfirm(true)}
             className="inline-flex items-center gap-2 text-red-400 hover:text-red-300 border border-red-800/50 hover:border-red-700 px-4 py-2 rounded-lg text-sm transition">

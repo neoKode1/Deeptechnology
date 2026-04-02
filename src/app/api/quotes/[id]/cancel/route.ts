@@ -54,6 +54,18 @@ export async function POST(
     );
   }
 
+  // Customer cancellation window: 72 hours from payment (admin can cancel anytime)
+  const CANCEL_WINDOW_MS = 72 * 60 * 60 * 1000; // 72 hours
+  if (!isAdmin && quote.paidAt) {
+    const elapsed = Date.now() - new Date(quote.paidAt).getTime();
+    if (elapsed > CANCEL_WINDOW_MS) {
+      return NextResponse.json(
+        { error: 'The 72-hour cancellation window has passed. Please contact us directly to discuss your options.' },
+        { status: 400 }
+      );
+    }
+  }
+
   if (!reason) {
     return NextResponse.json({ error: 'Cancellation reason is required' }, { status: 400 });
   }
