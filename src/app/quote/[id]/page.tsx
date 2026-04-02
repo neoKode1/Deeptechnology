@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { ArrowLeft, CheckCircle2, Clock, AlertCircle, Package, MessageSquare, Mail } from 'lucide-react';
 import type { Quote } from '@/lib/quotes/types';
 
-const ADMIN_EMAIL = 'info@deeptechnology.com';
 
 type FetchState = 'loading' | 'ready' | 'error' | 'not_found';
 
@@ -96,13 +95,38 @@ function LineItemsBreakdown({ lineItems, total }: { lineItems: Quote['lineItems'
   );
 }
 
-/** Reply / feedback section */
+/** Inline reply form — sends through /api/contact with quote context */
 function ReplySection({ quote }: { quote: Quote }) {
-  const subject = encodeURIComponent(`Re: Quote ${quote.id} — ${quote.inquiryType}`);
-  const body = encodeURIComponent(
-    `Hi Deep Tech team,\n\nRegarding quote ${quote.id} (${fmt(quote.total)}):\n\n[Your message here]\n\nBest,\n${quote.customerName}`
-  );
-  const mailto = `mailto:${ADMIN_EMAIL}?subject=${subject}&body=${body}`;
+  const [open, setOpen] = useState(false);
+  const [replyForm, setReplyForm] = useState({ name: quote.customerName || '', email: quote.customerEmail || '', message: '' });
+  const [replyStatus, setReplyStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
+  const [replyError, setReplyError] = useState('');
+
+  async function handleReplySubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setReplyStatus('sending');
+    setReplyError('');
+    try {
+      const contextMessage = `[Quote Reply — ${quote.id}]\nQuote: ${quote.summary}\nTotal: ${fmt(quote.total)}\n\n${replyForm.message}`;
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: replyForm.name,
+          email: replyForm.email,
+          inquiry: 'Quote reply',
+          message: contextMessage,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.success) throw new Error(data.message || 'Failed to send.');
+      setReplyStatus('sent');
+      setReplyForm(prev => ({ ...prev, message: '' }));
+    } catch (err: unknown) {
+      setReplyStatus('error');
+      setReplyError(err instanceof Error ? err.message : 'Failed to send. Please try again.');
+    }
+  }
 
   return (
     <div className="border border-zinc-800 rounded-lg p-6 mb-8">
@@ -114,10 +138,52 @@ function ReplySection({ quote }: { quote: Quote }) {
         Have questions about this quote? Want to discuss pricing, adjust scope, or negotiate terms?
         Our team is happy to work with you to find the right fit.
       </p>
-      <a href={mailto}
-        className="inline-flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white font-medium px-6 py-3 rounded-lg transition text-sm">
-        <Mail size={16} /> Reply to This Quote
-      </a>
+
+      {!open && replyStatus !== 'sent' && (
+        <button onClick={() => setOpen(true)}
+          className="inline-flex items-center gap-2 bg-zinc-800 hover:bg-zinc-700 text-white font-medium px-6 py-3 rounded-lg transition text-sm">
+          <Mail size={16} /> Reply to This Quote
+        </button>
+      )}
+
+      {replyStatus === 'sent' && (
+        <div className="bg-green-950/30 border border-green-800/40 rounded-lg p-4 text-center">
+          <CheckCircle2 className="mx-auto mb-2 text-green-400" size={24} />
+          <p className="text-green-300 text-sm font-medium">Message sent! We&apos;ll get back to you shortly.</p>
+          <button onClick={() => { setReplyStatus('idle'); setOpen(true); }} className="text-zinc-500 text-xs mt-2 underline hover:text-zinc-300">Send another</button>
+        </div>
+      )}
+
+      {open && replyStatus !== 'sent' && (
+        <form onSubmit={handleReplySubmit} className="mt-4 space-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] uppercase tracking-widest text-zinc-500">Name *</label>
+              <input required value={replyForm.name} onChange={e => setReplyForm(p => ({ ...p, name: e.target.value }))}
+                className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-zinc-200 placeholder:text-zinc-600 outline-none focus:border-zinc-500 transition" placeholder="Your name" />
+            </div>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[10px] uppercase tracking-widest text-zinc-500">Email *</label>
+              <input required type="email" value={replyForm.email} onChange={e => setReplyForm(p => ({ ...p, email: e.target.value }))}
+                className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-zinc-200 placeholder:text-zinc-600 outline-none focus:border-zinc-500 transition" placeholder="you@company.com" />
+            </div>
+          </div>
+          <div className="flex flex-col gap-1.5">
+            <label className="text-[10px] uppercase tracking-widest text-zinc-500">Message *</label>
+            <textarea required rows={4} value={replyForm.message} onChange={e => setReplyForm(p => ({ ...p, message: e.target.value }))}
+              className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-zinc-200 placeholder:text-zinc-600 outline-none focus:border-zinc-500 transition resize-none" placeholder="Your question or feedback about this quote..." />
+          </div>
+          <p className="text-zinc-600 text-xs">Re: Quote {quote.id} — {fmt(quote.total)}</p>
+          {replyStatus === 'error' && <p className="text-red-400 text-sm">{replyError}</p>}
+          <div className="flex items-center gap-3">
+            <button type="submit" disabled={replyStatus === 'sending'}
+              className="inline-flex items-center gap-2 bg-white text-black font-semibold px-6 py-2.5 rounded-lg hover:bg-zinc-200 transition text-sm disabled:opacity-50">
+              {replyStatus === 'sending' ? 'Sending...' : 'Send Message'}
+            </button>
+            <button type="button" onClick={() => setOpen(false)} className="text-zinc-500 text-sm hover:text-zinc-300 transition">Cancel</button>
+          </div>
+        </form>
+      )}
     </div>
   );
 }
