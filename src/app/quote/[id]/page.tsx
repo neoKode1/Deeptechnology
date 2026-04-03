@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { ArrowLeft, CheckCircle2, Clock, AlertCircle, Package, MessageSquare, Mail, Cog, Truck, MapPin, Rocket, Send, XCircle } from 'lucide-react';
+import { ArrowLeft, CheckCircle2, Clock, AlertCircle, Package, MessageSquare, Cog, Truck, MapPin, Rocket, Send, XCircle, RefreshCw, FileText } from 'lucide-react';
 import type { Quote, QuoteMessage } from '@/lib/quotes/types';
 import { FULFILLMENT_STAGES, STAGE_LABELS } from '@/lib/quotes/types';
 
@@ -11,19 +11,20 @@ import { FULFILLMENT_STAGES, STAGE_LABELS } from '@/lib/quotes/types';
 type FetchState = 'loading' | 'ready' | 'error' | 'not_found';
 
 const STATUS_MAP: Record<string, { label: string; color: string; icon: React.ReactNode }> = {
-  draft:          { label: 'Draft',             color: 'text-yellow-400', icon: <Clock size={16} /> },
-  pending_review: { label: 'Under Review',      color: 'text-blue-400',   icon: <Clock size={16} /> },
-  sent:           { label: 'Awaiting Response',  color: 'text-cyan-400',   icon: <Clock size={16} /> },
-  accepted:       { label: 'Accepted',           color: 'text-green-400',  icon: <CheckCircle2 size={16} /> },
-  expired:        { label: 'Expired',            color: 'text-red-400',    icon: <AlertCircle size={16} /> },
-  ordered:        { label: 'Order Confirmed',    color: 'text-green-400',  icon: <Package size={16} /> },
-  procurement:    { label: 'Procurement',        color: 'text-green-400',  icon: <Package size={16} /> },
-  shipped:        { label: 'Shipped',            color: 'text-green-400',  icon: <Package size={16} /> },
-  in_transit:     { label: 'In Transit',         color: 'text-green-400',  icon: <Package size={16} /> },
-  delivered:      { label: 'Delivered',          color: 'text-green-400',  icon: <CheckCircle2 size={16} /> },
-  deployed:       { label: 'Deployed',           color: 'text-green-400',  icon: <CheckCircle2 size={16} /> },
-  cancelled:      { label: 'Cancelled',          color: 'text-red-400',    icon: <AlertCircle size={16} /> },
-  rejected:       { label: 'Declined',           color: 'text-red-400',    icon: <AlertCircle size={16} /> },
+  draft:              { label: 'Draft',                color: 'text-yellow-400', icon: <Clock size={16} /> },
+  pending_review:     { label: 'Under Review',         color: 'text-blue-400',   icon: <Clock size={16} /> },
+  sent:               { label: 'Awaiting Response',    color: 'text-cyan-400',   icon: <Clock size={16} /> },
+  accepted:           { label: 'Accepted',             color: 'text-green-400',  icon: <CheckCircle2 size={16} /> },
+  pending_net_terms:  { label: 'Net Terms Requested',  color: 'text-amber-400',  icon: <FileText size={16} /> },
+  expired:            { label: 'Expired',              color: 'text-red-400',    icon: <AlertCircle size={16} /> },
+  ordered:            { label: 'Order Confirmed',      color: 'text-green-400',  icon: <Package size={16} /> },
+  procurement:        { label: 'Procurement',          color: 'text-green-400',  icon: <Package size={16} /> },
+  shipped:            { label: 'Shipped',              color: 'text-green-400',  icon: <Package size={16} /> },
+  in_transit:         { label: 'In Transit',           color: 'text-green-400',  icon: <Package size={16} /> },
+  delivered:          { label: 'Delivered',            color: 'text-green-400',  icon: <CheckCircle2 size={16} /> },
+  deployed:           { label: 'Deployed',             color: 'text-green-400',  icon: <CheckCircle2 size={16} /> },
+  cancelled:          { label: 'Cancelled',            color: 'text-red-400',    icon: <AlertCircle size={16} /> },
+  rejected:           { label: 'Declined',             color: 'text-red-400',    icon: <AlertCircle size={16} /> },
 };
 
 const fmt = (n: number) =>
@@ -350,20 +351,152 @@ function CancelOrderSection({ quote, onCancelled }: { quote: Quote; onCancelled:
   );
 }
 
-function AcceptSection({ quote, canAccept, isExpired, accepting, onAccept, checkoutError }: {
-  quote: Quote; canAccept: boolean; isExpired: boolean; accepting: boolean; onAccept: () => void; checkoutError?: string;
+function AcceptSection({ quote, canAccept, isExpired, accepting, onAccept, checkoutError, onNetTermsSubmitted }: {
+  quote: Quote; canAccept: boolean; isExpired: boolean; accepting: boolean; onAccept: () => void; checkoutError?: string; onNetTermsSubmitted?: () => void;
 }) {
+  const [tosChecked, setTosChecked] = useState(false);
+  const [showNetTerms, setShowNetTerms] = useState(false);
+  const [netTermsForm, setNetTermsForm] = useState({ companyName: quote.customerName || '', poNumber: '', terms: 'net30' as 'net30' | 'net60', notes: '' });
+  const [netTermsStatus, setNetTermsStatus] = useState<'idle' | 'submitting' | 'done' | 'error'>('idle');
+  const [netTermsError, setNetTermsError] = useState('');
+
+  const isRaaS = quote.billingCycle === 'monthly';
+
+  async function handleNetTermsSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setNetTermsStatus('submitting');
+    setNetTermsError('');
+    try {
+      const res = await fetch(`/api/quotes/${quote.id}/net-terms`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: quote.customerEmail, ...netTermsForm }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Submission failed');
+      setNetTermsStatus('done');
+      onNetTermsSubmitted?.();
+    } catch (err: unknown) {
+      setNetTermsStatus('error');
+      setNetTermsError(err instanceof Error ? err.message : 'Something went wrong');
+    }
+  }
+
   if (canAccept) {
+    if (showNetTerms) {
+      return (
+        <div className="border border-amber-800/40 bg-amber-950/10 rounded-lg p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <FileText size={18} className="text-amber-400" />
+            <h3 className="text-amber-300 font-semibold">Request Net Terms</h3>
+          </div>
+          {netTermsStatus === 'done' ? (
+            <div className="text-center py-4">
+              <CheckCircle2 className="mx-auto mb-2 text-amber-400" size={28} />
+              <p className="text-amber-200 font-medium">Net terms request submitted.</p>
+              <p className="text-zinc-400 text-sm mt-2">Our team will review and respond within 1 business day.</p>
+            </div>
+          ) : (
+            <form onSubmit={handleNetTermsSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] uppercase tracking-widest text-zinc-500">Company Name *</label>
+                  <input required value={netTermsForm.companyName} onChange={e => setNetTermsForm(p => ({ ...p, companyName: e.target.value }))}
+                    className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-zinc-200 placeholder:text-zinc-600 outline-none focus:border-zinc-500 transition" placeholder="Acme Corp" />
+                </div>
+                <div className="flex flex-col gap-1.5">
+                  <label className="text-[10px] uppercase tracking-widest text-zinc-500">PO Number (optional)</label>
+                  <input value={netTermsForm.poNumber} onChange={e => setNetTermsForm(p => ({ ...p, poNumber: e.target.value }))}
+                    className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-zinc-200 placeholder:text-zinc-600 outline-none focus:border-zinc-500 transition" placeholder="PO-2025-001" />
+                </div>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] uppercase tracking-widest text-zinc-500">Terms Requested *</label>
+                <select value={netTermsForm.terms} onChange={e => setNetTermsForm(p => ({ ...p, terms: e.target.value as 'net30' | 'net60' }))}
+                  className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-zinc-200 outline-none focus:border-zinc-500 transition">
+                  <option value="net30">Net-30</option>
+                  <option value="net60">Net-60</option>
+                </select>
+              </div>
+              <div className="flex flex-col gap-1.5">
+                <label className="text-[10px] uppercase tracking-widest text-zinc-500">Additional Notes</label>
+                <textarea rows={2} value={netTermsForm.notes} onChange={e => setNetTermsForm(p => ({ ...p, notes: e.target.value }))}
+                  className="bg-zinc-900 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-zinc-200 placeholder:text-zinc-600 outline-none focus:border-zinc-500 transition resize-none" placeholder="Any context about your billing process..." />
+              </div>
+              {netTermsStatus === 'error' && <p className="text-red-400 text-sm">{netTermsError}</p>}
+              <div className="flex items-center gap-3">
+                <button type="submit" disabled={netTermsStatus === 'submitting'}
+                  className="inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-400 text-black font-semibold px-6 py-2.5 rounded-lg transition text-sm disabled:opacity-50">
+                  {netTermsStatus === 'submitting' ? 'Submitting...' : 'Submit Net Terms Request'}
+                </button>
+                <button type="button" onClick={() => setShowNetTerms(false)} className="text-zinc-500 text-sm hover:text-zinc-300 transition">Cancel</button>
+              </div>
+            </form>
+          )}
+        </div>
+      );
+    }
+
     return (
-      <div className="border border-zinc-800 rounded-lg p-6 text-center">
-        <p className="text-zinc-400 text-sm mb-4">By accepting this quote you agree to proceed. You&apos;ll be redirected to our secure payment page.</p>
-        <p className="text-amber-500/80 text-xs mb-4 border border-amber-800/30 bg-amber-950/20 rounded-md px-3 py-2">⚠️ 72-hour cancellation policy: You may cancel within 72 hours of payment. Vendor costs are refundable; the service fee is non-refundable. See our <a href="/terms" className="underline hover:text-amber-300">Terms of Service</a>.</p>
+      <div className="border border-zinc-800 rounded-lg p-6">
+        {/* RaaS badge */}
+        {isRaaS && (
+          <div className="flex items-center gap-2 mb-4 bg-cyan-950/30 border border-cyan-800/40 rounded-md px-3 py-2 w-fit">
+            <RefreshCw size={14} className="text-cyan-400" />
+            <span className="text-cyan-300 text-xs font-medium tracking-wide">Robot-as-a-Service · Monthly Billing</span>
+          </div>
+        )}
+
+        <p className="text-zinc-400 text-sm mb-4">
+          By accepting this quote you agree to proceed.
+          {isRaaS
+            ? ' Your card will be charged monthly. Cancel anytime within 72 hours of each billing date.'
+            : ' You\'ll be redirected to our secure payment page.'}
+        </p>
+
+        <p className="text-amber-500/80 text-xs mb-4 border border-amber-800/30 bg-amber-950/20 rounded-md px-3 py-2">
+          ⚠️ 72-hour cancellation policy: You may cancel within 72 hours of payment. Vendor costs are refundable; the service fee is non-refundable. See our{' '}
+          <a href="/terms" className="underline hover:text-amber-300">Terms of Service</a>.
+        </p>
+
+        {/* ToS checkbox */}
+        <label className="flex items-start gap-3 mb-5 cursor-pointer group">
+          <input type="checkbox" checked={tosChecked} onChange={e => setTosChecked(e.target.checked)}
+            className="mt-0.5 w-4 h-4 accent-white cursor-pointer flex-shrink-0" />
+          <span className="text-zinc-400 text-xs leading-relaxed group-hover:text-zinc-300 transition">
+            I have read and agree to the{' '}
+            <a href="/terms" className="underline text-zinc-300 hover:text-white" target="_blank" rel="noopener noreferrer">Terms of Service</a>,
+            including the cancellation and refund policy, insurance requirements, and operator responsibilities.
+          </span>
+        </label>
+
         {checkoutError && <p className="text-red-400 text-sm mb-3">{checkoutError}</p>}
-        <button onClick={onAccept} disabled={accepting}
-          className="bg-white text-black font-semibold px-8 py-3 rounded-lg hover:bg-zinc-200 transition disabled:opacity-50">
-          {accepting ? 'Redirecting to payment...' : `Pay ${fmt(quote.total)} — Accept Quote`}
-        </button>
+
+        <div className="flex flex-col sm:flex-row gap-3 items-center">
+          <button onClick={onAccept} disabled={accepting || !tosChecked}
+            className="bg-white text-black font-semibold px-8 py-3 rounded-lg hover:bg-zinc-200 transition disabled:opacity-50 disabled:cursor-not-allowed w-full sm:w-auto text-center">
+            {accepting
+              ? 'Redirecting to payment...'
+              : isRaaS
+                ? `Start Subscription — ${fmt(quote.monthlyTotal ?? quote.total)}/mo`
+                : `Pay ${fmt(quote.total)} — Accept Quote`}
+          </button>
+          <button onClick={() => setShowNetTerms(true)} disabled={!tosChecked}
+            className="inline-flex items-center justify-center gap-2 border border-zinc-700 hover:border-zinc-500 text-zinc-400 hover:text-zinc-200 font-medium px-5 py-3 rounded-lg transition text-sm disabled:opacity-40 disabled:cursor-not-allowed w-full sm:w-auto">
+            <FileText size={15} /> Request Net Terms
+          </button>
+        </div>
         <p className="text-zinc-600 text-xs mt-3">Powered by Stripe · Secure checkout</p>
+      </div>
+    );
+  }
+  if (quote.status === 'pending_net_terms') {
+    return (
+      <div className="border border-amber-800/40 bg-amber-950/10 rounded-lg p-6 text-center">
+        <FileText className="mx-auto mb-2 text-amber-400" size={28} />
+        <p className="text-amber-300 font-medium">Net Terms Request Submitted</p>
+        <p className="text-zinc-400 text-sm mt-2">Our team is reviewing your payment terms request and will respond within 1 business day.</p>
+        <p className="text-zinc-600 text-xs mt-3">Questions? <Link href="/contact" className="underline hover:text-white">Contact us</Link></p>
       </div>
     );
   }
@@ -522,7 +655,7 @@ export default function QuotePage() {
       <ReplySection quote={quote} onMessageSent={refreshQuote} />
 
       {/* Accept / status */}
-      <AcceptSection quote={quote} canAccept={canAccept} isExpired={isExpired} accepting={accepting} onAccept={handleAccept} checkoutError={checkoutError} />
+      <AcceptSection quote={quote} canAccept={canAccept} isExpired={isExpired} accepting={accepting} onAccept={handleAccept} checkoutError={checkoutError} onNetTermsSubmitted={refreshQuote} />
 
       {/* Customer cancel — visible for active fulfillment orders */}
       {isFulfillment && quote.status !== 'cancelled' && (

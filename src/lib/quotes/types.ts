@@ -7,19 +7,20 @@
  */
 
 export type QuoteStatus =
-  | 'draft'           // Nimbus generated, not yet reviewed
-  | 'pending_review'  // Waiting for admin approval
-  | 'sent'            // Approved and emailed to user
-  | 'accepted'        // User clicked "Accept Quote"
-  | 'expired'         // Past expiration window
-  | 'ordered'         // Order placed with vendor / build started
-  | 'procurement'     // Vendor contacted, purchase order submitted
-  | 'shipped'         // Vendor has shipped the hardware
-  | 'in_transit'      // En route to customer / deployment site
-  | 'delivered'       // Hardware received at destination
-  | 'deployed'        // On-site, operational, in the field
-  | 'cancelled'       // Work order cancelled — service fee retained, vendor costs refunded
-  | 'rejected';       // Admin or user declined
+  | 'draft'              // Nimbus generated, not yet reviewed
+  | 'pending_review'     // Waiting for admin approval
+  | 'sent'               // Approved and emailed to user
+  | 'accepted'           // User clicked "Accept Quote"
+  | 'pending_net_terms'  // Customer requested Net-30/60 payment terms
+  | 'expired'            // Past expiration window
+  | 'ordered'            // Order placed with vendor / build started
+  | 'procurement'        // Vendor contacted, purchase order submitted
+  | 'shipped'            // Vendor has shipped the hardware
+  | 'in_transit'         // En route to customer / deployment site
+  | 'delivered'          // Hardware received at destination
+  | 'deployed'           // On-site, operational, in the field
+  | 'cancelled'          // Work order cancelled — service fee retained, vendor costs refunded
+  | 'rejected';          // Admin or user declined
 
 /** Ordered stages for the fulfillment timeline (post-payment) */
 export const FULFILLMENT_STAGES: QuoteStatus[] = [
@@ -41,13 +42,16 @@ export const STAGE_LABELS: Record<string, string> = {
   deployed: 'Deployed',
 };
 
+export type BillingCycle = 'one_time' | 'monthly';
+
 export interface LineItem {
   description: string;
   vendor: string;
   vendorUrl?: string;
   vendorCost: number;
-  markup: number;       // e.g. 0.15 for 15%
-  clientPrice: number;  // vendorCost * (1 + markup)
+  markup: number;        // e.g. 0.15 for 15%
+  clientPrice: number;   // vendorCost * (1 + markup)
+  billingCycle?: BillingCycle; // 'one_time' (default) | 'monthly' for RaaS
   notes?: string;
 }
 
@@ -70,8 +74,10 @@ export interface Quote {
   inquiryType: string;     // 'Software solutions' | 'Autonomous solutions' | 'Media solutions'
   summary: string;         // Brief description of what was sourced
   lineItems: LineItem[];
-  subtotal: number;        // Sum of all clientPrice values
-  total: number;           // Final total (same as subtotal for now; room for tax/fees later)
+  subtotal: number;        // Sum of all one_time clientPrice values
+  total: number;           // Final one-time total (same as subtotal for now)
+  billingCycle?: BillingCycle; // Overall quote billing mode (derived from line items)
+  monthlyTotal?: number;   // Sum of all monthly clientPrice values (RaaS)
   status: QuoteStatus;
   routing?: QuoteRouting;  // Admin triage decision
   messages: QuoteMessage[];// Conversation thread (admin replies, system notifications)
@@ -81,7 +87,9 @@ export interface Quote {
   acceptedAt?: string;     // ISO 8601
   paidAt?: string;         // ISO 8601 — Stripe payment confirmed
   workOrderStartedAt?: string; // ISO 8601 — admin clicked "Start Work Order"
-  stripePaymentIntent?: string; // pi_... from Stripe
+  stripePaymentIntent?: string;  // pi_... from Stripe (one-time)
+  stripeSubscriptionId?: string; // sub_... from Stripe (RaaS monthly)
+  stripeAmountTotal?: number;    // amount_total in cents from Stripe session — refund ceiling
   notes?: string;          // Admin notes
   // Cancellation fields
   cancelledAt?: string;        // ISO 8601
@@ -117,7 +125,8 @@ export interface CreateQuotePayload {
     vendor: string;
     vendorUrl?: string;
     vendorCost: number;
-    markup?: number;       // defaults to 0.15
+    markup?: number;            // defaults to 0.15
+    billingCycle?: BillingCycle; // defaults to 'one_time'
     notes?: string;
   }>;
   notes?: string;

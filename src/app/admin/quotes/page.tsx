@@ -424,8 +424,16 @@ function QuoteRow({ quote: q, busy, onUpdateStatus, onRoute, onReply, onStartWor
           </div>
         </div>
         <div className="text-right shrink-0">
-          <p className="text-lg font-semibold font-mono text-white">{fmt(q.total)}</p>
-          <p className="text-xs text-zinc-500">{q.lineItems.length} item{q.lineItems.length !== 1 ? 's' : ''}</p>
+          {q.billingCycle === 'monthly' ? (
+            <>
+              <p className="text-lg font-semibold font-mono text-cyan-400">{fmt(q.monthlyTotal ?? 0)}<span className="text-xs text-zinc-500 font-normal">/mo</span></p>
+              {q.total > 0 && <p className="text-xs font-mono text-zinc-400">{fmt(q.total)} one-time</p>}
+              <span className="inline-block mt-0.5 text-[10px] px-1.5 py-0.5 rounded bg-cyan-900/50 text-cyan-400 border border-cyan-800/60 uppercase tracking-wider">RaaS</span>
+            </>
+          ) : (
+            <p className="text-lg font-semibold font-mono text-white">{fmt(q.total)}</p>
+          )}
+          <p className="text-xs text-zinc-500 mt-0.5">{q.lineItems.length} item{q.lineItems.length !== 1 ? 's' : ''}</p>
         </div>
       </div>
 

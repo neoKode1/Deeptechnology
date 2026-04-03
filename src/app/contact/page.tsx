@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect, Suspense } from 'react';
+import { useSearchParams } from 'next/navigation';
 import SoftDevHeader from '@/components/SoftDevHeader';
 import AuroraCanvas from '@/components/AuroraCanvas';
 
@@ -32,9 +33,14 @@ const SOFTWARE_PROJECT_TYPES = [
   'IoT / Embedded', 'DevOps / Infrastructure', 'Other',
 ] as const;
 
-const MEDIA_CONTENT_TYPES = [
-  'Music video', 'Commercial / Ad', 'Social media content', 'Brand film',
-  'Motion graphics / VFX', 'Live event coverage', 'Other',
+const INDUSTRIES = [
+  'Manufacturing', 'Logistics & Warehousing', 'Healthcare',
+  'Retail', 'Construction', 'Agriculture',
+  'Defense & Security', 'Food & Beverage', 'Technology', 'Other',
+] as const;
+
+const EMPLOYEE_COUNTS = [
+  '1–10', '11–50', '51–200', '201–1,000', '1,001–5,000', '5,000+',
 ] as const;
 
 interface IntakeFields {
@@ -48,10 +54,6 @@ interface IntakeFields {
   /* Software */
   projectType: string;
   techStack: string;
-  /* Media */
-  contentType: string;
-  deliverables: string;
-  styleReferences: string;
   /* Shared */
   budgetRange: string;
   timeline: string;
@@ -61,15 +63,27 @@ const EMPTY_INTAKE: IntakeFields = {
   environmentType: '', systemCategory: '', payloadDescription: '',
   terrainSurface: '', deploymentScale: '', integrationNeeds: [],
   projectType: '', techStack: '',
-  contentType: '', deliverables: '', styleReferences: '',
   budgetRange: '', timeline: '',
 };
 
-export default function ContactPage() {
-  const [form, setForm] = useState({ name: '', email: '', inquiry: '', message: '' });
+function ContactPageInner() {
+  const [form, setForm] = useState({
+    firstName: '', lastName: '', email: '', phone: '',
+    company: '', jobTitle: '', country: '', industry: '', employeeCount: '',
+    inquiry: '', message: '',
+  });
   const [intake, setIntake] = useState<IntakeFields>({ ...EMPTY_INTAKE });
   const [status, setStatus] = useState<Status>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  const searchParams = useSearchParams();
+
+  /* Pre-fill inquiry type from URL — e.g. /contact?inquiry=robotics */
+  useEffect(() => {
+    const param = searchParams.get('inquiry');
+    if (param === 'robotics') {
+      setForm((prev) => ({ ...prev, inquiry: 'Autonomous solutions' }));
+    }
+  }, [searchParams]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
@@ -103,7 +117,11 @@ export default function ContactPage() {
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.message || 'Something went wrong.');
       setStatus('success');
-      setForm({ name: '', email: '', inquiry: '', message: '' });
+      setForm({
+        firstName: '', lastName: '', email: '', phone: '',
+        company: '', jobTitle: '', country: '', industry: '', employeeCount: '',
+        inquiry: '', message: '',
+      });
       setIntake({ ...EMPTY_INTAKE });
     } catch (err: unknown) {
       setStatus('error');
@@ -158,38 +176,118 @@ export default function ContactPage() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-8 max-w-2xl">
+
+            {/* Row 1: First / Last name */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
               <div className="flex flex-col gap-2">
-                <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Name *</label>
+                <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">First Name *</label>
                 <input
-                  name="name" type="text" required placeholder="Your name"
-                  value={form.name} onChange={handleChange}
+                  name="firstName" type="text" required placeholder="First name"
+                  value={form.firstName} onChange={handleChange}
                   disabled={status === 'loading'} className={inputClass}
                 />
               </div>
               <div className="flex flex-col gap-2">
-                <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Email *</label>
+                <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Last Name *</label>
+                <input
+                  name="lastName" type="text" required placeholder="Last name"
+                  value={form.lastName} onChange={handleChange}
+                  disabled={status === 'loading'} className={inputClass}
+                />
+              </div>
+            </div>
+
+            {/* Row 2: Business Email / Phone */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="flex flex-col gap-2">
+                <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Business Email *</label>
                 <input
                   name="email" type="email" required placeholder="you@company.com"
                   value={form.email} onChange={handleChange}
                   disabled={status === 'loading'} className={inputClass}
                 />
               </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Phone Number</label>
+                <input
+                  name="phone" type="tel" placeholder="+1 (555) 000-0000"
+                  value={form.phone} onChange={handleChange}
+                  disabled={status === 'loading'} className={inputClass}
+                />
+              </div>
             </div>
 
-            <div className="flex flex-col gap-2">
-              <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Inquiry Type *</label>
-              <select
-                name="inquiry" required
-                value={form.inquiry} onChange={handleChange}
-                disabled={status === 'loading'}
-                className={`${inputClass} appearance-none cursor-pointer`}
-              >
-                <option value="" disabled>Select a service…</option>
-                <option value="Software solutions">Software solutions</option>
-                <option value="Autonomous solutions">Autonomous solutions</option>
-                <option value="Media solutions">Media solutions</option>
-              </select>
+            {/* Row 3: Company / Job Title */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="flex flex-col gap-2">
+                <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Company Name *</label>
+                <input
+                  name="company" type="text" required placeholder="Your company"
+                  value={form.company} onChange={handleChange}
+                  disabled={status === 'loading'} className={inputClass}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Job Title *</label>
+                <input
+                  name="jobTitle" type="text" required placeholder="e.g. VP of Operations"
+                  value={form.jobTitle} onChange={handleChange}
+                  disabled={status === 'loading'} className={inputClass}
+                />
+              </div>
+            </div>
+
+            {/* Row 4: Country / Industry */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="flex flex-col gap-2">
+                <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Country *</label>
+                <input
+                  name="country" type="text" required placeholder="e.g. United States"
+                  value={form.country} onChange={handleChange}
+                  disabled={status === 'loading'} className={inputClass}
+                />
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Industry *</label>
+                <select
+                  name="industry" required
+                  value={form.industry} onChange={handleChange}
+                  disabled={status === 'loading'}
+                  className={`${inputClass} appearance-none cursor-pointer`}
+                >
+                  <option value="" disabled>Select industry…</option>
+                  {INDUSTRIES.map((i) => <option key={i} value={i}>{i}</option>)}
+                </select>
+              </div>
+            </div>
+
+            {/* Row 5: Employee Count / Inquiry Type */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="flex flex-col gap-2">
+                <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Number of Employees</label>
+                <select
+                  name="employeeCount"
+                  value={form.employeeCount} onChange={handleChange}
+                  disabled={status === 'loading'}
+                  className={`${inputClass} appearance-none cursor-pointer`}
+                >
+                  <option value="">Please select…</option>
+                  {EMPLOYEE_COUNTS.map((c) => <option key={c} value={c}>{c}</option>)}
+                </select>
+              </div>
+              <div className="flex flex-col gap-2">
+                <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Inquiry Type *</label>
+                <select
+                  name="inquiry" required
+                  value={form.inquiry} onChange={handleChange}
+                  disabled={status === 'loading'}
+                  className={`${inputClass} appearance-none cursor-pointer`}
+                >
+                  <option value="" disabled>Select a service…</option>
+                  <option value="Software solutions">Software solutions</option>
+                  <option value="Autonomous solutions">Autonomous solutions</option>
+                </select>
+              </div>
             </div>
 
             {/* ── Conditional intake fields per inquiry type ── */}
@@ -322,56 +420,6 @@ export default function ContactPage() {
               </div>
             )}
 
-            {form.inquiry === 'Media solutions' && (
-              <div className="flex flex-col gap-4 sm:gap-6 border border-[#eee] rounded-sm p-4 sm:p-6 bg-[#fafafa]">
-                <p className="text-[10px] sm:text-xs uppercase tracking-[0.18em] text-[#999] font-manrope font-semibold">Media Project Details</p>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Content Type</label>
-                    <select name="contentType" value={intake.contentType} onChange={handleIntake} disabled={status === 'loading'} className={`${inputClass} appearance-none cursor-pointer`}>
-                      <option value="">Select type…</option>
-                      {MEDIA_CONTENT_TYPES.map((t) => <option key={t} value={t}>{t}</option>)}
-                    </select>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Deliverables</label>
-                    <input name="deliverables" type="text" placeholder="e.g. 60s hero cut, social edits, BTS" value={intake.deliverables} onChange={handleIntake} disabled={status === 'loading'} className={inputClass} />
-                  </div>
-                </div>
-
-                <div className="flex flex-col gap-2">
-                  <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Style References</label>
-                  <input name="styleReferences" type="text" placeholder="Links or descriptions of visual style / mood" value={intake.styleReferences} onChange={handleIntake} disabled={status === 'loading'} className={inputClass} />
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Budget Range</label>
-                    <select name="budgetRange" value={intake.budgetRange} onChange={handleIntake} disabled={status === 'loading'} className={`${inputClass} appearance-none cursor-pointer`}>
-                      <option value="">Select range…</option>
-                      <option value="Under $5K">Under $5K</option>
-                      <option value="$5K – $25K">$5K – $25K</option>
-                      <option value="$25K – $75K">$25K – $75K</option>
-                      <option value="$75K+">$75K+</option>
-                      <option value="Not sure yet">Not sure yet</option>
-                    </select>
-                  </div>
-                  <div className="flex flex-col gap-2">
-                    <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Timeline</label>
-                    <select name="timeline" value={intake.timeline} onChange={handleIntake} disabled={status === 'loading'} className={`${inputClass} appearance-none cursor-pointer`}>
-                      <option value="">Select timeline…</option>
-                      <option value="ASAP">ASAP</option>
-                      <option value="1-3 months">1–3 months</option>
-                      <option value="3-6 months">3–6 months</option>
-                      <option value="6+ months">6+ months</option>
-                      <option value="Exploratory">Exploratory / no timeline</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-            )}
-
             <div className="flex flex-col gap-2">
               <label className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">Message *</label>
               <textarea
@@ -402,5 +450,13 @@ export default function ContactPage() {
 
       </section>
     </div>
+  );
+}
+
+export default function ContactPage() {
+  return (
+    <Suspense fallback={null}>
+      <ContactPageInner />
+    </Suspense>
   );
 }

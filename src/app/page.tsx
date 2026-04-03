@@ -64,13 +64,6 @@ const SERVICES = [
     desc: 'Environment-first robotics consulting — we assess your space, source vendor-agnostic hardware, and deploy autonomous delivery bots, warehouse AMRs, and aerial systems with full fleet integration into your existing operations.',
     link: '/robotics',
   },
-  {
-    num: '03.',
-    title: 'Creative & Media Production',
-    tags: ['AI Film', 'Music Video', 'Generative Art', 'Audio'],
-    desc: 'AI-native creative studios for film, music, and visual media. We produce cinematic AI films, direct generative music videos, and build production tools that give independent creators full-team capability from a single interface.',
-    link: '/creative',
-  },
 ];
 
 
@@ -265,7 +258,7 @@ export default function SoftwareDivisionHome() {
               <p className="text-xs uppercase tracking-[0.18em] text-[#999] font-medium mb-3">Founder &amp; CTO</p>
               <p className="text-[1.1rem] font-semibold text-[#111] tracking-tight">Chad Neo</p>
               <div className="mt-3 flex flex-col gap-1.5">
-                {['Software Engineer', 'AI Systems Architect', 'Creative Director'].map((role) => (
+                {['Software Engineer', 'AI Systems Architect', 'Robotics Consultant'].map((role) => (
                   <span
                     key={role}
                     className="text-xs uppercase tracking-[0.18em] text-[#999] font-medium"
@@ -288,14 +281,14 @@ export default function SoftwareDivisionHome() {
           {/* Right — bio */}
           <div className="lg:col-span-7 flex flex-col gap-8 pt-2">
             <p className="text-[1.25rem] md:text-[1.5rem] leading-relaxed text-[#222] tracking-tight">
-              A multi-disciplinary technology company operating across software, robotics, and media. We build at the intersection of AI and real-world systems — shipping production infrastructure, deploying autonomous hardware, and producing AI-native creative work. One founder. Three divisions. Everything in-house.
+              A multi-disciplinary technology company operating across software and robotics. We build at the intersection of AI and real-world systems — shipping production infrastructure, deploying autonomous hardware, and integrating intelligent systems into live operations. One founder. Two divisions. Everything in-house.
             </p>
 
             {/* Stat row */}
             <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-4 border-t border-[#e5e5e5]">
               {[
                 { n: '30+', label: 'Public Repos' },
-                { n: '3', label: 'Divisions' },
+                { n: '2', label: 'Divisions' },
                 { n: '∞', label: 'In Production' },
               ].map(({ n, label }) => (
                 <div key={label} className="flex flex-col gap-1">
@@ -333,7 +326,6 @@ export default function SoftwareDivisionHome() {
                   <Link href="/#about" className="hover:text-white transition-colors">About</Link>
                   <Link href="/#services" className="hover:text-white transition-colors">Services</Link>
                   <Link href="/software#work" className="hover:text-white transition-colors">Work</Link>
-                  <Link href="/creative" className="hover:text-white transition-colors">Creative Division</Link>
                 </div>
               </div>
               <div className="flex flex-col gap-6">
@@ -362,7 +354,6 @@ export default function SoftwareDivisionHome() {
             <div className="flex flex-wrap justify-center gap-6">
               <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
               <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
-              <Link href="/creative" className="hover:text-white transition-colors">Creative Division</Link>
             </div>
 
           </div>

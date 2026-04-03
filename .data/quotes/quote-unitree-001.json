@@ -10,9 +10,9 @@
       "description": "Unitree G1 EDU Standard Humanoid",
       "vendor": "Unitree Robotics",
       "vendorUrl": "https://shop.unitree.com",
-      "vendorCost": 43500,
+      "vendorCost": 13500,
       "markup": 0.15,
-      "clientPrice": 50025,
+      "clientPrice": 15525,
       "notes": "127cm, 35kg, 43 DOF, SDK access, ships 2-4 weeks"
     },
     {
@@ -34,8 +34,8 @@
       "notes": "C++/Python SDK setup, ROS 2 integration"
     }
   ],
-  "subtotal": 56508.5,
-  "total": 56508.5,
+  "subtotal": 22008.5,
+  "total": 22008.5,
   "status": "sent",
   "createdAt": "2026-04-02T19:02:00.000Z",
   "updatedAt": "2026-04-02T19:02:05.000Z",

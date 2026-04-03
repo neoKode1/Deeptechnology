@@ -31,23 +31,23 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: 'Deep Tech — Software, Robotics & Creative Technology',
-  description: 'A multi-disciplinary technology company building at the intersection of AI and real-world systems. Software development, robotics consulting, and AI-native creative production.',
-  keywords: 'Deep Tech, AI, software development, robotics, automation, creative technology, AI agents, edge compute, Chad Neo',
+  title: 'Deep Tech — Software & Robotics',
+  description: 'A multi-disciplinary technology company building at the intersection of AI and real-world systems. Software development and robotics consulting.',
+  keywords: 'Deep Tech, AI, software development, robotics, automation, AI agents, edge compute, autonomous systems, Chad Neo',
   authors: [{ name: 'Deep Tech' }],
-  metadataBase: new URL('https://deeptech.varyai.link'),
+  metadataBase: new URL('https://deeptechnologies.dev'),
   openGraph: {
     title: 'Deep Tech',
-    description: 'Software, Robotics & Creative Technology — building at the intersection of AI and real-world systems.',
+    description: 'Software & Robotics — building at the intersection of AI and real-world systems.',
     siteName: 'Deep Tech',
     type: 'website',
-    url: 'https://deeptech.varyai.link',
+    url: 'https://deeptechnologies.dev',
     images: [{ url: '/media/deeptech.png', width: 1200, height: 630, alt: 'Deep Tech' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Deep Tech',
-    description: 'Software, Robotics & Creative Technology — building at the intersection of AI and real-world systems.',
+    description: 'Software & Robotics — building at the intersection of AI and real-world systems.',
     images: ['/media/deeptech.png'],
   },
 };

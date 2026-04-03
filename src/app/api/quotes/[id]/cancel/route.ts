@@ -75,7 +75,13 @@ export async function POST(
     quote.lineItems.reduce((sum, li) => sum + li.vendorCost, 0) * 100
   ) / 100;
   const serviceFee = Math.round((quote.total - vendorCostTotal) * 100) / 100;
-  const refundAmountCents = Math.round(vendorCostTotal * 100);
+  // Use Stripe's snapshotted amount_total as the refund ceiling to prevent over-refunding
+  // if line items were edited post-payment. Falls back to recalculated vendorCost if unavailable.
+  const rawRefundCents = Math.round(vendorCostTotal * 100);
+  const maxRefundCents = quote.stripeAmountTotal ?? null;
+  const refundAmountCents = maxRefundCents
+    ? Math.min(rawRefundCents, maxRefundCents)
+    : rawRefundCents;
 
   const now = new Date().toISOString();
   const cancellation: CancellationRecord = {
@@ -136,7 +142,7 @@ export async function POST(
 
     // Customer email
     await resend.emails.send({
-      from: 'Deep Tech <info@varyai.link>',
+      from: 'Deep Tech <info@deeptechnologies.dev>',
       to: quote.customerEmail,
       replyTo: adminEmail,
       subject: `Order Cancelled — ${quote.summary}`,
@@ -155,9 +161,9 @@ export async function POST(
     });
 
     // Admin notification (especially important for customer-initiated cancellations)
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptech.varyai.link';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptechnologies.dev';
     await resend.emails.send({
-      from: 'Deep Tech <info@varyai.link>',
+      from: 'Deep Tech <info@deeptechnologies.dev>',
       to: adminEmail,
       subject: `🚫 Order Cancelled ${!isAdmin ? '(Customer-Initiated)' : ''} — ${quote.customerName}`,
       html: `<div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#0a0a0a;color:#ccc;border-radius:8px;border:1px solid #222;">

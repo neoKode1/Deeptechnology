@@ -3,7 +3,7 @@ import type { Quote } from './types';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
-const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptech.varyai.link';
+const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptechnologies.dev';
 
 /** Admin email for quote replies */
 export const ADMIN_EMAIL = 'info@deeptechnology.com';
@@ -142,7 +142,7 @@ Questions? Reply to this email.
 
   try {
     const { error } = await resend.emails.send({
-      from: 'Deep Tech <info@varyai.link>',
+      from: 'Deep Tech <info@deeptechnologies.dev>',
       to: quote.customerEmail,
       subject: `Your Deep Tech Quote — ${fmt(quote.total)}`,
       html,

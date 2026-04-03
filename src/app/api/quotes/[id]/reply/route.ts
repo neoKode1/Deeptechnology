@@ -38,9 +38,9 @@ export async function POST(
   // Send email via Resend
   try {
     const { error } = await resend.emails.send({
-      from: 'Deep Tech <info@varyai.link>',
+      from: 'Deep Tech <info@deeptechnologies.dev>',
       to: quote.customerEmail,
-      replyTo: 'info@varyai.link',
+      replyTo: 'info@deeptechnologies.dev',
       subject,
       html: `<div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#111;color:#ccc;border-radius:8px;">
         <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#666;margin:0 0 16px;">Deep Tech</p>

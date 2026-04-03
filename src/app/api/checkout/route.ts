@@ -60,34 +60,79 @@ export async function POST(request: Request) {
     const stripe = new Stripe(stripeKey);
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
-    // Build line items for Stripe Checkout from quote line items
-    const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = quote.lineItems.map((li) => ({
-      price_data: {
-        currency: 'usd',
-        product_data: {
-          name: li.description,
-          description: `via ${li.vendor}${li.notes ? ' — ' + li.notes : ''}`,
+    const isRecurring = quote.billingCycle === 'monthly';
+    const sharedMeta = {
+      quoteId: quote.id,
+      requestId: quote.requestId,
+      customerName: quote.customerName,
+      inquiryType: quote.inquiryType,
+    };
+
+    let session: Stripe.Checkout.Session;
+
+    if (isRecurring) {
+      // ── RaaS / subscription mode ──────────────────────────────────────────
+      // Each monthly line item maps to a recurring price_data.
+      // One-time items (deposits, setup fees) are not charged here — they
+      // should be invoiced separately or added as a setup_intent.
+      const monthlyLineItems = quote.lineItems
+        .filter((li) => li.billingCycle === 'monthly')
+        .map((li): Stripe.Checkout.SessionCreateParams.LineItem => ({
+          price_data: {
+            currency: 'usd',
+            product_data: {
+              name: li.description,
+              description: `via ${li.vendor}${li.notes ? ' — ' + li.notes : ''}`,
+            },
+            unit_amount: Math.round(li.clientPrice * 100),
+            recurring: { interval: 'month' },
+          },
+          quantity: 1,
+        }));
+
+      if (monthlyLineItems.length === 0) {
+        return NextResponse.json(
+          { success: false, message: 'No monthly line items found for subscription checkout.' },
+          { status: 400 }
+        );
+      }
+
+      session = await stripe.checkout.sessions.create({
+        mode: 'subscription',
+        line_items: monthlyLineItems,
+        customer_email: quote.customerEmail,
+        metadata: sharedMeta,
+        subscription_data: { metadata: sharedMeta },
+        success_url: `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}&quote_id=${quote.id}`,
+        cancel_url: `${baseUrl}/quote/${quote.id}?canceled=1`,
+      });
+
+      console.log(`[checkout] Created Stripe subscription session ${session.id} for quote ${quote.id} ($${quote.monthlyTotal}/mo)`);
+    } else {
+      // ── One-time payment mode ─────────────────────────────────────────────
+      const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = quote.lineItems.map((li) => ({
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: li.description,
+            description: `via ${li.vendor}${li.notes ? ' — ' + li.notes : ''}`,
+          },
+          unit_amount: Math.round(li.clientPrice * 100),
         },
-        unit_amount: Math.round(li.clientPrice * 100), // Stripe uses cents
-      },
-      quantity: 1,
-    }));
+        quantity: 1,
+      }));
 
-    const session = await stripe.checkout.sessions.create({
-      mode: 'payment',
-      line_items: lineItems,
-      customer_email: quote.customerEmail,
-      metadata: {
-        quoteId: quote.id,
-        requestId: quote.requestId,
-        customerName: quote.customerName,
-        inquiryType: quote.inquiryType,
-      },
-      success_url: `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}&quote_id=${quote.id}`,
-      cancel_url: `${baseUrl}/quote/${quote.id}?canceled=1`,
-    });
+      session = await stripe.checkout.sessions.create({
+        mode: 'payment',
+        line_items: lineItems,
+        customer_email: quote.customerEmail,
+        metadata: sharedMeta,
+        success_url: `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}&quote_id=${quote.id}`,
+        cancel_url: `${baseUrl}/quote/${quote.id}?canceled=1`,
+      });
 
-    console.log(`[checkout] Created Stripe session ${session.id} for quote ${quote.id} ($${quote.total})`);
+      console.log(`[checkout] Created Stripe payment session ${session.id} for quote ${quote.id} ($${quote.total})`);
+    }
 
     return NextResponse.json({ success: true, url: session.url });
   } catch (err) {

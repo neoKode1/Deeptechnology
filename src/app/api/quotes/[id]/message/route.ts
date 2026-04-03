@@ -47,11 +47,11 @@ export async function POST(
   // Send admin notification
   try {
     const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptech.varyai.link';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptechnologies.dev';
     const fmt = (n: number) => '$' + n.toFixed(2);
 
     await resend.emails.send({
-      from: 'Deep Tech <info@varyai.link>',
+      from: 'Deep Tech <info@deeptechnologies.dev>',
       to: adminEmail,
       replyTo: email,
       subject: `💬 Customer Reply — ${name} (Quote ${id})`,

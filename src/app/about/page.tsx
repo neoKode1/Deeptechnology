@@ -17,39 +17,39 @@ export default function AboutPage() {
   const capabilities = [
     {
       icon: Film,
-      title: 'AI Film Production',
+      title: 'Short Film & Feature',
       description:
-        'Full-length AI-generated films and cinematic shorts using cutting-edge generative video models. From script to screen — every frame crafted by artificial intelligence.',
+        'From concept to final cut — short films, cinematic narratives, and full-length productions that blend traditional camera work, Blender CGI, and AI-generated imagery into a single cohesive vision.',
     },
     {
       icon: Music,
       title: 'Music Videos',
       description:
-        'Over 80 original music videos produced with AI-driven visuals, each pushing the boundary of what\'s possible in generative filmmaking. A catalog that rivals traditional studios.',
+        'Over 80 original music videos produced with AI-driven visuals. Whether it\'s a straightforward performance piece or an abstract cinematic world, every video is story-first.',
     },
     {
       icon: Camera,
-      title: 'Visual Art & Stills',
+      title: 'Image Enhancement & Photography',
       description:
-        'Hyper-detailed AI artwork spanning afrofuturism, sci-fi, character design, and cinematic portraiture. Every piece generated, curated, and art-directed by Chad Neo.',
+        'From a single photo to an entire visual identity — AI enhancement, upscaling, style transfer, and concept art that starts with real images and ends somewhere unexpected.',
     },
     {
       icon: Wand2,
-      title: 'Generative Workflows',
+      title: 'Commercials & Brand Film',
       description:
-        'Proprietary pipelines combining Midjourney, Runway, Kling, Sora, and custom tooling to produce consistent characters, worlds, and narratives across productions.',
+        'Product spots, brand narratives, and promotional content produced at studio quality. AI handles the heavy lifting — traditional production discipline keeps it on-brief.',
     },
     {
       icon: Sparkles,
-      title: 'AI-Assisted Storytelling',
+      title: 'Documentary & Educational',
       description:
-        'Narrative design powered by large language models. World-building, dialogue, and plot structure augmented by AI — then shaped by a human creative vision.',
+        'Documentaries, educational series, and explainer content built with AI narration, archival enhancement, and generative b-roll. Complex subjects made visually compelling.',
     },
     {
       icon: Layers,
-      title: 'Multi-Platform Distribution',
+      title: 'Script to Screen',
       description:
-        'Content engineered for YouTube, streaming platforms, and social media. Optimized thumbnails, SEO-driven titles, and audience analytics built into the creative process.',
+        'Full creative pipeline from script development and storyboarding through final delivery. LLM-assisted writing shaped by a filmmaker\'s instinct — then visualized end-to-end.',
     },
   ];
 
@@ -101,21 +101,22 @@ export default function AboutPage() {
             </div>
             <div className="flex flex-col gap-6 text-white/70 text-base md:text-lg leading-relaxed">
               <p>
-                A Dark Orchestra was born from a simple conviction: the most powerful creative tool
-                ever invented — artificial intelligence — should be in the hands of artists, not
-                just engineers. Chad Neo has been at that intersection since the earliest days of
-                generative media, building an entire cinematic universe with AI.
+                A Dark Orchestra was born from a conviction that runs deeper than technology: the
+                most powerful creative output comes from blending where you&apos;ve been with where
+                you&apos;re going. Chad Neo brings traditional filmmaking instincts — real cameras,
+                Blender CGI, cinematography fundamentals — directly into generative AI pipelines,
+                building a creative process that neither approach could achieve alone.
               </p>
               <p>
                 With over <strong className="text-white">80 original productions</strong>, hundreds
                 of thousands of views, and a growing subscriber base, A Dark Orchestra has proven
-                that AI-generated content can be cinematic, emotionally resonant, and endlessly
-                inventive.
+                that AI-enhanced content can be cinematic, emotionally resonant, and endlessly
+                inventive — across every format from music videos to full documentary productions.
               </p>
               <p>
-                Every frame is generated. Every score is composed. Every story is told through the
-                lens of a filmmaker who treats AI not as a shortcut, but as a collaborator — a
-                dark orchestra of algorithms conducting light, motion, and narrative.
+                Every frame carries intention. Every score is composed. Every story is told through
+                the lens of a filmmaker who treats AI not as a replacement, but as the most
+                powerful collaborator in the room — amplifying craft, not replacing it.
               </p>
             </div>
           </div>

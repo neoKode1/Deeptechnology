@@ -1,5 +1,10 @@
+'use client';
+
+import { useState } from 'react';
 import SoftDevHeader from '@/components/SoftDevHeader';
 import ParallaxRobot from '@/components/ParallaxRobot';
+import RoiCalculator from '@/components/RoiCalculator';
+import RobotInquiryModal, { type RobotInfo } from '@/components/RobotInquiryModal';
 import { ArrowUpRight } from 'lucide-react';
 
 /* ── Marquee items ── */
@@ -103,6 +108,10 @@ const SYSTEMS = [
 ];
 
 export default function RoboticsDivisionHome() {
+  const [selectedRobot, setSelectedRobot] = useState<RobotInfo | null>(null);
+  const openModal = (info: RobotInfo) => setSelectedRobot(info);
+  const closeModal = () => setSelectedRobot(null);
+
   return (
     // Page bg uses the NOMA shader's darkest teal-black tone
     <div className="min-h-screen overflow-x-hidden text-neutral-900" style={{ background: 'transparent' }}>
@@ -142,7 +151,7 @@ export default function RoboticsDivisionHome() {
               Our Services <ArrowUpRight className="w-4 h-4" />
             </a>
             <a
-              href="#contact"
+              href="/contact"
               className="inline-flex items-center gap-2 border border-black/25 text-black/80 rounded-full py-3 px-6 text-sm font-normal hover:border-black/50 hover:text-black transition-colors w-fit"
             >
               Start a Consultation
@@ -231,29 +240,68 @@ export default function RoboticsDivisionHome() {
           {/* Right: image collage */}
           <div className="flex flex-col gap-2">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 sm:grid-rows-2 gap-2" style={{ minHeight: 'clamp(320px, 55vw, 680px)' }}>
-              <div className="sm:row-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '200px' }}>
+              <div className="sm:row-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '200px', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Serve Robotics', name: 'Gen-3 Delivery Robot', price: 'From $25,645 / unit', systemCategory: 'SADRs (Sidewalk Delivery Robots)', image: '/media/Serve-Gen-2-left-and-Gen-3-robots.jpg' })}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/media/Serve-Gen-2-left-and-Gen-3-robots.jpg" alt="Sidewalk delivery robots — two generations side by side" className="robo-img" style={{ objectPosition: 'center' }} />
+                <div className="robo-overlay">
+                  <p className="robo-overlay-vendor">Serve Robotics</p>
+                  <p className="robo-overlay-name">Gen-3 Delivery Robot</p>
+                  <p className="robo-overlay-price">From $25,645 / unit · 3-unit fleet $76,935</p>
+                  <button className="robo-overlay-cta">Get Quote</button>
+                </div>
               </div>
-              <div className="overflow-hidden rounded-lg robo-img-wrap">
+              <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Kiwibot', name: 'S3 Sidewalk Delivery Robot', price: 'From $897 / mo lease', systemCategory: 'SADRs (Sidewalk Delivery Robots)', image: '/media/image.webp' })}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/media/image.webp" alt="Autonomous delivery robot on urban route" className="robo-img" style={{ objectPosition: 'center' }} />
+                <div className="robo-overlay">
+                  <p className="robo-overlay-vendor">Kiwibot</p>
+                  <p className="robo-overlay-name">S3 Sidewalk Delivery Robot</p>
+                  <p className="robo-overlay-price">From $897 / mo lease</p>
+                  <button className="robo-overlay-cta">Get Quote</button>
+                </div>
               </div>
-              <div className="overflow-hidden rounded-lg robo-img-wrap">
+              <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Wing (Google)', name: 'Aerial Delivery UAV', price: 'Contact for Pricing', systemCategory: 'UAVs (Aerial Drones)', image: '/media/file-20180202-162066-1cj3sym.avif' })}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/media/file-20180202-162066-1cj3sym.avif" alt="Aerial delivery drone in flight" className="robo-img" style={{ objectPosition: 'center' }} />
+                <div className="robo-overlay">
+                  <p className="robo-overlay-vendor">Wing (Google)</p>
+                  <p className="robo-overlay-name">Aerial Delivery UAV</p>
+                  <p className="robo-overlay-price">Suburban &amp; Campus · Contact for Pricing</p>
+                  <button className="robo-overlay-cta">Get Quote</button>
+                </div>
               </div>
-              <div className="sm:col-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px' }}>
+              <div className="sm:col-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Segway Robotics', name: 'E1 Outdoor Delivery Robot', price: 'From $11,385 / unit', systemCategory: 'RADRs (Road/Sidewalk Hybrids)', image: '/media/DoorDash_Dot-04__1__1__1_.png' })}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src="/media/DoorDash_Dot-04__1__1__1_.png" alt="Road-capable autonomous delivery bot" className="robo-img" style={{ objectPosition: 'center' }} />
+                <div className="robo-overlay">
+                  <p className="robo-overlay-vendor">Segway Robotics</p>
+                  <p className="robo-overlay-name">E1 Outdoor Delivery Robot</p>
+                  <p className="robo-overlay-price">From $11,385 / unit · 2-unit fleet $22,770</p>
+                  <button className="robo-overlay-cta">Get Quote</button>
+                </div>
               </div>
             </div>
-            <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ height: 'clamp(180px, 22vw, 300px)' }}>
+            <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ height: 'clamp(180px, 22vw, 300px)', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Starship Technologies', name: 'Delivery Robot — Quad Platform', price: 'From $2,000 / mo · Fleet RaaS', systemCategory: 'SADRs (Sidewalk Delivery Robots)', image: '/media/del-bot-quad.webp' })}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/media/del-bot-quad.webp" alt="Autonomous delivery robot — quad platform" className="robo-img" style={{ objectPosition: 'center' }} />
+              <div className="robo-overlay">
+                <p className="robo-overlay-vendor">Starship Technologies</p>
+                <p className="robo-overlay-name">Delivery Robot — Quad Platform</p>
+                <p className="robo-overlay-price">From $2,000 / mo · Fleet RaaS</p>
+                <button className="robo-overlay-cta">Get Quote</button>
+              </div>
             </div>
           </div>
         </div>
+      </section>
+
+      {/* ── ROI CALCULATOR ── */}
+      <section id="roi-calculator" className="px-4 sm:px-6 md:px-12 lg:px-20 py-14 sm:py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
+        <p className="text-[10px] sm:text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-400">Model Your Deployment</p>
+        <p className="text-neutral-500 text-sm max-w-lg leading-relaxed mb-10">
+          Use the calculator below to estimate monthly profit from skid commission earnings against your fleet lease or purchase cost — before you ever talk to us.
+        </p>
+        <RoiCalculator />
       </section>
 
       {/* ── HUMANOID ROBOTICS COLLAGE ── */}
@@ -265,50 +313,80 @@ export default function RoboticsDivisionHome() {
         {/* Row 1: wide hero + 2 stacked | Row 2: 3 equal */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2" style={{ gridTemplateRows: 'auto' }}>
           {/* Large hero — spans 2 cols, 2 rows on md+ */}
-          <div className="md:col-span-2 md:row-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '240px' }}>
+          <div className="md:col-span-2 md:row-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '240px', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Unitree Robotics', name: 'G1 EDU Standard Humanoid', price: 'From $13,500', systemCategory: 'Humanoid / Service Robots', image: '/media/df9f333424ff6cc6164ce421b019fb94_a6f832b0-479e-4294-ac75-6516208b91f4_1296x.webp' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/df9f333424ff6cc6164ce421b019fb94_a6f832b0-479e-4294-ac75-6516208b91f4_1296x.webp"
               alt="Humanoid robot in operational environment"
               className="robo-img"
             />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">Unitree Robotics</p>
+              <p className="robo-overlay-name">G1 EDU Standard Humanoid</p>
+              <p className="robo-overlay-price">From $13,500</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
           </div>
           {/* Top right */}
-          <div className="overflow-hidden rounded-lg robo-img-wrap">
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: '1X Technologies', name: 'NEO Humanoid Robot', price: 'From $23,000 · Early Access', systemCategory: 'Humanoid / Service Robots', image: '/media/1_deeaa3cc-08f5-454f-bfcb-1a477b30adb4_900x.webp' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/1_deeaa3cc-08f5-454f-bfcb-1a477b30adb4_900x.webp"
               alt="Humanoid robot navigating indoor space"
               className="robo-img"
             />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">1X Technologies</p>
+              <p className="robo-overlay-name">NEO Humanoid Robot</p>
+              <p className="robo-overlay-price">From $23,000 · Early Access</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
           </div>
           {/* Bottom right */}
-          <div className="overflow-hidden rounded-lg robo-img-wrap">
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Unitree Robotics', name: 'G1 EDU Standard Humanoid', price: 'From $13,500', systemCategory: 'Humanoid / Service Robots', image: '/media/2_3769ceea-b323-4ebc-a1f4-e27a9624706b_900x.jpg' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/2_3769ceea-b323-4ebc-a1f4-e27a9624706b_900x.jpg"
-              alt="Humanoid robot system detail"
+              alt="Unitree G1 humanoid robot"
               className="robo-img"
             />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">Unitree Robotics</p>
+              <p className="robo-overlay-name">G1 EDU Standard Humanoid</p>
+              <p className="robo-overlay-price">From $13,500</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
           </div>
         </div>
         {/* Row 2: 3 equal-width images */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mt-2" style={{ minHeight: 'clamp(160px, 18vw, 240px)' }}>
-          <div className="overflow-hidden rounded-lg robo-img-wrap">
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Unitree Robotics', name: 'H2 — Advanced Humanoid', price: 'From $29,900', systemCategory: 'Humanoid / Service Robots', image: '/media/3_d9687814-d553-451b-9429-c224a20f3b3a_900x.webp' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/3_d9687814-d553-451b-9429-c224a20f3b3a_900x.webp"
-              alt="Humanoid robot in service environment"
+              alt="Unitree H2 humanoid robot"
               className="robo-img"
             />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">Unitree Robotics</p>
+              <p className="robo-overlay-name">H2 — Advanced Humanoid</p>
+              <p className="robo-overlay-price">From $29,900</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
           </div>
-          <div className="overflow-hidden rounded-lg robo-img-wrap">
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Unitree Robotics', name: 'R1 — Entry Humanoid', price: 'From $4,900 · Pre-sale', systemCategory: 'Humanoid / Service Robots', image: '/media/5_eb271a12-e794-439d-ade5-d60ec009e81a_900x.webp' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/5_eb271a12-e794-439d-ade5-d60ec009e81a_900x.webp"
-              alt="Humanoid robotics platform"
+              alt="Unitree R1 humanoid robot"
               className="robo-img"
             />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">Unitree Robotics</p>
+              <p className="robo-overlay-name">R1 — Entry Humanoid</p>
+              <p className="robo-overlay-price">From $4,900 · Pre-sale</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
           </div>
           <div className="overflow-hidden rounded-lg backdrop-blur-md bg-white/70 border border-neutral-200">
             <div className="w-full h-full flex flex-col items-center justify-center gap-2 p-4 text-center">
@@ -319,21 +397,137 @@ export default function RoboticsDivisionHome() {
         </div>
         {/* Row 3: 2 new humanoid images */}
         <div className="grid grid-cols-2 gap-2 mt-2" style={{ height: 'clamp(180px, 22vw, 300px)' }}>
-          <div className="overflow-hidden rounded-lg robo-img-wrap">
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Fauna Robotics · Amazon', name: 'Sprout Creator Edition', price: 'Contact for Pricing', systemCategory: 'Humanoid / Service Robots', image: '/media/fauna_sprout_3.webp' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/fauna_sprout_3.webp"
-              alt="Humanoid robot — fauna sprout platform"
+              alt="Fauna Robotics Sprout — consumer humanoid, an Amazon company"
               className="robo-img"
             />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">Fauna Robotics · Amazon</p>
+              <p className="robo-overlay-name">Sprout Creator Edition</p>
+              <p className="robo-overlay-price">Consumer Humanoid · Contact for Pricing</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
           </div>
-          <div className="overflow-hidden rounded-lg robo-img-wrap">
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Agility Robotics', name: 'Digit — Warehouse Humanoid', price: 'Enterprise Pricing · RaaS Available', systemCategory: 'Humanoid / Service Robots', image: '/media/amazon1.jpg' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/amazon1.jpg"
-              alt="Humanoid robot in logistics environment"
+              alt="Agility Robotics Digit — Amazon warehouse humanoid"
               className="robo-img"
             />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">Agility Robotics</p>
+              <p className="robo-overlay-name">Digit — Warehouse Humanoid</p>
+              <p className="robo-overlay-price">Enterprise Pricing · RaaS Available</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── TRENDING ROBOTS ── */}
+      <section id="trending" className="px-4 sm:px-6 md:px-12 lg:px-20 py-14 sm:py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
+        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-400">Trending · Most Requested</p>
+        <p className="text-neutral-500 text-sm max-w-lg leading-relaxed mb-12">
+          The most-searched platforms in enterprise robotics right now — from Tesla&apos;s Optimus to Boston Dynamics&apos; full commercial lineup.
+        </p>
+        {/* Row 1: Optimus hero (col-span-2) + Figure 02 + Digit */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2" style={{ gridTemplateRows: 'auto' }}>
+          {/* Tesla Optimus — hero */}
+          <div className="md:col-span-2 md:row-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '240px', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Tesla', name: 'Optimus Gen 2', price: 'Target $20K–$30K · Early Access est. 2026', systemCategory: 'Humanoid / Service Robots', image: '/media/tesla-optimus-auAwknG6.png' })}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/media/tesla-optimus-auAwknG6.png"
+              alt="Tesla Optimus Gen 2 humanoid robot"
+              className="robo-img"
+            />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">Tesla</p>
+              <p className="robo-overlay-name">Optimus Gen 2</p>
+              <p className="robo-overlay-price">Target $20K–$30K · Early Access est. 2026</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
+          </div>
+          {/* Figure 02 */}
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Figure AI', name: 'Figure 02', price: '~$130,000 est. · Enterprise', systemCategory: 'Humanoid / Service Robots', image: '/media/Figure%2002.jpg' })}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/media/Figure%2002.jpg"
+              alt="Figure 02 humanoid robot"
+              className="robo-img"
+            />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">Figure AI</p>
+              <p className="robo-overlay-name">Figure 02</p>
+              <p className="robo-overlay-price">~$130,000 est. · Enterprise Deployment</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
+          </div>
+          {/* Agility Digit */}
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Agility Robotics', name: 'Digit', price: 'Enterprise Pricing · RaaS Available', systemCategory: 'Humanoid / Service Robots', image: '/media/Agility%20Robotics%20Digit.jpg' })}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/media/Agility%20Robotics%20Digit.jpg"
+              alt="Agility Robotics Digit humanoid robot"
+              className="robo-img"
+            />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">Agility Robotics</p>
+              <p className="robo-overlay-name">Digit</p>
+              <p className="robo-overlay-price">Enterprise Pricing · RaaS Available</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
+          </div>
+        </div>
+        {/* Row 2: Boston Dynamics trio */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mt-2" style={{ minHeight: 'clamp(200px, 24vw, 340px)' }}>
+          {/* Spot */}
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Boston Dynamics', name: 'Spot — Quadruped', price: 'From $74,500 · Full kit to $195K', systemCategory: 'Humanoid / Service Robots', image: '/media/Boston%20Dynamics%20Spot.jpg' })}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/media/Boston%20Dynamics%20Spot.jpg"
+              alt="Boston Dynamics Spot quadruped robot"
+              className="robo-img"
+            />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">Boston Dynamics</p>
+              <p className="robo-overlay-name">Spot — Quadruped</p>
+              <p className="robo-overlay-price">From $74,500 · Full kit to $195K</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
+          </div>
+          {/* Atlas HD */}
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Boston Dynamics', name: 'Atlas HD — Humanoid', price: 'Enterprise Pricing · Contact for Quote', systemCategory: 'Humanoid / Service Robots', image: '/media/atlas2-Pre-Launch-Thumbnail.webp' })}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/media/atlas2-Pre-Launch-Thumbnail.webp"
+              alt="Boston Dynamics Atlas HD humanoid robot"
+              className="robo-img"
+            />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">Boston Dynamics</p>
+              <p className="robo-overlay-name">Atlas HD — Humanoid</p>
+              <p className="robo-overlay-price">Enterprise Pricing · Contact for Quote</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
+          </div>
+          {/* Stretch */}
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Boston Dynamics', name: 'Stretch — Warehouse Unloader', price: 'Enterprise Pricing · Contact for Quote', systemCategory: 'Forklift / Sorting Bots', image: '/media/Boston%20Dynamics%20Stretch.jpg' })}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src="/media/Boston%20Dynamics%20Stretch.jpg"
+              alt="Boston Dynamics Stretch warehouse unloading robot"
+              className="robo-img"
+            />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">Boston Dynamics</p>
+              <p className="robo-overlay-name">Stretch — Warehouse Unloader</p>
+              <p className="robo-overlay-price">Enterprise Pricing · Contact for Quote</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
           </div>
         </div>
       </section>
@@ -347,7 +541,7 @@ export default function RoboticsDivisionHome() {
         {/* Top: hero wide + tall right */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2" style={{ gridTemplateRows: 'auto' }}>
           {/* Hero — 2 cols × 2 rows on md+ */}
-          <div className="md:col-span-2 md:row-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '240px' }}>
+          <div className="md:col-span-2 md:row-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '240px', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'DJI Enterprise', name: 'Matrice 400 — Full Inspection Kit', price: 'From $12,017', systemCategory: 'UAVs (Aerial Drones)', image: '/media/drones_hero.webp' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/drones_hero.webp"
@@ -355,9 +549,15 @@ export default function RoboticsDivisionHome() {
               className="robo-img"
               style={{ objectPosition: 'center' }}
             />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">DJI Enterprise</p>
+              <p className="robo-overlay-name">Matrice 400 — Full Inspection Kit</p>
+              <p className="robo-overlay-price">From $12,017 · Zenmuse H30T payload available</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
           </div>
           {/* Top right */}
-          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px' }}>
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'DJI Enterprise', name: 'Mavic 3E Thermal Edition', price: 'From $5,185', systemCategory: 'UAVs (Aerial Drones)', image: '/media/DHL_Drone_Delivery_855666c6-cb8b-4e34-841e-fffe73da729d_1400x.webp' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/DHL_Drone_Delivery_855666c6-cb8b-4e34-841e-fffe73da729d_1400x.webp"
@@ -365,9 +565,15 @@ export default function RoboticsDivisionHome() {
               className="robo-img"
               style={{ objectPosition: 'center' }}
             />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">DJI Enterprise</p>
+              <p className="robo-overlay-name">Mavic 3E Thermal Edition</p>
+              <p className="robo-overlay-price">From $5,185</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
           </div>
           {/* Bottom right */}
-          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px' }}>
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Skydio', name: 'X10 Enterprise · 2-Unit Kit', price: 'From $19,895 / unit · Kit $39,790', systemCategory: 'UAVs (Aerial Drones)', image: '/media/Shutter2U___stock.adobe.com.62c8617809a24.avif' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/Shutter2U___stock.adobe.com.62c8617809a24.avif"
@@ -375,10 +581,16 @@ export default function RoboticsDivisionHome() {
               className="robo-img"
               style={{ objectPosition: 'center' }}
             />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">Skydio</p>
+              <p className="robo-overlay-name">X10 Enterprise · 2-Unit Kit</p>
+              <p className="robo-overlay-price">From $19,895 / unit · Kit $39,790</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
           </div>
         </div>
         {/* Bottom: full-width banner */}
-        <div className="mt-2 overflow-hidden rounded-lg robo-img-wrap" style={{ height: 'clamp(140px, 16vw, 220px)' }}>
+        <div className="mt-2 overflow-hidden rounded-lg robo-img-wrap" style={{ height: 'clamp(140px, 16vw, 220px)', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Fltrex', name: 'Urban Delivery Fleet', price: 'Contact for Pricing', systemCategory: 'UAVs (Aerial Drones)', image: '/media/Fltrex-image3-e1723551928941.jpg' })}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/media/Fltrex-image3-e1723551928941.jpg"
@@ -386,6 +598,12 @@ export default function RoboticsDivisionHome() {
             className="robo-img"
             style={{ objectPosition: 'center' }}
           />
+          <div className="robo-overlay">
+            <p className="robo-overlay-vendor">Fltrex</p>
+            <p className="robo-overlay-name">Urban Delivery Fleet</p>
+            <p className="robo-overlay-price">Enterprise UAV · Contact for Pricing</p>
+            <button className="robo-overlay-cta">Get Quote</button>
+          </div>
         </div>
       </section>
 
@@ -397,7 +615,7 @@ export default function RoboticsDivisionHome() {
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2" style={{ gridTemplateRows: 'auto' }}>
           {/* Hero — 2 cols × 2 rows on md+ */}
-          <div className="md:col-span-2 md:row-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '240px' }}>
+          <div className="md:col-span-2 md:row-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '240px', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Berkshire Grey', name: 'Robotic Sortation System', price: 'Enterprise Pricing · RaaS Available', systemCategory: 'Forklift / Sorting Bots', image: '/media/Robotic-Sorting-as-a-Service-B3A7940.webp' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/Robotic-Sorting-as-a-Service-B3A7940.webp"
@@ -405,9 +623,15 @@ export default function RoboticsDivisionHome() {
               className="robo-img"
               style={{ objectPosition: 'center' }}
             />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">Berkshire Grey</p>
+              <p className="robo-overlay-name">Robotic Sortation System</p>
+              <p className="robo-overlay-price">Enterprise Pricing · RaaS Available</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
           </div>
           {/* Top right */}
-          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px' }}>
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Seegrid', name: 'Palion Lift — Autonomous Forklift', price: 'From $85,000 · Enterprise Fleet', systemCategory: 'Forklift / Sorting Bots', image: '/media/de41b3ea93135793d5885b95c0005b8e.avif' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/de41b3ea93135793d5885b95c0005b8e.avif"
@@ -415,9 +639,15 @@ export default function RoboticsDivisionHome() {
               className="robo-img"
               style={{ objectPosition: 'center' }}
             />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">Seegrid</p>
+              <p className="robo-overlay-name">Palion Lift — Autonomous Forklift</p>
+              <p className="robo-overlay-price">From $85,000 · Enterprise Fleet</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
           </div>
           {/* Bottom right */}
-          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px' }}>
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'MiR Robotics', name: 'MiR600 Pallet AMR', price: 'From $45,000 · Fleet Pricing Available', systemCategory: 'Forklift / Sorting Bots', image: '/media/f6f77a1616e27fc34eb1a81aa7dc6262.jpg' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/f6f77a1616e27fc34eb1a81aa7dc6262.jpg"
@@ -425,10 +655,16 @@ export default function RoboticsDivisionHome() {
               className="robo-img"
               style={{ objectPosition: 'center' }}
             />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">MiR Robotics</p>
+              <p className="robo-overlay-name">MiR600 Pallet AMR</p>
+              <p className="robo-overlay-price">From $45,000 · Fleet Pricing Available</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
           </div>
         </div>
         {/* Bottom: full-width banner */}
-        <div className="mt-2 overflow-hidden rounded-lg robo-img-wrap" style={{ height: 'clamp(140px, 16vw, 220px)' }}>
+        <div className="mt-2 overflow-hidden rounded-lg robo-img-wrap" style={{ height: 'clamp(140px, 16vw, 220px)', cursor: 'pointer' }} onClick={() => openModal({ vendor: '6 River Systems', name: 'Chuck AMR — Fulfillment at Scale', price: 'Enterprise Pricing · Contact for Quote', systemCategory: 'Forklift / Sorting Bots', image: '/media/DELIVERY-AUTOMATION-10-tzjm-jumbo.jpg' })}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/media/DELIVERY-AUTOMATION-10-tzjm-jumbo.jpg"
@@ -436,10 +672,16 @@ export default function RoboticsDivisionHome() {
             className="robo-img"
             style={{ objectPosition: 'center' }}
           />
+          <div className="robo-overlay">
+            <p className="robo-overlay-vendor">6 River Systems</p>
+            <p className="robo-overlay-name">Chuck AMR — Fulfillment at Scale</p>
+            <p className="robo-overlay-price">Enterprise Pricing · Contact for Quote</p>
+            <button className="robo-overlay-cta">Get Quote</button>
+          </div>
         </div>
         {/* Row 3: 2 new warehouse images */}
         <div className="grid grid-cols-2 gap-2 mt-2" style={{ height: 'clamp(180px, 22vw, 300px)' }}>
-          <div className="overflow-hidden rounded-lg robo-img-wrap">
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Locus Robotics', name: 'LocusBot — Warehouse AMR', price: 'From $1,200 / mo · RaaS Available', systemCategory: 'Forklift / Sorting Bots', image: '/media/warehouse.jpeg' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/warehouse.jpeg"
@@ -447,8 +689,14 @@ export default function RoboticsDivisionHome() {
               className="robo-img"
               style={{ objectPosition: 'center' }}
             />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">Locus Robotics</p>
+              <p className="robo-overlay-name">LocusBot — Warehouse AMR</p>
+              <p className="robo-overlay-price">From $1,200 / mo · RaaS Available</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
           </div>
-          <div className="overflow-hidden rounded-lg robo-img-wrap">
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'OTTO Motors', name: 'OTTO 1500 — Heavy Payload AMR', price: 'From $120,000 · Fleet Pricing Available', systemCategory: 'Forklift / Sorting Bots', image: '/media/warehouse2.webp' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/warehouse2.webp"
@@ -456,6 +704,12 @@ export default function RoboticsDivisionHome() {
               className="robo-img"
               style={{ objectPosition: 'center' }}
             />
+            <div className="robo-overlay">
+              <p className="robo-overlay-vendor">OTTO Motors</p>
+              <p className="robo-overlay-name">OTTO 1500 — Heavy Payload AMR</p>
+              <p className="robo-overlay-price">From $120,000 · Fleet Pricing Available</p>
+              <button className="robo-overlay-cta">Get Quote</button>
+            </div>
           </div>
         </div>
       </section>
@@ -471,6 +725,9 @@ export default function RoboticsDivisionHome() {
         </div>
       </footer>
       </div>{/* end content wrapper */}
+
+      {/* ── Robot Inquiry Modal ── */}
+      <RobotInquiryModal robot={selectedRobot} onClose={closeModal} />
     </div>
   );
 }

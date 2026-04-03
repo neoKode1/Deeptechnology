@@ -48,11 +48,20 @@ export async function createQuote(payload: CreateQuotePayload): Promise<Quote> {
       vendorCost: item.vendorCost,
       markup,
       clientPrice,
+      billingCycle: item.billingCycle ?? 'one_time',
       notes: item.notes,
     };
   });
 
-  const subtotal = Math.round(lineItems.reduce((sum, li) => sum + li.clientPrice, 0) * 100) / 100;
+  // Separate one-time vs recurring line items for totals
+  const oneTimeItems = lineItems.filter((li) => li.billingCycle !== 'monthly');
+  const monthlyItems = lineItems.filter((li) => li.billingCycle === 'monthly');
+
+  const subtotal = Math.round(oneTimeItems.reduce((sum, li) => sum + li.clientPrice, 0) * 100) / 100;
+  const monthlyTotal = Math.round(monthlyItems.reduce((sum, li) => sum + li.clientPrice, 0) * 100) / 100;
+
+  // Derive overall billing mode: 'monthly' if any line item is recurring, else 'one_time'
+  const billingCycle: Quote['billingCycle'] = monthlyItems.length > 0 ? 'monthly' : 'one_time';
 
   const quote: Quote = {
     id,
@@ -64,6 +73,8 @@ export async function createQuote(payload: CreateQuotePayload): Promise<Quote> {
     lineItems,
     subtotal,
     total: subtotal,
+    billingCycle,
+    ...(monthlyTotal > 0 && { monthlyTotal }),
     status: 'draft',
     messages: [],
     createdAt: now,
@@ -107,10 +118,12 @@ export async function updateQuote(id: string, payload: UpdateQuotePayload): Prom
 
   if (payload.lineItems) {
     quote.lineItems = payload.lineItems;
-    quote.subtotal = Math.round(
-      quote.lineItems.reduce((sum, li) => sum + li.clientPrice, 0) * 100
-    ) / 100;
+    const oneTimeItems = quote.lineItems.filter((li) => li.billingCycle !== 'monthly');
+    const monthlyItems = quote.lineItems.filter((li) => li.billingCycle === 'monthly');
+    quote.subtotal = Math.round(oneTimeItems.reduce((sum, li) => sum + li.clientPrice, 0) * 100) / 100;
     quote.total = quote.subtotal;
+    quote.monthlyTotal = Math.round(monthlyItems.reduce((sum, li) => sum + li.clientPrice, 0) * 100) / 100;
+    quote.billingCycle = monthlyItems.length > 0 ? 'monthly' : 'one_time';
   }
 
   if (payload.status === 'accepted') {

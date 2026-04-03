@@ -79,9 +79,6 @@ const SoftDevHeader = () => {
             <Link href="/robotics" className={`text-xs transition-colors duration-200 ${isRobotics ? pillActive : pillInactive}`}>
               Robotics
             </Link>
-            <Link href="/creative" className={`text-xs transition-colors duration-200 ${isCreative ? pillActive : pillInactive}`}>
-              Media
-            </Link>
           </div>
 
           {/* Col 3 — Nav links + X icon + hamburger (right-aligned) */}
@@ -134,9 +131,6 @@ const SoftDevHeader = () => {
             </Link>
             <Link href="/robotics" onClick={() => setIsMenuOpen(false)} className={`text-xs transition-colors ${isRobotics ? pillActive : pillInactive}`}>
               Robotics
-            </Link>
-            <Link href="/creative" onClick={() => setIsMenuOpen(false)} className={`text-xs transition-colors ${isCreative ? pillActive : pillInactive}`}>
-              Media
             </Link>
           </div>
           {/* Nav links — always shown on mobile */}

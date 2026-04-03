@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Film, Video, Camera, Sparkles, X, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -9,6 +9,9 @@ import PageLayout from '@/components/PageLayout';
 export default function Gallery() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [slideshowIndex, setSlideshowIndex] = useState(0);
+  const [fadeIn, setFadeIn] = useState(true);
+  const prevIndexRef = useRef<number>(0);
 
   // All available images from the media folder - 4x7 grid (28 images)
   const images = [
@@ -249,6 +252,34 @@ export default function Gallery() {
   ];
 
   // Handle keyboard navigation
+  // Fade-slideshow auto-advance — 2 s crossfade, 8 s hold
+  useEffect(() => {
+    const FADE_MS = 2000;
+    const HOLD_MS = 8000;
+
+    const interval = setInterval(() => {
+      setFadeIn(false);
+      setTimeout(() => {
+        setSlideshowIndex((prev) => {
+          prevIndexRef.current = prev;
+          return (prev + 1) % images.length;
+        });
+        setFadeIn(true);
+      }, FADE_MS);
+    }, HOLD_MS + FADE_MS);
+
+    return () => clearInterval(interval);
+  }, [images.length]);
+
+  const jumpTo = (i: number) => {
+    setFadeIn(false);
+    setTimeout(() => {
+      prevIndexRef.current = slideshowIndex;
+      setSlideshowIndex(i);
+      setFadeIn(true);
+    }, 2000);
+  };
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!isFullscreen) return;
@@ -297,16 +328,29 @@ export default function Gallery() {
 
   return (
     <PageLayout>
-      {/* Fixed full-page background — stays centered as content scrolls */}
+      {/* ── Full-page crossfade slideshow background ── */}
       <div className="fixed inset-0 -z-10">
+        {/* Previous image — always underneath so there's no black gap during fade */}
         <Image
-          src="/media/u3538638467_macro_shot_Womans_face_submerged_in_water_water_s_06064e9a-3e6d-4d72-a737-c3c41fa6d643_0.png"
-          alt="Gallery background"
+          src={images[prevIndexRef.current].src}
+          alt={images[prevIndexRef.current].alt}
           fill
-          className="object-cover object-center"
           priority
+          className="object-cover object-center"
+          style={{ opacity: 1 }}
         />
-        <div className="absolute inset-0 bg-black/55" />
+        {/* Current image — fades in/out on top */}
+        <Image
+          key={slideshowIndex}
+          src={images[slideshowIndex].src}
+          alt={images[slideshowIndex].alt}
+          fill
+          priority
+          className="object-cover object-center"
+          style={{ opacity: fadeIn ? 1 : 0, transition: 'opacity 2s ease-in-out' }}
+        />
+        {/* Dark overlay so content stays readable */}
+        <div className="absolute inset-0 bg-black/60" />
       </div>
 
       {/* Hero Section */}
@@ -322,36 +366,88 @@ export default function Gallery() {
         </div>
       </section>
 
-      {/* Image Gallery Section */}
-      <section className="py-24 bg-black/75 backdrop-blur-sm">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6">
-              <span className="gradient-text">Visual</span> Artwork
-            </h2>
-            <p className="font-body text-xl text-gray-400 max-w-2xl mx-auto">
-              Discover our stunning AI-generated artwork and visual effects that push the boundaries of creativity.
-            </p>
+      {/* ── Slideshow indicator bar ── */}
+      <section className="pt-6 pb-4">
+        <div className="container mx-auto px-4 flex items-center justify-between">
+          {/* category + counter */}
+          <div className="flex items-center gap-3">
+            <span
+              className="text-xs font-manrope uppercase tracking-widest px-3 py-1 rounded-full"
+              style={{ background: 'oklch(84.1% 0.238 128.85 / 0.15)', color: 'oklch(84.1% 0.238 128.85)', border: '1px solid oklch(84.1% 0.238 128.85 / 0.3)' }}
+            >
+              {images[slideshowIndex].category}
+            </span>
+            <span className="text-white/40 text-xs font-manrope">{slideshowIndex + 1} / {images.length}</span>
           </div>
-          
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6">
-            {images.map((image, index) => (
-              <div
-                key={index}
-                className="group relative overflow-hidden rounded-xl sm:rounded-2xl card-hover cursor-pointer"
-                onClick={() => openFullscreen(index)}
-              >
-                <div className="relative h-40 sm:h-64 md:h-80">
-                  <Image
-                    src={image.src}
-                    alt={image.alt}
-                    fill
-                    className="object-cover transition-transform duration-500 group-hover:scale-110"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                </div>
-              </div>
+          {/* dot indicators */}
+          <div className="flex items-center gap-2">
+            {images.map((_, i) => (
+              <button
+                key={i}
+                onClick={() => jumpTo(i)}
+                className="rounded-full transition-all duration-500"
+                style={{
+                  width: i === slideshowIndex ? '20px' : '6px',
+                  height: '6px',
+                  background: i === slideshowIndex ? 'oklch(84.1% 0.238 128.85)' : 'rgba(255,255,255,0.2)',
+                }}
+                aria-label={`Go to image ${i + 1}`}
+              />
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── About — A Dark Orchestra Films ── */}
+      <section className="py-28 relative">
+        <div className="container mx-auto px-4">
+          <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+
+            {/* Left — text */}
+            <div>
+              <p className="text-xs uppercase tracking-[0.25em] mb-4 font-manrope" style={{ color: 'oklch(84.1% 0.238 128.85 / 0.7)' }}>
+                The Media Arm
+              </p>
+              <h2 className="font-heading text-4xl md:text-5xl font-bold mb-6 text-white leading-tight">
+                A Dark Orchestra<br />
+                <span className="gradient-text">Films</span>
+              </h2>
+              <p className="font-body text-white/65 text-lg leading-relaxed mb-6">
+                Since 2022, A Dark Orchestra Films has been at the forefront of AI-powered cinematic production — blending machine imagination with human craft to create work that feels genuinely unprecedented.
+              </p>
+              <p className="font-body text-white/50 text-base leading-relaxed mb-10">
+                From intimate character studies and music videos to sprawling sci-fi narratives, every frame is a collaboration between director intent and generative intelligence. We treat AI not as a shortcut, but as a co-author — one with its own visual language.
+              </p>
+              <div className="grid grid-cols-3 gap-6">
+                {[
+                  { stat: '70+', label: 'Original Productions' },
+                  { stat: '5', label: 'Production Categories' },
+                  { stat: '2022', label: 'Founded' },
+                ].map(({ stat, label }) => (
+                  <div key={label}>
+                    <p className="font-heading text-3xl font-bold mb-1" style={{ color: 'oklch(84.1% 0.238 128.85)' }}>{stat}</p>
+                    <p className="text-white/45 text-xs font-manrope uppercase tracking-wider">{label}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Right — capability cards */}
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { icon: Film,     label: 'AI Films',          desc: 'Narrative short films built entirely with generative AI pipelines.' },
+                { icon: Video,    label: 'Music Videos',      desc: 'Cinematic music video production from concept to final render.' },
+                { icon: Camera,   label: 'Visual Artwork',    desc: 'High-resolution AI photography, concept art, and character design.' },
+                { icon: Sparkles, label: 'Motion Graphics',   desc: 'Animated sequences and title design fused with AI aesthetics.' },
+              ].map(({ icon: Icon, label, desc }) => (
+                <div key={label} className="glass-effect rounded-xl p-5 flex flex-col gap-3">
+                  <Icon className="w-5 h-5" style={{ color: 'oklch(84.1% 0.238 128.85 / 0.8)' }} />
+                  <p className="font-manrope font-semibold text-white text-sm">{label}</p>
+                  <p className="text-white/45 text-xs leading-relaxed">{desc}</p>
+                </div>
+              ))}
+            </div>
+
           </div>
         </div>
       </section>

@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Privacy Policy — Deep Tech',
-  description: 'Privacy policy for deeptech.varyai.link',
+  description: 'Privacy policy for deeptechnologies.dev',
 };
 
 export default function PrivacyPage() {
@@ -56,8 +56,8 @@ export default function PrivacyPage() {
           <section>
             <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">7. Contact</h2>
             <p>For privacy-related inquiries, contact us at{' '}
-              <a href="mailto:info@varyai.link" className="text-[#111] font-medium underline underline-offset-4 hover:text-black">
-                info@varyai.link
+              <a href="mailto:info@deeptechnologies.dev" className="text-[#111] font-medium underline underline-offset-4 hover:text-black">
+                info@deeptechnologies.dev
               </a>.
             </p>
           </section>

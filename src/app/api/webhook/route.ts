@@ -78,15 +78,28 @@ export async function POST(request: Request) {
         break;
       }
 
-      // Mark as accepted, then ordered (payment received = order confirmed)
-      const paymentAmount = session.amount_total ? '$' + (session.amount_total / 100).toFixed(2) : 'N/A';
+      // Detect whether this was a subscription or one-time checkout
+      const isSubscription = session.mode === 'subscription';
+      // session.subscription is a string ID when not expanded
+      const subId = typeof session.subscription === 'string'
+        ? session.subscription
+        : (session.subscription as Stripe.Subscription | null)?.id ?? null;
+
+      const paymentAmount = session.amount_total
+        ? '$' + (session.amount_total / 100).toFixed(2)
+        : isSubscription ? `$${quote.monthlyTotal ?? '?'}/mo` : 'N/A';
+
+      const paymentRef = isSubscription ? subId : (session.payment_intent as string | null);
+      const noteLabel = isSubscription ? 'Stripe subscription activated' : 'Stripe payment received';
+
+      // Mark as accepted, then ordered (payment / subscription confirmed)
       await updateQuote(quoteId, {
         status: 'accepted',
-        notes: `${quote.notes ? quote.notes + '\n' : ''}Stripe payment received: ${session.payment_intent} (${paymentAmount})`,
+        notes: `${quote.notes ? quote.notes + '\n' : ''}${noteLabel}: ${paymentRef} (${paymentAmount})`,
       });
       await updateQuote(quoteId, { status: 'ordered' });
 
-      // Store payment metadata directly on the quote
+      // Store payment/subscription metadata directly on the quote record
       try {
         const { Redis } = await import('@upstash/redis');
         const redis = new Redis({
@@ -96,50 +109,70 @@ export async function POST(request: Request) {
         const updated = await getQuote(quoteId);
         if (updated) {
           updated.paidAt = new Date().toISOString();
-          updated.stripePaymentIntent = session.payment_intent as string;
+          // Snapshot the Stripe-confirmed charge total as the safe refund ceiling
+          if (session.amount_total != null) {
+            updated.stripeAmountTotal = session.amount_total;
+          }
+          if (isSubscription && subId) {
+            updated.stripeSubscriptionId = subId;
+          } else {
+            updated.stripePaymentIntent = session.payment_intent as string;
+          }
           await redis.set(`quote:${quoteId}`, JSON.stringify(updated));
         }
       } catch (e) {
         console.error('[webhook] Failed to store payment metadata:', e);
       }
 
-      // Log system message
+      // Log system message on the quote thread
       await addMessage(quoteId, {
         from: 'system',
         to: quote.customerEmail,
-        subject: 'Payment Received',
-        body: `Payment of ${paymentAmount} received via Stripe (${session.payment_intent}). Quote is now a confirmed order.`,
+        subject: isSubscription ? 'Subscription Activated' : 'Payment Received',
+        body: isSubscription
+          ? `RaaS subscription activated (${subId}) at ${paymentAmount}. Quote is now a confirmed order. Billing renews monthly.`
+          : `Payment of ${paymentAmount} received via Stripe (${session.payment_intent}). Quote is now a confirmed order.`,
       });
 
       // Send admin notification email
       try {
         const resend = new Resend(process.env.RESEND_API_KEY);
         const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
-        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptech.varyai.link';
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptechnologies.dev';
+        const emailSubject = isSubscription
+          ? `🔄 RaaS Subscription Started — ${quote.customerName} (${paymentAmount})`
+          : `💰 Payment Received — ${quote.customerName} (${paymentAmount})`;
+        const stripeRefRow = isSubscription
+          ? `<tr><td style="padding:6px 0;color:#666;">Subscription ID</td><td style="padding:6px 0;color:#22d3ee;font-family:monospace;font-size:11px;">${subId}</td></tr>`
+          : `<tr><td style="padding:6px 0;color:#666;">Stripe PI</td><td style="padding:6px 0;color:#eee;font-family:monospace;font-size:11px;">${session.payment_intent}</td></tr>`;
+        const billingNote = isSubscription
+          ? '<p style="font-size:12px;color:#22d3ee;margin:12px 0 0;">⟳ Recurring — billed monthly. Subscription can be managed in the Stripe Dashboard.</p>'
+          : '';
 
         await resend.emails.send({
-          from: 'Deep Tech <info@varyai.link>',
+          from: 'Deep Tech <info@deeptechnologies.dev>',
           to: adminEmail,
-          subject: `💰 Payment Received — ${quote.customerName} (${paymentAmount})`,
+          subject: emailSubject,
           html: `<div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#0a0a0a;color:#ccc;border-radius:8px;border:1px solid #222;">
-            <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#666;margin:0 0 16px;">Work Order Notification</p>
-            <h2 style="color:#22c55e;margin:0 0 8px;font-size:20px;">✅ Payment Confirmed</h2>
-            <p style="font-size:14px;color:#eee;margin:0 0 20px;">${quote.customerName} has paid <strong>${paymentAmount}</strong> for their quote.</p>
+            <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#666;margin:0 0 16px;">${isSubscription ? 'RaaS Subscription' : 'Work Order Notification'}</p>
+            <h2 style="color:#22c55e;margin:0 0 8px;font-size:20px;">${isSubscription ? '🔄 Subscription Activated' : '✅ Payment Confirmed'}</h2>
+            <p style="font-size:14px;color:#eee;margin:0 0 20px;">${quote.customerName} has ${isSubscription ? 'started a monthly RaaS subscription for' : 'paid'} <strong>${paymentAmount}</strong>.</p>
             <table style="width:100%;font-size:13px;color:#aaa;">
               <tr><td style="padding:6px 0;color:#666;">Quote ID</td><td style="padding:6px 0;color:#eee;">${quoteId}</td></tr>
               <tr><td style="padding:6px 0;color:#666;">Customer</td><td style="padding:6px 0;color:#eee;">${quote.customerName} (${quote.customerEmail})</td></tr>
               <tr><td style="padding:6px 0;color:#666;">Type</td><td style="padding:6px 0;color:#eee;">${quote.inquiryType}</td></tr>
               <tr><td style="padding:6px 0;color:#666;">Summary</td><td style="padding:6px 0;color:#eee;">${quote.summary}</td></tr>
-              <tr><td style="padding:6px 0;color:#666;">Stripe PI</td><td style="padding:6px 0;color:#eee;font-family:monospace;font-size:11px;">${session.payment_intent}</td></tr>
+              ${stripeRefRow}
             </table>
+            ${billingNote}
             <div style="margin-top:24px;">
               <a href="${baseUrl}/admin/quotes" style="display:inline-block;background:#22c55e;color:#000;font-size:13px;font-weight:600;text-decoration:none;padding:12px 28px;border-radius:4px;">
                 View Work Orders →
               </a>
             </div>
-            <p style="font-size:12px;color:#555;margin-top:20px;">This work order is ready to start. Visit the admin dashboard to reply to the customer or start the work order.</p>
+            <p style="font-size:12px;color:#555;margin-top:20px;">This work order is ready to start. Visit the admin dashboard to manage it.</p>
           </div>`,
-          text: `Payment Received!\n\n${quote.customerName} paid ${paymentAmount} for quote ${quoteId}.\nType: ${quote.inquiryType}\nSummary: ${quote.summary}\nStripe PI: ${session.payment_intent}\n\nVisit ${baseUrl}/admin/quotes to manage work orders.`,
+          text: `${isSubscription ? 'RaaS Subscription Started' : 'Payment Received'}!\n\n${quote.customerName} — ${paymentAmount}\nQuote: ${quoteId}\nType: ${quote.inquiryType}\nSummary: ${quote.summary}\n${isSubscription ? `Subscription: ${subId}` : `Stripe PI: ${session.payment_intent}`}\n\nVisit ${baseUrl}/admin/quotes to manage work orders.`,
         });
         console.log(`[webhook] Admin notification sent for quote ${quoteId}`);
       } catch (emailErr) {
@@ -147,7 +180,7 @@ export async function POST(request: Request) {
       }
 
       processedEvents.add(event.id);
-      console.log(`[webhook] Quote ${quoteId} → ordered (payment: ${session.payment_intent})`);
+      console.log(`[webhook] Quote ${quoteId} → ordered (${isSubscription ? `subscription: ${subId}` : `payment: ${session.payment_intent}`})`);
       break;
     }
 
@@ -170,7 +203,7 @@ export async function POST(request: Request) {
         const resend = new Resend(process.env.RESEND_API_KEY);
         const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
         await resend.emails.send({
-          from: 'Deep Tech <info@varyai.link>',
+          from: 'Deep Tech <info@deeptechnologies.dev>',
           to: adminEmail,
           subject: `💸 Refund Processed — ${charge.id}`,
           html: `<div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#0a0a0a;color:#ccc;border-radius:8px;border:1px solid #222;">
@@ -199,7 +232,7 @@ export async function POST(request: Request) {
         const resend = new Resend(process.env.RESEND_API_KEY);
         const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
         await resend.emails.send({
-          from: 'Deep Tech <info@varyai.link>',
+          from: 'Deep Tech <info@deeptechnologies.dev>',
           to: adminEmail,
           subject: `🚨 DISPUTE FILED — $${(dispute.amount / 100).toFixed(2)} — Action Required`,
           html: `<div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#0a0a0a;color:#ccc;border-radius:8px;border:1px solid #ef4444;">
@@ -217,6 +250,134 @@ export async function POST(request: Request) {
         });
       } catch (e) {
         console.error('[webhook] Failed to send dispute notification:', e);
+      }
+      break;
+    }
+
+    case 'customer.subscription.deleted': {
+      // Fires when a RaaS subscription is cancelled (by customer, admin, or non-payment).
+      const subscription = event.data.object as Stripe.Subscription;
+      const quoteId = subscription.metadata?.quoteId;
+
+      if (!quoteId) {
+        console.warn('[webhook] customer.subscription.deleted without quoteId metadata — skipping');
+        break;
+      }
+
+      const quote = await getQuote(quoteId);
+      if (!quote) {
+        console.warn(`[webhook] customer.subscription.deleted: quote ${quoteId} not found`);
+        break;
+      }
+
+      // Only act if the quote isn't already in a terminal state
+      if (['cancelled', 'rejected'].includes(quote.status)) {
+        console.log(`[webhook] Quote ${quoteId} already "${quote.status}" — skipping subscription.deleted`);
+        break;
+      }
+
+      // Mark the quote as cancelled
+      await updateQuote(quoteId, {
+        status: 'cancelled',
+        notes: `${quote.notes ? quote.notes + '\n' : ''}RaaS subscription cancelled by Stripe event (sub: ${subscription.id}). Reason: ${subscription.cancellation_details?.reason ?? 'not specified'}.`,
+      });
+
+      await addMessage(quoteId, {
+        from: 'system',
+        to: quote.customerEmail,
+        subject: 'RaaS Subscription Cancelled',
+        body: `Your Robot-as-a-Service subscription (${subscription.id}) has been cancelled. If this was unexpected, please contact us at info@deeptechnologies.dev. Any hardware retrieval logistics will be coordinated separately.`,
+      });
+
+      // Alert admin
+      try {
+        const resend = new Resend(process.env.RESEND_API_KEY);
+        const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
+        const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptechnologies.dev';
+        const cancellationReason = subscription.cancellation_details?.reason ?? 'not specified';
+
+        await resend.emails.send({
+          from: 'Deep Tech <info@deeptechnologies.dev>',
+          to: adminEmail,
+          subject: `⚠️ RaaS Subscription Cancelled — ${quote.customerName}`,
+          html: `<div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#0a0a0a;color:#ccc;border-radius:8px;border:1px solid #f59e0b;">
+            <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#f59e0b;margin:0 0 16px;">RaaS Cancellation</p>
+            <h2 style="color:#f59e0b;margin:0 0 8px;font-size:20px;">⚠️ Subscription Cancelled</h2>
+            <p style="font-size:14px;color:#eee;margin:0 0 20px;">A RaaS subscription for <strong>${quote.customerName}</strong> has been cancelled. Hardware retrieval may be required.</p>
+            <table style="width:100%;font-size:13px;color:#aaa;">
+              <tr><td style="padding:6px 0;color:#666;">Quote ID</td><td style="padding:6px 0;color:#eee;">${quoteId}</td></tr>
+              <tr><td style="padding:6px 0;color:#666;">Customer</td><td style="padding:6px 0;color:#eee;">${quote.customerName} (${quote.customerEmail})</td></tr>
+              <tr><td style="padding:6px 0;color:#666;">Summary</td><td style="padding:6px 0;color:#eee;">${quote.summary}</td></tr>
+              <tr><td style="padding:6px 0;color:#666;">Subscription ID</td><td style="padding:6px 0;color:#eee;font-family:monospace;font-size:11px;">${subscription.id}</td></tr>
+              <tr><td style="padding:6px 0;color:#666;">Cancellation Reason</td><td style="padding:6px 0;color:#f59e0b;">${cancellationReason}</td></tr>
+            </table>
+            <div style="margin-top:24px;">
+              <a href="${baseUrl}/admin/quotes" style="display:inline-block;background:#f59e0b;color:#000;font-size:13px;font-weight:600;text-decoration:none;padding:12px 28px;border-radius:4px;">
+                Review in Admin →
+              </a>
+            </div>
+          </div>`,
+          text: `RaaS Subscription Cancelled\n\nCustomer: ${quote.customerName} (${quote.customerEmail})\nQuote: ${quoteId}\nSubscription: ${subscription.id}\nReason: ${cancellationReason}\n\nReview at ${baseUrl}/admin/quotes`,
+        });
+      } catch (emailErr) {
+        console.error('[webhook] Failed to send subscription cancellation notification:', emailErr);
+      }
+
+      console.log(`[webhook] Quote ${quoteId} → cancelled (subscription deleted: ${subscription.id})`);
+      break;
+    }
+
+    case 'invoice.payment_succeeded': {
+      // Fires every billing cycle for RaaS subscriptions — log a paper-trail message on the quote.
+      const invoice = event.data.object as Stripe.Invoice & { subscription?: string | Stripe.Subscription | null };
+      const invoiceSubId = typeof invoice.subscription === 'string'
+        ? invoice.subscription
+        : (invoice.subscription as Stripe.Subscription | null)?.id ?? null;
+
+      if (!invoiceSubId) {
+        console.log('[webhook] invoice.payment_succeeded — no subscription, skipping');
+        break;
+      }
+
+      // Avoid logging the activation invoice (already handled by checkout.session.completed)
+      if (invoice.billing_reason === 'subscription_create') {
+        console.log('[webhook] invoice.payment_succeeded — subscription_create billing_reason, skipping (handled by checkout.session.completed)');
+        break;
+      }
+
+      try {
+        // Retrieve the subscription to pull the quoteId from metadata
+        const sub = await stripe.subscriptions.retrieve(invoiceSubId);
+        const quoteId = sub.metadata?.quoteId;
+
+        if (!quoteId) {
+          console.warn('[webhook] invoice.payment_succeeded — subscription has no quoteId metadata');
+          break;
+        }
+
+        const quote = await getQuote(quoteId);
+        if (!quote) {
+          console.warn(`[webhook] invoice.payment_succeeded — quote ${quoteId} not found`);
+          break;
+        }
+
+        const amountPaid = invoice.amount_paid
+          ? '$' + (invoice.amount_paid / 100).toFixed(2)
+          : '?';
+        const periodEnd = invoice.period_end
+          ? new Date(invoice.period_end * 1000).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })
+          : null;
+
+        await addMessage(quoteId, {
+          from: 'system',
+          to: quote.customerEmail,
+          subject: 'RaaS Monthly Billing — Payment Received',
+          body: `Monthly RaaS subscription payment of ${amountPaid} received (sub: ${invoiceSubId})${periodEnd ? '. Next billing period ends ' + periodEnd : ''}. Your service remains active.`,
+        });
+
+        console.log(`[webhook] RaaS invoice.payment_succeeded — quote ${quoteId}, ${amountPaid}`);
+      } catch (e) {
+        console.error('[webhook] invoice.payment_succeeded — failed to log billing event:', e);
       }
       break;
     }

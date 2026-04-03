@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
   title: 'Terms of Service — Deep Tech',
-  description: 'Terms of service for deeptech.varyai.link',
+  description: 'Terms of service for deeptechnologies.dev',
 };
 
 export default function TermsPage() {
@@ -46,25 +46,52 @@ export default function TermsPage() {
           </section>
 
           <section>
-            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">5. Limitation of Liability</h2>
+            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">5. Robot Requisition &amp; Insurance Requirements</h2>
+            <p>Any client requisitioning autonomous robots, delivery droids, drones, or related hardware through Deep Tech&apos;s platform must maintain, at minimum, the following insurance coverage prior to deployment and throughout the operational period:</p>
+            <ul className="list-disc list-inside mt-3 space-y-2 text-[#444]">
+              <li><strong>Commercial General Liability (CGL)</strong> — minimum <strong>$1,000,000</strong> per occurrence / $2,000,000 aggregate. Required for all hardware deployments in public or semi-public environments.</li>
+              <li><strong>Public Liability</strong> — minimum <strong>$1,000,000</strong> per incident covering bodily injury or property damage caused by or involving any autonomous unit sourced through Deep Tech.</li>
+              <li><strong>Cyber &amp; Technology Liability</strong> — minimum <strong>$500,000</strong>, covering data breaches, unauthorized access to robot control systems, and transmission failures resulting in physical or operational harm.</li>
+              <li><strong>Goods-in-Transit / Inland Marine</strong> — required for units shipped across state lines or internationally. Coverage must equal or exceed the full replacement value of all hardware in transit.</li>
+              <li><strong>Umbrella / Excess Liability</strong> — for deployments in states with autonomous vehicle regulations (including but not limited to Washington, California, and Texas), clients must carry an umbrella policy of at least <strong>$5,000,000</strong> where required by applicable law.</li>
+            </ul>
+            <p className="mt-3">Proof of insurance (certificate of coverage naming Deep Tech as an additional insured) may be required before order confirmation or hardware handoff. Deep Tech reserves the right to pause or cancel any requisition where minimum coverage cannot be verified.</p>
+            <p className="mt-2">For Robot-as-a-Service (RaaS) subscription agreements, the above requirements apply for each billing period. Lapse in coverage may result in immediate suspension of the subscription and retrieval of hardware at the client&apos;s expense.</p>
+          </section>
+
+          <section>
+            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">6. Operator Responsibility</h2>
+            <p>The client, upon acceptance of a quote or activation of a RaaS subscription, assumes full responsibility as the <strong>operator of record</strong> for any autonomous unit deployed under their account. This includes:</p>
+            <ul className="list-disc list-inside mt-3 space-y-2 text-[#444]">
+              <li>Compliance with all federal, state, and local regulations governing the operation of autonomous ground vehicles, delivery robots, and unmanned aerial vehicles (UAVs) in the deployment jurisdiction.</li>
+              <li>Obtaining any necessary permits, right-of-way agreements, or municipal licenses required for public sidewalk or airspace operation.</li>
+              <li>Ensuring that all personnel interacting with or supervising autonomous units are adequately trained and authorized.</li>
+              <li>Promptly reporting any accident, collision, or malfunction involving a deployed unit to Deep Tech and, where required, to the relevant regulatory authority.</li>
+              <li>Maintaining the unit in accordance with vendor-specified maintenance schedules. Any modification to hardware or software that voids the manufacturer warranty must be disclosed to Deep Tech in writing.</li>
+            </ul>
+            <p className="mt-3">Deep Tech acts as a <strong>sourcing and coordination intermediary</strong> and is not the manufacturer, operator, or insurer of any autonomous hardware. Deep Tech bears no liability for injuries, property damage, regulatory fines, or losses arising from a client&apos;s operation of requisitioned units, except where caused by Deep Tech&apos;s own gross negligence or willful misconduct.</p>
+          </section>
+
+          <section>
+            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">7. Limitation of Liability</h2>
             <p>Deep Tech provides services &quot;as is&quot; and makes no warranties beyond what is expressly stated in a signed agreement. Our liability is limited to the amount paid for the specific service in question.</p>
           </section>
 
           <section>
-            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">6. Third-Party Services</h2>
+            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">8. Third-Party Services</h2>
             <p>We integrate with third-party platforms including Stripe (payments), Resend (email), and various robotics vendors. Your use of these services is subject to their respective terms and privacy policies.</p>
           </section>
 
           <section>
-            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">7. Modifications</h2>
+            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">9. Modifications</h2>
             <p>We reserve the right to update these terms at any time. Continued use of our site and services constitutes acceptance of any changes.</p>
           </section>
 
           <section>
-            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">8. Contact</h2>
+            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">10. Contact</h2>
             <p>Questions about these terms? Reach us at{' '}
-              <a href="mailto:info@varyai.link" className="text-[#111] font-medium underline underline-offset-4 hover:text-black">
-                info@varyai.link
+              <a href="mailto:info@deeptechnologies.dev" className="text-[#111] font-medium underline underline-offset-4 hover:text-black">
+                info@deeptechnologies.dev
               </a>.
             </p>
           </section>

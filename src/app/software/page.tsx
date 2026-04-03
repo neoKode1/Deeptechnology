@@ -77,6 +77,7 @@ const PROJECTS = [
     desc: 'Real-time check fraud detection and cross-branch intelligence sharing for community banks. Zero-knowledge architecture — only SHA-256 fingerprints stored, never customer PII. Python SDK with local ML models, FastAPI central hub with WebSocket alerts, and a React dashboard for live fraud monitoring. 196 tests passing.',
     tags: ['FinTech', 'Python', 'ML', 'React', 'FastAPI', '2026'],
     link: 'https://github.com/neoKode1/Scam-likely',
+    domain: 'https://scamlikely.app',
     img: '/media/scam-likely.png',
   },
   {
@@ -86,14 +87,6 @@ const PROJECTS = [
     link: 'https://github.com/neoKode1/DirectorchairAi',
     domain: 'https://directorchairai.com',
     img: '/media/DirectorChair.png',
-  },
-  {
-    title: 'NEO',
-    desc: 'Nexartis Eco Observability — powered by Nimbus, an autonomous Claude-based agent that lives inside the platform. Nimbus monitors every production system in real time, reads the actual source code when errors surface, and generates line-by-line fixes. It sweeps the entire GitHub org for open vulnerabilities and opens fix PRs in parallel — one click remediates the whole org. Issues auto-create Linear tickets pre-filled with AI diagnosis, severity, and a suggested patch.',
-    tags: ['Observability', 'AI Agent', 'Security', 'Claude', '2025'],
-    link: 'https://github.com/Nexartis/neo-observability',
-    domain: 'https://www.28neo.com',
-    img: '/media/Neo_nimbus.png',
   },
 ];
 
@@ -127,11 +120,67 @@ export default function SoftwareDivisionPage() {
             className="font-manrope font-semibold tracking-tighter text-[#111] leading-[0.92]"
             style={{ fontSize: 'clamp(3.5rem, 12vw, 10rem)' }}
           >
-            Software
+            Full<br />Stack
           </h1>
           <p className="mt-6 text-lg md:text-xl text-[#555] max-w-2xl leading-relaxed">
             Production systems enhanced with AI integrations — from legacy retooling to autonomous end-to-end orchestration. Elegant, robust, and radically simple.
           </p>
+        </div>
+      </section>
+
+      {/* ── SERVICES ── */}
+      <section className="bg-white px-6 md:px-12 lg:px-20 py-24 border-b border-[#e5e5e5]">
+        <div className="max-w-[82rem] mx-auto">
+
+          {/* Power headline */}
+          <div className="max-w-4xl mb-20">
+            <p className="text-xs uppercase tracking-[0.25em] text-[#999] font-manrope mb-5">What we do</p>
+            <h2 className="font-manrope font-semibold text-[#111] tracking-tighter leading-[1.05]" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}>
+              Retool for the next generation.<br />Without rebuilding from scratch.
+            </h2>
+          </div>
+
+          {/* Capability grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-[#e5e5e5] border border-[#e5e5e5] rounded-xl overflow-hidden">
+            {[
+              {
+                num: '01',
+                title: 'Legacy Retooling',
+                body: 'Broken dependencies, forced API migrations, dead links, outdated frameworks. We diagnose the rot and rebuild what needs rebuilding — without touching what works.',
+              },
+              {
+                num: '02',
+                title: 'AI Integration',
+                body: 'LLM pipelines, RAG architectures, agentic workflows, MCP servers. Drop Claude, GPT-4o, or any open model into your existing stack without rebuilding from scratch.',
+              },
+              {
+                num: '03',
+                title: 'New Architecture',
+                body: 'Greenfield systems designed AI-native from day one. Edge-deployed, TypeScript strict, built for autonomous orchestration and zero-downtime scale.',
+              },
+              {
+                num: '04',
+                title: 'Production Hardening',
+                body: 'CI/CD pipelines, observability, security audits, and webhook infrastructure. Ship with confidence — monitored, tested, and resilient under load.',
+              },
+            ].map(({ num, title, body }) => (
+              <div key={num} className="bg-white p-8 flex flex-col gap-4 hover:bg-[#fafafa] transition-colors">
+                <span className="text-xs font-mono text-[#bbb]">{num}</span>
+                <h3 className="font-manrope text-base font-semibold text-[#111] tracking-tight">{title}</h3>
+                <p className="text-sm text-[#666] leading-relaxed">{body}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* CTA strip */}
+          <div className="mt-14 flex justify-end border-t border-[#e5e5e5] pt-10">
+            <a
+              href="mailto:info@deeptechnologies.dev"
+              className="inline-flex items-center gap-2 bg-[#111] text-white rounded-full py-3 px-7 text-sm font-manrope hover:bg-[#333] transition-colors"
+            >
+              Start a conversation ↗
+            </a>
+          </div>
         </div>
       </section>
 
@@ -240,7 +289,6 @@ export default function SoftwareDivisionPage() {
                   <Link href="/#about" className="hover:text-white transition-colors">About</Link>
                   <Link href="/#services" className="hover:text-white transition-colors">Services</Link>
                   <Link href="/software#work" className="hover:text-white transition-colors">Work</Link>
-                  <Link href="/creative" className="hover:text-white transition-colors">Creative Division</Link>
                 </div>
               </div>
               <div className="flex flex-col gap-6">
@@ -268,7 +316,6 @@ export default function SoftwareDivisionPage() {
             <div className="flex flex-wrap justify-center gap-6">
               <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
               <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
-              <Link href="/creative" className="hover:text-white transition-colors">Creative Division</Link>
             </div>
 
           </div>

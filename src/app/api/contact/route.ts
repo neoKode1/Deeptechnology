@@ -14,9 +14,6 @@ interface IntakeFields {
   integrationNeeds?: string[];
   projectType?: string;
   techStack?: string;
-  contentType?: string;
-  deliverables?: string;
-  styleReferences?: string;
   budgetRange?: string;
   timeline?: string;
 }
@@ -39,10 +36,6 @@ function formatIntakeSummary(inquiry: string, intake: IntakeFields): string {
   } else if (inquiry === 'Software solutions') {
     add('Project Type', intake.projectType);
     add('Tech Stack', intake.techStack);
-  } else if (inquiry === 'Media solutions') {
-    add('Content Type', intake.contentType);
-    add('Deliverables', intake.deliverables);
-    add('Style References', intake.styleReferences);
   }
   add('Budget', intake.budgetRange);
   add('Timeline', intake.timeline);
@@ -77,10 +70,6 @@ function formatIntakeHtml(inquiry: string, intake: IntakeFields): string {
   } else if (inquiry === 'Software solutions') {
     add('Project Type', intake.projectType);
     add('Tech Stack', intake.techStack);
-  } else if (inquiry === 'Media solutions') {
-    add('Content Type', intake.contentType);
-    add('Deliverables', intake.deliverables);
-    add('Style References', intake.styleReferences);
   }
   add('Budget', intake.budgetRange);
   add('Timeline', intake.timeline);
@@ -100,17 +89,30 @@ function formatIntakeHtml(inquiry: string, intake: IntakeFields): string {
 export async function POST(request: Request) {
   try {
     const body = await request.json();
-    const { name, email, inquiry, message, intake } = body as {
-      name: string;
+    const {
+      firstName, lastName, email, phone,
+      company, jobTitle, country, industry, employeeCount,
+      inquiry, message, intake,
+    } = body as {
+      firstName: string;
+      lastName: string;
       email: string;
+      phone?: string;
+      company: string;
+      jobTitle: string;
+      country: string;
+      industry: string;
+      employeeCount?: string;
       inquiry: string;
       message: string;
       intake?: IntakeFields;
     };
 
-    if (!name || !email || !inquiry || !message) {
+    const name = `${firstName ?? ''} ${lastName ?? ''}`.trim();
+
+    if (!firstName || !lastName || !email || !company || !jobTitle || !country || !inquiry || !message) {
       return NextResponse.json(
-        { success: false, message: 'All fields are required.' },
+        { success: false, message: 'All required fields must be filled in.' },
         { status: 400 }
       );
     }
@@ -150,7 +152,7 @@ export async function POST(request: Request) {
               <table width="100%" cellpadding="0" cellspacing="0">
                 <tr>
                   <td style="width:50%;padding-right:16px;vertical-align:top;">
-                    <p style="margin:0 0 4px;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#999999;font-weight:500;">From</p>
+                    <p style="margin:0 0 4px;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#999999;font-weight:500;">Name</p>
                     <p style="margin:0;font-size:15px;color:#111111;font-weight:600;">${name}</p>
                   </td>
                   <td style="width:50%;padding-left:16px;vertical-align:top;">
@@ -158,6 +160,35 @@ export async function POST(request: Request) {
                     <a href="mailto:${email}" style="margin:0;font-size:15px;color:#111111;font-weight:500;text-decoration:underline;">${email}</a>
                   </td>
                 </tr>
+                <tr>
+                  <td style="width:50%;padding-right:16px;vertical-align:top;padding-top:16px;">
+                    <p style="margin:0 0 4px;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#999999;font-weight:500;">Company</p>
+                    <p style="margin:0;font-size:15px;color:#111111;font-weight:600;">${company}</p>
+                  </td>
+                  <td style="width:50%;padding-left:16px;vertical-align:top;padding-top:16px;">
+                    <p style="margin:0 0 4px;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#999999;font-weight:500;">Job Title</p>
+                    <p style="margin:0;font-size:15px;color:#111111;font-weight:500;">${jobTitle}</p>
+                  </td>
+                </tr>
+                <tr>
+                  <td style="width:50%;padding-right:16px;vertical-align:top;padding-top:16px;">
+                    <p style="margin:0 0 4px;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#999999;font-weight:500;">Industry</p>
+                    <p style="margin:0;font-size:15px;color:#111111;font-weight:500;">${industry || '—'}</p>
+                  </td>
+                  <td style="width:50%;padding-left:16px;vertical-align:top;padding-top:16px;">
+                    <p style="margin:0 0 4px;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#999999;font-weight:500;">Country</p>
+                    <p style="margin:0;font-size:15px;color:#111111;font-weight:500;">${country}</p>
+                  </td>
+                </tr>
+                ${phone || employeeCount ? `
+                <tr>
+                  <td style="width:50%;padding-right:16px;vertical-align:top;padding-top:16px;">
+                    ${phone ? `<p style="margin:0 0 4px;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#999999;font-weight:500;">Phone</p><p style="margin:0;font-size:14px;color:#111111;font-weight:500;">${phone}</p>` : ''}
+                  </td>
+                  <td style="width:50%;padding-left:16px;vertical-align:top;padding-top:16px;">
+                    ${employeeCount ? `<p style="margin:0 0 4px;font-size:10px;letter-spacing:0.18em;text-transform:uppercase;color:#999999;font-weight:500;">Employees</p><p style="margin:0;font-size:14px;color:#111111;font-weight:500;">${employeeCount}</p>` : ''}
+                  </td>
+                </tr>` : ''}
               </table>
             </td>
           </tr>
@@ -224,11 +255,11 @@ export async function POST(request: Request) {
 </html>`;
 
     const { error } = await resend.emails.send({
-      from: 'Deep Tech <info@varyai.link>',
+      from: 'Deep Tech <info@deeptechnologies.dev>',
       to: '1deeptechnology@gmail.com',
       replyTo: email,
-      subject: `[${inquiry}] New message from ${name}`,
-      text: `From: ${name}\nEmail: ${email}\nInquiry: ${inquiry}${intakeSummary ? `\n\nSourcing Parameters:\n${intakeSummary}` : ''}\n\n${message}\n\n---\nReceived ${timestamp}`,
+      subject: `[${inquiry}] New message from ${name} — ${company}`,
+      text: `From: ${name}\nEmail: ${email}\nPhone: ${phone || '—'}\nCompany: ${company}\nJob Title: ${jobTitle}\nIndustry: ${industry}\nCountry: ${country}\nEmployees: ${employeeCount || '—'}\nInquiry: ${inquiry}${intakeSummary ? `\n\nSourcing Parameters:\n${intakeSummary}` : ''}\n\n${message}\n\n---\nReceived ${timestamp}`,
       html: htmlTemplate,
     });
 
@@ -241,7 +272,10 @@ export async function POST(request: Request) {
     }
 
     /* Fire-and-forget: forward structured data to Nimbus for sourcing */
-    const nimbusRequestId = forwardToNimbus({ name, email, inquiry, message, intake });
+    const nimbusRequestId = forwardToNimbus({
+      name, email, inquiry, message, intake,
+      company, jobTitle, industry, employeeCount,
+    });
     console.log(`[contact] Nimbus sourcing initiated: ${nimbusRequestId}`);
 
     return NextResponse.json({ success: true, message: 'Message sent!' });

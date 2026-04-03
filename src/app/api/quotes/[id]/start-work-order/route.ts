@@ -96,7 +96,7 @@ export async function POST(
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
     const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
-    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptech.varyai.link';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptechnologies.dev';
     const itemsHtml = quote.lineItems.map(li =>
       `<tr><td style="padding:8px;border-bottom:1px solid #222;color:#ccc;">${li.description}</td>` +
       `<td style="padding:8px;border-bottom:1px solid #222;color:#aaa;">${li.vendor}</td>` +
@@ -104,7 +104,7 @@ export async function POST(
     ).join('');
 
     await resend.emails.send({
-      from: 'Deep Tech <info@varyai.link>',
+      from: 'Deep Tech <info@deeptechnologies.dev>',
       to: adminEmail,
       subject: `🔧 Work Order Started — ${quote.customerName} ($${quote.total.toFixed(2)})`,
       html: `<div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#0a0a0a;color:#ccc;border-radius:8px;border:1px solid #222;">
