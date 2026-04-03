@@ -49,7 +49,12 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">6. Contact</h2>
+            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">6. Cancellation & Refund Data</h2>
+            <p>When you cancel an order, we retain the cancellation record (reason, refund amount, and timestamp) as part of your order history. Stripe processes and retains refund transaction data in accordance with their privacy policy and PCI-DSS requirements. We do not store your payment card details at any point.</p>
+          </section>
+
+          <section>
+            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">7. Contact</h2>
             <p>For privacy-related inquiries, contact us at{' '}
               <a href="mailto:info@varyai.link" className="text-[#111] font-medium underline underline-offset-4 hover:text-black">
                 info@varyai.link

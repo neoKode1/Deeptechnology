@@ -129,13 +129,16 @@ export async function POST(
     body: `Order cancelled. Reason: ${reason}. Vendor costs ($${vendorCostTotal.toFixed(2)}) refunded. Service fee ($${serviceFee.toFixed(2)}) retained.`,
   });
 
-  // Send customer cancellation email
+  // Send customer cancellation email + admin notification
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
+    const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
+
+    // Customer email
     await resend.emails.send({
       from: 'Deep Tech <info@varyai.link>',
       to: quote.customerEmail,
-      replyTo: process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com',
+      replyTo: adminEmail,
       subject: `Order Cancelled — ${quote.summary}`,
       html: `<div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#0a0a0a;color:#ccc;border-radius:8px;border:1px solid #222;">
         <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#ef4444;margin:0 0 16px;">Order Cancelled</p>
@@ -148,6 +151,27 @@ export async function POST(
         </div>
         <p style="font-size:13px;color:#888;line-height:1.7;">The refund of <strong style="color:#22c55e;">$${vendorCostTotal.toFixed(2)}</strong> will appear on your statement within 5–10 business days. The service fee of <strong style="color:#f59e0b;">$${serviceFee.toFixed(2)}</strong> is non-refundable.</p>
         <p style="font-size:13px;color:#888;margin-top:16px;">Questions? Reply to this email and we'll help.</p>
+      </div>`,
+    });
+
+    // Admin notification (especially important for customer-initiated cancellations)
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptech.varyai.link';
+    await resend.emails.send({
+      from: 'Deep Tech <info@varyai.link>',
+      to: adminEmail,
+      subject: `🚫 Order Cancelled ${!isAdmin ? '(Customer-Initiated)' : ''} — ${quote.customerName}`,
+      html: `<div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#0a0a0a;color:#ccc;border-radius:8px;border:1px solid #222;">
+        <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#ef4444;margin:0 0 16px;">Cancellation Alert</p>
+        <h2 style="color:#fff;margin:0 0 8px;font-size:20px;">Order Cancelled${!isAdmin ? ' by Customer' : ' by Admin'}</h2>
+        <table style="width:100%;font-size:13px;color:#aaa;margin:16px 0;">
+          <tr><td style="padding:6px 0;color:#666;">Customer</td><td style="padding:6px 0;color:#eee;">${quote.customerName} (${quote.customerEmail})</td></tr>
+          <tr><td style="padding:6px 0;color:#666;">Quote</td><td style="padding:6px 0;color:#eee;">${quote.summary}</td></tr>
+          <tr><td style="padding:6px 0;color:#666;">Reason</td><td style="padding:6px 0;color:#eee;">${reason}</td></tr>
+          <tr><td style="padding:6px 0;color:#666;">Refunded</td><td style="padding:6px 0;color:#22c55e;">$${vendorCostTotal.toFixed(2)}</td></tr>
+          <tr><td style="padding:6px 0;color:#666;">Fee Retained</td><td style="padding:6px 0;color:#f59e0b;">$${serviceFee.toFixed(2)}</td></tr>
+          <tr><td style="padding:6px 0;color:#666;">Stripe Refund</td><td style="padding:6px 0;color:#eee;font-family:monospace;font-size:11px;">${cancellation.stripeRefundId || 'N/A'}</td></tr>
+        </table>
+        <a href="${baseUrl}/admin/quotes" style="display:inline-block;background:#ef4444;color:#fff;font-size:13px;font-weight:600;text-decoration:none;padding:12px 28px;border-radius:4px;">View Dashboard →</a>
       </div>`,
     });
   } catch (emailErr) {

@@ -160,6 +160,67 @@ export async function POST(request: Request) {
       break;
     }
 
+    case 'charge.refunded': {
+      const charge = event.data.object as Stripe.Charge;
+      const pi = charge.payment_intent as string;
+      console.log(`[webhook] Refund processed for charge ${charge.id} (PI: ${pi}) — $${((charge.amount_refunded || 0) / 100).toFixed(2)} refunded`);
+
+      // Send admin notification for any refund we didn't initiate through our cancel flow
+      try {
+        const resend = new Resend(process.env.RESEND_API_KEY);
+        const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
+        await resend.emails.send({
+          from: 'Deep Tech <info@varyai.link>',
+          to: adminEmail,
+          subject: `💸 Refund Processed — ${charge.id}`,
+          html: `<div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#0a0a0a;color:#ccc;border-radius:8px;border:1px solid #222;">
+            <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#f59e0b;margin:0 0 16px;">Refund Notification</p>
+            <h2 style="color:#fff;margin:0 0 8px;font-size:20px;">Refund Processed</h2>
+            <table style="width:100%;font-size:13px;color:#aaa;margin:16px 0;">
+              <tr><td style="padding:6px 0;color:#666;">Charge</td><td style="padding:6px 0;color:#eee;font-family:monospace;">${charge.id}</td></tr>
+              <tr><td style="padding:6px 0;color:#666;">Payment Intent</td><td style="padding:6px 0;color:#eee;font-family:monospace;">${pi}</td></tr>
+              <tr><td style="padding:6px 0;color:#666;">Amount Refunded</td><td style="padding:6px 0;color:#22c55e;">$${((charge.amount_refunded || 0) / 100).toFixed(2)}</td></tr>
+              <tr><td style="padding:6px 0;color:#666;">Customer</td><td style="padding:6px 0;color:#eee;">${charge.billing_details?.name || 'N/A'} (${charge.billing_details?.email || 'N/A'})</td></tr>
+            </table>
+          </div>`,
+        });
+      } catch (e) {
+        console.error('[webhook] Failed to send refund notification:', e);
+      }
+      break;
+    }
+
+    case 'charge.dispute.created': {
+      const dispute = event.data.object as Stripe.Dispute;
+      console.error(`[webhook] ⚠️ DISPUTE CREATED: ${dispute.id} — $${(dispute.amount / 100).toFixed(2)} — reason: ${dispute.reason}`);
+
+      // Critical: notify admin immediately
+      try {
+        const resend = new Resend(process.env.RESEND_API_KEY);
+        const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
+        await resend.emails.send({
+          from: 'Deep Tech <info@varyai.link>',
+          to: adminEmail,
+          subject: `🚨 DISPUTE FILED — $${(dispute.amount / 100).toFixed(2)} — Action Required`,
+          html: `<div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#0a0a0a;color:#ccc;border-radius:8px;border:1px solid #ef4444;">
+            <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#ef4444;margin:0 0 16px;">⚠️ Urgent — Dispute Filed</p>
+            <h2 style="color:#ef4444;margin:0 0 8px;font-size:20px;">Payment Dispute Received</h2>
+            <p style="font-size:14px;color:#eee;margin:0 0 20px;">A customer has filed a dispute. You must respond within the deadline or the funds will be lost.</p>
+            <table style="width:100%;font-size:13px;color:#aaa;margin:16px 0;">
+              <tr><td style="padding:6px 0;color:#666;">Dispute ID</td><td style="padding:6px 0;color:#eee;font-family:monospace;">${dispute.id}</td></tr>
+              <tr><td style="padding:6px 0;color:#666;">Amount</td><td style="padding:6px 0;color:#ef4444;font-weight:bold;">$${(dispute.amount / 100).toFixed(2)}</td></tr>
+              <tr><td style="padding:6px 0;color:#666;">Reason</td><td style="padding:6px 0;color:#eee;">${dispute.reason}</td></tr>
+              <tr><td style="padding:6px 0;color:#666;">Charge</td><td style="padding:6px 0;color:#eee;font-family:monospace;">${dispute.charge}</td></tr>
+            </table>
+            <a href="https://dashboard.stripe.com/disputes/${dispute.id}" style="display:inline-block;background:#ef4444;color:#fff;font-size:13px;font-weight:600;text-decoration:none;padding:12px 28px;border-radius:4px;margin-top:8px;">Respond in Stripe →</a>
+          </div>`,
+        });
+      } catch (e) {
+        console.error('[webhook] Failed to send dispute notification:', e);
+      }
+      break;
+    }
+
     default:
       console.log(`[webhook] Unhandled event type: ${event.type}`);
   }

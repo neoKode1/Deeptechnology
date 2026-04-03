@@ -357,6 +357,7 @@ function AcceptSection({ quote, canAccept, isExpired, accepting, onAccept, check
     return (
       <div className="border border-zinc-800 rounded-lg p-6 text-center">
         <p className="text-zinc-400 text-sm mb-4">By accepting this quote you agree to proceed. You&apos;ll be redirected to our secure payment page.</p>
+        <p className="text-amber-500/80 text-xs mb-4 border border-amber-800/30 bg-amber-950/20 rounded-md px-3 py-2">⚠️ 72-hour cancellation policy: You may cancel within 72 hours of payment. Vendor costs are refundable; the service fee is non-refundable. See our <a href="/terms" className="underline hover:text-amber-300">Terms of Service</a>.</p>
         {checkoutError && <p className="text-red-400 text-sm mb-3">{checkoutError}</p>}
         <button onClick={onAccept} disabled={accepting}
           className="bg-white text-black font-semibold px-8 py-3 rounded-lg hover:bg-zinc-200 transition disabled:opacity-50">
