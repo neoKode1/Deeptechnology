@@ -54,14 +54,14 @@ const SERVICES = [
     num: '01.',
     title: 'Software Development',
     tags: ['AI Agents', 'LLMs', 'Edge Compute', 'TypeScript'],
-    desc: 'Production systems enhanced with AI integrations — from legacy retooling to autonomous end-to-end orchestration. We embed intelligence into live codebases, build agent platforms, and architect frontier infrastructure without disrupting what already works.',
+    desc: 'Your engineers spend weeks on work AI can do in hours. We embed AI directly into your live stack — cutting build time, automating workflows, and adding intelligence without a rewrite or rebuild. Proof: we built this entire platform — AI chat, automated quoting, Stripe payments, 14-stage fulfillment — solo, in 30 days.',
     link: '/software',
   },
   {
     num: '02.',
     title: 'Robotics & Automation',
     tags: ['AMRs', 'Drones', 'Fleet Ops', 'Warehouse'],
-    desc: 'Environment-first robotics consulting — we assess your space, source vendor-agnostic hardware, and deploy autonomous delivery bots, warehouse AMRs, and aerial systems with full fleet integration into your existing operations.',
+    desc: 'Labor is your biggest fulfillment cost. We source, deploy, and integrate autonomous robots — AMRs, sidewalk bots, drones — directly into your existing operations. Typical warehouse deployment reduces labor costs 35–60%. Pilots start at $2,500 and are credited toward your full fleet order.',
     link: '/robotics',
   },
 ];
@@ -166,7 +166,7 @@ export default function SoftwareDivisionHome() {
 
           {/* Body copy + buttons — normal rendering below the blend-mode headlines */}
           <p className="mt-6 sm:mt-10 text-base sm:text-lg md:text-xl text-[#333] max-w-xl font-normal leading-relaxed" style={{ position: 'relative', zIndex: 2 }}>
-            We modify existing production systems with enhanced AI integrations.
+            Your stack already works. We make it faster, smarter, and cheaper to run — by embedding AI directly where it counts.
           </p>
 
           {/* Entry-point prompt */}
@@ -240,6 +240,65 @@ export default function SoftwareDivisionHome() {
         </div>
       </section>
 
+      {/* ── PROCESS + PRICING ── */}
+      <section className="px-6 md:px-12 lg:px-20 py-20 bg-[#fafafa] border-t border-b border-[#eee]">
+        <div className="max-w-[82rem] mx-auto">
+          <SectionDivider label="How it works" />
+
+          {/* 3-step process */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mb-16">
+            {[
+              {
+                step: '01',
+                title: 'Submit your project',
+                time: 'Day 0',
+                desc: 'Fill out the intake form — project type, environment, budget, timeline. Takes 3 minutes. No sales call required to get a quote.',
+              },
+              {
+                step: '02',
+                title: 'You get a real answer',
+                time: 'Within 24 hours',
+                desc: "We respond with scope, cost, and next steps. Not \u2018let\u2019s chat\u2019 \u2014 a concrete recommendation you can act on.",
+              },
+              {
+                step: '03',
+                title: 'Discovery call → proposal',
+                time: 'Day 2–5',
+                desc: 'A 30-minute call to finalize scope. Fixed-price proposal follows. Robotics pilots can start within 2 weeks. Software sprints within 1.',
+              },
+            ].map(({ step, title, time, desc }) => (
+              <div key={step} className="flex flex-col gap-4 pt-8 pb-8 md:pr-12 border-t border-[#e0e0e0] md:border-t-0 md:border-l first:border-l-0 md:pl-12 first:pl-0">
+                <div className="flex items-center justify-between">
+                  <span className="text-[#bbb] text-xs uppercase tracking-widest font-manrope">{step}</span>
+                  <span className="text-[10px] uppercase tracking-widest text-[#999] font-manrope border border-[#ddd] rounded-full px-3 py-1 bg-white">{time}</span>
+                </div>
+                <h3 className="text-[#111] font-semibold text-lg tracking-tight">{title}</h3>
+                <p className="text-[#666] text-sm leading-relaxed font-manrope">{desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Pricing anchor + CTA */}
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 pt-10 border-t border-[#e0e0e0]">
+            <div className="flex flex-col sm:flex-row gap-8 sm:gap-16">
+              {[
+                { label: 'Robotics pilots', price: 'from $2,500', note: 'Credited toward full fleet order' },
+                { label: 'Software builds', price: 'from $10K', note: 'AI integration · New builds · Sprints' },
+              ].map(({ label, price, note }) => (
+                <div key={label} className="flex flex-col gap-1">
+                  <span className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">{label}</span>
+                  <span className="text-[#111] font-semibold text-3xl tracking-tight">{price}</span>
+                  <span className="text-xs text-[#aaa] font-manrope">{note}</span>
+                </div>
+              ))}
+            </div>
+            <Link href="/contact" className="sd-btn-primary text-sm whitespace-nowrap shrink-0">
+              Start a Project <ArrowUpRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ── ABOUT ── */}
       <section id="about" className="px-6 md:px-12 lg:px-20 py-24 max-w-[82rem] mx-auto">
         <SectionDivider label="About" />
@@ -288,8 +347,8 @@ export default function SoftwareDivisionHome() {
             <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-4 border-t border-[#e5e5e5]">
               {[
                 { n: '30+', label: 'Public Repos' },
-                { n: '2', label: 'Divisions' },
-                { n: '∞', label: 'In Production' },
+                { n: '24hr', label: 'Response SLA' },
+                { n: '30-day', label: 'Pilot Program' },
               ].map(({ n, label }) => (
                 <div key={label} className="flex flex-col gap-1">
                   <span className="font-manrope text-[1.5rem] sm:text-[2rem] font-semibold tracking-tight text-[#111]">{n}</span>
@@ -307,15 +366,26 @@ export default function SoftwareDivisionHome() {
           <div className="flex flex-col lg:flex-row justify-between items-start gap-10 sm:gap-16 mb-16 sm:mb-24">
             <div className="flex flex-col gap-6 sm:gap-8 max-w-lg">
               <h2 className="font-manrope text-[1.5rem] sm:text-[2rem] md:text-[2.5rem] font-medium tracking-tight leading-snug">
-                Ready to modernize your stack?
+                Ready to cut costs and ship faster?
               </h2>
-              <a
-                href="mailto:info@deeptechnologies.dev"
-                className="inline-flex items-center gap-2 border border-white text-white rounded-full py-2.5 px-4 sm:px-6 hover:bg-white hover:text-[#111] transition-colors w-max group text-xs sm:text-sm break-all"
-              >
-                <span className="truncate">info@deeptechnologies.dev</span>
-                <ArrowUpRight className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
+              <p className="text-sm text-white/60 font-manrope leading-relaxed -mt-2">
+                Submit your project and get a real answer within 24 hours. No discovery call required to get started.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 bg-white text-[#111] rounded-full py-2.5 px-6 hover:bg-neutral-200 transition-colors w-max text-xs sm:text-sm font-semibold"
+                >
+                  Start a Project <ArrowUpRight className="w-4 h-4" />
+                </Link>
+                <a
+                  href="mailto:info@deeptechnologies.dev"
+                  className="inline-flex items-center gap-2 border border-white/30 text-white/70 rounded-full py-2.5 px-4 sm:px-6 hover:border-white hover:text-white transition-colors w-max text-xs sm:text-sm"
+                >
+                  <span className="truncate">info@deeptechnologies.dev</span>
+                  <ArrowUpRight className="w-4 h-4 shrink-0" />
+                </a>
+              </div>
             </div>
 
             <div className="grid grid-cols-2 gap-8 sm:gap-12 lg:gap-24">
