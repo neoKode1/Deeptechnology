@@ -88,7 +88,7 @@ export default function PilotPage() {
               'Vendor shortlist matched to your workflow, floor plan, and budget',
               'ROI projection with your actual labor cost and throughput numbers',
               'Deployment-ready specification document ready to execute',
-              'Fleet order consultation — we handle vendor coordination when you're ready',
+              "Fleet order consultation — we handle vendor coordination when you're ready",
             ].map(item => (
               <li key={item} className="flex gap-2 items-start">
                 <span className="text-green-500 mt-0.5">✓</span>
