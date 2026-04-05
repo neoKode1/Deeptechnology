@@ -77,10 +77,10 @@ export default function ConsultChat() {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+    <div className="fixed bottom-6 right-4 sm:right-6 z-50 flex flex-col items-end gap-3">
       {/* Chat panel */}
       {open && (
-        <div className="w-[360px] h-[500px] bg-white rounded-2xl shadow-2xl border border-[#e8e8e8] flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 fade-in duration-200">
+        <div className="w-[calc(100vw-2rem)] max-w-[360px] h-[500px] bg-white rounded-2xl shadow-2xl border border-[#e8e8e8] flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 fade-in duration-200">
           {/* Header */}
           <div className="bg-[#111] px-4 py-3 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2.5">
@@ -136,13 +136,13 @@ export default function ConsultChat() {
         </div>
       )}
 
-      {/* Toggle button */}
+      {/* Toggle button — icon only on mobile, label on sm+ */}
       <button
         onClick={toggle}
-        className="bg-[#111] text-white rounded-full px-4 py-3 flex items-center gap-2 shadow-lg hover:bg-[#333] transition-colors relative"
+        className="bg-[#111] text-white rounded-full p-3 sm:px-4 sm:py-3 flex items-center gap-2 shadow-lg hover:bg-[#333] transition-colors relative"
       >
-        {open ? <X className="w-4 h-4" /> : <MessageCircle className="w-4 h-4" />}
-        {!open && <span className="text-sm font-medium">Chat with Nimbus</span>}
+        {open ? <X className="w-5 h-5" /> : <MessageCircle className="w-5 h-5" />}
+        {!open && <span className="hidden sm:inline text-sm font-medium">Chat with Nimbus</span>}
         {!open && hasUnread && (
           <span className="absolute -top-1 -right-1 w-3 h-3 bg-emerald-400 rounded-full" />
         )}
