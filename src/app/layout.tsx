@@ -5,7 +5,7 @@ import '@/styles/globals.css';
 import { cn } from '@/lib/utils';
 import Analytics from '@/components/Analytics';
 import CookieBanner from '@/components/CookieBanner';
-// import ConsultChat from '@/components/ConsultChat';
+import ConsultChat from '@/components/ConsultChat';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -79,7 +79,7 @@ export default function RootLayout({
           <Analytics />
         </Suspense>
         <CookieBanner />
-        {/* <ConsultChat /> */}
+        <ConsultChat />
         {children}
       </body>
     </html>
