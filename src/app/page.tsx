@@ -303,59 +303,23 @@ export default function SoftwareDivisionHome() {
       <section id="about" className="px-6 md:px-12 lg:px-20 py-24 max-w-[82rem] mx-auto">
         <SectionDivider label="About" />
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-start">
-          {/* Left — what we do + founder */}
-          <div className="lg:col-span-5">
-            <h2
-              className="leading-[0.92] text-[#111] tracking-tight font-semibold"
-              style={{ fontSize: 'clamp(2.5rem, 7vw, 5.5rem)' }}
-            >
-              About.
-            </h2>
+        <div className="flex flex-col gap-10 max-w-3xl">
+          <p className="text-[1.25rem] md:text-[1.5rem] leading-relaxed text-[#222] tracking-tight">
+            A multi-disciplinary technology company operating across software and robotics. We build at the intersection of AI and real-world systems — shipping production infrastructure, deploying autonomous hardware, and integrating intelligent systems into live operations.
+          </p>
 
-            <div className="mt-10 pt-8 border-t border-[#e5e5e5]">
-              <p className="text-xs uppercase tracking-[0.18em] text-[#999] font-medium mb-3">Founder &amp; CTO</p>
-              <p className="text-[1.1rem] font-semibold text-[#111] tracking-tight">Chad Neo</p>
-              <div className="mt-3 flex flex-col gap-1.5">
-                {['Software Engineer', 'AI Systems Architect', 'Robotics Consultant'].map((role) => (
-                  <span
-                    key={role}
-                    className="text-xs uppercase tracking-[0.18em] text-[#999] font-medium"
-                  >
-                    {role}
-                  </span>
-                ))}
+          {/* Stat row */}
+          <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-6 border-t border-[#e5e5e5]">
+            {[
+              { n: '30+', label: 'Public Repos' },
+              { n: '24hr', label: 'Response SLA' },
+              { n: '30-day', label: 'Pilot Program' },
+            ].map(({ n, label }) => (
+              <div key={label} className="flex flex-col gap-1">
+                <span className="font-manrope text-[1.5rem] sm:text-[2rem] font-semibold tracking-tight text-[#111]">{n}</span>
+                <span className="text-xs uppercase tracking-widest text-[#999]">{label}</span>
               </div>
-              <a
-                href="https://github.com/neoKode1"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-6 inline-flex items-center gap-2 border border-[#ccc] rounded-full px-5 py-2 text-xs text-[#111] hover:bg-[#111] hover:text-white hover:border-[#111] transition-colors"
-              >
-                github.com/neoKode1 <ArrowUpRight className="w-3.5 h-3.5" />
-              </a>
-            </div>
-          </div>
-
-          {/* Right — bio */}
-          <div className="lg:col-span-7 flex flex-col gap-8 pt-2">
-            <p className="text-[1.25rem] md:text-[1.5rem] leading-relaxed text-[#222] tracking-tight">
-              A multi-disciplinary technology company operating across software and robotics. We build at the intersection of AI and real-world systems — shipping production infrastructure, deploying autonomous hardware, and integrating intelligent systems into live operations. One founder. Two divisions. Everything in-house.
-            </p>
-
-            {/* Stat row */}
-            <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-4 border-t border-[#e5e5e5]">
-              {[
-                { n: '30+', label: 'Public Repos' },
-                { n: '24hr', label: 'Response SLA' },
-                { n: '30-day', label: 'Pilot Program' },
-              ].map(({ n, label }) => (
-                <div key={label} className="flex flex-col gap-1">
-                  <span className="font-manrope text-[1.5rem] sm:text-[2rem] font-semibold tracking-tight text-[#111]">{n}</span>
-                  <span className="text-xs uppercase tracking-widest text-[#999]">{label}</span>
-                </div>
-              ))}
-            </div>
+            ))}
           </div>
         </div>
       </section>
