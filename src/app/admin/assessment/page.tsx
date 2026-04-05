@@ -1,10 +1,24 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { runAssessment } from '@/lib/assessment/engine';
 import type { AssessmentInput, AssessmentResult } from '@/lib/assessment/types';
 import AssessmentForm from './AssessmentForm';
 import AssessmentResults from './AssessmentResults';
+
+function AdminNav() {
+  return (
+    <nav className="flex items-center gap-1 mb-8 text-xs">
+      <Link href="/admin" className="text-neutral-500 hover:text-white transition-colors px-2 py-1 rounded">Toolbox</Link>
+      <span className="text-neutral-700">/</span>
+      <span className="text-white px-2 py-1">Assessment Engine</span>
+      <span className="flex-1" />
+      <Link href="/admin/quotes" className="text-neutral-500 hover:text-white transition-colors px-2 py-1 rounded">Quotes</Link>
+      <Link href="/admin/vendors" className="text-neutral-500 hover:text-white transition-colors px-2 py-1 rounded">Vendors</Link>
+    </nav>
+  );
+}
 
 export default function AssessmentPage() {
   const [result, setResult] = useState<AssessmentResult | null>(null);
@@ -60,7 +74,8 @@ export default function AssessmentPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white p-6">
       <div className="max-w-4xl mx-auto">
-        <div className="mb-8">
+        <AdminNav />
+      <div className="mb-8">
           <p className="text-xs tracking-[0.2em] uppercase text-neutral-500 mb-1">Admin · Internal Tool</p>
           <h1 className="text-2xl font-semibold text-white">Assessment Engine</h1>
           <p className="text-neutral-400 text-sm mt-1">

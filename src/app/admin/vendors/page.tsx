@@ -85,9 +85,14 @@ export default function AdminVendorsPage() {
   return (
     <main className="min-h-screen bg-[#0a0a0a] text-white">
       <div className="max-w-6xl mx-auto px-6 py-12">
-        <Link href="/admin/quotes" className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-white transition mb-6">
-          <ArrowLeft size={14} /> Quote Dashboard
-        </Link>
+        <nav className="flex items-center gap-1 mb-8 text-xs">
+          <Link href="/admin" className="text-zinc-500 hover:text-white transition-colors px-2 py-1 rounded">Toolbox</Link>
+          <span className="text-zinc-700">/</span>
+          <span className="text-white px-2 py-1">Vendor Intelligence</span>
+          <span className="flex-1" />
+          <Link href="/admin/assessment" className="text-zinc-500 hover:text-white transition-colors px-2 py-1 rounded">Assessment</Link>
+          <Link href="/admin/quotes" className="text-zinc-500 hover:text-white transition-colors px-2 py-1 rounded">Quotes</Link>
+        </nav>
 
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>

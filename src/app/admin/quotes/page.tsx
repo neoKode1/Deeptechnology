@@ -216,9 +216,14 @@ export default function AdminQuotesPage() {
   return (
     <main className="min-h-screen bg-[#0a0a0a] text-white">
       <div className="max-w-6xl mx-auto px-6 py-12">
-        <Link href="/" className="inline-flex items-center gap-1.5 text-sm text-zinc-500 hover:text-white transition mb-6">
-          <ArrowLeft size={14} /> Back to site
-        </Link>
+        <nav className="flex items-center gap-1 mb-8 text-xs">
+          <Link href="/admin" className="text-zinc-500 hover:text-white transition-colors px-2 py-1 rounded">Toolbox</Link>
+          <span className="text-zinc-700">/</span>
+          <span className="text-white px-2 py-1">Quote Dashboard</span>
+          <span className="flex-1" />
+          <Link href="/admin/assessment" className="text-zinc-500 hover:text-white transition-colors px-2 py-1 rounded">Assessment</Link>
+          <Link href="/admin/vendors" className="text-zinc-500 hover:text-white transition-colors px-2 py-1 rounded">Vendors</Link>
+        </nav>
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="text-2xl font-semibold tracking-tight">Quote Dashboard</h1>
