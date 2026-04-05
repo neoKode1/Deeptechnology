@@ -1,4 +1,4 @@
-import { exec } from 'child_process';
+import { spawn } from 'child_process';
 import { randomUUID } from 'crypto';
 import path from 'path';
 import { VENDORS, BUY_PATH_LABELS, type Vendor } from '@/data/vendors';
@@ -182,20 +182,36 @@ export function forwardToNimbus(req: SourcingRequest): string {
     return requestId;
   }
 
-  /* Shell-escape the prompt by replacing single quotes */
-  const escaped = prompt.replace(/'/g, "'\\''");
+  console.log(`[nimbus] Callback URL: ${process.env.NEXT_PUBLIC_BASE_URL ?? 'https://deeptechnologies.dev'}/api/nimbus/callback`);
 
-  const cmd = `pnpm clawdbot agent --message '${escaped}' --local --session-id ${sessionId}`;
+  /* Use spawn with args array — bypasses shell escaping and ARG_MAX limits entirely */
+  const args = ['clawdbot', 'agent', '--message', prompt, '--local', '--session-id', sessionId];
+  const child = spawn('pnpm', args, { cwd: NIMBUS_DIR, timeout: 300_000 });
 
-  /* Fire-and-forget: exec in the nimbus directory, log output, don't await */
-  exec(cmd, { cwd: NIMBUS_DIR, timeout: 300_000 }, (error, stdout, stderr) => {
-    if (error) {
-      console.error(`[nimbus] Sourcing ${requestId} failed:`, error.message);
-      if (stderr) console.error(`[nimbus] stderr:`, stderr);
-      return;
+  let stdout = '';
+  let stderr = '';
+  child.stdout.on('data', (chunk: Buffer) => { stdout += chunk.toString(); });
+  child.stderr.on('data', (chunk: Buffer) => { stderr += chunk.toString(); });
+
+  /* Fire-and-forget — log full output on exit */
+  child.on('close', (code) => {
+    if (code !== 0) {
+      console.error(`[nimbus] Sourcing ${requestId} failed (exit ${code})`);
+      if (stderr) console.error(`[nimbus] stderr:`, stderr.slice(0, 2000));
+    } else {
+      console.log(`[nimbus] Sourcing ${requestId} completed (exit 0).`);
     }
-    console.log(`[nimbus] Sourcing ${requestId} completed.`);
-    if (stdout) console.log(`[nimbus] stdout:`, stdout.slice(0, 500));
+    if (stdout) {
+      // Skip the pnpm echo of the full command (everything before the first blank line
+      // after "> node scripts/run-node.mjs") to surface the actual AI response
+      const markerIdx = stdout.indexOf('\n\n', stdout.indexOf('> node scripts/run-node.mjs'));
+      const aiOutput = markerIdx > -1 ? stdout.slice(markerIdx).trimStart() : stdout;
+      console.log(`[nimbus] Clawdbot output:\n${aiOutput.slice(0, 20000)}`);
+    }
+  });
+
+  child.on('error', (err) => {
+    console.error(`[nimbus] Failed to spawn Clawdbot:`, err.message);
   });
 
   return requestId;

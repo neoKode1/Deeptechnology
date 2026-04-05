@@ -1,0 +1,23 @@
+{
+  "firstName": "Alex",
+  "lastName": "Rivera",
+  "email": "alex.rivera@testcorp.com",
+  "phone": "415-555-0192",
+  "company": "TestCorp Logistics",
+  "jobTitle": "VP of Operations",
+  "country": "United States",
+  "industry": "Logistics & Delivery",
+  "employeeCount": "51-200",
+  "inquiry": "Autonomous solutions",
+  "message": "We run a last-mile delivery operation in San Francisco and are evaluating sidewalk delivery robots for a pilot. Looking for 2-3 units to start, ideally on a monthly lease arrangement.",
+  "intake": {
+    "environmentType": "Outdoor urban sidewalk",
+    "systemCategory": "Sidewalk delivery robot",
+    "payloadDescription": "Food and small parcel delivery under 20 lbs",
+    "terrainSurface": "Paved sidewalk, curb cuts",
+    "deploymentScale": "2-5 units",
+    "integrationNeeds": ["GPS tracking", "API integration with our dispatch system"],
+    "budgetRange": "$10,000-$25,000",
+    "timeline": "1-3 months"
+  }
+}

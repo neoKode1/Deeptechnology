@@ -87,6 +87,13 @@ export async function createQuote(payload: CreateQuotePayload): Promise<Quote> {
   await r.set(quoteKey(id), JSON.stringify(quote));
   await r.zadd(QUOTES_INDEX, { score: Date.now(), member: id });
 
+  // Index by customer email so the portal can look up all quotes for an email
+  if (payload.customerEmail) {
+    const emailKey = `quotes:by-email:${payload.customerEmail.toLowerCase().trim()}`;
+    await r.lpush(emailKey, id);
+    await r.expire(emailKey, 60 * 60 * 24 * 365 * 2); // 2-year TTL
+  }
+
   console.log(`[quotes] Created quote ${id} for ${payload.customerEmail}`);
   return quote;
 }

@@ -297,3 +297,5 @@ export const BUY_PATH_COLORS: Record<BuyPath, string> = {
   not_available: 'text-red-400 border-red-800/50 bg-red-900/20',
 };
 
+
+

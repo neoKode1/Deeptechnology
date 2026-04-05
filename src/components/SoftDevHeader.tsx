@@ -38,7 +38,8 @@ const SoftDevHeader = () => {
   const isRobotics = pathname.startsWith('/robotics');
   const isSoftware = pathname.startsWith('/software');
   const isSoftDev = !isCreative && !isRobotics;
-  const isDark = isCreative;
+  // Dark = white text — any page with a dark/black background
+  const isDark = isCreative || pathname.startsWith('/pilot') || pathname.startsWith('/orders') || pathname.startsWith('/portal') || pathname.startsWith('/compare');
 
   const textColor = isDark ? 'text-white/80' : 'text-[#111]';
   const textMuted = isDark ? 'text-white/40 hover:text-white/80' : 'text-[#111]/40 hover:text-[#111]';
@@ -86,6 +87,7 @@ const SoftDevHeader = () => {
             <div className="hidden md:flex items-center gap-6 text-sm">
               <Link href="/#services" className={`transition-colors ${textMuted}`}>Services</Link>
               <Link href="/software#work" className={`transition-colors ${textMuted}`}>Work</Link>
+              <Link href="/pilot" className={`transition-colors ${textMuted}`}>Pilot</Link>
               <Link href="/contact" className={`transition-colors ${textMuted}`}>Contact</Link>
             </div>
             <a
@@ -134,7 +136,7 @@ const SoftDevHeader = () => {
             </Link>
           </div>
           {/* Nav links — always shown on mobile */}
-          {[['/#services', 'Services'], ['/software#work', 'Work'], ['/contact', 'Contact']].map(([href, label]) => (
+          {[['/#services', 'Services'], ['/software#work', 'Work'], ['/pilot', 'Pilot'], ['/contact', 'Contact']].map(([href, label]) => (
             <Link key={href} href={href} className={`text-2xl font-manrope font-light ${textColor}`} onClick={() => setIsMenuOpen(false)}>
               {label}
             </Link>

@@ -1,5 +1,11 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
+import { createQuote } from '@/lib/quotes/store';
+import { enterpriseConfirmation } from '@/lib/nurture';
+import { pushToCRM } from '@/lib/crm';
+import { rateLimit, limiters } from '@/lib/ratelimit';
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 /**
  * POST /api/enterprise/requisition
@@ -9,6 +15,9 @@ import { Resend } from 'resend';
  * email within seconds so a human can respond within hours.
  */
 export async function POST(request: Request) {
+  const limited = await rateLimit(limiters.enterprise, request);
+  if (limited) return limited;
+
   const body = await request.json();
   const {
     companyName, contactName, email, phone,
@@ -85,7 +94,7 @@ export async function POST(request: Request) {
 
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
-    const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
+    const adminEmail = process.env.ADMIN_EMAIL || 'info@deeptechnologies.dev';
 
     await resend.emails.send({
       from: 'Deep Tech <info@deeptechnologies.dev>',
@@ -99,6 +108,52 @@ export async function POST(request: Request) {
     console.error('[enterprise/requisition] Email send failed:', err);
     return NextResponse.json({ success: false, message: 'Failed to send — please try again.' }, { status: 500 });
   }
+
+  // ── Create a system record in Redis so this lead is never lost ──────────────
+  // Even if the admin email is missed, deleted, or lands in spam, the requisition
+  // will appear in /admin/quotes with status 'pending_review'.
+  try {
+    const quote = await createQuote({
+      requestId: `enterprise-${Date.now()}`,
+      customerName: `${contactName} (${companyName})`,
+      customerEmail: email,
+      inquiryType: 'Autonomous solutions',
+      summary: `Enterprise req: ${robotType}, fleet ${fleetSize}, ${environment}. Budget: ${budget}. Timeline: ${timeline}.`,
+      lineItems: [], // No line items yet — admin will build the quote after the discovery call
+      notes: [
+        `Company: ${companyName}`,
+        `Contact: ${contactName}${phone ? ' · ' + phone : ''}`,
+        `Robot type: ${robotType}`,
+        `Fleet size: ${fleetSize}`,
+        `Environment: ${environment}`,
+        `Timeline: ${timeline}`,
+        `Budget: ${budget}`,
+        notes ? `Notes: ${notes}` : '',
+      ].filter(Boolean).join('\n'),
+    });
+    console.log(`[enterprise/requisition] System record created: ${quote.id} for ${companyName} (${email})`);
+  } catch (err) {
+    // Non-fatal — the admin email already went out. Log and continue.
+    console.error('[enterprise/requisition] Failed to create Redis record:', err);
+  }
+
+  // ── Send customer D+0 acknowledgment (Seq 4) ────────────────────────────────
+  try {
+    await enterpriseConfirmation({ resend, email, contactName, companyName, robotType, fleetSize });
+    console.log(`[enterprise/requisition] Customer confirmation sent to ${email}`);
+  } catch (err) {
+    console.error('[enterprise/requisition] Customer confirmation failed (non-fatal):', err);
+  }
+
+  // Fire-and-forget: push to CRM
+  const [firstName, ...rest] = contactName.trim().split(' ');
+  pushToCRM({
+    leadType: 'enterprise_requisition',
+    capturedAt: new Date().toISOString(),
+    email, firstName, lastName: rest.join(' ') || undefined,
+    fullName: contactName, phone, company: companyName,
+    robotType, fleetSize, environment, timeline, budget,
+  });
 
   console.log(`[enterprise/requisition] Req received: ${companyName} (${email}) — ${robotType}, fleet: ${fleetSize}`);
   return NextResponse.json({ success: true });

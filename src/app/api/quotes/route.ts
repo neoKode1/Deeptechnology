@@ -8,7 +8,7 @@ import type { CreateQuotePayload } from '@/lib/quotes/types';
  * List all quotes, optionally filtered by status.
  */
 export async function GET(request: Request) {
-  if (!isAuthorizedRequest(request)) {
+  if (!await isAuthorizedRequest(request)) {
     return unauthorizedResponse();
   }
 
@@ -33,7 +33,7 @@ export async function GET(request: Request) {
  * or manually by admin for testing.
  */
 export async function POST(request: Request) {
-  if (!isAuthorizedRequest(request)) {
+  if (!await isAuthorizedRequest(request)) {
     return unauthorizedResponse();
   }
 

@@ -70,7 +70,7 @@ export async function POST(
   // Email admin
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
-    const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
+    const adminEmail = process.env.ADMIN_EMAIL || 'info@deeptechnologies.dev';
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptechnologies.dev';
 
     await resend.emails.send({

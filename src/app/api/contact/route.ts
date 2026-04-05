@@ -1,6 +1,9 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
 import { forwardToNimbus } from '@/lib/nimbus';
+import { rateLimit, limiters } from '@/lib/ratelimit';
+import { contactNurture } from '@/lib/nurture';
+import { pushToCRM } from '@/lib/crm';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -87,6 +90,9 @@ function formatIntakeHtml(inquiry: string, intake: IntakeFields): string {
 }
 
 export async function POST(request: Request) {
+  const limited = await rateLimit(limiters.contact, request);
+  if (limited) return limited;
+
   try {
     const body = await request.json();
     const {
@@ -235,7 +241,7 @@ export async function POST(request: Request) {
                 <tr>
                   <td>
                     <p style="margin:0;font-size:11px;color:#aaaaaa;line-height:1.6;">
-                      Received via <strong style="color:#888888;">deeptech.com/contact</strong><br />
+                      Received via <strong style="color:#888888;">deeptechnologies.dev/contact</strong><br />
                       ${timestamp}
                     </p>
                   </td>
@@ -256,7 +262,7 @@ export async function POST(request: Request) {
 
     const { error } = await resend.emails.send({
       from: 'Deep Tech <info@deeptechnologies.dev>',
-      to: '1deeptechnology@gmail.com',
+      to: process.env.ADMIN_EMAIL ?? 'info@deeptechnologies.dev',
       replyTo: email,
       subject: `[${inquiry}] New message from ${name} — ${company}`,
       text: `From: ${name}\nEmail: ${email}\nPhone: ${phone || '—'}\nCompany: ${company}\nJob Title: ${jobTitle}\nIndustry: ${industry}\nCountry: ${country}\nEmployees: ${employeeCount || '—'}\nInquiry: ${inquiry}${intakeSummary ? `\n\nSourcing Parameters:\n${intakeSummary}` : ''}\n\n${message}\n\n---\nReceived ${timestamp}`,
@@ -271,12 +277,35 @@ export async function POST(request: Request) {
       );
     }
 
+    // Send D+0 customer confirmation + schedule D+3 and D+7 nurture emails
+    try {
+      await contactNurture({ resend, email, firstName, inquiry });
+      console.log(`[contact] Nurture sequence (D+0/D+3/D+7) queued for ${email}`);
+    } catch (nurtureErr) {
+      console.error('[contact] Nurture email error (non-fatal):', nurtureErr);
+    }
+
     /* Fire-and-forget: forward structured data to Nimbus for sourcing */
     const nimbusRequestId = forwardToNimbus({
       name, email, inquiry, message, intake,
       company, jobTitle, industry, employeeCount,
     });
     console.log(`[contact] Nimbus sourcing initiated: ${nimbusRequestId}`);
+
+    /* Fire-and-forget: push lead to CRM */
+    pushToCRM({
+      leadType: 'contact_form',
+      capturedAt: new Date().toISOString(),
+      email,
+      firstName,
+      lastName: lastName || undefined,
+      fullName: name,
+      company,
+      jobTitle,
+      industry,
+      inquiry,
+      message,
+    });
 
     return NextResponse.json({ success: true, message: 'Message sent!' });
   } catch (err) {

@@ -82,7 +82,7 @@ export async function POST(request: Request) {
   try {
     await resend.emails.send({
       from: 'Deep Tech <info@deeptechnologies.dev>',
-      to: '1deeptechnology@gmail.com',
+      to: process.env.ADMIN_EMAIL || 'info@deeptechnologies.dev',
       subject: `[Draft Quote Ready] ${customerName} — ${inquiryType}`,
       html: `<!DOCTYPE html>
 <html lang="en">

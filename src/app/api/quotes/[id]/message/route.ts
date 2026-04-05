@@ -46,7 +46,7 @@ export async function POST(
 
   // Send admin notification
   try {
-    const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
+    const adminEmail = process.env.ADMIN_EMAIL || 'info@deeptechnologies.dev';
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptechnologies.dev';
     const fmt = (n: number) => '$' + n.toFixed(2);
 

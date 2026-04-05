@@ -264,6 +264,64 @@ export default function SoftwareDivisionPage() {
 
 
 
+      {/* ── PRICING ── */}
+      <section id="pricing" className="px-4 sm:px-6 md:px-12 lg:px-20 py-20 sm:py-28 max-w-[82rem] mx-auto">
+        <SectionDivider label="Pricing" />
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {/* Sprint */}
+          <div className="border border-[#e5e5e5] rounded-2xl p-8 flex flex-col">
+            <p className="text-xs uppercase tracking-widest text-[#999] font-manrope mb-3">Sprint</p>
+            <p className="text-3xl font-semibold text-[#111] font-manrope mb-1">From $4,500</p>
+            <p className="text-sm text-[#999] font-manrope mb-6">Quick-turn builds · 2–4 weeks</p>
+            <ul className="space-y-2 text-sm text-[#555] font-manrope mb-8 flex-1">
+              {['Landing page or marketing site', 'API integration or automation', 'LLM-powered feature add-on', 'Single-endpoint AI agent'].map(f => (
+                <li key={f} className="flex items-start gap-2"><span className="text-[#111] mt-0.5">—</span>{f}</li>
+              ))}
+            </ul>
+            <Link href="/contact?inquiry=software-sprint"
+              className="inline-flex items-center justify-center border border-[#ccc] rounded-full py-2.5 px-6 text-sm text-[#111] hover:border-[#111] transition-colors font-manrope">
+              Get Started →
+            </Link>
+          </div>
+
+          {/* Build — highlighted */}
+          <div className="border border-[#111] rounded-2xl p-8 flex flex-col bg-[#0a0a0a] text-white">
+            <div className="flex items-center justify-between mb-3">
+              <p className="text-xs uppercase tracking-widest text-white/50 font-manrope">Build</p>
+              <span className="text-[10px] uppercase tracking-widest border border-white/20 rounded-full px-2.5 py-1 text-white/60 font-manrope">Popular</span>
+            </div>
+            <p className="text-3xl font-semibold text-white font-manrope mb-1">From $12,000</p>
+            <p className="text-sm text-white/40 font-manrope mb-6">Production-grade apps · 4–10 weeks</p>
+            <ul className="space-y-2 text-sm text-white/60 font-manrope mb-8 flex-1">
+              {['Full-stack SaaS or internal tool', 'Multi-agent AI orchestration', 'Auth, billing, and admin panel', 'CI/CD + Cloudflare/Vercel deploy'].map(f => (
+                <li key={f} className="flex items-start gap-2"><span className="text-white/80 mt-0.5">—</span>{f}</li>
+              ))}
+            </ul>
+            <Link href="/contact?inquiry=software-build"
+              className="inline-flex items-center justify-center bg-white text-[#111] rounded-full py-2.5 px-6 text-sm font-semibold hover:bg-white/90 transition-colors font-manrope">
+              Get Started →
+            </Link>
+          </div>
+
+          {/* Scale */}
+          <div className="border border-[#e5e5e5] rounded-2xl p-8 flex flex-col">
+            <p className="text-xs uppercase tracking-widest text-[#999] font-manrope mb-3">Scale</p>
+            <p className="text-3xl font-semibold text-[#111] font-manrope mb-1">Custom</p>
+            <p className="text-sm text-[#999] font-manrope mb-6">Enterprise AI &amp; infrastructure</p>
+            <ul className="space-y-2 text-sm text-[#555] font-manrope mb-8 flex-1">
+              {['Multi-model AI platforms', 'MCP server &amp; agent networks', 'Data pipelines &amp; RAG systems', 'Dedicated engineer + SLA'].map(f => (
+                <li key={f} className="flex items-start gap-2"><span className="text-[#111] mt-0.5">—</span><span dangerouslySetInnerHTML={{ __html: f }} /></li>
+              ))}
+            </ul>
+            <Link href="/contact?inquiry=software-scale"
+              className="inline-flex items-center justify-center border border-[#ccc] rounded-full py-2.5 px-6 text-sm text-[#111] hover:border-[#111] transition-colors font-manrope">
+              Talk to the Team →
+            </Link>
+          </div>
+        </div>
+        <p className="text-xs text-[#bbb] text-center mt-8 font-manrope">All projects start with a scoping call — no commitment required.</p>
+      </section>
+
       {/* ── FOOTER ── */}
       <footer className="bg-[#0a0a0a] text-white pt-16 sm:pt-24 pb-8 px-4 sm:px-6 md:px-12 lg:px-20">
         <div className="max-w-[82rem] mx-auto flex flex-col">
@@ -273,10 +331,10 @@ export default function SoftwareDivisionPage() {
                 Ready to modernize your stack?
               </h2>
               <a
-                href="mailto:1deeptechnology@gmail.com"
+                href="mailto:info@deeptechnologies.dev"
                 className="inline-flex items-center gap-2 border border-white text-white rounded-full py-2.5 px-4 sm:px-6 hover:bg-white hover:text-[#111] transition-colors w-max group text-xs sm:text-sm"
               >
-                <span className="truncate">1deeptechnology@gmail.com</span>
+                <span className="truncate">info@deeptechnologies.dev</span>
                 <ArrowUpRight className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </div>
@@ -289,6 +347,9 @@ export default function SoftwareDivisionPage() {
                   <Link href="/#about" className="hover:text-white transition-colors">About</Link>
                   <Link href="/#services" className="hover:text-white transition-colors">Services</Link>
                   <Link href="/software#work" className="hover:text-white transition-colors">Work</Link>
+                  <Link href="/robotics" className="hover:text-white transition-colors">Robotics</Link>
+                  <Link href="/pilot" className="hover:text-white transition-colors">30-Day Pilot</Link>
+                  <Link href="/portal" className="hover:text-white transition-colors">Customer Portal</Link>
                 </div>
               </div>
               <div className="flex flex-col gap-6">

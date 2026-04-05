@@ -229,16 +229,11 @@ export default function RoboticsDivisionHome() {
 
       {/* ── DELIVERY SYSTEMS ── */}
       <section id="delivery-systems" className="px-4 sm:px-6 md:px-12 lg:px-20 py-14 sm:py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-6 md:gap-8 items-start">
-          {/* Left: description card */}
-          <div className="lg:sticky lg:top-24 p-6 rounded-xl border border-neutral-200 bg-white/70 backdrop-blur-md shadow-sm">
-            <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-900 font-semibold">In the Field</p>
-            <p className="text-sm leading-relaxed text-neutral-500">
-              Sidewalk bots, road hybrids, and autonomous delivery vehicles — operating across urban corridors, bike lanes, and last-mile routes.
-            </p>
-          </div>
-          {/* Right: image collage */}
-          <div className="flex flex-col gap-2">
+        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-400">In the Field</p>
+        <p className="text-neutral-500 text-sm max-w-lg leading-relaxed mb-12">
+          Sidewalk bots, road hybrids, and autonomous delivery vehicles — operating across urban corridors, bike lanes, and last-mile routes.
+        </p>
+        <div className="flex flex-col gap-2">
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 sm:grid-rows-2 gap-2" style={{ minHeight: 'clamp(320px, 55vw, 680px)' }}>
               <div className="sm:row-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '200px', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Serve Robotics', name: 'Gen-3 Delivery Robot', price: 'From $25,645 / unit', systemCategory: 'SADRs (Sidewalk Delivery Robots)', image: '/media/Serve-Gen-2-left-and-Gen-3-robots.jpg' })}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -291,7 +286,6 @@ export default function RoboticsDivisionHome() {
                 <button className="robo-overlay-cta">Get Quote</button>
               </div>
             </div>
-          </div>
         </div>
       </section>
 
@@ -714,14 +708,120 @@ export default function RoboticsDivisionHome() {
         </div>
       </section>
 
-      {/* ── FOOTER ── */}
-      <footer className="px-4 sm:px-6 md:px-12 lg:px-20 py-10 sm:py-12 max-w-[82rem] mx-auto border-t border-neutral-200">
-        <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-neutral-400">
-          <div>© {new Date().getFullYear()} Deeptech Robotics. All rights reserved.</div>
-          <div className="flex gap-6">
-            <a href="/" className="text-neutral-500 hover:text-neutral-900 transition-colors">Software Dev</a>
-            <a href="/creative" className="text-neutral-500 hover:text-neutral-900 transition-colors">Creative</a>
+      {/* ── COMPARE STRIP ── */}
+      <section className="px-4 sm:px-6 md:px-12 lg:px-20 py-12 max-w-[82rem] mx-auto border-t border-neutral-200">
+        <p className="text-[10px] tracking-widest uppercase font-manrope text-neutral-400 mb-5">Not sure which platform? Compare side-by-side →</p>
+        <div className="flex flex-wrap gap-3">
+          {[
+            { label: 'Unitree G1 vs Boston Dynamics Spot', href: '/compare/unitree-vs-boston-dynamics' },
+            { label: 'Agility Digit vs Figure 03', href: '/compare/agility-vs-figure' },
+            { label: 'Kiwibot Leap vs Serve Gen 3', href: '/compare/kiwibot-vs-serve' },
+          ].map(({ label, href }) => (
+            <a
+              key={href}
+              href={href}
+              className="inline-flex items-center gap-1.5 border border-neutral-300 text-neutral-600 rounded-full px-4 py-2 text-xs font-manrope hover:border-neutral-900 hover:text-neutral-900 transition-colors"
+            >
+              {label} <ArrowUpRight className="w-3 h-3" />
+            </a>
+          ))}
+        </div>
+      </section>
+
+      {/* ── SOCIAL PROOF ── */}
+      <section className="px-4 sm:px-6 md:px-12 lg:px-20 py-16 sm:py-24 max-w-[82rem] mx-auto border-t border-neutral-200">
+
+        {/* Vendor logo bar */}
+        <p className="text-[10px] tracking-widest uppercase font-manrope text-neutral-400 mb-6">Platforms We Source &amp; Deploy</p>
+        <div className="flex flex-wrap gap-x-8 gap-y-4 items-center mb-16">
+          {['Unitree Robotics', 'Boston Dynamics', 'Agility Robotics', 'Figure AI', 'Serve Robotics', 'Kiwibot', 'DJI Enterprise', 'Skydio'].map((name) => (
+            <span key={name} className="text-sm font-semibold text-neutral-300 tracking-tight font-manrope">{name}</span>
+          ))}
+        </div>
+
+        {/* Case study + quote grid */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          {/* Case study card */}
+          <div className="rounded-2xl border border-neutral-200 bg-white/60 backdrop-blur-sm p-7">
+            <p className="text-[10px] tracking-widest uppercase text-neutral-400 font-manrope mb-4">Case Study · Q1 2026 Pilot</p>
+            <h3 className="font-manrope font-semibold text-xl text-neutral-900 mb-2 leading-snug">
+              Sidewalk delivery fleet deployed in 18 days
+            </h3>
+            <p className="text-sm text-neutral-500 leading-relaxed mb-6">
+              A food-and-grocery chain needed last-mile coverage across a 0.4 mi campus loop. We assessed the terrain, sourced three Kiwibot Leap units, configured routes, and had the fleet live inside 18 days — including POS integration.
+            </p>
+            <div className="grid grid-cols-3 gap-4 mb-5">
+              {[
+                ['18 days', 'Deployment time'],
+                ['3 robots', 'Fleet size'],
+                ['$2,697/mo', 'All-in fleet cost'],
+              ].map(([stat, label]) => (
+                <div key={label}>
+                  <p className="text-lg font-bold text-neutral-900 font-manrope">{stat}</p>
+                  <p className="text-xs text-neutral-400 mt-0.5">{label}</p>
+                </div>
+              ))}
+            </div>
+            <p className="text-xs text-neutral-300 italic">Pilot customer · Confidential · Food &amp; Grocery, US</p>
           </div>
+
+          {/* Quote card */}
+          <div className="rounded-2xl border border-neutral-200 bg-neutral-900 p-7 flex flex-col justify-between">
+            <div>
+              <p className="text-[10px] tracking-widest uppercase text-neutral-500 font-manrope mb-6">What Clients Say</p>
+              <blockquote className="text-white text-lg font-manrope font-light leading-relaxed mb-6">
+                &ldquo;We evaluated four vendors ourselves and couldn&rsquo;t get a straight answer on pricing or lead time from any of them. Deep Tech had three units spec&rsquo;d and quoted within 48 hours. That alone was worth it.&rdquo;
+              </blockquote>
+            </div>
+            <div>
+              <p className="text-sm text-white font-semibold font-manrope">Operations Director</p>
+              <p className="text-xs text-neutral-400 mt-0.5">Logistics &amp; Fulfillment, Southwest US · 2026</p>
+              <a
+                href="/pilot"
+                className="mt-5 inline-flex items-center gap-2 border border-white/20 text-white rounded-full py-2 px-5 text-xs hover:border-white/50 transition-colors"
+              >
+                Start a 30-Day Pilot <ArrowUpRight className="w-3.5 h-3.5" />
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── FOOTER ── */}
+      <footer className="px-4 sm:px-6 md:px-12 lg:px-20 py-12 sm:py-16 max-w-[82rem] mx-auto border-t border-neutral-200">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 mb-12 text-sm">
+          <div className="flex flex-col gap-3">
+            <p className="text-[10px] uppercase tracking-widest text-neutral-400 font-manrope mb-1">Offerings</p>
+            <a href="/pilot" className="text-neutral-500 hover:text-neutral-900 transition-colors font-manrope">30-Day Pilot Program</a>
+            <a href="/contact?inquiry=robotics" className="text-neutral-500 hover:text-neutral-900 transition-colors font-manrope">Get a Quote</a>
+            <a href="/enterprise/requisition" className="text-neutral-500 hover:text-neutral-900 transition-colors font-manrope">Enterprise Requisition</a>
+          </div>
+          <div className="flex flex-col gap-3">
+            <p className="text-[10px] uppercase tracking-widest text-neutral-400 font-manrope mb-1">Compare Vendors</p>
+            <a href="/compare/unitree-vs-boston-dynamics" className="text-neutral-500 hover:text-neutral-900 transition-colors font-manrope">Unitree vs Boston Dynamics</a>
+            <a href="/compare/agility-vs-figure" className="text-neutral-500 hover:text-neutral-900 transition-colors font-manrope">Agility vs Figure</a>
+            <a href="/compare/kiwibot-vs-serve" className="text-neutral-500 hover:text-neutral-900 transition-colors font-manrope">Kiwibot vs Serve</a>
+          </div>
+          <div className="flex flex-col gap-3">
+            <p className="text-[10px] uppercase tracking-widest text-neutral-400 font-manrope mb-1">Vendor Catalog</p>
+            <a href="/robotics/unitree" className="text-neutral-500 hover:text-neutral-900 transition-colors font-manrope">Unitree Robotics</a>
+            <a href="/robotics/boston-dynamics" className="text-neutral-500 hover:text-neutral-900 transition-colors font-manrope">Boston Dynamics</a>
+            <a href="/robotics/agility" className="text-neutral-500 hover:text-neutral-900 transition-colors font-manrope">Agility Robotics</a>
+            <a href="/robotics/figure" className="text-neutral-500 hover:text-neutral-900 transition-colors font-manrope">Figure AI</a>
+            <a href="/robotics/kiwibot" className="text-neutral-500 hover:text-neutral-900 transition-colors font-manrope">Kiwibot</a>
+            <a href="/robotics/serve" className="text-neutral-500 hover:text-neutral-900 transition-colors font-manrope">Serve Robotics</a>
+          </div>
+          <div className="flex flex-col gap-3">
+            <p className="text-[10px] uppercase tracking-widest text-neutral-400 font-manrope mb-1">Account</p>
+            <a href="/portal" className="text-neutral-500 hover:text-neutral-900 transition-colors font-manrope">Customer Portal</a>
+            <a href="/contact" className="text-neutral-500 hover:text-neutral-900 transition-colors font-manrope">Contact Us</a>
+            <a href="/" className="text-neutral-500 hover:text-neutral-900 transition-colors font-manrope">Software Dev</a>
+          </div>
+        </div>
+        <div className="border-t border-neutral-200 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-neutral-400">
+          <div>© {new Date().getFullYear()} Deeptech Robotics. All rights reserved.</div>
+          <a href="mailto:info@deeptechnologies.dev" className="hover:text-neutral-900 transition-colors">info@deeptechnologies.dev</a>
         </div>
       </footer>
       </div>{/* end content wrapper */}

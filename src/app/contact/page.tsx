@@ -153,8 +153,8 @@ function ContactPageInner() {
             </h1>
             <p className="mt-4 sm:mt-6 text-sm sm:text-base text-[#777] max-w-md leading-relaxed font-manrope">
               Tell us about your project, or reach us directly at{' '}
-              <a href="mailto:1deeptechnology@gmail.com" className="text-[#111] underline underline-offset-4 break-all">
-                1deeptechnology@gmail.com
+              <a href="mailto:info@deeptechnologies.dev" className="text-[#111] underline underline-offset-4 break-all">
+                info@deeptechnologies.dev
               </a>.
             </p>
           </div>

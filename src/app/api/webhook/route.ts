@@ -137,7 +137,7 @@ export async function POST(request: Request) {
       // Send admin notification email
       try {
         const resend = new Resend(process.env.RESEND_API_KEY);
-        const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
+        const adminEmail = process.env.ADMIN_EMAIL || 'info@deeptechnologies.dev';
         const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptechnologies.dev';
         const emailSubject = isSubscription
           ? `🔄 RaaS Subscription Started — ${quote.customerName} (${paymentAmount})`
@@ -201,7 +201,7 @@ export async function POST(request: Request) {
       // Send admin notification for any refund we didn't initiate through our cancel flow
       try {
         const resend = new Resend(process.env.RESEND_API_KEY);
-        const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
+        const adminEmail = process.env.ADMIN_EMAIL || 'info@deeptechnologies.dev';
         await resend.emails.send({
           from: 'Deep Tech <info@deeptechnologies.dev>',
           to: adminEmail,
@@ -230,7 +230,7 @@ export async function POST(request: Request) {
       // Critical: notify admin immediately
       try {
         const resend = new Resend(process.env.RESEND_API_KEY);
-        const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
+        const adminEmail = process.env.ADMIN_EMAIL || 'info@deeptechnologies.dev';
         await resend.emails.send({
           from: 'Deep Tech <info@deeptechnologies.dev>',
           to: adminEmail,
@@ -292,7 +292,7 @@ export async function POST(request: Request) {
       // Alert admin
       try {
         const resend = new Resend(process.env.RESEND_API_KEY);
-        const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
+        const adminEmail = process.env.ADMIN_EMAIL || 'info@deeptechnologies.dev';
         const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptechnologies.dev';
         const cancellationReason = subscription.cancellation_details?.reason ?? 'not specified';
 

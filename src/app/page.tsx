@@ -310,10 +310,10 @@ export default function SoftwareDivisionHome() {
                 Ready to modernize your stack?
               </h2>
               <a
-                href="mailto:1deeptechnology@gmail.com"
+                href="mailto:info@deeptechnologies.dev"
                 className="inline-flex items-center gap-2 border border-white text-white rounded-full py-2.5 px-4 sm:px-6 hover:bg-white hover:text-[#111] transition-colors w-max group text-xs sm:text-sm break-all"
               >
-                <span className="truncate">1deeptechnology@gmail.com</span>
+                <span className="truncate">info@deeptechnologies.dev</span>
                 <ArrowUpRight className="w-4 h-4 shrink-0 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </div>
@@ -326,6 +326,9 @@ export default function SoftwareDivisionHome() {
                   <Link href="/#about" className="hover:text-white transition-colors">About</Link>
                   <Link href="/#services" className="hover:text-white transition-colors">Services</Link>
                   <Link href="/software#work" className="hover:text-white transition-colors">Work</Link>
+                  <Link href="/robotics" className="hover:text-white transition-colors">Robotics</Link>
+                  <Link href="/pilot" className="hover:text-white transition-colors">30-Day Pilot</Link>
+                  <Link href="/portal" className="hover:text-white transition-colors">Customer Portal</Link>
                 </div>
               </div>
               <div className="flex flex-col gap-6">

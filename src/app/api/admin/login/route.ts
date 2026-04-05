@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
+import { createAdminSession } from '@/lib/admin-auth';
 
 /**
  * POST /api/admin/login
- * Validates the admin secret and sets a cookie for browser-based admin access.
+ * Validates the admin secret and issues a Redis-backed session token cookie.
+ * The cookie value is a random UUID — the secret itself is never sent to the client.
  * Body: { secret: string }
  */
 export async function POST(request: Request) {
@@ -24,13 +26,16 @@ export async function POST(request: Request) {
       );
     }
 
+    // Create a UUID session in Redis — cookie holds the UUID, not the secret
+    const sessionToken = await createAdminSession();
+
     const response = NextResponse.json({ success: true });
-    response.cookies.set('admin_token', adminSecret, {
+    response.cookies.set('admin_token', sessionToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
       path: '/',
-      maxAge: 60 * 60 * 24, // 24 hours
+      maxAge: 60 * 60 * 24, // 24 hours (matches Redis TTL)
     });
 
     return response;

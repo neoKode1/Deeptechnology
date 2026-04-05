@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { Redis } from '@upstash/redis';
 import { Resend } from 'resend';
 import { getQuote, updateQuote, addMessage } from '@/lib/quotes/store';
+import { isAuthorizedRequest, unauthorizedResponse } from '@/lib/admin-auth';
 
 /**
  * POST /api/quotes/[id]/start-work-order
@@ -20,11 +20,7 @@ export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  const cookieStore = await cookies();
-  const secret = cookieStore.get('admin_secret')?.value;
-  if (!secret || secret !== process.env.ADMIN_SECRET) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  if (!await isAuthorizedRequest(request)) return unauthorizedResponse();
 
   const { id } = await params;
   const quote = await getQuote(id);
@@ -95,7 +91,7 @@ export async function POST(
   // 4. Send admin work order email with full details
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
-    const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
+    const adminEmail = process.env.ADMIN_EMAIL || 'info@deeptechnologies.dev';
     const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptechnologies.dev';
     const itemsHtml = quote.lineItems.map(li =>
       `<tr><td style="padding:8px;border-bottom:1px solid #222;color:#ccc;">${li.description}</td>` +

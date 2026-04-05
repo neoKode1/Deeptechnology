@@ -3,6 +3,8 @@ import { getQuote, updateQuote } from '@/lib/quotes/store';
 import { sendQuoteEmail } from '@/lib/quotes/email';
 import { isAuthorizedRequest, unauthorizedResponse } from '@/lib/admin-auth';
 import type { UpdateQuotePayload } from '@/lib/quotes/types';
+import { Resend } from 'resend';
+import { quoteNurture, deployedRetention } from '@/lib/nurture';
 
 /**
  * GET /api/quotes/[id]
@@ -46,7 +48,7 @@ export async function PATCH(
   request: Request,
   { params }: { params: { id: string } }
 ) {
-  if (!isAuthorizedRequest(request)) {
+  if (!await isAuthorizedRequest(request)) {
     return unauthorizedResponse();
   }
 
@@ -61,12 +63,45 @@ export async function PATCH(
       );
     }
 
-    // Send email when quote transitions to "sent"
+    // Send email + schedule nurture when quote transitions to "sent"
     let emailResult: { success: boolean; error?: string } | undefined;
     if (body.status === 'sent') {
       emailResult = await sendQuoteEmail(quote);
       if (!emailResult.success) {
         console.error(`[quotes] Email failed for ${quote.id}:`, emailResult.error);
+      } else {
+        // Schedule Seq 3 follow-ups (D+3/D+7/D+8) — non-fatal
+        try {
+          const resend = new Resend(process.env.RESEND_API_KEY);
+          const total = quote.lineItems?.reduce((s: number, li) => s + li.clientPrice, 0) ?? 0;
+          await quoteNurture({
+            resend,
+            email: quote.customerEmail,
+            customerName: quote.customerName,
+            quoteId: quote.id,
+            total,
+            summary: quote.summary ?? 'your robot order',
+          });
+          console.log(`[quotes] Seq-3 nurture scheduled for ${quote.customerEmail}`);
+        } catch (nErr) {
+          console.error('[quotes] quoteNurture error (non-fatal):', nErr);
+        }
+      }
+    }
+
+    // Schedule Seq 5 retention emails when quote is marked deployed
+    if (body.status === 'deployed') {
+      try {
+        const resend = new Resend(process.env.RESEND_API_KEY);
+        await deployedRetention({
+          resend,
+          email: quote.customerEmail,
+          customerName: quote.customerName,
+          quoteId: quote.id,
+        });
+        console.log(`[quotes] Seq-5 retention (M+1/M+3/M+6) scheduled for ${quote.customerEmail}`);
+      } catch (rErr) {
+        console.error('[quotes] deployedRetention error (non-fatal):', rErr);
       }
     }
 

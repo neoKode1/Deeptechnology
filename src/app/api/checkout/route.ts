@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { getQuote, updateQuote } from '@/lib/quotes/store';
+import { rateLimit, limiters } from '@/lib/ratelimit';
 
 /**
  * POST /api/checkout
@@ -14,6 +15,9 @@ import { getQuote, updateQuote } from '@/lib/quotes/store';
  *   NEXT_PUBLIC_BASE_URL — e.g. https://deeptech.com or http://localhost:3000
  */
 export async function POST(request: Request) {
+  const limited = await rateLimit(limiters.checkout, request);
+  if (limited) return limited;
+
   try {
     const { quoteId } = (await request.json()) as { quoteId?: string };
 

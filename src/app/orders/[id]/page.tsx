@@ -78,7 +78,24 @@ function ChatWidget({ orderId }: { orderId: string }) {
   const [msgs, setMsgs] = useState<ChatMsg[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [historyLoading, setHistoryLoading] = useState(true);
   const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Load stored conversation history on mount so the UI persists across refreshes
+  useEffect(() => {
+    fetch(`/api/chat?orderId=${encodeURIComponent(orderId)}`)
+      .then(r => r.json())
+      .then(data => {
+        if (Array.isArray(data.history) && data.history.length > 0) {
+          // Server uses { role, content }; client uses { role, text }
+          setMsgs(data.history.map((m: { role: 'user' | 'assistant'; content: string }) => ({
+            role: m.role, text: m.content,
+          })));
+        }
+      })
+      .catch(() => {/* silent — fresh chat is fine */})
+      .finally(() => setHistoryLoading(false));
+  }, [orderId]);
 
   useEffect(() => { scrollRef.current?.scrollTo(0, scrollRef.current.scrollHeight); }, [msgs]);
 
@@ -109,7 +126,10 @@ function ChatWidget({ orderId }: { orderId: string }) {
         <span className="text-[10px] text-zinc-500 ml-auto">AI-powered support</span>
       </div>
       <div ref={scrollRef} className="h-72 overflow-y-auto p-4 space-y-3 bg-zinc-950/50">
-        {msgs.length === 0 && (
+        {historyLoading && (
+          <p className="text-zinc-700 text-sm text-center py-8">Loading conversation…</p>
+        )}
+        {!historyLoading && msgs.length === 0 && (
           <p className="text-zinc-600 text-sm text-center py-8">Ask about your order status, delivery timeline, or anything else.</p>
         )}
         {msgs.map((m, i) => (

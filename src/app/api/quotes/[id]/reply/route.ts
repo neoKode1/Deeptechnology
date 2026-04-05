@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { Resend } from 'resend';
 import { getQuote, addMessage } from '@/lib/quotes/store';
+import { isAuthorizedRequest, unauthorizedResponse } from '@/lib/admin-auth';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -17,12 +17,7 @@ export async function POST(
   request: Request,
   { params }: { params: Promise<{ id: string }> }
 ) {
-  // Auth check
-  const cookieStore = await cookies();
-  const secret = cookieStore.get('admin_secret')?.value;
-  if (!secret || secret !== process.env.ADMIN_SECRET) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-  }
+  if (!await isAuthorizedRequest(request)) return unauthorizedResponse();
 
   const { id } = await params;
   const quote = await getQuote(id);

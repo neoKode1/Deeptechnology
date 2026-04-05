@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
-import { cookies } from 'next/headers';
 import { Redis } from '@upstash/redis';
 import { Resend } from 'resend';
 import Stripe from 'stripe';
 import { getQuote, addMessage } from '@/lib/quotes/store';
+import { isAuthorizedRequest } from '@/lib/admin-auth';
 import type { CancellationRecord } from '@/lib/quotes/types';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
@@ -28,10 +28,8 @@ export async function POST(
   const body = await request.json();
   const { reason, email } = body;
 
-  // Determine if this is admin or customer
-  const cookieStore = await cookies();
-  const secret = cookieStore.get('admin_secret')?.value;
-  const isAdmin = secret && secret === process.env.ADMIN_SECRET;
+  // Determine if this is admin (session cookie or Bearer header) or customer (email match)
+  const isAdmin = await isAuthorizedRequest(request);
 
   const quote = await getQuote(id);
   if (!quote) {
@@ -138,7 +136,7 @@ export async function POST(
   // Send customer cancellation email + admin notification
   try {
     const resend = new Resend(process.env.RESEND_API_KEY);
-    const adminEmail = process.env.ADMIN_EMAIL || '1deeptechnology@gmail.com';
+    const adminEmail = process.env.ADMIN_EMAIL || 'info@deeptechnologies.dev';
 
     // Customer email
     await resend.emails.send({

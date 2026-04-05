@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
 import { Inter, Poppins, Manrope, Roboto } from 'next/font/google';
+import { Suspense } from 'react';
 import '@/styles/globals.css';
 import { cn } from '@/lib/utils';
+import Analytics from '@/components/Analytics';
+import CookieBanner from '@/components/CookieBanner';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -71,6 +74,10 @@ export default function RootLayout({
         manrope.variable,
         roboto.variable
       )}>
+        <Suspense fallback={null}>
+          <Analytics />
+        </Suspense>
+        <CookieBanner />
         {children}
       </body>
     </html>
