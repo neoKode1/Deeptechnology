@@ -70,25 +70,45 @@ export default function PilotPage() {
             Robotics · Pilot Program
           </p>
           <h1 className="text-4xl md:text-5xl font-semibold text-white leading-tight mb-4 font-manrope">
-            30-Day Paid Pilot
+            30-Day Assessment &amp; Pilot
           </h1>
           <p className="text-neutral-200 text-base max-w-lg mx-auto font-manrope">
-            Deploy 1–3 robots in your environment. We handle sourcing, vendor coordination,
-            and go-live support. Convert to a full fleet at Day 30 — your pilot fee is credited in full.
+            We assess your environment, shortlist the right vendors, model your ROI,
+            and deliver a deployment-ready specification — so you know exactly what to order and why.
+            Your pilot fee is fully credited toward your fleet order.
           </p>
+        </div>
+
+        {/* What's included */}
+        <div className="bg-neutral-900 border border-neutral-800 rounded-xl p-6 mb-8">
+          <p className="text-xs uppercase tracking-widest text-neutral-500 mb-4 font-manrope">What the pilot includes</p>
+          <ul className="space-y-2 text-sm text-neutral-300 font-manrope">
+            {[
+              'Environment assessment — on-site or remote via video walkthrough',
+              'Vendor shortlist matched to your workflow, floor plan, and budget',
+              'ROI projection with your actual labor cost and throughput numbers',
+              'Deployment-ready specification document ready to execute',
+              'Fleet order consultation — we handle vendor coordination when you're ready',
+            ].map(item => (
+              <li key={item} className="flex gap-2 items-start">
+                <span className="text-green-500 mt-0.5">✓</span>
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
         </div>
 
         {/* Pricing cards */}
         <div className="grid grid-cols-2 gap-4 mb-12">
           {[
-            { label: '1 Unit', price: '$2,500', note: 'Single robot pilot' },
-            { label: '2–3 Units', price: '$5,000', note: 'Small fleet pilot' },
+            { label: '1 Unit', price: '$2,500', note: 'Single-unit assessment' },
+            { label: '2–3 Units', price: '$5,000', note: 'Small fleet assessment' },
           ].map(({ label, price, note }) => (
             <div key={label} className="bg-neutral-900 border border-neutral-800 rounded-xl p-5">
               <p className="text-xs uppercase tracking-widest text-neutral-500 mb-1 font-manrope">{label}</p>
               <p className="text-2xl font-bold text-white font-manrope">{price}</p>
               <p className="text-xs text-neutral-500 mt-1 font-manrope">{note}</p>
-              <p className="text-xs text-green-500 mt-2 font-manrope">Credited toward full order</p>
+              <p className="text-xs text-green-500 mt-2 font-manrope">Credited toward full fleet order</p>
             </div>
           ))}
         </div>
@@ -156,7 +176,7 @@ export default function PilotPage() {
             </button>
 
             <p className="text-[11px] text-neutral-600 text-center font-manrope">
-              Non-refundable if pilot completes without conversion · No commitment to full fleet
+              Assessment fee non-refundable · No commitment to fleet order required · Pilot fee credited in full if you proceed
             </p>
           </form>
         )}
