@@ -113,7 +113,7 @@ export default function ConsultChat() {
           {/* Input */}
           <div className="border-t border-[#eee] p-3 flex gap-2 shrink-0 bg-white">
             <input
-              className="flex-1 text-sm border border-[#e0e0e0] rounded-lg px-3 py-2 outline-none focus:border-[#111] transition-colors font-manrope"
+              className="flex-1 text-sm text-[#111] border border-[#e0e0e0] rounded-lg px-3 py-2 outline-none focus:border-[#111] transition-colors font-manrope"
               placeholder="Ask about robotics, software, pricing…"
               value={input}
               onChange={e => setInput(e.target.value)}
