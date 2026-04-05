@@ -55,10 +55,16 @@ export default function ConsultChat() {
         body: JSON.stringify({ message: text, sessionId: sessionId.current }),
       });
       const data = await res.json();
-      const reply = data.reply || 'Sorry, I ran into an issue. Try again in a moment.';
+      if (!res.ok) {
+        console.error('[Nimbus] API error', res.status, data);
+      }
+      const reply = data.reply || (res.status === 429
+        ? 'You\'ve sent a few messages quickly — please wait a moment and try again.'
+        : 'Sorry, I ran into an issue. Try again in a moment.');
       setMsgs(prev => [...prev, { role: 'assistant', text: reply }]);
       if (!open) setHasUnread(true);
-    } catch {
+    } catch (err) {
+      console.error('[Nimbus] fetch error', err);
       setMsgs(prev => [...prev, { role: 'assistant', text: 'Connection issue. Please try again.' }]);
     } finally {
       setLoading(false);
