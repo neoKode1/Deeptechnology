@@ -930,6 +930,27 @@ that follows — or a deal-killer if skipped.*
 
 ---
 
+### Phase 2.5 — AI Phone Consultations via Bland.ai (After First Revenue)
+
+*Do not build this before closing deal one. Build it with the proceeds.*
+
+**Trigger:** First client payment clears.
+
+**What this replaces:** The "we'll get back to you within 24 hours" promise. Instead — prospect submits pilot/contact form → Bland.ai places an outbound call within 5 minutes → AI conducts the consultation → transcript + lead summary emails to `info@deeptechnologies.dev` → Nimbus drafts a quote automatically.
+
+**Implementation steps:**
+1. Sign up for Bland.ai (~$0.09/min, no monthly fee, pay-as-you-go)
+2. Buy a dedicated business number through Bland ($5/month) — retire the Google Voice number
+3. Write the consultation pathway prompt (qualifying questions, pricing anchors, CTA to pilot)
+4. Add `BLAND_API_KEY` to Vercel env vars
+5. Wire `src/app/api/pilot-request/route.ts` and `src/app/api/contact/route.ts` — after Redis write and Resend email, POST to Bland's `/v1/calls` endpoint with the prospect's phone number and pathway ID
+6. Bland webhook → new route `src/app/api/bland/callback/route.ts` → store transcript in Redis, push summary to CRM, trigger Nimbus quote draft
+
+**Cost at low volume:** $0.09/min × 10-min avg call × 10 leads/month = ~$9/month.
+**Why not X1/ARIA's voice stack:** ARIA is local-only (Mac, WebSocket). Bland handles all telephony — PSTN, SIP, call recording, transcription — without any infrastructure from our side.
+
+---
+
 ### Phase 3 — Database Migration (Month 2–3, parallel to sales)
 
 *Do not delay sales for this. Run this migration in parallel with H1 closing activity.*

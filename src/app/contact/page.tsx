@@ -167,11 +167,13 @@ function ContactPageInner() {
 
         {/* Form */}
         {status === 'success' ? (
-          <div className="py-20">
+          <div className="py-20 max-w-md">
             <p className="font-manrope text-2xl font-semibold text-[#111]">Message received.</p>
-            <p className="mt-3 text-[#999] text-sm font-manrope">We&apos;ll be in touch shortly.</p>
-            <button onClick={() => setStatus('idle')} className="mt-10 sd-btn-outline">
-              Send another
+            <p className="mt-3 text-[#555] text-sm font-manrope leading-relaxed">
+              You&apos;ll hear from us within 24 hours. In the meantime, Nimbus — our AI consultant — can answer questions about pricing, timelines, vendors, or scope right now. Look for the chat button in the bottom-right corner.
+            </p>
+            <button onClick={() => setStatus('idle')} className="mt-8 sd-btn-outline">
+              Send another message
             </button>
           </div>
         ) : (
