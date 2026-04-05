@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import { ArrowLeft, ExternalLink, Mail, Phone, ShoppingCart, MessageSquare } from 'lucide-react';
+import { ExternalLink, Mail, Phone, ShoppingCart, MessageSquare } from 'lucide-react';
 import {
   VENDORS,
   BUY_PATH_LABELS,
@@ -36,47 +36,7 @@ const STATUS_LABELS: Record<string, string> = {
 };
 
 export default function AdminVendorsPage() {
-  const [authed, setAuthed] = useState(false);
-  const [loginSecret, setLoginSecret] = useState('');
-  const [loginError, setLoginError] = useState('');
   const [activeCategory, setActiveCategory] = useState<Vendor['category'] | 'all'>('all');
-
-  async function handleLogin(e: React.FormEvent) {
-    e.preventDefault();
-    setLoginError('');
-    const res = await fetch('/api/admin/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ secret: loginSecret }),
-    });
-    if (res.ok) {
-      setAuthed(true);
-    } else {
-      setLoginError('Invalid credentials');
-    }
-  }
-
-  if (!authed) {
-    return (
-      <main className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center">
-        <form onSubmit={handleLogin} className="bg-zinc-900 border border-zinc-800 rounded-lg p-8 w-full max-w-sm">
-          <h2 className="text-lg font-semibold mb-4">Admin Access</h2>
-          <input
-            type="password"
-            value={loginSecret}
-            onChange={e => setLoginSecret(e.target.value)}
-            placeholder="Enter admin secret"
-            required
-            className="w-full bg-zinc-800 border border-zinc-700 rounded-lg px-3 py-2.5 text-sm text-zinc-200 placeholder:text-zinc-600 outline-none focus:border-zinc-500 transition mb-3"
-          />
-          {loginError && <p className="text-red-400 text-sm mb-3">{loginError}</p>}
-          <button type="submit" className="w-full bg-white text-black rounded-lg py-2.5 text-sm font-medium hover:bg-zinc-200 transition">
-            Sign In
-          </button>
-        </form>
-      </main>
-    );
-  }
 
   const displayed = activeCategory === 'all'
     ? VENDORS

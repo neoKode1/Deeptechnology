@@ -1,8 +1,12 @@
 'use client';
 
-import { useState } from 'react';
 import Link from 'next/link';
-import { ClipboardList, Cpu, Store, ArrowRight } from 'lucide-react';
+import { ClipboardList, Cpu, Store, ArrowRight, LogOut } from 'lucide-react';
+
+async function logout() {
+  await fetch('/api/admin/logout', { method: 'POST' });
+  window.location.href = '/admin/login';
+}
 
 const TOOLS = [
   {
@@ -32,63 +36,18 @@ const TOOLS = [
 ];
 
 export default function AdminHub() {
-  const [secret, setSecret] = useState('');
-  const [error, setError] = useState('');
-  const [authed, setAuthed] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  async function handleLogin(e: React.FormEvent) {
-    e.preventDefault();
-    setLoading(true);
-    setError('');
-    const res = await fetch('/api/admin/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ secret }),
-    });
-    setLoading(false);
-    if (res.ok) {
-      setAuthed(true);
-    } else {
-      setError('Invalid credentials.');
-    }
-  }
-
-  if (!authed) {
-    return (
-      <main className="min-h-screen bg-[#0a0a0a] text-white flex items-center justify-center px-4">
-        <form onSubmit={handleLogin} className="bg-neutral-900 border border-neutral-800 rounded-2xl p-8 w-full max-w-sm">
-          <p className="text-xs tracking-[0.2em] uppercase text-neutral-500 mb-1">Deeptech</p>
-          <h1 className="text-xl font-semibold text-white mb-6">Admin Access</h1>
-          <input
-            type="password"
-            value={secret}
-            onChange={e => setSecret(e.target.value)}
-            placeholder="Enter admin secret"
-            required
-            autoFocus
-            className="w-full bg-neutral-800 border border-neutral-700 rounded-lg px-4 py-3 text-sm text-white placeholder-neutral-600 outline-none focus:border-white transition mb-3"
-          />
-          {error && <p className="text-red-400 text-sm mb-3">{error}</p>}
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full bg-white text-black rounded-lg py-3 text-sm font-semibold hover:bg-neutral-100 transition disabled:opacity-50"
-          >
-            {loading ? 'Signing in…' : 'Sign In →'}
-          </button>
-        </form>
-      </main>
-    );
-  }
-
   return (
     <main className="min-h-screen bg-[#0a0a0a] text-white">
       <div className="max-w-3xl mx-auto px-6 py-16">
-        <div className="mb-12">
-          <p className="text-xs tracking-[0.2em] uppercase text-neutral-500 mb-2">Deeptech · Admin</p>
-          <h1 className="text-3xl font-semibold text-white">Toolbox</h1>
-          <p className="text-neutral-400 text-sm mt-2">Everything you need to run assessments, manage quotes, and source vendors.</p>
+        <div className="flex items-start justify-between mb-12">
+          <div>
+            <p className="text-xs tracking-[0.2em] uppercase text-neutral-500 mb-2">Deeptech · Admin</p>
+            <h1 className="text-3xl font-semibold text-white">Toolbox</h1>
+            <p className="text-neutral-400 text-sm mt-2">Everything you need to run assessments, manage quotes, and source vendors.</p>
+          </div>
+          <button onClick={logout} className="flex items-center gap-1.5 text-xs text-neutral-600 hover:text-white transition-colors mt-1">
+            <LogOut className="w-3.5 h-3.5" /> Sign out
+          </button>
         </div>
 
         <div className="space-y-4">
