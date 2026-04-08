@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { ExternalLink, Mail, Phone, ShoppingCart, MessageSquare } from 'lucide-react';
+import { ExternalLink, Mail, Phone, ShoppingCart, MessageSquare, Plus, X, Loader2 } from 'lucide-react';
+import type { VendorProspect } from '@/app/api/admin/vendors/prospects/route';
 import {
   VENDORS,
   BUY_PATH_LABELS,
@@ -35,8 +36,61 @@ const STATUS_LABELS: Record<string, string> = {
   quote_required: 'Quote Required',
 };
 
+const PROSPECT_CATEGORIES: { value: VendorProspect['category']; label: string }[] = [
+  { value: 'amr', label: 'AMR / Warehouse Robot' },
+  { value: 'humanoid', label: 'Humanoid Robot' },
+  { value: 'delivery', label: 'Delivery Robot' },
+  { value: 'drone', label: 'Drone' },
+  { value: 'software', label: 'Software / AI Platform' },
+  { value: 'other', label: 'Other' },
+];
+
+const STATUS_BADGE: Record<VendorProspect['status'], string> = {
+  prospect: 'bg-yellow-950 text-yellow-400',
+  evaluating: 'bg-blue-950 text-blue-400',
+  active: 'bg-green-950 text-green-400',
+};
+
+const EMPTY_FORM: Omit<VendorProspect, 'id' | 'createdAt'> = {
+  companyName: '', productName: '', category: 'other',
+  contactName: '', contactEmail: '', contactPhone: '',
+  website: '', notes: '', status: 'prospect', metAt: '',
+};
+
 export default function AdminVendorsPage() {
   const [activeCategory, setActiveCategory] = useState<Vendor['category'] | 'all'>('all');
+  const [showForm, setShowForm] = useState(false);
+  const [form, setForm] = useState({ ...EMPTY_FORM });
+  const [saving, setSaving] = useState(false);
+  const [prospects, setProspects] = useState<VendorProspect[]>([]);
+
+  function setF<K extends keyof typeof EMPTY_FORM>(k: K, v: typeof EMPTY_FORM[K]) {
+    setForm(prev => ({ ...prev, [k]: v }));
+  }
+
+  useEffect(() => {
+    fetch('/api/admin/vendors/prospects')
+      .then(r => r.json())
+      .then(d => setProspects(d.prospects ?? []))
+      .catch(() => {});
+  }, []);
+
+  async function handleAddVendor(e: React.FormEvent) {
+    e.preventDefault();
+    setSaving(true);
+    const res = await fetch('/api/admin/vendors/prospects', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(form),
+    });
+    if (res.ok) {
+      const { prospect } = await res.json();
+      setProspects(prev => [prospect, ...prev]);
+      setForm({ ...EMPTY_FORM });
+      setShowForm(false);
+    }
+    setSaving(false);
+  }
 
   const displayed = activeCategory === 'all'
     ? VENDORS
@@ -57,8 +111,14 @@ export default function AdminVendorsPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-8">
           <div>
             <h1 className="text-2xl font-semibold tracking-tight">Vendor Intelligence</h1>
-            <p className="text-zinc-400 text-sm mt-1">{VENDORS.length} vendors · contacts, pricing &amp; procurement paths</p>
+            <p className="text-zinc-400 text-sm mt-1">{VENDORS.length} catalog vendors · {prospects.length} field prospects</p>
           </div>
+          <button
+            onClick={() => setShowForm(true)}
+            className="flex items-center gap-2 bg-white text-black text-sm font-semibold px-4 py-2 rounded-lg hover:bg-neutral-100 transition-colors shrink-0"
+          >
+            <Plus className="w-4 h-4" /> Add Vendor
+          </button>
           {/* Category filter */}
           <div className="flex flex-wrap gap-2">
             {(['all', ...CATEGORIES] as const).map(cat => (
@@ -82,7 +142,106 @@ export default function AdminVendorsPage() {
             <VendorCard key={vendor.id} vendor={vendor} />
           ))}
         </div>
+
+        {/* ── Field Prospects ───────────────────────────────────────────── */}
+        {prospects.length > 0 && (
+          <div className="mt-16">
+            <div className="flex items-center gap-3 mb-6">
+              <h2 className="text-lg font-semibold">Field Prospects</h2>
+              <span className="text-xs bg-yellow-950 text-yellow-400 px-2 py-0.5 rounded-full">{prospects.length} contacts</span>
+            </div>
+            <div className="space-y-4">
+              {prospects.map(p => (
+                <div key={p.id} className="bg-neutral-900 border border-neutral-800 rounded-xl p-5">
+                  <div className="flex items-start justify-between gap-4 mb-2">
+                    <div>
+                      <span className="font-semibold text-white">{p.companyName}</span>
+                      {p.productName && <span className="text-neutral-400 text-sm ml-2">— {p.productName}</span>}
+                    </div>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <span className={`text-[10px] uppercase tracking-widest px-2 py-0.5 rounded-full ${STATUS_BADGE[p.status]}`}>{p.status}</span>
+                      <span className="text-[10px] uppercase tracking-widest text-neutral-500 bg-neutral-800 px-2 py-0.5 rounded-full">{p.category}</span>
+                    </div>
+                  </div>
+                  <div className="text-sm text-neutral-400 space-y-0.5">
+                    <p>👤 {p.contactName}{p.contactEmail && ` · ${p.contactEmail}`}{p.contactPhone && ` · ${p.contactPhone}`}</p>
+                    {p.metAt && <p>📍 Met at: {p.metAt}</p>}
+                    {p.website && <a href={p.website} target="_blank" rel="noopener noreferrer" className="text-blue-400 hover:underline text-xs">{p.website}</a>}
+                    {p.notes && <p className="text-neutral-500 text-xs mt-1 italic">{p.notes}</p>}
+                  </div>
+                  <p className="text-[10px] text-neutral-700 mt-2">{new Date(p.createdAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
+
+      {/* ── Add Vendor Slide-In Form ──────────────────────────────────────── */}
+      {showForm && (
+        <div className="fixed inset-0 z-50 flex justify-end">
+          <div className="absolute inset-0 bg-black/60" onClick={() => setShowForm(false)} />
+          <div className="relative bg-[#111] border-l border-neutral-800 w-full max-w-md h-full overflow-y-auto p-6 flex flex-col">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-lg font-semibold">Add Vendor to List</h2>
+              <button onClick={() => setShowForm(false)} className="text-neutral-500 hover:text-white transition-colors">
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            <form onSubmit={handleAddVendor} className="space-y-4 flex-1">
+              {([
+                ['Company / Org Name *', 'companyName', 'text', 'e.g. Acme Robotics'],
+                ['Product / System Name', 'productName', 'text', 'e.g. Scout AMR v2'],
+                ['Contact Name *', 'contactName', 'text', 'e.g. Jane Smith'],
+                ['Contact Email', 'contactEmail', 'email', 'jane@acmerobotics.com'],
+                ['Contact Phone', 'contactPhone', 'tel', '+1 415 000 0000'],
+                ['Website', 'website', 'url', 'https://acmerobotics.com'],
+                ['Where / How You Met', 'metAt', 'text', 'e.g. CES 2025, LinkedIn, cold outreach'],
+              ] as [string, keyof typeof EMPTY_FORM, string, string][]).map(([label, field, type, placeholder]) => (
+                <div key={field}>
+                  <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-1">{label}</label>
+                  <input type={type} value={form[field] as string} placeholder={placeholder}
+                    required={label.includes('*')}
+                    onChange={e => setF(field, e.target.value as never)}
+                    className="w-full bg-neutral-800 border border-neutral-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-neutral-600 outline-none focus:border-white transition-colors" />
+                </div>
+              ))}
+
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-1">Category *</label>
+                <select value={form.category} onChange={e => setF('category', e.target.value as VendorProspect['category'])}
+                  className="w-full bg-neutral-800 border border-neutral-700 rounded-lg px-3 py-2.5 text-sm text-white outline-none focus:border-white transition-colors">
+                  {PROSPECT_CATEGORIES.map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-1">Status</label>
+                <select value={form.status} onChange={e => setF('status', e.target.value as VendorProspect['status'])}
+                  className="w-full bg-neutral-800 border border-neutral-700 rounded-lg px-3 py-2.5 text-sm text-white outline-none focus:border-white transition-colors">
+                  <option value="prospect">Prospect — Just met</option>
+                  <option value="evaluating">Evaluating — Reviewing their product</option>
+                  <option value="active">Active — On our vendor list</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-1">Notes</label>
+                <textarea value={form.notes} rows={3}
+                  placeholder="What are they building? Stage? Pricing? Anything worth remembering."
+                  onChange={e => setF('notes', e.target.value)}
+                  className="w-full bg-neutral-800 border border-neutral-700 rounded-lg px-3 py-2.5 text-sm text-white placeholder-neutral-600 outline-none focus:border-white transition-colors resize-none" />
+              </div>
+
+              <button type="submit" disabled={saving}
+                className="w-full bg-white text-black rounded-lg py-3 text-sm font-semibold hover:bg-neutral-100 transition-colors disabled:opacity-50 flex items-center justify-center gap-2 mt-2">
+                {saving ? <><Loader2 className="w-4 h-4 animate-spin" /> Saving…</> : 'Save Vendor →'}
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
     </main>
   );
 }
