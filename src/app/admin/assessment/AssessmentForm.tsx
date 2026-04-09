@@ -33,6 +33,16 @@ const SURFACES: { value: FloorSurface; label: string }[] = [
 
 const STEP_LABELS = ['Client', 'Environment', 'Process & Labor', 'Constraints'];
 
+const THROUGHPUT_LABEL: Record<ProcessType, string> = {
+  picking_packing:    'Units Picked / hr (current)',
+  goods_to_person:    'Totes / Pallets Moved / hr (current)',
+  delivery_indoor:    'Deliveries / shift (current)',
+  delivery_outdoor:   'Deliveries / day (current)',
+  inspection:         'Inspections / shift (current)',
+  sorting:            'Items Sorted / hr (current)',
+  humanoid_general:   'Tasks Completed / hr (current)',
+};
+
 const DEFAULTS: AssessmentInput = {
   companyName: '', contactName: '', contactEmail: '',
   environment: 'warehouse', squareFootage: 50000, shiftsPerDay: 1, hoursPerShift: 8,
@@ -132,7 +142,7 @@ export default function AssessmentForm({ onRun }: { onRun: (input: AssessmentInp
         <Field label="Avg Hourly Wage ($/hr, fully loaded)" field="avgHourlyWage" type="number" min={10} form={form} set={set} />
       </div>
       <div className="grid grid-cols-2 gap-4">
-        <Field label="Current Throughput (units/hr)" field="currentThroughput" type="number" min={1} form={form} set={set} />
+        <Field label={THROUGHPUT_LABEL[form.process]} field="currentThroughput" type="number" min={1} form={form} set={set} />
         <Field label="Target Improvement (%)" field="targetImprovement" type="number" min={10} max={90} form={form} set={set} />
       </div>
       <div className="grid grid-cols-2 gap-4">
