@@ -64,7 +64,7 @@ function scoreVendor(input: AssessmentInput, vendor: typeof VENDOR_CATALOG[0]): 
 
 // ── ROI Calculator ────────────────────────────────────────────────────────────
 
-function calcROI(input: AssessmentInput, fleetCost: number): ROIResult {
+export function calcROI(input: AssessmentInput, fleetCost: number): ROIResult {
   const hoursPerYear = input.shiftsPerDay * input.hoursPerShift * 250; // ~250 working days
   const currentAnnualLaborCost = input.workersOnProcess * input.avgHourlyWage * hoursPerYear;
 
@@ -122,8 +122,7 @@ export function runAssessment(input: AssessmentInput): AssessmentResult {
   const matches = VENDOR_CATALOG
     .map(v => scoreVendor(input, v))
     .filter((m): m is VendorMatch => m !== null)
-    .sort((a, b) => b.fitScore - a.fitScore)
-    .slice(0, 3); // top 3
+    .sort((a, b) => b.fitScore - a.fitScore);
 
   const recommendedUnits = recommendUnits(input);
   const topFleetCost = matches[0]?.estimatedUnitCost
