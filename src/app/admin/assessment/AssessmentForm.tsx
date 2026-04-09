@@ -57,13 +57,14 @@ const DEFAULTS: AssessmentInput = {
 
 type Setter = <K extends keyof AssessmentInput>(k: K, v: AssessmentInput[K]) => void;
 
-function Field({ label, field, type = 'text', min, max, form, set }: {
-  label: string; field: keyof AssessmentInput; type?: string; min?: number; max?: number;
+function Field({ label, hint, field, type = 'text', min, max, form, set }: {
+  label: string; hint?: string; field: keyof AssessmentInput; type?: string; min?: number; max?: number;
   form: AssessmentInput; set: Setter;
 }) {
   return (
     <div>
-      <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-1">{label}</label>
+      <label className="block text-sm font-medium text-white mb-0.5">{label}</label>
+      {hint && <p className="text-xs text-neutral-500 mb-1.5">{hint}</p>}
       <input type={type} min={min} max={max}
         value={form[field] as string | number}
         onChange={e => set(field, (type === 'number' ? Number(e.target.value) : e.target.value) as AssessmentInput[typeof field])}
@@ -73,13 +74,14 @@ function Field({ label, field, type = 'text', min, max, form, set }: {
   );
 }
 
-function FormSelect<T extends string>({ label, field, options, form, set }: {
-  label: string; field: keyof AssessmentInput; options: { value: T; label: string }[];
+function FormSelect<T extends string>({ label, hint, field, options, form, set }: {
+  label: string; hint?: string; field: keyof AssessmentInput; options: { value: T; label: string }[];
   form: AssessmentInput; set: Setter;
 }) {
   return (
     <div>
-      <label className="block text-xs uppercase tracking-widest text-neutral-500 mb-1">{label}</label>
+      <label className="block text-sm font-medium text-white mb-0.5">{label}</label>
+      {hint && <p className="text-xs text-neutral-500 mb-1.5">{hint}</p>}
       <select value={form[field] as string}
         onChange={e => set(field, e.target.value as AssessmentInput[typeof field])}
         className="w-full bg-neutral-800 border border-neutral-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:ring-1 focus:ring-white">
@@ -89,16 +91,19 @@ function FormSelect<T extends string>({ label, field, options, form, set }: {
   );
 }
 
-function Toggle({ label, field, form, set }: {
-  label: string; field: keyof AssessmentInput; form: AssessmentInput; set: Setter;
+function Toggle({ label, hint, field, form, set }: {
+  label: string; hint?: string; field: keyof AssessmentInput; form: AssessmentInput; set: Setter;
 }) {
   return (
-    <label className="flex items-center gap-3 cursor-pointer">
-      <input type="checkbox" checked={!!form[field]}
-        onChange={e => set(field, e.target.checked as AssessmentInput[typeof field])}
-        className="w-4 h-4 accent-white" />
-      <span className="text-sm text-neutral-300">{label}</span>
-    </label>
+    <div>
+      <label className="flex items-center gap-3 cursor-pointer">
+        <input type="checkbox" checked={!!form[field]}
+          onChange={e => set(field, e.target.checked as AssessmentInput[typeof field])}
+          className="w-4 h-4 accent-white" />
+        <span className="text-sm text-white">{label}</span>
+      </label>
+      {hint && <p className="text-xs text-neutral-500 mt-1 ml-7">{hint}</p>}
+    </div>
   );
 }
 
@@ -114,48 +119,54 @@ export default function AssessmentForm({ onRun }: { onRun: (input: AssessmentInp
 
   const steps = [
     // Step 0 — Client
-    <div key="client" className="space-y-4">
-      <Field label="Company Name" field="companyName" form={form} set={set} />
-      <Field label="Contact Name" field="contactName" form={form} set={set} />
-      <Field label="Contact Email" field="contactEmail" type="email" form={form} set={set} />
+    <div key="client" className="space-y-5">
+      <Field label="What's the company name?" field="companyName" form={form} set={set} />
+      <Field label="Who are you talking to?" hint="Name of your contact at the company" field="contactName" form={form} set={set} />
+      <Field label="What's their email?" field="contactEmail" type="email" form={form} set={set} />
     </div>,
 
     // Step 1 — Environment
-    <div key="env" className="space-y-4">
-      <FormSelect label="Environment Type" field="environment" options={ENVS} form={form} set={set} />
+    <div key="env" className="space-y-5">
+      <FormSelect label="What kind of facility is it?" field="environment" options={ENVS} form={form} set={set} />
       <div className="grid grid-cols-2 gap-4">
-        <Field label="Square Footage" field="squareFootage" type="number" min={500} form={form} set={set} />
-        <Field label="Ceiling Height (ft)" field="ceilingHeightFt" type="number" min={6} max={60} form={form} set={set} />
+        <Field label="How big is the space?" hint="Approximate sq ft" field="squareFootage" type="number" min={500} form={form} set={set} />
+        <Field label="How high are the ceilings?" hint="Feet — important for drones and tall AMRs" field="ceilingHeightFt" type="number" min={6} max={60} form={form} set={set} />
       </div>
       <div className="grid grid-cols-2 gap-4">
-        <Field label="Shifts / Day" field="shiftsPerDay" type="number" min={1} max={3} form={form} set={set} />
-        <Field label="Hours / Shift" field="hoursPerShift" type="number" min={4} max={12} form={form} set={set} />
+        <Field label="How many shifts do they run?" hint="Per day" field="shiftsPerDay" type="number" min={1} max={3} form={form} set={set} />
+        <Field label="How long is each shift?" hint="Hours" field="hoursPerShift" type="number" min={4} max={12} form={form} set={set} />
       </div>
-      <FormSelect label="Floor Surface" field="floorSurface" options={SURFACES} form={form} set={set} />
+      <FormSelect label="What's the floor like?" hint="Affects which robots can operate safely" field="floorSurface" options={SURFACES} form={form} set={set} />
     </div>,
 
     // Step 2 — Process & Labor
-    <div key="process" className="space-y-4">
-      <FormSelect label="Process to Automate" field="process" options={PROCESSES} form={form} set={set} />
+    <div key="process" className="space-y-5">
+      <FormSelect label="What do they want to automate?" hint="Pick the closest match — we'll spec the right robot" field="process" options={PROCESSES} form={form} set={set} />
       <div className="grid grid-cols-2 gap-4">
-        <Field label="Workers on This Process" field="workersOnProcess" type="number" min={1} form={form} set={set} />
-        <Field label="Avg Hourly Wage ($/hr, fully loaded)" field="avgHourlyWage" type="number" min={10} form={form} set={set} />
+        <Field label="How many people are doing this today?" hint="Headcount on this specific task" field="workersOnProcess" type="number" min={1} form={form} set={set} />
+        <Field label="What do they pay per hour?" hint="Per worker, fully loaded (wages + benefits). Estimate 1.3× base if unsure." field="avgHourlyWage" type="number" min={10} form={form} set={set} />
       </div>
       <div className="grid grid-cols-2 gap-4">
-        <Field label={THROUGHPUT_LABEL[form.process]} field="currentThroughput" type="number" min={1} form={form} set={set} />
-        <Field label="Target Improvement (%)" field="targetImprovement" type="number" min={10} max={90} form={form} set={set} />
+        <Field label={THROUGHPUT_LABEL[form.process]} hint="What they're doing right now — robots will beat this number" field="currentThroughput" type="number" min={1} form={form} set={set} />
+        <Field label="How much faster do they want to be?" hint="% improvement. 50–70% is typical for AMRs." field="targetImprovement" type="number" min={10} max={90} form={form} set={set} />
       </div>
       <div className="grid grid-cols-2 gap-4">
-        <Field label="Desired Fleet Size (units)" field="desiredUnits" type="number" min={1} max={50} form={form} set={set} />
-        <Field label="Timeline" field="timeline" form={form} set={set} />
+        <Field label="How many robots are they thinking?" hint="Not sure? Put 1–3 and we'll recommend based on volume." field="desiredUnits" type="number" min={1} max={50} form={form} set={set} />
+        <Field label="When do they want this running?" hint='e.g. "ASAP", "Q3", "1–3 months"' field="timeline" form={form} set={set} />
       </div>
     </div>,
 
     // Step 3 — Constraints
-    <div key="constraints" className="space-y-5">
-      <Toggle label="Facility has reliable WiFi / LTE coverage" field="hasWifi" form={form} set={set} />
-      <Toggle label="Loading dock or freight elevator access" field="hasDock" form={form} set={set} />
-      <Toggle label="Outdoor operation required" field="outdoorRequired" form={form} set={set} />
+    <div key="constraints" className="space-y-6">
+      <Toggle label="Do they have WiFi or LTE throughout the facility?"
+        hint="Robots need connectivity to navigate and report. No WiFi = major deployment risk."
+        field="hasWifi" form={form} set={set} />
+      <Toggle label="Is there a loading dock or freight elevator?"
+        hint="Required for robots that need to move between floors or load from trailers."
+        field="hasDock" form={form} set={set} />
+      <Toggle label="Does the robot need to operate outdoors?"
+        hint="Outdoor = weather-rated hardware and potentially FAA/city permits."
+        field="outdoorRequired" form={form} set={set} />
     </div>,
   ];
 
