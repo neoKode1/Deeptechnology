@@ -56,6 +56,7 @@ export interface VendorSpec {
   name: string;
   category: 'amr' | 'humanoid' | 'delivery' | 'drone' | 'forklift';
   vendor: string;
+  imageUrl?: string;   // product thumbnail — shown in assessment results
   unitCostMin: number;     // $ low estimate
   unitCostMax: number;     // $ high estimate
   payloadKg: number;
