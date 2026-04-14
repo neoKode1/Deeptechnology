@@ -76,7 +76,9 @@ const VENDOR_IMAGES: Record<string, string> = {
   'sarcos':             '/media/Guardian%20XO%20',
   'german-bionic':      '/media/Cray-X-5th-Gen-German-Bionics-Exoskeleton-Catalog-2022.jpg',
   // ── Inspection ──────────────────────────────────────────────────────────
-  'flyability':         'https://upload.wikimedia.org/wikipedia/commons/a/a1/ExR-2_Inspection_Robot_%2802%29.jpg',
+  'flyability':         '/media/Elios%203%20(collision-tolerant%20indoor%20drone).jpg',
+  'gecko-robotics':     '/media/Gecko%20Robotics.webp',
+  'airobotics':         '/media/Airobotics%20Optimus%20(drone-in-a-box%2C%20BVLOS).jpeg',
   // ── Underwater ──────────────────────────────────────────────────────────
   'blue-robotics':      'https://upload.wikimedia.org/wikipedia/commons/4/4a/BlueROV2_flying_with_ArduSub.jpg',
   // ── Drone ───────────────────────────────────────────────────────────────
