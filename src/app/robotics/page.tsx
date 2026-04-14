@@ -343,11 +343,11 @@ export default function RoboticsDivisionHome() {
             </div>
           </div>
           {/* Top right */}
-          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: '1X Technologies', name: 'NEO Humanoid Robot', price: 'From $23,000 · Early Access', systemCategory: 'Humanoid / Service Robots', image: '/media/1_deeaa3cc-08f5-454f-bfcb-1a477b30adb4_900x.webp' })}>
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: '1X Technologies', name: 'NEO Humanoid Robot', price: 'From $23,000 · Early Access', systemCategory: 'Humanoid / Service Robots', image: '/media/1X%20Technologies.avif' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/media/1_deeaa3cc-08f5-454f-bfcb-1a477b30adb4_900x.webp"
-              alt="Humanoid robot navigating indoor space"
+              src="/media/1X%20Technologies.avif"
+              alt="1X Technologies NEO humanoid robot"
               className="robo-img"
             />
             <div className="robo-overlay">
