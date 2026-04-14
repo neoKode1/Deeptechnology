@@ -10,22 +10,22 @@ import { ArrowUpRight } from 'lucide-react';
 
 /* ── Robot categories for browse section ── */
 const ROBOT_CATEGORIES = [
-  { slug: 'humanoid',    image: '/media/Agility%20Robotics%20Digit.jpg',                                                                                              label: 'Humanoid',             count: '12+ vendors' },
-  { slug: 'industrial',  image: '/media/Robotic-Sorting-as-a-Service-B3A7940.webp',                                                                                   label: 'Industrial / AMR',     count: '10+ vendors' },
-  { slug: 'cobot',       image: '/media/Boston%20Dynamics%20Stretch.jpg',                                                                                             label: 'Cobots & Arms',        count: '7 vendors' },
-  { slug: 'delivery',    image: 'https://upload.wikimedia.org/wikipedia/commons/3/36/Starship_food_delivery_robot_in_Niittykumpu.jpg',                                label: 'Delivery Robots',      count: '10+ vendors' },
-  { slug: 'drone',       image: '/media/drones_hero.webp',                                                                                                            label: 'Drones & UAVs',        count: '8 vendors' },
-  { slug: 'service',     image: '/media/Serve-Gen-2-left-and-Gen-3-robots.jpg',                                                                                       label: 'Service & Hospitality',count: '5 vendors' },
-  { slug: 'security',    image: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Knightscope_security_robot.jpg',                                                 label: 'Security',             count: '2 vendors' },
-  { slug: 'cleaning',    image: 'https://upload.wikimedia.org/wikipedia/commons/4/40/AvidbotsNeo1.jpg',                                                               label: 'Floor Cleaning',       count: '3 vendors' },
-  { slug: 'quadruped',   image: '/media/Boston%20Dynamics%20Spot.jpg',                                                                                                label: 'Quadruped',            count: '4 vendors' },
-  { slug: 'agricultural',image: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Crops_grown_on_the_FarmBot_Genesis.jpg',                                         label: 'Agricultural',         count: '4 vendors' },
-  { slug: 'surgical',    image: 'https://upload.wikimedia.org/wikipedia/commons/0/0d/Laproscopic_Surgery_Robot.jpg',                                                  label: 'Surgical',             count: '4 vendors' },
-  { slug: 'inspection',  image: 'https://upload.wikimedia.org/wikipedia/commons/a/a1/ExR-2_Inspection_Robot_%2802%29.jpg',                                            label: 'Inspection',           count: '3 vendors' },
-  { slug: 'underwater',  image: 'https://upload.wikimedia.org/wikipedia/commons/4/4a/BlueROV2_flying_with_ArduSub.jpg',                                               label: 'Underwater ROVs',      count: '3 vendors' },
-  { slug: 'exoskeleton', image: 'https://upload.wikimedia.org/wikipedia/commons/9/94/LAEVO_exoskeleton.jpg',                                                          label: 'Exoskeletons',         count: '3 vendors' },
-  { slug: 'components',  image: 'https://upload.wikimedia.org/wikipedia/commons/f/f8/Velodyne_Lidar_Alpha_Prime_Ultra_Puck_Puck_Sensor_Family.jpg',                   label: 'Components & Sensors', count: '4 vendors' },
-  { slug: 'defense',     image: 'https://upload.wikimedia.org/wikipedia/commons/2/27/Ghost_Robotics_Vision_60_Q-UGV_Demo_%287351259%29.jpeg',                         label: 'Defense',              count: '3 vendors' },
+  { slug: 'humanoid',    image: '/media/Unitree%20Robotics-G1.png',                              label: 'Humanoid',              count: '13 vendors' },
+  { slug: 'industrial',  image: '/media/Robotic-Sorting-as-a-Service-B3A7940.webp',              label: 'Industrial / AMR',      count: '12 vendors' },
+  { slug: 'cobot',       image: '/media/Universal%20Robots.png',                                 label: 'Cobots & Arms',         count: '7 vendors' },
+  { slug: 'delivery',    image: '/media/Serve-Gen-2-left-and-Gen-3-robots.jpg',                  label: 'Delivery Robots',       count: '4 vendors' },
+  { slug: 'drone',       image: '/media/DJI%20Enterprise.jpg',                                   label: 'Drones & UAVs',         count: '10 vendors' },
+  { slug: 'service',     image: '/media/Bear%20Robotics.jpg',                                    label: 'Service & Hospitality', count: '5 vendors' },
+  { slug: 'security',    image: '/media/Knightscope.webp',                                       label: 'Security',              count: '2 vendors' },
+  { slug: 'cleaning',    image: '/media/Avidbots.png',                                           label: 'Floor Cleaning',        count: '3 vendors' },
+  { slug: 'quadruped',   image: '/media/Boston%20Dynamics%20Spot.jpg',                           label: 'Quadruped',             count: '4 vendors' },
+  { slug: 'agricultural',image: '/media/Carbon%20Robotics-LaserWeeder-G2-600.webp',              label: 'Agricultural',          count: '4 vendors' },
+  { slug: 'surgical',    image: '/media/Intuitive%20Surgical.jpeg',                              label: 'Surgical',              count: '4 vendors' },
+  { slug: 'inspection',  image: '/media/gecko_robot_1-header.jpg',                               label: 'Inspection',            count: '3 vendors' },
+  { slug: 'underwater',  image: '/media/BlueROV2-remotely-operated-vehicle.png',                 label: 'Underwater ROVs',       count: '3 vendors' },
+  { slug: 'exoskeleton', image: '/media/EksoNR-by-Ekso-Bionics-Exoskeleton-Catalog-600.jpg',    label: 'Exoskeletons',          count: '3 vendors' },
+  { slug: 'components',  image: '/media/OS1-32%20LiDAR%20.png',                                  label: 'Components & Sensors',  count: '5 vendors' },
+  { slug: 'defense',     image: '/media/Milrem%20Robotics.webp',                                 label: 'Defense',               count: '3 vendors' },
 ];
 
 /* ── Marquee items ── */
