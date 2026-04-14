@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { VENDORS } from '@/data/vendors';
 import { COMPARISONS } from '@/data/comparisons';
+import { CATEGORY_META } from '@/data/categories';
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://deeptechnologies.dev';
@@ -32,6 +33,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.85,
   }));
 
-  return [...staticRoutes, ...vendorRoutes, ...compareRoutes];
+  // Category index + individual category pages
+  const categoryRoutes: MetadataRoute.Sitemap = [
+    { url: `${baseUrl}/robotics/categories`, lastModified: now, changeFrequency: 'weekly', priority: 0.85 },
+    ...(Object.keys(CATEGORY_META) as (keyof typeof CATEGORY_META)[]).map((slug) => ({
+      url: `${baseUrl}/robotics/categories/${slug}`,
+      lastModified: now,
+      changeFrequency: 'weekly' as const,
+      priority: 0.80,
+    })),
+  ];
+
+  return [...staticRoutes, ...vendorRoutes, ...compareRoutes, ...categoryRoutes];
 }
 

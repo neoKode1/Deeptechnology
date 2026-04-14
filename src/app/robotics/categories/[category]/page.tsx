@@ -25,9 +25,10 @@ const VENDOR_IMAGES: Record<string, string> = {
   '1x':                 '/media/1X%20Technologies.avif',
   // ── Delivery / Service ──────────────────────────────────────────────────
   'serve':              '/media/Serve-Gen-2-left-and-Gen-3-robots.jpg',
-  'starship':           'https://upload.wikimedia.org/wikipedia/commons/3/36/Starship_food_delivery_robot_in_Niittykumpu.jpg',
+  'kiwibot':            '/media/Kiwibot.jpg',
+  'segway':             '/media/Segway%20Robotics.jpeg',
+  'starship':           '/media/del-bot-quad.webp',
   // ── Industrial / Warehouse ──────────────────────────────────────────────
-  'boston-dynamics-stretch': '/media/Boston%20Dynamics%20Stretch.jpg',
   'seegrid':            '/media/Seegrid-Palion-AMR-Fleet-2024_Palion-Tow-Palion-Lift-RS1-Palion-Lift-CR1.webp',
   'mir':                '/media/MiR-AMR-lineup-1500x1000-1-1024x683.webp',
   'locus':              '/media/Locus-3.png',
@@ -40,8 +41,6 @@ const VENDOR_IMAGES: Record<string, string> = {
   '6rs':                '/media/6-river-systems-shopify.png',
   'invia':              '/media/inVia-robot-product-shot-image-1.png',
   // ── Quadruped ───────────────────────────────────────────────────────────
-  'boston-dynamics-spot':    '/media/Boston%20Dynamics%20Spot.jpg',
-  'spot':               '/media/Boston%20Dynamics%20Spot.jpg',
   'unitree-quadruped':  '/media/Unitree%20(Quadruped)%20.webp',
   'anybotics':          '/media/ANYbotics-ANYmal.webp',
   'deep-robotics':      '/media/DEEP%20Robotics.jpg',
@@ -76,7 +75,7 @@ const VENDOR_IMAGES: Record<string, string> = {
   'milrem-robotics':    '/media/Milrem%20Robotics.webp',
   // ── Exoskeleton ──────────────────────────────────────────────────────────
   'ekso-bionics':       '/media/EksoNR-by-Ekso-Bionics-Exoskeleton-Catalog-600.jpg',
-  'sarcos':             '/media/Guardian%20XO%20',
+  'sarcos':             '/media/Guardian%20XO.avif',
   'german-bionic':      '/media/Cray-X-5th-Gen-German-Bionics-Exoskeleton-Catalog-2022.jpg',
   // ── Inspection ──────────────────────────────────────────────────────────
   'flyability':         '/media/Elios%203%20(collision-tolerant%20indoor%20drone).jpg',
@@ -98,6 +97,7 @@ const VENDOR_IMAGES: Record<string, string> = {
   'freefly':            '/media/Freefly%20Systems-alta-x-signoff2.jpg',
   'matternet':          '/media/Matternet_System_018.webp',
   // ── Cobots & Robot Arms ──────────────────────────────────────────────────
+  'elephant-robotics':  '/media/Elephant%20Robotics.webp',
   'universal-robots':   '/media/Universal%20Robots.png',
   'fanuc':              '/media/FANUC.jpeg',
   'kuka':               '/media/KUKA.avif',
@@ -170,10 +170,7 @@ export default function CategoryPage({ params }: { params: { category: string } 
         {/* Vendor grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           {vendors.map((vendor) => {
-            const hasSlugPage = ['unitree', 'boston-dynamics', 'agility', 'figure', 'apptronik', 'physical-intelligence',
-              'sanctuary', 'fourier', 'kiwibot', 'serve', 'starship', 'coco', 'amazon-scout', 'locus',
-              'berkshire-grey', '6river', 'geek-plus', 'mujin', 'hai-robotics', 'cyngn', 'dji', 'skydio',
-              'zipline', 'wingcopter', 'percepto', 'freefly', 'matternet'].includes(vendor.id);
+            const hasSlugPage = true; // all 85 vendors have a generated /robotics/[slug] page
 
             const priceRange = (() => {
               const prices = vendor.products
