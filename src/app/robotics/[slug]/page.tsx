@@ -2,9 +2,12 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { VENDORS, BUY_PATH_LABELS, getVendor } from '@/data/vendors';
+import { COMPARISONS } from '@/data/comparisons';
+import { VENDOR_IMAGES } from '@/data/vendor-images';
+import { CATEGORY_META } from '@/data/categories';
 import SoftDevHeader from '@/components/SoftDevHeader';
 
-/** Pre-render all 14 vendor pages at build time */
+/** Pre-render all 85 vendor pages at build time */
 export function generateStaticParams() {
   return VENDORS.map((v) => ({ slug: v.id }));
 }
@@ -32,22 +35,14 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 }
 
 const CATEGORY_LABELS: Record<string, string> = {
-  humanoid:    'Humanoid Robot',
-  delivery:    'Delivery Robot',
-  industrial:  'Warehouse / Industrial',
-  drone:       'Enterprise Drone',
-  cobot:       'Cobot / Robot Arm',
-  surgical:    'Surgical Robot',
-  service:     'Service Robot',
-  agricultural:'Agricultural Robot',
-  security:    'Security Robot',
-  cleaning:    'Floor Cleaning Robot',
-  exoskeleton: 'Exoskeleton',
-  components:  'Components & Sensors',
-  quadruped:   'Quadruped Robot',
-  underwater:  'Underwater ROV',
-  inspection:  'Inspection Robot',
-  defense:     'Defense Robot',
+  humanoid:    'Humanoid Robot',    delivery:    'Delivery Robot',
+  industrial:  'Warehouse / Industrial', drone:  'Enterprise Drone',
+  cobot:       'Cobot / Robot Arm', surgical:    'Surgical Robot',
+  service:     'Service Robot',     agricultural:'Agricultural Robot',
+  security:    'Security Robot',    cleaning:    'Floor Cleaning Robot',
+  exoskeleton: 'Exoskeleton',       components:  'Components & Sensors',
+  quadruped:   'Quadruped Robot',   underwater:  'Underwater ROV',
+  inspection:  'Inspection Robot',  defense:     'Defense Robot',
 };
 
 const STATUS_STYLES = {
@@ -67,39 +62,78 @@ export default function VendorPage({ params }: { params: { slug: string } }) {
   const vendor = getVendor(params.slug);
   if (!vendor) notFound();
 
-  const ctaHref = `/contact?inquiry=robotics&vendor=${encodeURIComponent(vendor.name)}`;
+  const ctaHref    = `/contact?inquiry=robotics&vendor=${encodeURIComponent(vendor.name)}`;
+  const heroImage  = VENDOR_IMAGES[vendor.id];
+  const catMeta    = CATEGORY_META[vendor.category];
+  const catLabel   = CATEGORY_LABELS[vendor.category];
+
+  // Related comparisons featuring this vendor
+  const relatedComparisons = COMPARISONS.filter(
+    (c) => c.vendorAId === vendor.id || c.vendorBId === vendor.id
+  );
+
+  // Other vendors in the same category (up to 3)
+  const relatedVendors = VENDORS.filter(
+    (v) => v.category === vendor.category && v.id !== vendor.id
+  ).slice(0, 3);
 
   return (
     <div className="min-h-screen bg-black text-white">
       <SoftDevHeader />
 
-      <main className="max-w-3xl mx-auto px-6 pt-32 pb-24">
+      <main className="max-w-4xl mx-auto px-6 pt-32 pb-24">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-xs text-neutral-600 mb-10 font-manrope">
+        <nav className="flex items-center gap-2 text-xs text-neutral-600 mb-8 font-manrope">
           <Link href="/robotics" className="hover:text-neutral-400 transition-colors">Robotics</Link>
+          <span>/</span>
+          <Link href={`/robotics/categories/${vendor.category}`} className="hover:text-neutral-400 transition-colors">
+            {catMeta?.label ?? catLabel}
+          </Link>
           <span>/</span>
           <span className="text-neutral-400">{vendor.name}</span>
         </nav>
 
+        {/* Hero image */}
+        {heroImage && (
+          <div className="relative w-full h-64 sm:h-80 rounded-2xl overflow-hidden mb-10 bg-neutral-900">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={heroImage} alt={`${vendor.name} robot`}
+              className="w-full h-full object-cover object-top" />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            <div className="absolute bottom-5 left-6 flex flex-wrap gap-2">
+              <span className="text-[10px] uppercase tracking-widest bg-black/60 border border-neutral-700 text-neutral-300 rounded-full px-3 py-1 font-manrope backdrop-blur-sm">
+                {catLabel}
+              </span>
+              <span className="text-[10px] uppercase tracking-widest bg-black/60 border border-neutral-700 text-neutral-400 rounded-full px-3 py-1 font-manrope backdrop-blur-sm">
+                {BUY_PATH_LABELS[vendor.buyPath]}
+              </span>
+            </div>
+          </div>
+        )}
+
         {/* Header */}
         <div className="mb-10">
-          <div className="flex flex-wrap items-center gap-2 mb-4">
-            <span className="text-[10px] uppercase tracking-widest border border-neutral-800 text-neutral-500 rounded-full px-3 py-1 font-manrope">
-              {CATEGORY_LABELS[vendor.category]}
-            </span>
-            <span className="text-[10px] uppercase tracking-widest border rounded-full px-3 py-1 font-manrope text-neutral-400 border-neutral-700">
-              {BUY_PATH_LABELS[vendor.buyPath]}
-            </span>
+          {!heroImage && (
+            <div className="flex flex-wrap items-center gap-2 mb-4">
+              <span className="text-[10px] uppercase tracking-widest border border-neutral-800 text-neutral-500 rounded-full px-3 py-1 font-manrope">
+                {catLabel}
+              </span>
+              <span className="text-[10px] uppercase tracking-widest border rounded-full px-3 py-1 font-manrope text-neutral-400 border-neutral-700">
+                {BUY_PATH_LABELS[vendor.buyPath]}
+              </span>
+            </div>
+          )}
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <h1 className="text-3xl md:text-4xl font-semibold font-manrope text-white">{vendor.name}</h1>
             {vendor.leadTime && (
-              <span className="text-[10px] uppercase tracking-widest text-neutral-600 font-manrope">
+              <span className="text-[10px] uppercase tracking-widest text-neutral-500 font-manrope border border-neutral-800 rounded-full px-3 py-1 mt-1">
                 Lead time: {vendor.leadTime}
               </span>
             )}
           </div>
-          <h1 className="text-3xl md:text-4xl font-semibold font-manrope text-white mb-3">{vendor.name}</h1>
           {vendor.procurementNotes && (
-            <p className="text-neutral-400 text-sm font-manrope leading-relaxed max-w-xl">{vendor.procurementNotes}</p>
+            <p className="text-neutral-400 text-sm font-manrope leading-relaxed max-w-2xl mt-3">{vendor.procurementNotes}</p>
           )}
         </div>
 
@@ -111,14 +145,20 @@ export default function VendorPage({ params }: { params: { slug: string } }) {
               <div key={p.name} className="flex items-start justify-between gap-4 px-5 py-4 bg-neutral-950 hover:bg-neutral-900 transition-colors">
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-white font-manrope">{p.name}</p>
-                  {p.notes && <p className="text-xs text-neutral-600 mt-0.5 font-manrope">{p.notes}</p>}
+                  {p.notes   && <p className="text-xs text-neutral-600 mt-0.5 font-manrope">{p.notes}</p>}
                   {p.deposit && <p className="text-xs text-yellow-600 mt-0.5 font-manrope">Deposit: {p.deposit}</p>}
                 </div>
-                <div className="flex flex-col items-end gap-1.5 shrink-0">
+                <div className="flex flex-col items-end gap-2 shrink-0">
                   <span className="text-sm font-semibold text-white font-manrope tabular-nums">{p.price}</span>
                   <span className={`text-[10px] uppercase tracking-wider border rounded-full px-2 py-0.5 font-manrope ${STATUS_STYLES[p.status]}`}>
                     {STATUS_LABELS[p.status]}
                   </span>
+                  {p.orderUrl && p.status !== 'not_available' && (
+                    <a href={p.orderUrl} target="_blank" rel="noopener noreferrer"
+                      className="text-[10px] text-white bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 rounded-full px-3 py-1 font-manrope transition-colors">
+                      {p.status === 'raas' ? 'Request RaaS →' : p.status === 'pre_order' ? 'Pre-Order →' : 'Order →'}
+                    </a>
+                  )}
                 </div>
               </div>
             ))}
@@ -131,7 +171,7 @@ export default function VendorPage({ params }: { params: { slug: string } }) {
           <div className="space-y-2">
             {vendor.contacts.map((c) => (
               <div key={c.label} className="flex items-center justify-between gap-4 px-5 py-3 border border-neutral-900 rounded-lg bg-neutral-950">
-                <span className="text-xs text-neutral-600 font-manrope w-36 shrink-0">{c.label}</span>
+                <span className="text-xs text-neutral-600 font-manrope w-40 shrink-0">{c.label}</span>
                 {c.href ? (
                   <a href={c.href} target="_blank" rel="noopener noreferrer"
                     className="text-xs text-neutral-300 hover:text-white transition-colors font-manrope truncate">
@@ -145,11 +185,28 @@ export default function VendorPage({ params }: { params: { slug: string } }) {
           </div>
         </section>
 
+        {/* Related comparisons */}
+        {relatedComparisons.length > 0 && (
+          <section className="mb-10">
+            <h2 className="text-xs uppercase tracking-widest text-neutral-600 mb-4 font-manrope">See How They Compare</h2>
+            <div className="space-y-2">
+              {relatedComparisons.map((c) => (
+                <Link key={c.slug} href={`/compare/${c.slug}`}
+                  className="flex items-center justify-between gap-4 px-5 py-4 border border-neutral-900 rounded-xl bg-neutral-950 hover:bg-neutral-900 hover:border-neutral-700 transition-all group">
+                  <div>
+                    <p className="text-sm text-white font-manrope font-medium group-hover:text-white">{c.vendorALabel} vs {c.vendorBLabel}</p>
+                    <p className="text-xs text-neutral-600 mt-0.5 font-manrope line-clamp-1">{c.description}</p>
+                  </div>
+                  <span className="text-neutral-600 group-hover:text-white transition-colors text-sm shrink-0">→</span>
+                </Link>
+              ))}
+            </div>
+          </section>
+        )}
+
         {/* CTA */}
-        <div className="border border-neutral-800 rounded-2xl p-8 text-center bg-neutral-950">
-          <p className="text-sm font-semibold text-white font-manrope mb-1">
-            Need help sourcing {vendor.name}?
-          </p>
+        <div className="border border-neutral-800 rounded-2xl p-8 text-center bg-neutral-950 mb-10">
+          <p className="text-sm font-semibold text-white font-manrope mb-1">Need help sourcing {vendor.name}?</p>
           <p className="text-xs text-neutral-500 font-manrope mb-6 max-w-sm mx-auto">
             Our team handles vendor outreach, quotes, and deployment coordination. Get a sourced quote in 24 hours.
           </p>
@@ -165,10 +222,42 @@ export default function VendorPage({ params }: { params: { slug: string } }) {
           </div>
         </div>
 
+        {/* Related vendors */}
+        {relatedVendors.length > 0 && (
+          <section className="mb-10">
+            <h2 className="text-xs uppercase tracking-widest text-neutral-600 mb-4 font-manrope">
+              Also in {catMeta?.label ?? catLabel}
+            </h2>
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+              {relatedVendors.map((v) => {
+                const img = VENDOR_IMAGES[v.id];
+                return (
+                  <Link key={v.id} href={`/robotics/${v.id}`}
+                    className="group border border-neutral-900 rounded-xl overflow-hidden bg-neutral-950 hover:border-neutral-700 transition-all">
+                    {img && (
+                      <div className="h-32 overflow-hidden bg-neutral-900">
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={img} alt={v.name} className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-500" />
+                      </div>
+                    )}
+                    <div className="px-4 py-3">
+                      <p className="text-sm font-medium text-white font-manrope">{v.name}</p>
+                      <p className="text-xs text-neutral-600 font-manrope mt-0.5">{v.products[0]?.price}</p>
+                    </div>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
         {/* Back */}
-        <div className="mt-10 text-center">
-          <Link href="/robotics" className="text-xs text-neutral-600 hover:text-neutral-400 transition-colors font-manrope">
-            ← Back to Robot Catalog
+        <div className="flex items-center justify-between text-xs text-neutral-600 font-manrope">
+          <Link href={`/robotics/categories/${vendor.category}`} className="hover:text-neutral-400 transition-colors">
+            ← Back to {catMeta?.label ?? catLabel}
+          </Link>
+          <Link href="/robotics" className="hover:text-neutral-400 transition-colors">
+            All Robots →
           </Link>
         </div>
 
