@@ -27,7 +27,7 @@ export const limiters = {
   }),
   chat: new Ratelimit({
     redis,
-    limiter: Ratelimit.slidingWindow(10, '60 s'),
+    limiter: Ratelimit.slidingWindow(5, '60 s'),
     prefix: 'rl:chat',
     analytics: true,
   }),

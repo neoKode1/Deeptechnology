@@ -5,8 +5,17 @@ import { getQuote } from '@/lib/quotes/store';
 import { buildSystemPrompt } from '@/lib/chat-prompt';
 import { rateLimit, limiters } from '@/lib/ratelimit';
 
-const MAX_HISTORY = 20; // messages kept per thread (10 exchanges)
+const MAX_HISTORY = 20;           // messages kept per thread (10 exchanges)
 const HISTORY_TTL = 60 * 60 * 24 * 7; // 7-day TTL
+const MAX_MESSAGE_CHARS = 600;    // hard cap on incoming message length
+const SESSION_DAILY_CAP = 40;     // max messages a single session can send per 24h
+
+// Allowed origins — requests from anywhere else are rejected
+const ALLOWED_ORIGINS = [
+  'https://deeptechnologies.dev',
+  'https://www.deeptechnologies.dev',
+  ...(process.env.NODE_ENV === 'development' ? ['http://localhost:3000'] : []),
+];
 
 type ChatMessage = { role: 'user' | 'assistant'; content: string };
 
@@ -48,6 +57,14 @@ export async function GET(request: Request) {
  *   chat:anon:{sessionId}:history   (anonymous sessions — sessionId from client)
  */
 export async function POST(request: Request) {
+  // ── Origin guard — block direct API calls from outside the site ──────────────
+  const origin = request.headers.get('origin') ?? '';
+  if (!ALLOWED_ORIGINS.includes(origin)) {
+    console.warn('[chat] Blocked request from origin:', origin);
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
+  // ── Per-IP rate limit ────────────────────────────────────────────────────────
   const limited = await rateLimit(limiters.chat, request);
   if (limited) return limited;
 
@@ -68,7 +85,8 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Message is required' }, { status: 400 });
   }
 
-  const userMessage = message.trim();
+  // ── Hard cap on message length (prevents token stuffing) ────────────────────
+  const userMessage = message.trim().slice(0, MAX_MESSAGE_CHARS);
 
   // ── Redis history key ────────────────────────────────────────────────────────
   const historyKey = orderId
@@ -81,6 +99,20 @@ export async function POST(request: Request) {
     url: process.env.UPSTASH_REDIS_REST_URL!,
     token: process.env.UPSTASH_REDIS_REST_TOKEN!,
   });
+
+  // ── Per-session daily cap (anonymous sessions only) ──────────────────────────
+  if (sessionId && !orderId) {
+    const capKey = `chat:cap:${sessionId}:${new Date().toISOString().slice(0, 10)}`;
+    const count = await redis.incr(capKey);
+    if (count === 1) await redis.expire(capKey, 60 * 60 * 25); // TTL slightly > 24h
+    if (count > SESSION_DAILY_CAP) {
+      console.warn('[chat] Session daily cap hit:', sessionId);
+      return NextResponse.json(
+        { error: 'Daily message limit reached. Please contact us directly.' },
+        { status: 429 },
+      );
+    }
+  }
 
   // ── Load existing history ────────────────────────────────────────────────────
   let history: ChatMessage[] = [];
@@ -105,7 +137,7 @@ export async function POST(request: Request) {
   try {
     const client = new Anthropic({ apiKey });
     const response = await client.messages.create({
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-haiku-4-5',
       max_tokens: 400,
       system: systemPrompt,
       messages,
