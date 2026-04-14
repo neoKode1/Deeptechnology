@@ -145,17 +145,18 @@ export default function CategoryPage({ params }: { params: { category: string } 
             const vendorImg = VENDOR_IMAGES[vendor.id] ?? meta.image;
 
             return (
-              <div key={vendor.id} className="bg-neutral-900 border border-neutral-800 hover:border-neutral-600 transition-colors rounded-xl overflow-hidden flex flex-col">
-                {/* Photo banner */}
-                <div className="relative h-36 w-full shrink-0 bg-neutral-800">
+              <div key={vendor.id} className="group bg-neutral-900 border border-neutral-800 hover:border-neutral-600 transition-colors rounded-xl overflow-hidden flex flex-col">
+
+                {/* Photo banner — taller so the robot is prominent */}
+                <div className="relative h-52 w-full shrink-0 bg-neutral-800">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={vendorImg}
                     alt={vendor.name}
-                    className="w-full h-full object-cover object-center"
+                    className="w-full h-full object-cover object-center group-hover:scale-105 transition-transform duration-500"
                     loading="lazy"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/10 to-transparent" />
                   <div className="absolute top-2.5 right-2.5">
                     <span className={`text-[10px] uppercase tracking-widest px-2 py-1 rounded-full ${BUY_PATH_COLORS[vendor.buyPath] ?? 'bg-neutral-800 text-neutral-400'}`}>
                       {BUY_PATH_LABELS[vendor.buyPath]}
@@ -164,51 +165,57 @@ export default function CategoryPage({ params }: { params: { category: string } 
                 </div>
 
                 {/* Content */}
-                <div className="p-5 flex flex-col gap-4 flex-1">
-                <div className="flex items-start justify-between gap-3">
+                <div className="p-5 flex flex-col gap-3">
+
+                  {/* Always-visible: name + starting price */}
                   <div>
-                    <h2 className="font-manrope font-semibold text-white text-base">{vendor.name}</h2>
+                    <h2 className="font-manrope font-semibold text-white text-base leading-snug">{vendor.name}</h2>
                     {priceRange && (
                       <p className="text-green-400 text-sm mt-0.5">{priceRange}</p>
                     )}
                   </div>
-                </div>
 
-                {/* Top products */}
-                <div className="flex flex-col gap-1">
-                  {vendor.products.slice(0, 3).map((p) => (
-                    <div key={p.name} className="flex items-center justify-between text-xs">
-                      <span className="text-neutral-300">{p.name}</span>
-                      <span className="text-neutral-500 font-mono">{p.price}</span>
+                  {/* Collapsible details — slides open on hover */}
+                  <div className="overflow-hidden max-h-0 group-hover:max-h-64 transition-all duration-300 ease-in-out">
+                    {/* Products list */}
+                    <div className="flex flex-col gap-1 mb-3">
+                      {vendor.products.slice(0, 3).map((p) => (
+                        <div key={p.name} className="flex items-center justify-between text-xs">
+                          <span className="text-neutral-300 truncate mr-2">{p.name}</span>
+                          <span className="text-neutral-500 font-mono shrink-0">{p.price}</span>
+                        </div>
+                      ))}
+                      {vendor.products.length > 3 && (
+                        <p className="text-neutral-600 text-xs">+{vendor.products.length - 3} more products</p>
+                      )}
                     </div>
-                  ))}
-                  {vendor.products.length > 3 && (
-                    <p className="text-neutral-600 text-xs">+{vendor.products.length - 3} more products</p>
-                  )}
-                </div>
+                    {/* Procurement notes */}
+                    {vendor.procurementNotes && (
+                      <p className="text-neutral-500 text-xs leading-relaxed line-clamp-3">
+                        {vendor.procurementNotes}
+                      </p>
+                    )}
+                  </div>
 
-                {vendor.procurementNotes && (
-                  <p className="text-neutral-500 text-xs leading-relaxed line-clamp-2">{vendor.procurementNotes}</p>
-                )}
-
-                {/* CTAs */}
-                <div className="flex gap-2 mt-auto pt-2">
-                  {hasSlugPage && (
+                  {/* CTAs — always visible */}
+                  <div className="flex gap-2 pt-1">
+                    {hasSlugPage && (
+                      <Link
+                        href={`/robotics/${vendor.id}`}
+                        className="text-xs border border-neutral-700 hover:border-white px-3 py-1.5 rounded-lg text-neutral-300 hover:text-white transition-colors"
+                      >
+                        Full Profile
+                      </Link>
+                    )}
                     <Link
-                      href={`/robotics/${vendor.id}`}
-                      className="text-xs border border-neutral-700 hover:border-white px-3 py-1.5 rounded-lg text-neutral-300 hover:text-white transition-colors"
+                      href={`/contact?inquiry=robotics&vendor=${encodeURIComponent(vendor.name)}`}
+                      className="flex items-center gap-1 text-xs bg-white text-black hover:bg-neutral-100 px-3 py-1.5 rounded-lg font-medium transition-colors ml-auto"
                     >
-                      Full Profile
+                      Get Quote <ArrowUpRight className="w-3 h-3" />
                     </Link>
-                  )}
-                  <Link
-                    href={`/contact?inquiry=robotics&vendor=${encodeURIComponent(vendor.name)}`}
-                    className="flex items-center gap-1 text-xs bg-white text-black hover:bg-neutral-100 px-3 py-1.5 rounded-lg font-medium transition-colors ml-auto"
-                  >
-                    Get Quote <ArrowUpRight className="w-3 h-3" />
-                  </Link>
+                  </div>
+
                 </div>
-                </div>{/* end p-5 content */}
               </div>
             );
           })}
