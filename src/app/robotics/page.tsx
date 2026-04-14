@@ -358,48 +358,48 @@ export default function RoboticsDivisionHome() {
             </div>
           </div>
           {/* Bottom right */}
-          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Unitree Robotics', name: 'G1 EDU Standard Humanoid', price: 'From $13,500', systemCategory: 'Humanoid / Service Robots', image: '/media/2_3769ceea-b323-4ebc-a1f4-e27a9624706b_900x.jpg' })}>
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Apptronik', name: 'Apollo — Industrial Humanoid', price: 'RaaS / Enterprise — Contact', systemCategory: 'Humanoid / Service Robots', image: '/media/Apptronik.jpg' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/media/2_3769ceea-b323-4ebc-a1f4-e27a9624706b_900x.jpg"
-              alt="Unitree G1 humanoid robot"
+              src="/media/Apptronik.jpg"
+              alt="Apptronik Apollo humanoid robot"
               className="robo-img"
             />
             <div className="robo-overlay">
-              <p className="robo-overlay-vendor">Unitree Robotics</p>
-              <p className="robo-overlay-name">G1 EDU Standard Humanoid</p>
-              <p className="robo-overlay-price">From $13,500</p>
+              <p className="robo-overlay-vendor">Apptronik</p>
+              <p className="robo-overlay-name">Apollo — Industrial Humanoid</p>
+              <p className="robo-overlay-price">RaaS / Enterprise — Contact · Partners: GE Aerospace, Mercedes-Benz</p>
               <button className="robo-overlay-cta">Get Quote</button>
             </div>
           </div>
         </div>
         {/* Row 2: 3 equal-width images */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mt-2" style={{ minHeight: 'clamp(160px, 18vw, 240px)' }}>
-          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Unitree Robotics', name: 'H2 — Advanced Humanoid', price: 'From $29,900', systemCategory: 'Humanoid / Service Robots', image: '/media/3_d9687814-d553-451b-9429-c224a20f3b3a_900x.webp' })}>
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Sanctuary AI', name: 'Phoenix Gen 7', price: 'Enterprise — Contact', systemCategory: 'Humanoid / Service Robots', image: '/media/Sanctuary%20AI.webp' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/media/3_d9687814-d553-451b-9429-c224a20f3b3a_900x.webp"
-              alt="Unitree H2 humanoid robot"
+              src="/media/Sanctuary%20AI.webp"
+              alt="Sanctuary AI Phoenix Gen 7 humanoid robot"
               className="robo-img"
             />
             <div className="robo-overlay">
-              <p className="robo-overlay-vendor">Unitree Robotics</p>
-              <p className="robo-overlay-name">H2 — Advanced Humanoid</p>
-              <p className="robo-overlay-price">From $29,900</p>
+              <p className="robo-overlay-vendor">Sanctuary AI</p>
+              <p className="robo-overlay-name">Phoenix Gen 7</p>
+              <p className="robo-overlay-price">Enterprise — Contact · Est. $65K–$250K</p>
               <button className="robo-overlay-cta">Get Quote</button>
             </div>
           </div>
-          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Unitree Robotics', name: 'R1 — Entry Humanoid', price: 'From $4,900 · Pre-sale', systemCategory: 'Humanoid / Service Robots', image: '/media/5_eb271a12-e794-439d-ade5-d60ec009e81a_900x.webp' })}>
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'UBTECH Robotics', name: 'Walker S2', price: '$180,000 or $5,000/mo RaaS', systemCategory: 'Humanoid / Service Robots', image: '/media/UBTECH%20Robotics.webp' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/media/5_eb271a12-e794-439d-ade5-d60ec009e81a_900x.webp"
-              alt="Unitree R1 humanoid robot"
+              src="/media/UBTECH%20Robotics.webp"
+              alt="UBTECH Walker S2 humanoid robot"
               className="robo-img"
             />
             <div className="robo-overlay">
-              <p className="robo-overlay-vendor">Unitree Robotics</p>
-              <p className="robo-overlay-name">R1 — Entry Humanoid</p>
-              <p className="robo-overlay-price">From $4,900 · Pre-sale</p>
+              <p className="robo-overlay-vendor">UBTECH Robotics</p>
+              <p className="robo-overlay-name">Walker S2</p>
+              <p className="robo-overlay-price">$180,000 purchase · $5,000/mo RaaS · BYD, Foxconn deployments</p>
               <button className="robo-overlay-cta">Get Quote</button>
             </div>
           </div>
@@ -447,7 +447,7 @@ export default function RoboticsDivisionHome() {
       <section id="trending" className="px-4 sm:px-6 md:px-12 lg:px-20 py-14 sm:py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
         <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-400">Trending · Most Requested</p>
         <p className="text-neutral-500 text-sm max-w-lg leading-relaxed mb-12">
-          The most-searched platforms in enterprise robotics right now — from Tesla&apos;s Optimus to Boston Dynamics&apos; full commercial lineup.
+          The most-searched humanoid platforms in enterprise robotics right now — from Tesla&apos;s Optimus to next-generation bipedal systems entering mass production.
         </p>
         {/* Row 1: Optimus hero (col-span-2) + Figure 02 + Digit */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2" style={{ gridTemplateRows: 'auto' }}>
@@ -497,20 +497,20 @@ export default function RoboticsDivisionHome() {
             </div>
           </div>
         </div>
-        {/* Row 2: Boston Dynamics trio */}
+        {/* Row 2: 3 more humanoids */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mt-2" style={{ minHeight: 'clamp(200px, 24vw, 340px)' }}>
-          {/* Spot */}
-          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Boston Dynamics', name: 'Spot — Quadruped', price: 'From $74,500 · Full kit to $195K', systemCategory: 'Humanoid / Service Robots', image: '/media/Boston%20Dynamics%20Spot.jpg' })}>
+          {/* Fourier GR-1 */}
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Fourier Intelligence', name: 'GR-1 Research Humanoid', price: '~$149,999', systemCategory: 'Humanoid / Service Robots', image: '/media/Fourier%20Intelligence.webp' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/media/Boston%20Dynamics%20Spot.jpg"
-              alt="Boston Dynamics Spot quadruped robot"
+              src="/media/Fourier%20Intelligence.webp"
+              alt="Fourier Intelligence GR-1 humanoid robot"
               className="robo-img"
             />
             <div className="robo-overlay">
-              <p className="robo-overlay-vendor">Boston Dynamics</p>
-              <p className="robo-overlay-name">Spot — Quadruped</p>
-              <p className="robo-overlay-price">From $74,500 · Full kit to $195K</p>
+              <p className="robo-overlay-vendor">Fourier Intelligence</p>
+              <p className="robo-overlay-name">GR-1 Research Humanoid</p>
+              <p className="robo-overlay-price">~$149,999 · 42 DOF · Mass production 2026</p>
               <button className="robo-overlay-cta">Get Quote</button>
             </div>
           </div>
@@ -529,18 +529,18 @@ export default function RoboticsDivisionHome() {
               <button className="robo-overlay-cta">Get Quote</button>
             </div>
           </div>
-          {/* Stretch */}
-          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Boston Dynamics', name: 'Stretch — Warehouse Unloader', price: 'Enterprise Pricing · Contact for Quote', systemCategory: 'Forklift / Sorting Bots', image: '/media/Boston%20Dynamics%20Stretch.jpg' })}>
+          {/* Kepler K2 */}
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Kepler Robotics', name: 'Forerunner K2', price: '~$30,000 target', systemCategory: 'Humanoid / Service Robots', image: '/media/Kepler%20Robotics.jpg' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/media/Boston%20Dynamics%20Stretch.jpg"
-              alt="Boston Dynamics Stretch warehouse unloading robot"
+              src="/media/Kepler%20Robotics.jpg"
+              alt="Kepler Robotics Forerunner K2 humanoid robot"
               className="robo-img"
             />
             <div className="robo-overlay">
-              <p className="robo-overlay-vendor">Boston Dynamics</p>
-              <p className="robo-overlay-name">Stretch — Warehouse Unloader</p>
-              <p className="robo-overlay-price">Enterprise Pricing · Contact for Quote</p>
+              <p className="robo-overlay-vendor">Kepler Robotics</p>
+              <p className="robo-overlay-name">Forerunner K2</p>
+              <p className="robo-overlay-price">~$30,000 target · Ant Group mass production</p>
               <button className="robo-overlay-cta">Get Quote</button>
             </div>
           </div>
