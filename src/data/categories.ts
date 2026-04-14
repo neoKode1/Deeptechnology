@@ -16,5 +16,5 @@ export const CATEGORY_META: Record<VendorCategory, { label: string; image: strin
   quadruped:   { label: 'Quadruped Robots',        image: '/media/Boston%20Dynamics%20Spot.jpg',                                                                              desc: 'Four-legged robots for inspection, security, and research in complex terrain.' },
   underwater:  { label: 'Underwater Robots',       image: 'https://upload.wikimedia.org/wikipedia/commons/4/4a/BlueROV2_flying_with_ArduSub.jpg',                            desc: 'ROVs and AUVs for subsea inspection, search & rescue, and scientific research.' },
   inspection:  { label: 'Inspection Robots',       image: 'https://upload.wikimedia.org/wikipedia/commons/a/a1/ExR-2_Inspection_Robot_%2802%29.jpg',                          desc: 'Specialized robots for confined-space, wall-climbing, and aerial industrial inspection.' },
-  defense:     { label: 'Defense Robots',          image: 'https://upload.wikimedia.org/wikipedia/commons/2/27/Ghost_Robotics_Vision_60_Q-UGV_Demo_%287351259%29.jpeg',      desc: 'Unmanned ground and aerial systems for defense, EOD, and government applications.' },
+  defense:     { label: 'Defense Robots',          image: '/media/Ghost-Robotics-featured.jpg',      desc: 'Unmanned ground and aerial systems for defense, EOD, and government applications.' },
 };

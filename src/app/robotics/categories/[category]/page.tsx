@@ -42,7 +42,9 @@ const VENDOR_IMAGES: Record<string, string> = {
   // ── Quadruped ───────────────────────────────────────────────────────────
   'boston-dynamics-spot':    '/media/Boston%20Dynamics%20Spot.jpg',
   'spot':               '/media/Boston%20Dynamics%20Spot.jpg',
-  'unitree-quadruped':  '/media/Unitree%20Robotics-B1.webp',
+  'unitree-quadruped':  '/media/Unitree%20(Quadruped)%20.webp',
+  'anybotics':          '/media/ANYbotics-ANYmal.webp',
+  'deep-robotics':      '/media/DEEP%20Robotics.jpg',
   // ── Security ────────────────────────────────────────────────────────────
   'knightscope':        '/media/Knightscope.webp',
   'cobalt-robotics':    '/media/Cobalt%20Robotics.jpg',
@@ -68,7 +70,7 @@ const VENDOR_IMAGES: Record<string, string> = {
   'xenex':              '/media/Xenex-XenL.jpg',
   'lg-cloi':            '/media/LG%20CLOi.jpg',
   // ── Defense ─────────────────────────────────────────────────────────────
-  'ghost-robotics':     'https://upload.wikimedia.org/wikipedia/commons/2/27/Ghost_Robotics_Vision_60_Q-UGV_Demo_%287351259%29.jpeg',
+  'ghost-robotics':     '/media/Ghost-Robotics-featured.jpg',
   // ── Exoskeleton ──────────────────────────────────────────────────────────
   'ekso-bionics':       '/media/EksoNR-by-Ekso-Bionics-Exoskeleton-Catalog-600.jpg',
   'sarcos':             '/media/Guardian%20XO%20',
