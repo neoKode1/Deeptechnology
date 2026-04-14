@@ -116,7 +116,7 @@ const SoftDevHeader = () => {
       <button
         onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
         aria-label="Back to top"
-        className={`fixed bottom-4 right-4 sm:bottom-8 sm:right-8 z-[9997] w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center border border-white/20 bg-black/60 backdrop-blur-md text-white/60 hover:text-white hover:border-white/40 hover:bg-black/80 transition-all duration-300 ${
+        className={`fixed bottom-6 left-1/2 -translate-x-1/2 z-[9997] w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center border border-white/20 bg-black/60 backdrop-blur-md text-white/60 hover:text-white hover:border-white/40 hover:bg-black/80 transition-all duration-300 ${
           showBackToTop ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4 pointer-events-none'
         }`}
       >
