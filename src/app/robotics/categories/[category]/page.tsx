@@ -78,6 +78,13 @@ const VENDOR_IMAGES: Record<string, string> = {
   // ── Drone ───────────────────────────────────────────────────────────────
   'dji-enterprise':     '/media/drones_hero.webp',
   'zipline':            '/media/DHL_Drone_Delivery_855666c6-cb8b-4e34-841e-fffe73da729d_1400x.webp',
+  // ── Cobots & Robot Arms ──────────────────────────────────────────────────
+  'universal-robots':   '/media/Universal%20Robots.png',
+  'fanuc':              '/media/FANUC.jpeg',
+  'kuka':               '/media/KUKA.avif',
+  'franka':             '/media/Franka%20Robotics-franka-research-3.png',
+  'igus':               '/media/igus.jpg',
+  'doosan-robotics':    '/media/Doosan%20Robotics-A-Series-1.png',
   // ── Components ──────────────────────────────────────────────────────────
   'velodyne':           'https://upload.wikimedia.org/wikipedia/commons/f/f8/Velodyne_Lidar_Alpha_Prime_Ultra_Puck_Puck_Sensor_Family.jpg',
   'ouster':             'https://upload.wikimedia.org/wikipedia/commons/f/f8/Velodyne_Lidar_Alpha_Prime_Ultra_Puck_Puck_Sensor_Family.jpg',
