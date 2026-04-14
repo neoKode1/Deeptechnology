@@ -7,7 +7,7 @@ import { VENDORS, BUY_PATH_LABELS, BUY_PATH_COLORS, type VendorCategory } from '
 
 /* ── Category metadata ──────────────────────────────────────────────────── */
 const CATEGORY_META: Record<VendorCategory, { label: string; image: string; desc: string }> = {
-  humanoid:    { label: 'Humanoid Robots',        image: '/media/Agility%20Robotics%20Digit.jpg',                                                                                           desc: 'Full-body bipedal robots for general labor, research, and service applications.' },
+  humanoid:    { label: 'Humanoid Robots',        image: '/media/Neo_nimbus.png',                                                                                           desc: 'Full-body bipedal robots for general labor, research, and service applications.' },
   delivery:    { label: 'Delivery Robots',         image: 'https://upload.wikimedia.org/wikipedia/commons/3/36/Starship_food_delivery_robot_in_Niittykumpu.jpg',                             desc: 'Sidewalk, road, and aerial platforms for last-mile and campus delivery.' },
   industrial:  { label: 'Industrial / Warehouse',  image: '/media/Robotic-Sorting-as-a-Service-B3A7940.webp',                                                                                desc: 'AMRs, forklifts, and sorting systems for distribution and manufacturing.' },
   drone:       { label: 'Drones & UAVs',           image: '/media/drones_hero.webp',                                                                                                        desc: 'Commercial and industrial unmanned aerial systems for delivery, inspection, and mapping.' },
@@ -28,7 +28,7 @@ const CATEGORY_META: Record<VendorCategory, { label: string; image: string; desc
 /* ── Per-vendor product photos (CC / public domain / local) ─────────────── */
 const VENDOR_IMAGES: Record<string, string> = {
   // ── Humanoid ────────────────────────────────────────────────────────────
-  'unitree':            'https://upload.wikimedia.org/wikipedia/commons/8/8a/Unitree_G1.jpg',
+  'unitree':            '/media/Unitree%20Robotics-G1.png',
   'agility':            '/media/Agility%20Robotics.jpeg',
   'tesla':              '/media/tesla-optimus-auAwknG6.png',
   'figure':             '/media/Figure%2002.jpg',
@@ -47,6 +47,17 @@ const VENDOR_IMAGES: Record<string, string> = {
   'starship':           'https://upload.wikimedia.org/wikipedia/commons/3/36/Starship_food_delivery_robot_in_Niittykumpu.jpg',
   // ── Industrial / Warehouse ──────────────────────────────────────────────
   'boston-dynamics-stretch': '/media/Boston%20Dynamics%20Stretch.jpg',
+  'seegrid':            '/media/Seegrid-Palion-AMR-Fleet-2024_Palion-Tow-Palion-Lift-RS1-Palion-Lift-CR1.webp',
+  'mir':                '/media/MiR-AMR-lineup-1500x1000-1-1024x683.webp',
+  'locus':              '/media/Locus-3.png',
+  'greyorange':         '/media/greyorange-warehouse-robots.jpg',
+  'geekplus':           '/media/IMG-Geekplus-robotics-solution-3-670x510-1.png',
+  'otto-motors':        '/media/OTTO%20Motors.png',
+  'omron':              '/media/Omron%20Mobile%20Robotics-fleet-bg.jpg',
+  'hai-robotics':       '/media/Hai-Robotics-ASRS-bots-670x510-1.png',
+  'clearpath':          '/media/clearpath-ros.jpg',
+  '6rs':                '/media/6-river-systems-shopify.png',
+  'invia':              '/media/inVia-robot-product-shot-image-1.png',
   // ── Quadruped ───────────────────────────────────────────────────────────
   'boston-dynamics-spot':    '/media/Boston%20Dynamics%20Spot.jpg',
   'spot':               '/media/Boston%20Dynamics%20Spot.jpg',
@@ -110,12 +121,12 @@ export default function CategoryPage({ params }: { params: { category: string } 
 
         {/* Header */}
         <div className="mb-12">
-          <div className="relative h-48 sm:h-64 w-full overflow-hidden rounded-2xl mb-6 bg-neutral-900">
+          <div className="relative h-72 sm:h-96 w-full overflow-hidden rounded-2xl mb-6 bg-neutral-900">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={meta.image}
               alt={meta.label}
-              className="w-full h-full object-cover opacity-80"
+              className="w-full h-full object-cover object-top opacity-90"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
             <div className="absolute bottom-4 left-5">
@@ -147,8 +158,8 @@ export default function CategoryPage({ params }: { params: { category: string } 
             return (
               <div key={vendor.id} className="group bg-neutral-900 border border-neutral-800 hover:border-neutral-600 transition-colors rounded-xl overflow-hidden flex flex-col">
 
-                {/* Photo banner — taller so the robot is prominent */}
-                <div className="relative h-52 w-full shrink-0 bg-neutral-800">
+                {/* Photo banner */}
+                <div className="relative h-72 w-full shrink-0 bg-neutral-800">
                   {/* eslint-disable-next-line @next/next/no-img-element */}
                   <img
                     src={vendorImg}
