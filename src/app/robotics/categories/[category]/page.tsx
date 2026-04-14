@@ -42,7 +42,7 @@ const VENDOR_IMAGES: Record<string, string> = {
   // ── Quadruped ───────────────────────────────────────────────────────────
   'boston-dynamics-spot':    '/media/Boston%20Dynamics%20Spot.jpg',
   'spot':               '/media/Boston%20Dynamics%20Spot.jpg',
-  'unitree-quadruped':  'https://upload.wikimedia.org/wikipedia/commons/8/8a/Unitree_G1.jpg',
+  'unitree-quadruped':  '/media/Unitree%20Robotics-B1.webp',
   // ── Security ────────────────────────────────────────────────────────────
   'knightscope':        'https://upload.wikimedia.org/wikipedia/commons/c/cb/Knightscope_security_robot.jpg',
   // ── Cleaning ────────────────────────────────────────────────────────────
