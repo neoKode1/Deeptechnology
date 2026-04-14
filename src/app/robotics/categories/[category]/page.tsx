@@ -57,8 +57,16 @@ const VENDOR_IMAGES: Record<string, string> = {
   // ── Underwater ──────────────────────────────────────────────────────────
   'blue-robotics':      'https://upload.wikimedia.org/wikipedia/commons/4/4a/BlueROV2_flying_with_ArduSub.jpg',
   // ── Drone ───────────────────────────────────────────────────────────────
-  'dji-enterprise':     '/media/drones_hero.webp',
-  'zipline':            '/media/DHL_Drone_Delivery_855666c6-cb8b-4e34-841e-fffe73da729d_1400x.webp',
+  'dji-enterprise':     '/media/DJI%20Enterprise.jpg',
+  'skydio':             '/media/Skydio.avif',
+  'zipline':            '/media/zipline.jpg',
+  'wing':               '/media/Wing%20(Alphabet).webp',
+  'autel':              '/media/Autel%20Robotics.jpg',
+  'parrot':             '/media/Parrot%20ANAFI%20USA%20.png',
+  'percepto':           '/media/Percepto-1.jpg',
+  'american-robotics':  '/media/American%20robot%20scout-system.webp',
+  'freefly':            '/media/Freefly%20Systems-alta-x-signoff2.jpg',
+  'matternet':          '/media/Matternet_System_018.webp',
   // ── Cobots & Robot Arms ──────────────────────────────────────────────────
   'universal-robots':   '/media/Universal%20Robots.png',
   'fanuc':              '/media/FANUC.jpeg',
