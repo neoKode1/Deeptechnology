@@ -27,43 +27,49 @@ const CATEGORY_META: Record<VendorCategory, { label: string; image: string; desc
 
 /* ── Per-vendor product photos (CC / public domain / local) ─────────────── */
 const VENDOR_IMAGES: Record<string, string> = {
-  // Humanoid
-  'unitree':         'https://upload.wikimedia.org/wikipedia/commons/8/8a/Unitree_G1.jpg',
-  'agility':         '/media/Agility%20Robotics%20Digit.jpg',
-  'tesla':           '/media/tesla-optimus-auAwknG6.png',
-  'figure':          '/media/Figure%2002.jpg',
-  'boston-dynamics': '/media/atlas2-Pre-Launch-Thumbnail.webp',
-  // Delivery / Service
-  'serve':           '/media/Serve-Gen-2-left-and-Gen-3-robots.jpg',
-  'starship':        'https://upload.wikimedia.org/wikipedia/commons/3/36/Starship_food_delivery_robot_in_Niittykumpu.jpg',
-  // Industrial / Warehouse
+  // ── Humanoid ────────────────────────────────────────────────────────────
+  'unitree':            'https://upload.wikimedia.org/wikipedia/commons/8/8a/Unitree_G1.jpg',
+  'agility':            '/media/Agility%20Robotics.jpeg',
+  'tesla':              '/media/tesla-optimus-auAwknG6.png',
+  'figure':             '/media/Figure%2002.jpg',
+  'boston-dynamics':    '/media/atlas2-Pre-Launch-Thumbnail.webp',
+  'apptronik':          '/media/Apptronik.jpg',
+  'sanctuary':          '/media/Sanctuary%20AI.webp',
+  'ubtech':             '/media/UBTECH%20Robotics.webp',
+  'fourier':            '/media/Fourier%20Intelligence.webp',
+  'neura':              '/media/4NE-1%20Neura%20Robotics.webp',
+  'kepler':             '/media/Kepler%20Robotics.jpg',
+  'agibot':             '/media/AgiBot1.png',
+  'pal-robotics':       '/media/PAL%20Robotics-TIAGo-Robot.webp',
+  '1x':                 '/media/1X%20Technologies.avif',
+  // ── Delivery / Service ──────────────────────────────────────────────────
+  'serve':              '/media/Serve-Gen-2-left-and-Gen-3-robots.jpg',
+  'starship':           'https://upload.wikimedia.org/wikipedia/commons/3/36/Starship_food_delivery_robot_in_Niittykumpu.jpg',
+  // ── Industrial / Warehouse ──────────────────────────────────────────────
   'boston-dynamics-stretch': '/media/Boston%20Dynamics%20Stretch.jpg',
-  // Quadruped
+  // ── Quadruped ───────────────────────────────────────────────────────────
   'boston-dynamics-spot':    '/media/Boston%20Dynamics%20Spot.jpg',
-  'spot':            '/media/Boston%20Dynamics%20Spot.jpg',
-  // Security
-  'knightscope':     'https://upload.wikimedia.org/wikipedia/commons/c/cb/Knightscope_security_robot.jpg',
-  // Cleaning
-  'avidbots':        'https://upload.wikimedia.org/wikipedia/commons/4/40/AvidbotsNeo1.jpg',
-  // Surgical
-  'intuitive':       'https://upload.wikimedia.org/wikipedia/commons/0/0d/Laproscopic_Surgery_Robot.jpg',
+  'spot':               '/media/Boston%20Dynamics%20Spot.jpg',
+  'unitree-quadruped':  'https://upload.wikimedia.org/wikipedia/commons/8/8a/Unitree_G1.jpg',
+  // ── Security ────────────────────────────────────────────────────────────
+  'knightscope':        'https://upload.wikimedia.org/wikipedia/commons/c/cb/Knightscope_security_robot.jpg',
+  // ── Cleaning ────────────────────────────────────────────────────────────
+  'avidbots':           'https://upload.wikimedia.org/wikipedia/commons/4/40/AvidbotsNeo1.jpg',
+  // ── Surgical ────────────────────────────────────────────────────────────
+  'intuitive':          'https://upload.wikimedia.org/wikipedia/commons/0/0d/Laproscopic_Surgery_Robot.jpg',
   'intuitive-surgical': 'https://upload.wikimedia.org/wikipedia/commons/0/0d/Laproscopic_Surgery_Robot.jpg',
-  // Defense / Quadruped
-  'ghost-robotics':  'https://upload.wikimedia.org/wikipedia/commons/2/27/Ghost_Robotics_Vision_60_Q-UGV_Demo_%287351259%29.jpeg',
-  'ghost':           'https://upload.wikimedia.org/wikipedia/commons/2/27/Ghost_Robotics_Vision_60_Q-UGV_Demo_%287351259%29.jpeg',
-  // Inspection
-  'flyability':      'https://upload.wikimedia.org/wikipedia/commons/a/a1/ExR-2_Inspection_Robot_%2802%29.jpg',
-  // Underwater
-  'bluerov':         'https://upload.wikimedia.org/wikipedia/commons/4/4a/BlueROV2_flying_with_ArduSub.jpg',
-  'blue-robotics':   'https://upload.wikimedia.org/wikipedia/commons/4/4a/BlueROV2_flying_with_ArduSub.jpg',
-  // Exoskeleton
-  'laevo':           'https://upload.wikimedia.org/wikipedia/commons/9/94/LAEVO_exoskeleton.jpg',
-  // Drone
-  'dji':             '/media/drones_hero.webp',
-  'zipline':         '/media/DHL_Drone_Delivery_855666c6-cb8b-4e34-841e-fffe73da729d_1400x.webp',
-  // Components
-  'velodyne':        'https://upload.wikimedia.org/wikipedia/commons/f/f8/Velodyne_Lidar_Alpha_Prime_Ultra_Puck_Puck_Sensor_Family.jpg',
-  'ouster':          'https://upload.wikimedia.org/wikipedia/commons/f/f8/Velodyne_Lidar_Alpha_Prime_Ultra_Puck_Puck_Sensor_Family.jpg',
+  // ── Defense ─────────────────────────────────────────────────────────────
+  'ghost-robotics':     'https://upload.wikimedia.org/wikipedia/commons/2/27/Ghost_Robotics_Vision_60_Q-UGV_Demo_%287351259%29.jpeg',
+  // ── Inspection ──────────────────────────────────────────────────────────
+  'flyability':         'https://upload.wikimedia.org/wikipedia/commons/a/a1/ExR-2_Inspection_Robot_%2802%29.jpg',
+  // ── Underwater ──────────────────────────────────────────────────────────
+  'blue-robotics':      'https://upload.wikimedia.org/wikipedia/commons/4/4a/BlueROV2_flying_with_ArduSub.jpg',
+  // ── Drone ───────────────────────────────────────────────────────────────
+  'dji-enterprise':     '/media/drones_hero.webp',
+  'zipline':            '/media/DHL_Drone_Delivery_855666c6-cb8b-4e34-841e-fffe73da729d_1400x.webp',
+  // ── Components ──────────────────────────────────────────────────────────
+  'velodyne':           'https://upload.wikimedia.org/wikipedia/commons/f/f8/Velodyne_Lidar_Alpha_Prime_Ultra_Puck_Puck_Sensor_Family.jpg',
+  'ouster':             'https://upload.wikimedia.org/wikipedia/commons/f/f8/Velodyne_Lidar_Alpha_Prime_Ultra_Puck_Puck_Sensor_Family.jpg',
 };
 
 export function generateStaticParams() {
