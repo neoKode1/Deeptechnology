@@ -25,6 +25,47 @@ const CATEGORY_META: Record<VendorCategory, { label: string; image: string; desc
   defense:     { label: 'Defense Robots',          image: 'https://upload.wikimedia.org/wikipedia/commons/2/27/Ghost_Robotics_Vision_60_Q-UGV_Demo_%287351259%29.jpeg',                    desc: 'Unmanned ground and aerial systems for defense, EOD, and government applications.' },
 };
 
+/* ── Per-vendor product photos (CC / public domain / local) ─────────────── */
+const VENDOR_IMAGES: Record<string, string> = {
+  // Humanoid
+  'unitree':         'https://upload.wikimedia.org/wikipedia/commons/8/8a/Unitree_G1.jpg',
+  'agility':         '/media/Agility%20Robotics%20Digit.jpg',
+  'tesla':           '/media/tesla-optimus-auAwknG6.png',
+  'figure':          '/media/Figure%2002.jpg',
+  'boston-dynamics': '/media/atlas2-Pre-Launch-Thumbnail.webp',
+  // Delivery / Service
+  'serve':           '/media/Serve-Gen-2-left-and-Gen-3-robots.jpg',
+  'starship':        'https://upload.wikimedia.org/wikipedia/commons/3/36/Starship_food_delivery_robot_in_Niittykumpu.jpg',
+  // Industrial / Warehouse
+  'boston-dynamics-stretch': '/media/Boston%20Dynamics%20Stretch.jpg',
+  // Quadruped
+  'boston-dynamics-spot':    '/media/Boston%20Dynamics%20Spot.jpg',
+  'spot':            '/media/Boston%20Dynamics%20Spot.jpg',
+  // Security
+  'knightscope':     'https://upload.wikimedia.org/wikipedia/commons/c/cb/Knightscope_security_robot.jpg',
+  // Cleaning
+  'avidbots':        'https://upload.wikimedia.org/wikipedia/commons/4/40/AvidbotsNeo1.jpg',
+  // Surgical
+  'intuitive':       'https://upload.wikimedia.org/wikipedia/commons/0/0d/Laproscopic_Surgery_Robot.jpg',
+  'intuitive-surgical': 'https://upload.wikimedia.org/wikipedia/commons/0/0d/Laproscopic_Surgery_Robot.jpg',
+  // Defense / Quadruped
+  'ghost-robotics':  'https://upload.wikimedia.org/wikipedia/commons/2/27/Ghost_Robotics_Vision_60_Q-UGV_Demo_%287351259%29.jpeg',
+  'ghost':           'https://upload.wikimedia.org/wikipedia/commons/2/27/Ghost_Robotics_Vision_60_Q-UGV_Demo_%287351259%29.jpeg',
+  // Inspection
+  'flyability':      'https://upload.wikimedia.org/wikipedia/commons/a/a1/ExR-2_Inspection_Robot_%2802%29.jpg',
+  // Underwater
+  'bluerov':         'https://upload.wikimedia.org/wikipedia/commons/4/4a/BlueROV2_flying_with_ArduSub.jpg',
+  'blue-robotics':   'https://upload.wikimedia.org/wikipedia/commons/4/4a/BlueROV2_flying_with_ArduSub.jpg',
+  // Exoskeleton
+  'laevo':           'https://upload.wikimedia.org/wikipedia/commons/9/94/LAEVO_exoskeleton.jpg',
+  // Drone
+  'dji':             '/media/drones_hero.webp',
+  'zipline':         '/media/DHL_Drone_Delivery_855666c6-cb8b-4e34-841e-fffe73da729d_1400x.webp',
+  // Components
+  'velodyne':        'https://upload.wikimedia.org/wikipedia/commons/f/f8/Velodyne_Lidar_Alpha_Prime_Ultra_Puck_Puck_Sensor_Family.jpg',
+  'ouster':          'https://upload.wikimedia.org/wikipedia/commons/f/f8/Velodyne_Lidar_Alpha_Prime_Ultra_Puck_Puck_Sensor_Family.jpg',
+};
+
 export function generateStaticParams() {
   return (Object.keys(CATEGORY_META) as VendorCategory[]).map((c) => ({ category: c }));
 }
@@ -95,8 +136,29 @@ export default function CategoryPage({ params }: { params: { category: string } 
               return prices.length > 0 ? prices[0] : null;
             })();
 
+            const vendorImg = VENDOR_IMAGES[vendor.id] ?? meta.image;
+
             return (
-              <div key={vendor.id} className="bg-neutral-900 border border-neutral-800 hover:border-neutral-600 transition-colors rounded-xl p-5 flex flex-col gap-4">
+              <div key={vendor.id} className="bg-neutral-900 border border-neutral-800 hover:border-neutral-600 transition-colors rounded-xl overflow-hidden flex flex-col">
+                {/* Photo banner */}
+                <div className="relative h-36 w-full shrink-0 bg-neutral-800">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={vendorImg}
+                    alt={vendor.name}
+                    className="w-full h-full object-cover object-center"
+                    loading="lazy"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-neutral-900 via-neutral-900/20 to-transparent" />
+                  <div className="absolute top-2.5 right-2.5">
+                    <span className={`text-[10px] uppercase tracking-widest px-2 py-1 rounded-full ${BUY_PATH_COLORS[vendor.buyPath] ?? 'bg-neutral-800 text-neutral-400'}`}>
+                      {BUY_PATH_LABELS[vendor.buyPath]}
+                    </span>
+                  </div>
+                </div>
+
+                {/* Content */}
+                <div className="p-5 flex flex-col gap-4 flex-1">
                 <div className="flex items-start justify-between gap-3">
                   <div>
                     <h2 className="font-manrope font-semibold text-white text-base">{vendor.name}</h2>
@@ -104,9 +166,6 @@ export default function CategoryPage({ params }: { params: { category: string } 
                       <p className="text-green-400 text-sm mt-0.5">{priceRange}</p>
                     )}
                   </div>
-                  <span className={`text-[10px] uppercase tracking-widest px-2 py-1 rounded-full shrink-0 ${BUY_PATH_COLORS[vendor.buyPath] ?? 'bg-neutral-800 text-neutral-400'}`}>
-                    {BUY_PATH_LABELS[vendor.buyPath]}
-                  </span>
                 </div>
 
                 {/* Top products */}
@@ -143,6 +202,7 @@ export default function CategoryPage({ params }: { params: { category: string } 
                     Get Quote <ArrowUpRight className="w-3 h-3" />
                   </Link>
                 </div>
+                </div>{/* end p-5 content */}
               </div>
             );
           })}
