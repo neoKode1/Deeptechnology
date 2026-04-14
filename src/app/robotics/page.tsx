@@ -297,13 +297,13 @@ export default function RoboticsDivisionHome() {
                 </div>
               </div>
             </div>
-            <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ height: 'clamp(180px, 22vw, 300px)', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Starship Technologies', name: 'Delivery Robot — Quad Platform', price: 'From $2,000 / mo · Fleet RaaS', systemCategory: 'SADRs (Sidewalk Delivery Robots)', image: '/media/del-bot-quad.webp' })}>
+            <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ height: 'clamp(180px, 22vw, 300px)', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Matternet', name: 'M2 Medical Delivery Drone', price: 'Enterprise Fleet — Contact', systemCategory: 'UAVs (Aerial Delivery)', image: '/media/Matternet_System_018.webp' })}>
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src="/media/del-bot-quad.webp" alt="Autonomous delivery robot — quad platform" className="robo-img" style={{ objectPosition: 'center' }} />
+              <img src="/media/Matternet_System_018.webp" alt="Matternet M2 medical drone delivery system" className="robo-img" style={{ objectPosition: 'center' }} />
               <div className="robo-overlay">
-                <p className="robo-overlay-vendor">Starship Technologies</p>
-                <p className="robo-overlay-name">Delivery Robot — Quad Platform</p>
-                <p className="robo-overlay-price">From $2,000 / mo · Fleet RaaS</p>
+                <p className="robo-overlay-vendor">Matternet</p>
+                <p className="robo-overlay-name">M2 Medical Delivery Drone</p>
+                <p className="robo-overlay-price">Enterprise Fleet · Contact for Pricing</p>
                 <button className="robo-overlay-cta">Get Quote</button>
               </div>
             </div>
@@ -572,18 +572,18 @@ export default function RoboticsDivisionHome() {
             </div>
           </div>
           {/* Top right */}
-          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'DJI Enterprise', name: 'Mavic 3E Thermal Edition', price: 'From $5,185', systemCategory: 'UAVs (Aerial Drones)', image: '/media/DHL_Drone_Delivery_855666c6-cb8b-4e34-841e-fffe73da729d_1400x.webp' })}>
+          <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Zipline', name: 'Platform 2 (P2) Delivery Drone', price: 'Enterprise — Contact', systemCategory: 'UAVs (Aerial Drones)', image: '/media/zipline.jpg' })}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/media/DHL_Drone_Delivery_855666c6-cb8b-4e34-841e-fffe73da729d_1400x.webp"
-              alt="Drone making a commercial delivery"
+              src="/media/zipline.jpg"
+              alt="Zipline P2 autonomous delivery drone"
               className="robo-img"
               style={{ objectPosition: 'center' }}
             />
             <div className="robo-overlay">
-              <p className="robo-overlay-vendor">DJI Enterprise</p>
-              <p className="robo-overlay-name">Mavic 3E Thermal Edition</p>
-              <p className="robo-overlay-price">From $5,185</p>
+              <p className="robo-overlay-vendor">Zipline</p>
+              <p className="robo-overlay-name">Platform 2 (P2) Delivery Drone</p>
+              <p className="robo-overlay-price">Enterprise · Healthcare &amp; Retail delivery</p>
               <button className="robo-overlay-cta">Get Quote</button>
             </div>
           </div>
