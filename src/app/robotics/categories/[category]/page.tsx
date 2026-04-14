@@ -48,8 +48,11 @@ const VENDOR_IMAGES: Record<string, string> = {
   // ── Cleaning ────────────────────────────────────────────────────────────
   'avidbots':           'https://upload.wikimedia.org/wikipedia/commons/4/40/AvidbotsNeo1.jpg',
   // ── Surgical ────────────────────────────────────────────────────────────
-  'intuitive':          'https://upload.wikimedia.org/wikipedia/commons/0/0d/Laproscopic_Surgery_Robot.jpg',
-  'intuitive-surgical': 'https://upload.wikimedia.org/wikipedia/commons/0/0d/Laproscopic_Surgery_Robot.jpg',
+  'intuitive':          '/media/Intuitive%20Surgical.jpeg',
+  'intuitive-surgical': '/media/Intuitive%20Surgical.jpeg',
+  'medtronic-hugo':     '/media/Hugo%20RAS.jpg',
+  'stryker-mako':       '/media/Mako%204%20Family%204%204K%20with%20shadow4.png',
+  'cmr-surgical':       '/media/CMR%20Surgical.webp',
   // ── Defense ─────────────────────────────────────────────────────────────
   'ghost-robotics':     'https://upload.wikimedia.org/wikipedia/commons/2/27/Ghost_Robotics_Vision_60_Q-UGV_Demo_%287351259%29.jpeg',
   // ── Inspection ──────────────────────────────────────────────────────────
