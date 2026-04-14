@@ -53,6 +53,12 @@ const VENDOR_IMAGES: Record<string, string> = {
   'medtronic-hugo':     '/media/Hugo%20RAS.jpg',
   'stryker-mako':       '/media/Mako%204%20Family%204%204K%20with%20shadow4.png',
   'cmr-surgical':       '/media/CMR%20Surgical.webp',
+  // ── Service & Hospitality ────────────────────────────────────────────────
+  'aethon':             '/media/Aethon_Website_Robot_T3.png',
+  'bear-robotics':      '/media/Bear%20Robotics.jpg',
+  'pudu-robotics':      '/media/PUDU%20Robotics-Bellabot-1-2.webp',
+  'xenex':              '/media/Xenex-XenL.jpg',
+  'lg-cloi':            '/media/LG%20CLOi.jpg',
   // ── Defense ─────────────────────────────────────────────────────────────
   'ghost-robotics':     'https://upload.wikimedia.org/wikipedia/commons/2/27/Ghost_Robotics_Vision_60_Q-UGV_Demo_%287351259%29.jpeg',
   // ── Inspection ──────────────────────────────────────────────────────────
