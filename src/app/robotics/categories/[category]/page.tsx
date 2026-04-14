@@ -44,9 +44,12 @@ const VENDOR_IMAGES: Record<string, string> = {
   'spot':               '/media/Boston%20Dynamics%20Spot.jpg',
   'unitree-quadruped':  '/media/Unitree%20Robotics-B1.webp',
   // ── Security ────────────────────────────────────────────────────────────
-  'knightscope':        'https://upload.wikimedia.org/wikipedia/commons/c/cb/Knightscope_security_robot.jpg',
+  'knightscope':        '/media/Knightscope.webp',
+  'cobalt-robotics':    '/media/Cobalt%20Robotics.jpg',
   // ── Cleaning ────────────────────────────────────────────────────────────
-  'avidbots':           'https://upload.wikimedia.org/wikipedia/commons/4/40/AvidbotsNeo1.jpg',
+  'avidbots':           '/media/Avidbots.png',
+  'tennant':            '/media/Tennant%20.jpeg',
+  'ice-cobotics':       '/media/ICE%20Cobotics.png',
   // ── Surgical ────────────────────────────────────────────────────────────
   'intuitive':          '/media/Intuitive%20Surgical.jpeg',
   'intuitive-surgical': '/media/Intuitive%20Surgical.jpeg',
