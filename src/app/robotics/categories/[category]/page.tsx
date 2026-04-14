@@ -83,7 +83,9 @@ const VENDOR_IMAGES: Record<string, string> = {
   'gecko-robotics':     '/media/Gecko%20Robotics.webp',
   'airobotics':         '/media/Airobotics%20Optimus%20(drone-in-a-box%2C%20BVLOS).jpeg',
   // ── Underwater ──────────────────────────────────────────────────────────
-  'blue-robotics':      'https://upload.wikimedia.org/wikipedia/commons/4/4a/BlueROV2_flying_with_ArduSub.jpg',
+  'blue-robotics':      '/media/BlueROV2-remotely-operated-vehicle.png',
+  'deep-trekker':       '/media/Deep%20Trekker.png',
+  'videoray':           '/media/VideoRay.webp',
   // ── Drone ───────────────────────────────────────────────────────────────
   'dji-enterprise':     '/media/DJI%20Enterprise.jpg',
   'skydio':             '/media/Skydio.avif',

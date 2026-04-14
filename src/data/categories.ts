@@ -14,7 +14,7 @@ export const CATEGORY_META: Record<VendorCategory, { label: string; image: strin
   exoskeleton: { label: 'Exoskeletons',            image: '/media/EksoNR-by-Ekso-Bionics-Exoskeleton-Catalog-600.jpg',                                        desc: 'Powered wearable robots for industrial worker assistance and medical rehabilitation.' },
   components:  { label: 'Components & Sensors',    image: '/media/OS1-32%20LiDAR%20.png', desc: 'LiDAR sensors, stereo cameras, grippers, and actuators for robot development.' },
   quadruped:   { label: 'Quadruped Robots',        image: '/media/Boston%20Dynamics%20Spot.jpg',                                                                              desc: 'Four-legged robots for inspection, security, and research in complex terrain.' },
-  underwater:  { label: 'Underwater Robots',       image: 'https://upload.wikimedia.org/wikipedia/commons/4/4a/BlueROV2_flying_with_ArduSub.jpg',                            desc: 'ROVs and AUVs for subsea inspection, search & rescue, and scientific research.' },
+  underwater:  { label: 'Underwater Robots',       image: '/media/BlueROV2-remotely-operated-vehicle.png',                            desc: 'ROVs and AUVs for subsea inspection, search & rescue, and scientific research.' },
   inspection:  { label: 'Inspection Robots',       image: '/media/gecko_robot_1-header.jpg',                          desc: 'Specialized robots for confined-space, wall-climbing, and aerial industrial inspection.' },
   defense:     { label: 'Defense Robots',          image: '/media/Milrem%20Robotics.webp',      desc: 'Unmanned ground and aerial systems for defense, EOD, and government applications.' },
 };
