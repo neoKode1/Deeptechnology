@@ -1,0 +1,706 @@
+Here's the complete developer handoff. All research is verified from the agent runs above.
+
+  ---
+  Schema Changes Required First
+
+  Expand category type in vendors.ts:
+  category: 'humanoid' | 'delivery' | 'industrial' | 'drone'
+  // → add:
+  | 'cobot' | 'surgical' | 'service' | 'agricultural'
+  | 'security' | 'cleaning' | 'exoskeleton' | 'components'
+  | 'quadruped' | 'underwater' | 'defense'
+
+  ---
+  Vendors to Add
+
+  COBOTS / ROBOT ARMS (category: 'cobot')
+
+  ┌───────────────────┬────────────┬──────────────────────────┬───────────────┬────────────────┬───────────────────────────────┐
+  │        ID         │    Name    │         Products         │     Price     │    Buy Path    │            Contact            │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ universal-robots  │ Universal  │ UR3e, UR5e, UR10e,       │ $35K–$75K     │ dealer_only    │ universal-robots.com          │
+  │                   │ Robots     │ UR16e, UR20, UR30        │ est.          │                │                               │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ fanuc             │ FANUC      │ CRX-5iA, CRX-10iA/L,     │ Quote         │ dealer_only    │ fanucamerica.com              │
+  │                   │            │ CRX-25iA, CRX-30iA       │               │                │                               │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ abb-robotics      │ ABB        │ GoFa CRB 15000, YuMi IRB │ Quote         │ dealer_only    │ new.abb.com/products/robotics │
+  │                   │ Robotics   │  14000, SWIFTI CRB 1100  │               │                │                               │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ kuka              │ KUKA       │ LBR iiwa 7, LBR iiwa 14, │ Quote         │ dealer_only    │ kuka.com                      │
+  │                   │            │  LBR iisy 3/11           │               │                │                               │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ yaskawa           │ Yaskawa    │ HC10DTP, HC20DTP, HC10XP │ Quote         │ dealer_only    │ motoman.com                   │
+  │                   │ Motoman    │                          │               │                │                               │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ doosan-robotics   │ Doosan     │ M0609, M1013, M1509,     │ Quote         │ email_required │ doosanrobotics.com            │
+  │                   │ Robotics   │ H2515, A0509s            │               │                │                               │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ techman           │ Techman    │ TM5-700, TM12, TM14,     │ Quote         │ dealer_only    │ tm-robot.com                  │
+  │                   │ Robot      │ TM25                     │               │                │                               │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ franka            │ Franka     │ Franka 3, Research 3     │ ~$17K–$25K    │ direct_online  │ franka.de                     │
+  │                   │ Robotics   │                          │               │                │                               │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ kinova            │ Kinova     │ Gen3 Ultra Lightweight,  │ ~$30K–$45K    │ email_required │ kinovarobotics.com            │
+  │                   │            │ Gen3 Lite                │               │                │                               │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ flexiv            │ Flexiv     │ Rizon 4, Rizon 10        │ Quote         │ email_required │ flexiv.com                    │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ kassow            │ Kassow     │ KR810, KR1205, KR1410    │ Quote         │ email_required │ kassowrobots.com              │
+  │                   │ Robots     │                          │               │                │                               │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │                   │            │ ReBeL 6 DoF              │               │                │                               │
+  │ igus              │ igus       │ (plug-and-play $7,499;   │ $5,850–$7,499 │ direct_online  │ igus.com/rebel                │
+  │                   │            │ open-source $5,850),     │               │                │                               │
+  │                   │            │ ReBeL 4 DoF              │               │                │                               │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ elephant-robotics │ Elephant   │ myCobot 280, myCobot     │ $700–$4,500   │ direct_online  │ elephantrobotics.com          │
+  │                   │ Robotics   │ 320, myArm M750          │               │                │                               │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ aubo              │ Aubo       │ i5, i10, i16             │ Quote         │ email_required │ aubo-robotics.com             │
+  │                   │ Robotics   │                          │               │                │                               │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ jaka              │ JAKA       │ Zu5, Zu7, Zu12,          │ Quote         │ email_required │ jakarobotics.com              │
+  │                   │ Robotics   │ MiniCobot                │               │                │                               │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ niryo             │ Niryo      │ Ned2                     │ ~$5,500       │ direct_online  │ niryo.com                     │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ mecademic         │ Mecademic  │ Meca500, Mcs500          │ Quote         │ email_required │ mecademic.com                 │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ comau             │ Comau      │ AURA, Racer 5-0.80       │ Quote         │ email_required │ comau.com                     │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ staubli           │ Stäubli    │ TX2-90, TS2-80 SCARA,    │ Quote         │ dealer_only    │ staubli.com                   │
+  │                   │            │ CS9 controller           │               │                │                               │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ epson-robots      │ Epson      │ SCARA LS series, 6-axis  │ Quote         │ dealer_only    │ robots.epson.com              │
+  │                   │ Robots     │ C8 series                │               │                │                               │
+  ├───────────────────┼────────────┼──────────────────────────┼───────────────┼────────────────┼───────────────────────────────┤
+  │ denso-robotics    │ Denso      │ VS-050/060/087 series,   │ Quote         │ dealer_only    │ densorobotics.com             │
+  │                   │ Robotics   │ VM series                │               │                │                               │
+  └───────────────────┴────────────┴──────────────────────────┴───────────────┴────────────────┴───────────────────────────────┘
+
+  End Effectors / Tooling (still category: 'cobot' or new 'components' category):
+
+  ┌─────────┬────────────────────┬───────────────────────────────────────────────────┬────────────────┬────────────────────────┐
+  │   ID    │        Name        │                     Products                      │     Price      │        Buy Path        │
+  ├─────────┼────────────────────┼───────────────────────────────────────────────────┼────────────────┼────────────────────────┤
+  │ onrobot │ OnRobot            │ VGC10 ($3,782), 2FG7 ($4,724), RG2 ($5,580),      │ $3,782–$11,598 │ direct_online /        │
+  │         │                    │ RG2-FT ($11,598), HEX F/T sensor                  │                │ onrobot.com            │
+  ├─────────┼────────────────────┼───────────────────────────────────────────────────┼────────────────┼────────────────────────┤
+  │ robotiq │ Robotiq            │ 2F-85, 2F-140, Hand-E gripper, FT 300-S force     │ Quote          │ email_required /       │
+  │         │                    │ sensor                                            │                │ robotiq.com            │
+  ├─────────┼────────────────────┼───────────────────────────────────────────────────┼────────────────┼────────────────────────┤
+  │ schunk  │ Schunk             │ PGN-plus-P parallel gripper, Co-act EGP cobot     │ Quote          │ dealer_only /          │
+  │         │                    │ gripper, SWK tool changer                         │                │ schunk.com             │
+  ├─────────┼────────────────────┼───────────────────────────────────────────────────┼────────────────┼────────────────────────┤
+  │ ati-ia  │ ATI Industrial     │ Omega F/T sensors, QC-7 tool changer, QC-11       │ Quote          │ email_required /       │
+  │         │ Automation         │                                                   │                │ ati-ia.com             │
+  ├─────────┼────────────────────┼───────────────────────────────────────────────────┼────────────────┼────────────────────────┤
+  │ piab    │ Piab               │ piCOBOT vacuum gripper, piCOBOT Electric, piCOBOT │ Quote          │ email_required /       │
+  │         │                    │  L                                                │                │ piab.com               │
+  └─────────┴────────────────────┴───────────────────────────────────────────────────┴────────────────┴────────────────────────┘
+
+  ---
+  SURGICAL / MEDICAL (category: 'surgical')
+
+  ┌──────────────────┬──────────────┬────────────────────────┬──────────────┬────────────────┬────────────────────────────────┐
+  │        ID        │     Name     │        Products        │    Price     │    Buy Path    │             Notes              │
+  ├──────────────────┼──────────────┼────────────────────────┼──────────────┼────────────────┼────────────────────────────────┤
+  │ intuitive        │ Intuitive    │ da Vinci 5, da Vinci   │ $1.8M–$2.5M  │ email_required │ intuitive.com. Market leader.  │
+  │                  │ Surgical     │ Xi, da Vinci SP        │              │                │                                │
+  ├──────────────────┼──────────────┼────────────────────────┼──────────────┼────────────────┼────────────────────────────────┤
+  │                  │              │ Hugo RAS (soft         │              │                │ medtronic.com. Hugo FDA        │
+  │ medtronic-hugo   │ Medtronic    │ tissue), Mazor X       │ ~$1.2M–$1.5M │ email_required │ cleared Dec 2025. First US     │
+  │                  │              │ Stealth Edition        │              │                │ case Feb 2026 at Cleveland     │
+  │                  │              │ (spine)                │              │                │ Clinic.                        │
+  ├──────────────────┼──────────────┼────────────────────────┼──────────────┼────────────────┼────────────────────────────────┤
+  │                  │              │ Mako SmartRobotics     │              │                │ stryker.com. 4th gen Mako now  │
+  │ stryker-mako     │ Stryker      │ (Total Hip, TKA,       │ Quote        │ email_required │ single system across           │
+  │                  │              │ Shoulder, Spine)       │              │                │ applications.                  │
+  ├──────────────────┼──────────────┼────────────────────────┼──────────────┼────────────────┼────────────────────────────────┤
+  │ smith-nephew     │ Smith+Nephew │ CORI Surgical System   │ Quote        │ email_required │ smith-nephew.com. Shoulder     │
+  │                  │              │ (knee, hip, shoulder)  │              │                │ added 2026. Handheld robotic.  │
+  ├──────────────────┼──────────────┼────────────────────────┼──────────────┼────────────────┼────────────────────────────────┤
+  │                  │              │ Ottava (pending FDA    │              │                │                                │
+  │ jnj-medtech      │ J&J MedTech  │ clearance), Velys      │ Quote        │ email_required │ jnjmedtech.com. Ottava De Novo │
+  │                  │              │ Hip/Knee, Monarch      │              │                │  submitted Jan 2026.           │
+  │                  │              │ bronchoscopy           │              │                │                                │
+  ├──────────────────┼──────────────┼────────────────────────┼──────────────┼────────────────┼────────────────────────────────┤
+  │                  │              │ ROSA Knee (FDA cleared │              │                │                                │
+  │ zimmer-biomet    │ Zimmer       │  enhanced Nov 2025),   │ Quote        │ email_required │ zimmerbiomet.com               │
+  │                  │ Biomet       │ ROSA Spine, ROSA       │              │                │                                │
+  │                  │              │ Partial                │              │                │                                │
+  ├──────────────────┼──────────────┼────────────────────────┼──────────────┼────────────────┼────────────────────────────────┤
+  │                  │              │ Excelsius GPS          │              │                │                                │
+  │ globus-medical   │ Globus       │ (spine/ortho),         │ Quote        │ email_required │ globusmedical.com. FDA cleared │
+  │                  │ Medical      │ Excelsius XR (AR       │              │                │  2017.                         │
+  │                  │              │ navigation)            │              │                │                                │
+  ├──────────────────┼──────────────┼────────────────────────┼──────────────┼────────────────┼────────────────────────────────┤
+  │                  │              │ Versius Plus (FDA 510k │              │                │                                │
+  │ cmr-surgical     │ CMR Surgical │  Dec 2025,             │ Quote        │ email_required │ cmrsurgical.com. 40K+ global   │
+  │                  │              │ cholecystectomy),      │              │                │ procedures.                    │
+  │                  │              │ Versius                │              │                │                                │
+  ├──────────────────┼──────────────┼────────────────────────┼──────────────┼────────────────┼────────────────────────────────┤
+  │                  │              │                        │              │                │ noahmed.com. FDA cleared Mar   │
+  │ noah-medical     │ Noah Medical │ Galaxy System (robotic │ Quote        │ email_required │ 2023. 10K+ procedures. Note:   │
+  │                  │              │  bronchoscopy)         │              │                │ FDA warning letter Apr 2025    │
+  │                  │              │                        │              │                │ for quality violations.        │
+  ├──────────────────┼──────────────┼────────────────────────┼──────────────┼────────────────┼────────────────────────────────┤
+  │                  │ Virtual      │ MIRA (miniaturized     │              │                │ virtualincision.com. FDA De    │
+  │ virtual-incision │ Incision     │ surgical robot, colon) │ Quote        │ email_required │ Novo Feb 2024. First           │
+  │                  │              │                        │              │                │ miniaturized surgical robot.   │
+  ├──────────────────┼──────────────┼────────────────────────┼──────────────┼────────────────┼────────────────────────────────┤
+  │                  │ Asensus      │ Intelligent Surgical   │              │                │ asensus.com. Acquired by Karl  │
+  │ asensus          │ Surgical     │ Unit (ISU), LUNA       │ Quote        │ email_required │ Storz Aug 2024.                │    
+  │                  │              │ platform               │              │                │                                │
+  ├──────────────────┼──────────────┼────────────────────────┼──────────────┼────────────────┼────────────────────────────────┤    
+  │                  │ Moon         │ Maestro (FDA cleared,  │              │                │ moonsurgical.com. 2,300+       │
+  │ moon-surgical    │ Surgical     │ 2 arms), ScoPilot AI   │ Quote        │ email_required │ patients treated.              │    
+  │                  │              │ (FDA 2026)             │              │                │                                │
+  ├──────────────────┼──────────────┼────────────────────────┼──────────────┼────────────────┼────────────────────────────────┤    
+  │                  │              │ CyberKnife M6,         │              │                │ accuray.com. Radiation therapy │
+  │ accuray          │ Accuray      │ Radixact (China NMPA   │ Quote        │ email_required │  robotics.                     │    
+  │                  │              │ Jan 2025)              │              │                │                                │
+  ├──────────────────┼──────────────┼────────────────────────┼──────────────┼────────────────┼────────────────────────────────┤    
+  │                  │              │ Genesis RMN (cardiac   │              │                │                                │
+  │ stereotaxis      │ Stereotaxis  │ ablation), MAGiC       │ Quote        │ email_required │ stereotaxis.com                │    
+  │                  │              │ Ablation Catheter (FDA │              │                │                                │
+  │                  │              │  2026)                 │              │                │                                │    
+  └──────────────────┴──────────────┴────────────────────────┴──────────────┴────────────────┴────────────────────────────────┘
+
+  ---
+  HOSPITAL LOGISTICS (category: 'service')
+
+  ID: aethon                                                                                                                   
+  Name: Aethon                                                                                                                 
+  Products: TUG autonomous hospital delivery robot                                                                             
+  Price: ~$105K purchase / ~$1,500/mo lease                                                                                    
+  Buy Path: email_required                                                                                                     
+  Notes: aethon.com. 500+ hospitals. Medications, meals, linens. ST Engineering subsidiary.                                        
+  ────────────────────────────────────────                                                                                     
+  ID: diligent-robotics                                                                                                            
+  Name: Diligent Robotics                                                                                                          
+  Products: Moxi 2.0 (NVIDIA Jetson, 10x compute, 2026 commercial)                                                             
+  Price: Est. $200K–$400K/yr revenue per site                                                                                      
+  Buy Path: raas_only                                                                                                          
+  Notes: diligentrobots.com. 100+ robots, 25+ hospitals. Being acquired by Serve Robotics Q1 2026.                             
+  ────────────────────────────────────────                                                                                         
+  ID: relay-robotics                                                                                                           
+  Name: Relay Robotics                                                                                                             
+  Products: Relay2, Relay+1, Relay+4, Relay+S (hotel + hospital)
+  Price: RaaS monthly subscription                                                                                                 
+  Buy Path: raas_only
+  Notes: relayrobotics.com. (formerly Savioke)                                                                                     
+  ────────────────────────────────────────                  
+  ID: swisslog-healthcare
+  Name: Swisslog Healthcare
+  Products: TransCar AGV, ROBOT-Rx pharmacy, AutoStore cube storage
+  Price: Quote
+  Buy Path: email_required
+  Notes: swisslog.com
+  ────────────────────────────────────────
+  ID: omnicell                                                                                                                     
+  Name: Omnicell
+  Products: XR2 Central Pharmacy System, IV robotics                                                                               
+  Price: Quote                                              
+  Buy Path: email_required
+  Notes: omnicell.com
+  ────────────────────────────────────────
+  ID: bd-rowa                                                                                                                      
+  Name: BD Rowa
+  Products: Vmax pharmacy dispenser, Rowa Smart                                                                                    
+  Price: Quote                                              
+  Buy Path: email_required
+  Notes: rowa.de
+
+  ---
+  DISINFECTION ROBOTS (category: 'service')
+
+  ┌────────────┬────────────┬────────────────────────────┬──────────┬────────────────┬────────────────────────────────────────┐ 
+  │     ID     │    Name    │          Products          │  Price   │    Buy Path    │                 Notes                  │ 
+  ├────────────┼────────────┼────────────────────────────┼──────────┼────────────────┼────────────────────────────────────────┤ 
+  │            │            │ LightStrike (pulsed xenon  │          │                │ xenex.com. 450+ hospitals incl. Mayo   │ 
+  │ xenex      │ Xenex      │ UV, 5-min cycle),          │ $125,000 │ email_required │ Clinic, MD Anderson.                   │ 
+  │            │            │ LightStrike+               │          │                │                                        │    
+  ├────────────┼────────────┼────────────────────────────┼──────────┼────────────────┼────────────────────────────────────────┤ 
+  │ uvd-robots │ UVD Robots │ UVD autonomous UV-C robot  │ Quote    │ email_required │ uvd.blue-ocean-robotics.com. Blue      │    
+  │            │            │                            │          │                │ Ocean Robotics subsidiary.             │ 
+  ├────────────┼────────────┼────────────────────────────┼──────────┼────────────────┼────────────────────────────────────────┤    
+  │ tru-d      │ Tru-D      │ Tru-D iQ Tower, iQ Scout   │ Quote    │ email_required │ tru-d.com                              │ 
+  │            │ SmartUVC   │                            │          │                │                                        │    
+  ├────────────┼────────────┼────────────────────────────┼──────────┼────────────────┼────────────────────────────────────────┤ 
+  │ surfacide  │ Surfacide  │ Helios UV-C (3-robot       │ Quote    │ email_required │ surfacide.com                          │    
+  │            │            │ system)                    │          │                │                                        │    
+  └────────────┴────────────┴────────────────────────────┴──────────┴────────────────┴────────────────────────────────────────┘
+                                                                                                                                   
+  ---                                                       
+  SERVICE / HOSPITALITY ROBOTS (category: 'service')
+
+  ID: bear-robotics                                                                                                            
+  Name: Bear Robotics                                                                                                          
+  Products: Servi, Servi Plus (88 lb capacity), Servi Mini                                                                     
+  Price: RaaS 12/24/36-mo lease                                                                                                
+  Buy Path: raas_only                                                                                                          
+  Notes: bearrobotics.ai. Restaurant delivery.                                                                                     
+  ────────────────────────────────────────                                                                                     
+  ID: pudu-robotics                                                                                                                
+  Name: PUDU Robotics                                                                                                          
+  Products: BellaBot ($15,900), BellaBot Pro ($16,900), KettyBot Pro ($12,000), T300 Lift ($21,000), FlashBot                      
+  Price: $12,000–$24,000                                                                                                       
+  Buy Path: direct_online                                                                                                      
+  Notes: pudurobotics.com                                                                                                          
+  ────────────────────────────────────────                                                                                     
+  ID: keenon                                                                                                                       
+  Name: KeenOn Robotics                                                                                                            
+  Products: DINERBOT T8 ($11K–$13K), T5 ($13,000)                                                                              
+  Price: $11,000–$13,000                                                                                                           
+  Buy Path: direct_online                                                                                                          
+  Notes: keenon.com
+  ────────────────────────────────────────                                                                                         
+  ID: orion-star                                            
+  Name: Orion Star Robotics
+  Products: LuckiBot, LuckiBot Pro
+  Price: Quote
+  Buy Path: email_required
+  Notes: en.orionstar.com
+  ────────────────────────────────────────
+  ID: lg-cloi
+  Name: LG CLOi
+  Products: GuideBot ($39,990 or $1,666/mo RaaS), ServeBot 3.0
+  Price: $39,990 / $1,666/mo
+  Buy Path: direct_online
+  Notes: solutions.lg.com/us/robots
+  ────────────────────────────────────────
+  ID: richtech                                                                                                                     
+  Name: Richtech Robotics
+  Products: ADAM (barista/beverage robot), Matradee (delivery)                                                                     
+  Price: Quote                                              
+  Buy Path: email_required
+  Notes: richtechrobotics.com. Nasdaq-listed (RITR).
+
+  ---
+  FLOOR CLEANING ROBOTS (category: 'cleaning')
+
+  ┌──────────────┬────────────┬──────────────────────────────┬──────────────────────┬────────────────┬─────────────────────────┐
+  │      ID      │    Name    │           Products           │        Price         │    Buy Path    │          Notes          │
+  ├──────────────┼────────────┼──────────────────────────────┼──────────────────────┼────────────────┼─────────────────────────┤
+  │ avidbots     │ Avidbots   │ Neo 2, Neo 2W (warehouse     │ ~$50K+ (legacy $50K; │ email_required │ avidbots.com. Airports, │
+  │              │            │ variant)                     │  current quote)      │                │  warehouses, malls.     │
+  ├──────────────┼────────────┼──────────────────────────────┼──────────────────────┼────────────────┼─────────────────────────┤   
+  │              │ ICE        │                              │ $16,000/36-mo        │                │                         │
+  │ ice-cobotics │ Cobotics   │ Cobi 18 scrubber             │ subscription         │ direct_online  │ icecobotics.com         │   
+  │              │            │                              │ (~$15/day)           │                │                         │
+  ├──────────────┼────────────┼──────────────────────────────┼──────────────────────┼────────────────┼─────────────────────────┤   
+  │              │ Tennant    │ T7AMR, T380AMR, X16 Sweep    │                      │                │                         │   
+  │ tennant      │ Company    │ (BrainOS SelfPath AI,        │ Quote                │ email_required │ tennantco.com           │
+  │              │            │ launched MODEX 2026)         │                      │                │                         │   
+  ├──────────────┼────────────┼──────────────────────────────┼──────────────────────┼────────────────┼─────────────────────────┤
+  │ nilfisk      │ Nilfisk    │ Liberty SC50, Liberty SC50   │ Quote                │ email_required │ nilfisk.com             │
+  │              │            │ LION (autonomous scrubber)   │                      │                │                         │   
+  ├──────────────┼────────────┼──────────────────────────────┼──────────────────────┼────────────────┼─────────────────────────┤
+  │ lionsbot     │ Lionsbot   │ R3 Scrub, R3 Scrub Pro, R3   │ Quote                │ email_required │ lionsbot.com            │   
+  │              │            │ Vac                          │                      │                │                         │   
+  ├──────────────┼────────────┼──────────────────────────────┼──────────────────────┼────────────────┼─────────────────────────┤
+  │ brain-corp   │ Brain Corp │ BrainOS Clean 2.0 platform   │ Platform licensing   │ b2b_partner    │ braincorp.com. Powers   │   
+  │              │            │ (SelfPath AI, Mar 2026)      │                      │                │ Tennant, other OEMs.    │   
+  └──────────────┴────────────┴──────────────────────────────┴──────────────────────┴────────────────┴─────────────────────────┘
+                                                                                                                                   
+  ---                                                       
+  SECURITY ROBOTS (category: 'security')
+
+  ┌─────────────────┬──────────────┬───────────────────────────┬──────────┬────────────────┬──────────────────────────────────┐ 
+  │       ID        │     Name     │         Products          │  Price   │    Buy Path    │              Notes               │ 
+  ├─────────────────┼──────────────┼───────────────────────────┼──────────┼────────────────┼──────────────────────────────────┤    
+  │                 │              │ K5 (outdoor patrol), K3   │ $7/hr    │                │ knightscope.com. Acquired Event  │ 
+  │ knightscope     │ Knightscope  │ (indoor), K1 (stationary  │ RaaS     │ raas_only      │ Risk (security guard co.) Mar    │    
+  │                 │              │ scanner)                  │          │                │ 2026.                            │    
+  ├─────────────────┼──────────────┼───────────────────────────┼──────────┼────────────────┼──────────────────────────────────┤ 
+  │                 │ Cobalt       │ Cobalt security robot +   │ RaaS     │                │ cobaltai.com. Deployments in SF, │    
+  │ cobalt-robotics │ Robotics     │ 24/7 remote human         │ monthly  │ raas_only      │  NYC, Chicago, Seattle.          │    
+  │                 │              │ monitoring                │          │                │                                  │
+  ├─────────────────┼──────────────┼───────────────────────────┼──────────┼────────────────┼──────────────────────────────────┤    
+  │                 │              │ Argus S5.2, Argus S5.3,   │          │                │                                  │
+  │ smp-robotics    │ SMP Robotics │ Argus S5.4 (NVIDIA Jetson │ Quote    │ email_required │ smprobotics.com                  │    
+  │                 │              │  Orin NX)                 │          │                │                                  │
+  └─────────────────┴──────────────┴───────────────────────────┴──────────┴────────────────┴──────────────────────────────────┘    
+                                                            
+  ---
+  QUADRUPED ROBOTS (category: 'quadruped')
+                                                                                                                                   
+  ┌───────────────────┬─────────────┬───────────────────────────┬────────────────────┬────────────────┬───────────────────────┐ 
+  │        ID         │    Name     │         Products          │       Price        │    Buy Path    │         Notes         │    
+  ├───────────────────┼─────────────┼───────────────────────────┼────────────────────┼────────────────┼───────────────────────┤ 
+  │                   │ Unitree     │ Go2 Air ($1,600), Go2 Pro │                    │                │                       │ 
+  │ unitree-quadruped │ (quadruped  │  ($2,800), B2 ($100K),    │ $1,600–$100,000    │ direct_online  │ shop.unitree.com      │ 
+  │                   │ line)       │ B2-W ($100K wheel-leg     │                    │                │                       │    
+  │                   │             │ hybrid)                   │                    │                │                       │ 
+  ├───────────────────┼─────────────┼───────────────────────────┼────────────────────┼────────────────┼───────────────────────┤    
+  │                   │ Ghost       │                           │                    │                │ ghostrobotics.io.     │    
+  │ ghost-robotics    │ Robotics    │ Vision 60 Q-UGV           │ $165,000           │ email_required │ 8–12 week lead time.  │ 
+  │                   │             │                           │                    │                │ Defense/security.     │    
+  ├───────────────────┼─────────────┼───────────────────────────┼────────────────────┼────────────────┼───────────────────────┤ 
+  │                   │ DEEP        │ Lynx ($17,999), Lynx M20  │                    │                │                       │ 
+  │ deep-robotics     │ Robotics    │ Pro ($53,700), X30 Pro    │ $17,999–$113,400   │ direct_online  │ deeprobotics.us       │    
+  │                   │             │ ($94,999–$113,400)        │                    │                │                       │ 
+  ├───────────────────┼─────────────┼───────────────────────────┼────────────────────┼────────────────┼───────────────────────┤    
+  │                   │             │                           │                    │                │ anybotics.com.        │    
+  │ anybotics         │ ANYbotics   │ ANYmal C, ANYmal D        │ Quote              │ email_required │ Industrial            │ 
+  │                   │             │                           │                    │                │ inspection. Swiss     │    
+  │                   │             │                           │                    │                │ company.              │ 
+  ├───────────────────┼─────────────┼───────────────────────────┼────────────────────┼────────────────┼───────────────────────┤    
+  │                   │             │ BabyAlpha ($1,300),       │                    │                │                       │ 
+  │ weilan            │ Weilan      │ AlphaDog C100 ($5,670),   │ $1,300–$27,690     │ direct_online  │ weilan.com            │    
+  │                   │             │ AlphaDog E400L ($27,690)  │                    │                │                       │
+  ├───────────────────┼─────────────┼───────────────────────────┼────────────────────┼────────────────┼───────────────────────┤    
+  │                   │             │                           │ $2,899.99 +        │                │ us.aibo.com.          │
+  │ sony-aibo         │ Sony        │ Aibo ERS-1000             │ $10–$20/mo AI      │ direct_online  │ Companion robot.      │    
+  │                   │             │                           │ subscription       │                │                       │
+  └───────────────────┴─────────────┴───────────────────────────┴────────────────────┴────────────────┴───────────────────────┘
+
+  ---
+  ADDITIONAL HUMANOIDS (missing from current list)
+
+  ┌───────────────────┬────────────┬─────────────────┬───────────────┬────────────────┬──────────────────────────────────────┐ 
+  │        ID         │    Name    │    Products     │     Price     │    Buy Path    │                Notes                 │ 
+  ├───────────────────┼────────────┼─────────────────┼───────────────┼────────────────┼──────────────────────────────────────┤     
+  │                   │            │ Ameca           │               │                │ engineeredarts.co.uk. UK-based.      │ 
+  │ engineered-arts   │ Engineered │ (expressive     │ Quote         │ email_required │ Entertainment/R&D/hospitality. Most  │     
+  │                   │  Arts      │ humanoid),      │               │                │ advanced facial expression robot     │     
+  │                   │            │ Mesmer          │               │                │ commercially available.              │ 
+  ├───────────────────┼────────────┼─────────────────┼───────────────┼────────────────┼──────────────────────────────────────┤     
+  │                   │            │                 │ Pepper:       │                │ softbankrobotics.com. Note: Pepper   │ 
+  │ softbank-robotics │ SoftBank   │ Pepper Gen 2,   │ ~$30K+        │ email_required │ production paused in many markets —  │     
+  │                   │ Robotics   │ NAO 6           │ (leasing);    │                │ verify availability.                 │ 
+  │                   │            │                 │ NAO: ~$10,000 │                │                                      │     
+  ├───────────────────┼────────────┼─────────────────┼───────────────┼────────────────┼──────────────────────────────────────┤ 
+  │                   │            │                 │               │                │ hansonrobotics.com. Hong Kong.       │ 
+  │ hanson-robotics   │ Hanson     │ Sophia, Grace   │ Quote         │ email_required │ Sophia is primarily                  │     
+  │                   │ Robotics   │ (elder care)    │               │                │ PR/entertainment. Grace targets      │ 
+  │                   │            │                 │               │                │ healthcare.                          │     
+  ├───────────────────┼────────────┼─────────────────┼───────────────┼────────────────┼──────────────────────────────────────┤ 
+  │ limx-dynamics     │ LimX       │ CL-1 (biped),   │ Quote         │ email_required │ limxdynamics.com. Chinese startup,   │     
+  │                   │ Dynamics   │ P1 (quadruped)  │               │                │ emerging 2025-2026.                  │ 
+  ├───────────────────┼────────────┼─────────────────┼───────────────┼────────────────┼──────────────────────────────────────┤     
+  │                   │            │                 │               │                │ astribot.com. DJI-backed.            │ 
+  │ astribot          │ Astribot   │ S1              │ Quote         │ email_required │ Demonstrated 1 m/s arm speed.        │     
+  │                   │            │                 │               │                │ Pre-commercial stage.                │ 
+  ├───────────────────┼────────────┼─────────────────┼───────────────┼────────────────┼──────────────────────────────────────┤     
+  │                   │ Clone      │ Torso           │ Quote (R&D    │                │ clonerobotics.com. Polish startup.   │     
+  │ clone-robotics    │ Robotics   │ (hydraulic      │ partnership)  │ email_required │ Highly dexterous hands.              │
+  │                   │            │ tendon-driven)  │               │                │                                      │     
+  ├───────────────────┼────────────┼─────────────────┼───────────────┼────────────────┼──────────────────────────────────────┤
+  │ robotera          │ RobotEra   │ Tron T1, Xbot-L │ Quote         │ email_required │ robotera.com. Chinese company.       │
+  │                   │            │                 │               │                │ Alibaba ecosystem.                   │     
+  ├───────────────────┼────────────┼─────────────────┼───────────────┼────────────────┼──────────────────────────────────────┤
+  │                   │            │                 │ ~¥12,999      │                │                                      │     
+  │ xiaomi-cyberdog   │ Xiaomi     │ CyberDog 2      │ (~$1,800 CN)  │ direct_online  │ mi.com. Limited global availability. │     
+  │                   │            │                 │ / ~$3,000 US  │                │                                      │
+  └───────────────────┴────────────┴─────────────────┴───────────────┴────────────────┴──────────────────────────────────────┘     
+                                                            
+  ---
+  AGRICULTURAL ROBOTS (category: 'agricultural')
+
+  ┌───────────────────┬──────────────┬──────────────────────┬───────────────────┬────────────────┬────────────────────────────┐ 
+  │        ID         │     Name     │       Products       │       Price       │    Buy Path    │           Notes            │ 
+  ├───────────────────┼──────────────┼──────────────────────┼───────────────────┼────────────────┼────────────────────────────┤ 
+  │ monarch-tractor   │ Monarch      │ MK-V (electric       │ ~$50,000–$60,000  │ email_required │ monarchtractor.com.        │ 
+  │                   │ Tractor      │ autonomous tractor)  │                   │                │ Vineyard/specialty crop.   │ 
+  ├───────────────────┼──────────────┼──────────────────────┼───────────────────┼────────────────┼────────────────────────────┤    
+  │                   │ Carbon       │ LaserWeeder          │ ~$1.2M purchase   │                │ carbonrobotics.com. 6"     │ 
+  │ carbon-robotics   │ Robotics     │ (autonomous laser    │ or RaaS           │ raas_only      │ weed removal precision.    │    
+  │                   │              │ weeding)             │                   │                │                            │ 
+  ├───────────────────┼──────────────┼──────────────────────┼───────────────────┼────────────────┼────────────────────────────┤    
+  │ farmwise          │ FarmWise     │ Vulcan (autonomous   │ RaaS — Contact    │ raas_only      │ farmwise.ai. Broccoli,     │ 
+  │                   │              │ weeder/thinner)      │                   │                │ cauliflower, celery.       │    
+  ├───────────────────┼──────────────┼──────────────────────┼───────────────────┼────────────────┼────────────────────────────┤ 
+  │                   │              │ Oz (vineyard), Dino  │                   │                │                            │    
+  │ naio-technologies │ Naïo         │ (large-scale         │ Quote             │ email_required │ naio-technologies.com.     │    
+  │                   │ Technologies │ weeding), Ted        │                   │                │ French company. EU leader. │ 
+  │                   │              │ (orchard)            │                   │                │                            │    
+  ├───────────────────┼──────────────┼──────────────────────┼───────────────────┼────────────────┼────────────────────────────┤ 
+  │ burro             │ Burro        │ Burro autonomous     │ ~$15,000–$20,000  │ email_required │ burro.ai. Follows workers, │ 
+  │                   │              │ field vehicle        │                   │                │  hauls harvest bins.       │    
+  ├───────────────────┼──────────────┼──────────────────────┼───────────────────┼────────────────┼────────────────────────────┤ 
+  │                   │              │ P100 Pro             │                   │                │ xa.com. Chinese company.   │    
+  │ xag               │ XAG          │ agricultural drone,  │ Quote             │ email_required │ 10M+ acres treated.        │    
+  │                   │              │ V40 sprayer          │                   │                │                            │ 
+  ├───────────────────┼──────────────┼──────────────────────┼───────────────────┼────────────────┼────────────────────────────┤    
+  │ dji-agras         │ DJI Agras    │ T50 ($30,999), T25   │ $17,999–$30,999   │ dealer_only    │ store.dji.com/agras. Crop  │    
+  │                   │              │ ($17,999)            │                   │                │ spraying/spreading drones. │
+  ├───────────────────┼──────────────┼──────────────────────┼───────────────────┼────────────────┼────────────────────────────┤    
+  │ swarmfarm         │ SwarmFarm    │ SwarmBot             │ Quote             │ email_required │ swarmfarm.com. Australian. │
+  │                   │ Robotics     │                      │                   │                │  Broadacre spraying.       │    
+  ├───────────────────┼──────────────┼──────────────────────┼───────────────────┼────────────────┼────────────────────────────┤
+  │                   │              │ Row-Bot              │                   │                │                            │    
+  │ aigen             │ Aigen        │ (solar-powered field │ Quote             │ email_required │ aigen.co. Early commercial │    
+  │                   │              │  robot, no           │                   │                │  2025-2026.                │
+  │                   │              │ chemicals)           │                   │                │                            │    
+  ├───────────────────┼──────────────┼──────────────────────┼───────────────────┼────────────────┼────────────────────────────┤
+  │                   │              │ TerraSentia          │                   │                │ earthsense.ag. University  │
+  │ earthsense        │ EarthSense   │ (under-canopy crop   │ Quote             │ email_required │ of Illinois spin-off.      │    
+  │                   │              │ analytics robot)     │                   │                │                            │
+  └───────────────────┴──────────────┴──────────────────────┴───────────────────┴────────────────┴────────────────────────────┘    
+                                                            
+  ---
+  INSPECTION ROBOTS (specialized, category: 'inspection')
+                                                                                                                                   
+  ┌────────────────┬─────────────────┬──────────────────────────┬──────────────────┬────────────────┬─────────────────────────┐  
+  │       ID       │      Name       │         Products         │      Price       │    Buy Path    │          Notes          │    
+  ├────────────────┼─────────────────┼──────────────────────────┼──────────────────┼────────────────┼─────────────────────────┤  
+  │                │                 │ Elios 3                  │                  │                │ flyability.com. Tanks,  │  
+  │ flyability     │ Flyability      │ (collision-tolerant      │ ~$30,000–$40,000 │ email_required │ boilers, mines.         │  
+  │                │                 │ indoor inspection drone) │                  │                │ Cage-protected.         │    
+  ├────────────────┼─────────────────┼──────────────────────────┼──────────────────┼────────────────┼─────────────────────────┤  
+  │                │                 │ Wall-climbing inspection │                  │                │ geckorobotics.com.      │    
+  │ gecko-robotics │ Gecko Robotics  │  robots (vessels, tanks, │ Service contract │ b2b_partner    │ Inspection as a         │    
+  │                │                 │  boilers)                │                  │                │ service.                │
+  ├────────────────┼─────────────────┼──────────────────────────┼──────────────────┼────────────────┼─────────────────────────┤    
+  │                │                 │ Optimus (industrial      │                  │                │ airobotics.com.         │
+  │ airobotics     │ Airobotics      │ drone-in-a-box, BVLOS)   │ Enterprise Quote │ email_required │ Israeli. Oil/gas/port   │    
+  │                │                 │                          │                  │                │ inspection.             │
+  ├────────────────┼─────────────────┼──────────────────────────┼──────────────────┼────────────────┼─────────────────────────┤    
+  │ envirosight    │ Envirosight     │ ROVVER X (sewer/pipe     │ Quote            │ email_required │ envirosight.com         │    
+  │                │                 │ inspection robot)        │                  │                │                         │
+  ├────────────────┼─────────────────┼──────────────────────────┼──────────────────┼────────────────┼─────────────────────────┤    
+  │                │ Waygate         │ Mentor Visual iQ,        │                  │                │ waygatetech.com. GE     │    
+  │ waygate-tech   │ Technologies    │ Krautkrämer UT,          │ Quote            │ email_required │ Inspection spin-off.    │
+  │                │ (Baker Hughes)  │ industrial NDT robots    │                  │                │                         │    
+  └────────────────┴─────────────────┴──────────────────────────┴──────────────────┴────────────────┴─────────────────────────┘
+
+  ---
+  UNDERWATER ROBOTS (category: 'underwater')
+
+  ┌────────────────────┬──────────────┬─────────────────────┬─────────────────┬────────────────┬───────────────────────────────┐
+  │         ID         │     Name     │      Products       │      Price      │    Buy Path    │             Notes             │
+  ├────────────────────┼──────────────┼─────────────────────┼─────────────────┼────────────────┼───────────────────────────────┤
+  │ blue-robotics      │ Blue         │ BlueROV2 ($4,080    │ $4,080          │ direct_online  │ bluerobotics.com. Most        │
+  │                    │ Robotics     │ assembled)          │                 │                │ popular open-source ROV.      │
+  ├────────────────────┼──────────────┼─────────────────────┼─────────────────┼────────────────┼───────────────────────────────┤   
+  │ videoray           │ VideoRay     │ Scout ROV (~$15K),  │ $15,000–$75,000 │ email_required │ videoray.com. US Navy         │
+  │                    │              │ Pro 4, Defender     │                 │                │ supplier.                     │   
+  ├────────────────────┼──────────────┼─────────────────────┼─────────────────┼────────────────┼───────────────────────────────┤
+  │ deep-trekker       │ Deep Trekker │ REVOLUTION ROV,     │ $15,000–$60,000 │ direct_online  │ deeptrekker.com. Canadian.    │   
+  │                    │              │ DTG3, PIVOT         │                 │                │                               │   
+  ├────────────────────┼──────────────┼─────────────────────┼─────────────────┼────────────────┼───────────────────────────────┤
+  │ saab-seaeye        │ Saab Seaeye  │ Falcon ROV,         │ Quote           │ email_required │ saabseaeye.com. Offshore /    │   
+  │                    │              │ Sabertooth AUV      │                 │                │ defense.                      │   
+  ├────────────────────┼──────────────┼─────────────────────┼─────────────────┼────────────────┼───────────────────────────────┤
+  │ teledyne-marine    │ Teledyne     │ Gavia AUV,          │ Quote           │ email_required │ teledynemarine.com.           │   
+  │                    │ Marine       │ SeaRaptor AUV       │                 │                │ Survey/defense AUVs.          │   
+  ├────────────────────┼──────────────┼─────────────────────┼─────────────────┼────────────────┼───────────────────────────────┤
+  │                    │ CHASING      │ Dory ($699), M2 Pro │                 │                │ chasing-innovation.com.       │   
+  │ chasing-innovation │ Innovation   │  Max ($5,499), M2   │ $699–$5,499     │ direct_online  │ Consumer to pro ROVs.         │   
+  │                    │              │ Pro ($3,299)        │                 │                │                               │
+  ├────────────────────┼──────────────┼─────────────────────┼─────────────────┼────────────────┼───────────────────────────────┤   
+  │ geneinno           │ Geneinno     │ Titan ($799),       │ $799–$3,299     │ direct_online  │ geneinno.com.                 │
+  │                    │              │ Neptune ($3,299)    │                 │                │ Consumer/prosumer ROVs.       │   
+  └────────────────────┴──────────────┴─────────────────────┴─────────────────┴────────────────┴───────────────────────────────┘
+                                                                                                                                   
+  ---                                                       
+  EXOSKELETONS (category: 'exoskeleton')
+                                        
+  ID: ekso-bionics                                                                                                              
+  Name: Ekso Bionics                                                                                                               
+  Products: EksoGT (rehab), EksoVest EVA (industrial)                                                                           
+  Price: Quote                                                                                                                     
+  Buy Path: email_required                                                                                                      
+  Notes: eksobionics.com. FDA cleared. Nasdaq: EKSO.                                                                               
+  ────────────────────────────────────────                                                                                      
+  ID: rewalk                                                                                                                       
+  Name: ReWalk Robotics                                                                                                         
+  Products: ReWalk Personal 6.0, ReStore (soft exo for stroke)                                                                     
+  Price: Quote                                                                                                                     
+  Buy Path: email_required                                                                                                     
+  Notes: rewalk.com. FDA cleared. Insurance coverage in some markets.                                                              
+  ────────────────────────────────────────                                                                                     
+  ID: sarcos                                                                                                                   
+  Name: Sarcos Robotics                                                                                                            
+  Products: Guardian XO (full-body, 200 lb lift assist), Guardian XT (upper body)                                              
+  Price: RaaS ~$100K–$150K/yr                                                                                                      
+  Buy Path: raas_only                                                                                                              
+  Notes: sarcos.com. Industrial workers.                                                                                       
+  ────────────────────────────────────────                                                                                         
+  ID: myomo                                                                                                                    
+  Name: Myomo                                                                                                                      
+  Products: MyoPro Motion G (arm brace for paralysis)                                                                          
+  Price: ~$80,000 (insurance coverage available)                                                                                   
+  Buy Path: email_required                                  
+  Notes: myomo.com. FDA cleared. Nasdaq: MYO.                                                                                      
+  ────────────────────────────────────────
+  ID: german-bionic                                                                                                                
+  Name: German Bionic                                       
+  Products: Cray X (back support), Apogee+ (full connected exo)
+  Price: Quote
+  Buy Path: email_required
+  Notes: germanbionic.com. EU leader. IoT connected.
+  ────────────────────────────────────────
+  ID: ottobock-exo
+  Name: Ottobock
+  Products: Paexo Shoulder, Paexo Back, C-Brace (passive lower limb)
+  Price: Quote
+  Buy Path: email_required
+  Notes: ottobock.com. Largest prosthetics/exo company.
+  ────────────────────────────────────────
+  ID: comau-exo
+  Name: Comau
+  Products: MATE-XT (shoulder exoskeleton)
+  Price: Quote
+  Buy Path: email_required
+  Notes: comau.com/en/our-offer/products/exoskeleton
+  ────────────────────────────────────────
+  ID: cyberdyne                                                                                                                    
+  Name: Cyberdyne
+  Products: HAL for Medical (lower limb rehab), HAL-FL Wellness                                                                    
+  Price: ~$1,000–$2,000/mo rental                           
+  Buy Path: raas_only
+  Notes: cyberdyne.jp. FDA registered. Japan + Germany primarily.
+  ────────────────────────────────────────
+  ID: herowear                                                                                                                     
+  Name: HeroWear
+  Products: Apex (back-assist exosuit, passive)                                                                                    
+  Price: ~$3,500–$5,000                                     
+  Buy Path: direct_online
+  Notes: herowear.com. Passive back support.
+
+  ---
+  COMPONENTS / SENSORS (category: 'components')
+                                                                                                                                   
+  LiDAR:
+                                                                                                                                   
+  ┌───────────┬───────────────┬──────────────────────────────────────────────────────┬───────────────┬─────────────────────────┐
+  │    ID     │     Name      │                       Products                       │     Price     │        Buy Path         │
+  ├───────────┼───────────────┼──────────────────────────────────────────────────────┼───────────────┼─────────────────────────┤
+  │ ouster    │ Ouster        │ OS1-32 (€9,680), OS1-64 ($51,990), OS2-64 (€26,620), │ $9K–$52K      │ direct_online /         │
+  │           │               │  OS2-128 (€27,830), OSDome                           │               │ ouster.com              │
+  ├───────────┼───────────────┼──────────────────────────────────────────────────────┼───────────────┼─────────────────────────┤   
+  │ hesai     │ Hesai         │ AT128, XT32, QT128                                   │ Quote         │ email_required /        │
+  │           │ Technology    │                                                      │               │ hesaitech.com           │   
+  ├───────────┼───────────────┼──────────────────────────────────────────────────────┼───────────────┼─────────────────────────┤
+  │ robosense │ RoboSense     │ RS-LiDAR-M1 v2 ($8,188), RS-Helios-1615 ($4,786)     │ $4,786–$8,188 │ direct_online /         │   
+  │           │               │                                                      │               │ robosense.ai            │   
+  ├───────────┼───────────────┼──────────────────────────────────────────────────────┼───────────────┼─────────────────────────┤
+  │ livox     │ Livox (DJI)   │ Mid-360 (~$810), HAP ($1,798–$1,898)                 │ $810–$1,898   │ direct_online /         │   
+  │           │               │                                                      │               │ store.dji.com           │   
+  ├───────────┼───────────────┼──────────────────────────────────────────────────────┼───────────────┼─────────────────────────┤
+  │ sick-ag   │ SICK AG       │ TiM series, microScan3, LMS series safety scanners   │ Quote         │ dealer_only / sick.com  │   
+  ├───────────┼───────────────┼──────────────────────────────────────────────────────┼───────────────┼─────────────────────────┤   
+  │ hokuyo    │ Hokuyo        │ UST-20LX (~$2,580), URG-04LX (~€2,130)               │ $2,130–$2,580 │ dealer_only /           │
+  │           │               │                                                      │               │ hokuyo-usa.com          │   
+  └───────────┴───────────────┴──────────────────────────────────────────────────────┴───────────────┴─────────────────────────┘
+                                                                                                                                   
+  Cameras:                                                  
+
+  ┌─────────────────┬─────────────┬──────────────────────────────────────┬─────────────┬──────────────────────────────────────┐ 
+  │       ID        │    Name     │               Products               │    Price    │               Buy Path               │ 
+  ├─────────────────┼─────────────┼──────────────────────────────────────┼─────────────┼──────────────────────────────────────┤    
+  │                 │ Intel       │                                      │             │ direct_online /                      │ 
+  │ intel-realsense │ RealSense   │ D435i ($334), D455 ($419) — L515 EOL │ $334–$419   │ store.intelrealsense.com (spun out   │    
+  │                 │             │                                      │             │ Jul 2025)                            │    
+  ├─────────────────┼─────────────┼──────────────────────────────────────┼─────────────┼──────────────────────────────────────┤ 
+  │                 │             │ ZED 2i ($739), ZED Mini ($539), ZED  │             │                                      │    
+  │ stereolabs      │ Stereolabs  │ X Mini ($549), ZED X Nano (ships May │ $539–$739   │ direct_online / stereolabs.com       │ 
+  │                 │             │  2026)                               │             │                                      │    
+  ├─────────────────┼─────────────┼──────────────────────────────────────┼─────────────┼──────────────────────────────────────┤ 
+  │                 │             │ OAK-D Series 2 ($199), OAK-1-Lite    │             │                                      │
+  │ luxonis         │ Luxonis     │ ($99) — price increase post Apr 3,   │ $99–$999    │ direct_online / shop.luxonis.com     │    
+  │                 │             │ 2026                                 │             │                                      │
+  ├─────────────────┼─────────────┼──────────────────────────────────────┼─────────────┼──────────────────────────────────────┤    
+  │                 │ FLIR /      │ Boson Consumer ($2,020), Boson Pro   │             │                                      │
+  │ flir-teledyne   │ Teledyne    │ ($2,525), Boson Industrial ($3,029), │ $239–$3,029 │ direct_online / oem.flir.com         │    
+  │                 │             │  Lepton XDS ($239)                   │             │                                      │
+  └─────────────────┴─────────────┴──────────────────────────────────────┴─────────────┴──────────────────────────────────────┘    
+                                                            
+  Actuators:                                                                                                                       
+   
+  ┌────────────────┬────────────────┬───────────────────────────────────────────────┬──────────────┬───────────────────────────┐   
+  │       ID       │      Name      │                   Products                    │    Price     │         Buy Path          │
+  ├────────────────┼────────────────┼───────────────────────────────────────────────┼──────────────┼───────────────────────────┤
+  │ robotis        │ ROBOTIS /      │ XL430-W250-T (~$45), XM430, XD540, XH540,     │ $45–$500     │ direct_online /           │
+  │                │ Dynamixel      │ XW540                                         │ est.         │ robotis.us                │
+  ├────────────────┼────────────────┼───────────────────────────────────────────────┼──────────────┼───────────────────────────┤   
+  │ hebi-robotics  │ HEBI Robotics  │ X-Series actuators (€3,945/unit), R-Series,   │ €3,945/unit  │ direct_online /           │
+  │                │                │ full robot kits ($20K–$36K)                   │              │ hebirobotics.com          │   
+  ├────────────────┼────────────────┼───────────────────────────────────────────────┼──────────────┼───────────────────────────┤
+  │ t-motor        │ T-Motor /      │ AK series quasi-direct drive actuators,       │ Quote        │ direct_online /           │   
+  │                │ CubeMars       │ U-series brushless                            │              │ store.tmotor.com          │   
+  ├────────────────┼────────────────┼───────────────────────────────────────────────┼──────────────┼───────────────────────────┤
+  │ harmonic-drive │ Harmonic Drive │ CSF, CSG, SHF, CSD strain wave gearing        │ Quote        │ dealer_only /             │   
+  │                │                │                                               │              │ harmonicdrive.net         │   
+  ├────────────────┼────────────────┼───────────────────────────────────────────────┼──────────────┼───────────────────────────┤
+  │ maxon          │ Maxon Group    │ EC-i/EC-x brushless motors, EPOS4 drives      │ Quote        │ dealer_only /             │   
+  │                │                │                                               │              │ maxongroup.com            │   
+  └────────────────┴────────────────┴───────────────────────────────────────────────┴──────────────┴───────────────────────────┘
+                                                                                                                                   
+  ---                                                       
+  DEFENSE ROBOTS (category: 'defense')
+                                                                                                                                   
+  ┌───────────────────────┬───────────────┬─────────────────────────┬─────────┬────────────────┬───────────────────────────────┐
+  │          ID           │     Name      │        Products         │  Price  │    Buy Path    │             Notes             │   
+  ├───────────────────────┼───────────────┼─────────────────────────┼─────────┼────────────────┼───────────────────────────────┤
+  │                       │               │ Switchblade 300         │         │                │                               │
+  │ aerovironment         │ AeroVironment │ (loitering munition),   │ Quote   │ email_required │ avinc.com. Gov/military only. │
+  │                       │               │ Switchblade 600, Raven  │ (ITAR)  │                │  ITAR restricted.             │   
+  │                       │               │ B UAS, Wasp AE          │         │                │                               │
+  ├───────────────────────┼───────────────┼─────────────────────────┼─────────┼────────────────┼───────────────────────────────┤   
+  │ teledyne-flir-defense │ Teledyne FLIR │ Centaur UGV, PackBot    │ Quote   │ email_required │ teledyneflir.com/defense.     │   
+  │                       │               │ 510/710 Kobra           │         │                │ Gov/mil only.                 │
+  ├───────────────────────┼───────────────┼─────────────────────────┼─────────┼────────────────┼───────────────────────────────┤   
+  │ qinetiq               │ QinetiQ       │ TALON 5, Dragon Runner  │ Quote   │ email_required │ qinetiq.com. UK/US defense.   │
+  │                       │               │ 10                      │         │                │                               │   
+  ├───────────────────────┼───────────────┼─────────────────────────┼─────────┼────────────────┼───────────────────────────────┤
+  │ milrem-robotics       │ Milrem        │ THeMIS UGV, Type-X RCV  │ Quote   │ email_required │ milrem.com. Estonian. NATO    │   
+  │                       │ Robotics      │                         │         │                │ partner.                      │   
+  ├───────────────────────┼───────────────┼─────────────────────────┼─────────┼────────────────┼───────────────────────────────┤
+  │                       │               │ Nova 2 (indoor          │         │                │                               │   
+  │ shield-ai             │ Shield AI     │ autonomous drone),      │ Quote   │ email_required │ shield.ai. Defense/gov only.  │   
+  │                       │               │ Hivemind AI             │         │                │                               │
+  ├───────────────────────┼───────────────┼─────────────────────────┼─────────┼────────────────┼───────────────────────────────┤   
+  │ roboteam              │ Roboteam      │ PROBOT, MTGR Micro      │ Quote   │ email_required │ roboteam.com. Israeli. NATO   │
+  │                       │               │ Tactical Ground Robot   │         │                │ customers.                    │   
+  └───────────────────────┴───────────────┴─────────────────────────┴─────────┴────────────────┴───────────────────────────────┘
+                                                                                                                                   
+  ---                                                       
+  Summary Count
+               
+  ┌──────────────────────────┬────────────────────┐
+  │         Category         │ New vendors to add │                                                                                
+  ├──────────────────────────┼────────────────────┤
+  │ Cobots / robot arms      │ 21                 │                                                                                
+  ├──────────────────────────┼────────────────────┤         
+  │ Cobot end effectors      │ 5                  │
+  ├──────────────────────────┼────────────────────┤                                                                                
+  │ Surgical / medical       │ 14                 │
+  ├──────────────────────────┼────────────────────┤                                                                                
+  │ Hospital logistics       │ 6                  │         
+  ├──────────────────────────┼────────────────────┤                                                                                
+  │ Disinfection             │ 4                  │         
+  ├──────────────────────────┼────────────────────┤
+  │ Service / hospitality    │ 6                  │
+  ├──────────────────────────┼────────────────────┤                                                                                
+  │ Floor cleaning           │ 6                  │
+  ├──────────────────────────┼────────────────────┤                                                                                
+  │ Security                 │ 3                  │         
+  ├──────────────────────────┼────────────────────┤
+  │ Quadruped (additional)   │ 6                  │
+  ├──────────────────────────┼────────────────────┤                                                                                
+  │ Humanoid (additional)    │ 8                  │
+  ├──────────────────────────┼────────────────────┤                                                                                
+  │ Agricultural             │ 10                 │         
+  ├──────────────────────────┼────────────────────┤
+  │ Inspection (specialized) │ 5                  │
+  ├──────────────────────────┼────────────────────┤                                                                                
+  │ Underwater               │ 7                  │
+  ├──────────────────────────┼────────────────────┤                                                                                
+  │ Exoskeletons             │ 9                  │         
+  ├──────────────────────────┼────────────────────┤
+  │ Components / sensors     │ 15                 │
+  ├──────────────────────────┼────────────────────┤
+  │ Defense                  │ 6                  │
+  ├──────────────────────────┼────────────────────┤                                                                                
+  │ Total                    │ ~131 vendors       │
+  └──────────────────────────┴────────────────────┘                                                                                
+                                                            
+  Current file: 39 vendors → target: ~170 vendors                                                                                  
+   
+✻ Cooked for 2m 35s                                         

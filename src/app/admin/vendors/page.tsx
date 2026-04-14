@@ -12,13 +12,30 @@ import {
 } from '@/data/vendors';
 
 const CATEGORY_LABELS: Record<Vendor['category'], string> = {
-  humanoid: '🤖 Humanoid Robots',
-  delivery: '📦 Delivery Robots',
-  industrial: '🏭 Industrial / Warehouse',
-  drone: '🚁 Drones',
+  humanoid:    '🤖 Humanoid',
+  delivery:    '📦 Delivery',
+  industrial:  '🏭 Industrial / AMR',
+  drone:       '🚁 Drones',
+  cobot:       '🦾 Cobots & Arms',
+  surgical:    '🏥 Surgical',
+  service:     '🍽️ Service',
+  agricultural:'🌾 Agricultural',
+  security:    '🔒 Security',
+  cleaning:    '🧹 Cleaning',
+  exoskeleton: '🦿 Exoskeletons',
+  components:  '⚙️ Components',
+  quadruped:   '🐕 Quadruped',
+  underwater:  '🤿 Underwater',
+  inspection:  '🔍 Inspection',
+  defense:     '🛡️ Defense',
 };
 
-const CATEGORIES: Vendor['category'][] = ['humanoid', 'delivery', 'industrial', 'drone'];
+const CATEGORIES: Vendor['category'][] = [
+  'humanoid', 'delivery', 'industrial', 'drone',
+  'cobot', 'service', 'cleaning', 'security',
+  'quadruped', 'agricultural', 'surgical',
+  'inspection', 'underwater', 'exoskeleton', 'components', 'defense',
+];
 
 const STATUS_COLORS: Record<string, string> = {
   in_stock: 'text-emerald-400',

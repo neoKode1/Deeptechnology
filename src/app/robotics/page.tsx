@@ -5,7 +5,28 @@ import SoftDevHeader from '@/components/SoftDevHeader';
 import ParallaxRobot from '@/components/ParallaxRobot';
 import RoiCalculator from '@/components/RoiCalculator';
 import RobotInquiryModal, { type RobotInfo } from '@/components/RobotInquiryModal';
+import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
+
+/* ── Robot categories for browse section ── */
+const ROBOT_CATEGORIES = [
+  { slug: 'humanoid',    emoji: '🤖', label: 'Humanoid',           count: '12+ vendors' },
+  { slug: 'industrial',  emoji: '🏭', label: 'Industrial / AMR',   count: '10+ vendors' },
+  { slug: 'cobot',       emoji: '🦾', label: 'Cobots & Arms',      count: '7 vendors' },
+  { slug: 'delivery',    emoji: '📦', label: 'Delivery Robots',    count: '10+ vendors' },
+  { slug: 'drone',       emoji: '🚁', label: 'Drones & UAVs',      count: '8 vendors' },
+  { slug: 'service',     emoji: '🍽️', label: 'Service & Hospitality', count: '5 vendors' },
+  { slug: 'security',    emoji: '🔒', label: 'Security',           count: '2 vendors' },
+  { slug: 'cleaning',    emoji: '🧹', label: 'Floor Cleaning',     count: '3 vendors' },
+  { slug: 'quadruped',   emoji: '🐕', label: 'Quadruped',          count: '4 vendors' },
+  { slug: 'agricultural',emoji: '🌾', label: 'Agricultural',       count: '4 vendors' },
+  { slug: 'surgical',    emoji: '🏥', label: 'Surgical',           count: '4 vendors' },
+  { slug: 'inspection',  emoji: '🔍', label: 'Inspection',         count: '3 vendors' },
+  { slug: 'underwater',  emoji: '🤿', label: 'Underwater ROVs',    count: '3 vendors' },
+  { slug: 'exoskeleton', emoji: '🦿', label: 'Exoskeletons',       count: '3 vendors' },
+  { slug: 'components',  emoji: '⚙️',  label: 'Components & Sensors', count: '4 vendors' },
+  { slug: 'defense',     emoji: '🛡️', label: 'Defense',            count: '3 vendors' },
+];
 
 /* ── Marquee items ── */
 const MARQUEE = [
@@ -223,6 +244,40 @@ export default function RoboticsDivisionHome() {
               <h3 className="font-manrope text-lg sm:text-xl font-semibold text-neutral-900 mb-2 sm:mb-3">{svc.title}</h3>
               <p className="text-xs sm:text-sm leading-relaxed text-neutral-500">{svc.desc}</p>
             </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── BROWSE BY CATEGORY ── */}
+      <section id="browse-categories" className="px-4 sm:px-6 md:px-12 lg:px-20 py-14 sm:py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
+        <p className="text-[10px] sm:text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-400">Full Catalog</p>
+        <div className="flex items-end justify-between gap-4 mb-10">
+          <div>
+            <h2 className="font-manrope font-semibold text-2xl sm:text-3xl text-neutral-900 mb-2">Browse by Robot Type</h2>
+            <p className="text-neutral-500 text-sm max-w-xl leading-relaxed">
+              From surgical systems to agricultural drones — our catalog spans the full spectrum of commercial robotics. Click a category to see vendors, specs, and pricing.
+            </p>
+          </div>
+          <Link href="/contact" className="hidden sm:flex items-center gap-1.5 text-xs border border-neutral-300 hover:border-neutral-600 px-4 py-2 rounded-lg text-neutral-500 hover:text-neutral-900 transition-colors shrink-0 font-manrope">
+            Request Custom Sourcing <ArrowUpRight className="w-3 h-3" />
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          {ROBOT_CATEGORIES.map((cat) => (
+            <Link
+              key={cat.slug}
+              href={`/robotics/categories/${cat.slug}`}
+              className="group flex flex-col gap-2 p-4 sm:p-5 rounded-xl border border-neutral-200 bg-white/70 backdrop-blur-md shadow-sm hover:shadow-md hover:border-neutral-400 transition-all duration-200"
+            >
+              <span className="text-2xl">{cat.emoji}</span>
+              <div>
+                <p className="font-manrope font-semibold text-neutral-900 text-sm group-hover:text-black transition-colors">{cat.label}</p>
+                <p className="text-neutral-400 text-xs mt-0.5">{cat.count}</p>
+              </div>
+              <span className="text-neutral-400 group-hover:text-neutral-700 text-xs flex items-center gap-0.5 transition-colors mt-auto">
+                Browse <ArrowUpRight className="w-3 h-3" />
+              </span>
+            </Link>
           ))}
         </div>
       </section>

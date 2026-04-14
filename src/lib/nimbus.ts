@@ -58,7 +58,7 @@ function buildVendorContext(category?: Vendor['category']): string {
       lines.push(`  product: ${p.name} | ${p.price}${depositNote} | status=${p.status}${orderNote}`);
     }
 
-    lines.push(`  notes: ${v.procurementNotes.slice(0, 200)}`);
+    lines.push(`  notes: ${(v.procurementNotes ?? '').slice(0, 200)}`);
   }
 
   return lines.join('\n');

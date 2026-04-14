@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     .join(' – ');
 
   const title = `${vendor.name} Robots — Pricing, Lead Times & How to Buy | Deep Tech`;
-  const description = `Verified ${vendor.name} procurement guide. ${priceRange ? priceRange + '. ' : ''}${vendor.procurementNotes.slice(0, 120)}…`;
+  const description = `Verified ${vendor.name} procurement guide. ${priceRange ? priceRange + '. ' : ''}${(vendor.procurementNotes ?? '').slice(0, 120)}…`;
 
   return {
     title,
@@ -31,12 +31,24 @@ export async function generateMetadata({ params }: { params: { slug: string } })
   };
 }
 
-const CATEGORY_LABELS = {
-  humanoid: 'Humanoid Robot',
-  delivery: 'Delivery Robot',
-  industrial: 'Warehouse / Industrial',
-  drone: 'Enterprise Drone',
-} as const;
+const CATEGORY_LABELS: Record<string, string> = {
+  humanoid:    'Humanoid Robot',
+  delivery:    'Delivery Robot',
+  industrial:  'Warehouse / Industrial',
+  drone:       'Enterprise Drone',
+  cobot:       'Cobot / Robot Arm',
+  surgical:    'Surgical Robot',
+  service:     'Service Robot',
+  agricultural:'Agricultural Robot',
+  security:    'Security Robot',
+  cleaning:    'Floor Cleaning Robot',
+  exoskeleton: 'Exoskeleton',
+  components:  'Components & Sensors',
+  quadruped:   'Quadruped Robot',
+  underwater:  'Underwater ROV',
+  inspection:  'Inspection Robot',
+  defense:     'Defense Robot',
+};
 
 const STATUS_STYLES = {
   in_stock:       'bg-emerald-900/30 text-emerald-400 border-emerald-800/50',
@@ -86,7 +98,9 @@ export default function VendorPage({ params }: { params: { slug: string } }) {
             )}
           </div>
           <h1 className="text-3xl md:text-4xl font-semibold font-manrope text-white mb-3">{vendor.name}</h1>
-          <p className="text-neutral-400 text-sm font-manrope leading-relaxed max-w-xl">{vendor.procurementNotes}</p>
+          {vendor.procurementNotes && (
+            <p className="text-neutral-400 text-sm font-manrope leading-relaxed max-w-xl">{vendor.procurementNotes}</p>
+          )}
         </div>
 
         {/* Products */}
