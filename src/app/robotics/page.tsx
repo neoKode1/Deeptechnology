@@ -248,48 +248,6 @@ export default function RoboticsDivisionHome() {
         </div>
       </section>
 
-      {/* ── BROWSE BY CATEGORY ── */}
-      <section id="browse-categories" className="px-4 sm:px-6 md:px-12 lg:px-20 py-14 sm:py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
-        <p className="text-[10px] sm:text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-400">Full Catalog</p>
-        <div className="flex items-end justify-between gap-4 mb-10">
-          <div>
-            <h2 className="font-manrope font-semibold text-2xl sm:text-3xl text-neutral-900 mb-2">Browse by Robot Type</h2>
-            <p className="text-neutral-500 text-sm max-w-xl leading-relaxed">
-              From surgical systems to agricultural drones — our catalog spans the full spectrum of commercial robotics. Click a category to see vendors, specs, and pricing.
-            </p>
-          </div>
-          <Link href="/contact" className="hidden sm:flex items-center gap-1.5 text-xs border border-neutral-300 hover:border-neutral-600 px-4 py-2 rounded-lg text-neutral-500 hover:text-neutral-900 transition-colors shrink-0 font-manrope">
-            Request Custom Sourcing <ArrowUpRight className="w-3 h-3" />
-          </Link>
-        </div>
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
-          {ROBOT_CATEGORIES.map((cat) => (
-            <Link
-              key={cat.slug}
-              href={`/robotics/categories/${cat.slug}`}
-              className="group flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm hover:shadow-md hover:border-neutral-400 transition-all duration-200"
-            >
-              <div className="relative h-32 overflow-hidden bg-neutral-100">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={cat.image}
-                  alt={cat.label}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  loading="lazy"
-                />
-              </div>
-              <div className="p-3 sm:p-4 flex flex-col gap-1">
-                <p className="font-manrope font-semibold text-neutral-900 text-sm group-hover:text-black transition-colors leading-snug">{cat.label}</p>
-                <p className="text-neutral-400 text-xs">{cat.count}</p>
-                <span className="text-neutral-400 group-hover:text-neutral-700 text-xs flex items-center gap-0.5 transition-colors mt-1.5">
-                  Browse <ArrowUpRight className="w-3 h-3" />
-                </span>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </section>
-
       {/* ── DELIVERY SYSTEMS ── */}
       <section id="delivery-systems" className="px-4 sm:px-6 md:px-12 lg:px-20 py-14 sm:py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
         <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-400">In the Field</p>
@@ -848,6 +806,48 @@ export default function RoboticsDivisionHome() {
               </a>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* ── BROWSE BY CATEGORY ── */}
+      <section id="browse-categories" className="px-4 sm:px-6 md:px-12 lg:px-20 py-14 sm:py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
+        <p className="text-[10px] sm:text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-400">Full Catalog</p>
+        <div className="flex items-end justify-between gap-4 mb-10">
+          <div>
+            <h2 className="font-manrope font-semibold text-2xl sm:text-3xl text-neutral-900 mb-2">Browse by Robot Type</h2>
+            <p className="text-neutral-500 text-sm max-w-xl leading-relaxed">
+              From surgical systems to agricultural drones — our catalog spans the full spectrum of commercial robotics. Click a category to see vendors, specs, and pricing.
+            </p>
+          </div>
+          <Link href="/contact" className="hidden sm:flex items-center gap-1.5 text-xs border border-neutral-300 hover:border-neutral-600 px-4 py-2 rounded-lg text-neutral-500 hover:text-neutral-900 transition-colors shrink-0 font-manrope">
+            Request Custom Sourcing <ArrowUpRight className="w-3 h-3" />
+          </Link>
+        </div>
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+          {ROBOT_CATEGORIES.map((cat) => (
+            <Link
+              key={cat.slug}
+              href={`/robotics/categories/${cat.slug}`}
+              className="group flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm hover:shadow-md hover:border-neutral-400 transition-all duration-200"
+            >
+              <div className="relative h-32 overflow-hidden bg-neutral-100">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={cat.image}
+                  alt={cat.label}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
+              </div>
+              <div className="p-3 sm:p-4 flex flex-col gap-1">
+                <p className="font-manrope font-semibold text-neutral-900 text-sm group-hover:text-black transition-colors leading-snug">{cat.label}</p>
+                <p className="text-neutral-400 text-xs">{cat.count}</p>
+                <span className="text-neutral-400 group-hover:text-neutral-700 text-xs flex items-center gap-0.5 transition-colors mt-1.5">
+                  Browse <ArrowUpRight className="w-3 h-3" />
+                </span>
+              </div>
+            </Link>
+          ))}
         </div>
       </section>
 
