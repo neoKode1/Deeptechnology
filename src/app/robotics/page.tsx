@@ -266,9 +266,9 @@ export default function RoboticsDivisionHome() {
                   <button className="robo-overlay-cta">Get Quote</button>
                 </div>
               </div>
-              <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Kiwibot', name: 'S3 Sidewalk Delivery Robot', price: 'From $897 / mo lease', systemCategory: 'SADRs (Sidewalk Delivery Robots)', image: '/media/image.webp' })}>
+              <div className="overflow-hidden rounded-lg robo-img-wrap" style={{ cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Kiwibot', name: 'S3 Sidewalk Delivery Robot', price: 'From $897 / mo lease', systemCategory: 'SADRs (Sidewalk Delivery Robots)', image: '/media/Kiwibot.jpg' })}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/media/image.webp" alt="Autonomous delivery robot on urban route" className="robo-img" style={{ objectPosition: 'center' }} />
+                <img src="/media/Kiwibot.jpg" alt="Kiwibot S3 sidewalk delivery robot" className="robo-img" style={{ objectPosition: 'center' }} />
                 <div className="robo-overlay">
                   <p className="robo-overlay-vendor">Kiwibot</p>
                   <p className="robo-overlay-name">S3 Sidewalk Delivery Robot</p>
@@ -286,9 +286,9 @@ export default function RoboticsDivisionHome() {
                   <button className="robo-overlay-cta">Get Quote</button>
                 </div>
               </div>
-              <div className="sm:col-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Segway Robotics', name: 'E1 Outdoor Delivery Robot', price: 'From $11,385 / unit', systemCategory: 'RADRs (Road/Sidewalk Hybrids)', image: '/media/DoorDash_Dot-04__1__1__1_.png' })}>
+              <div className="sm:col-span-2 overflow-hidden rounded-lg robo-img-wrap" style={{ minHeight: '160px', cursor: 'pointer' }} onClick={() => openModal({ vendor: 'Segway Robotics', name: 'E1 Outdoor Delivery Robot', price: 'From $11,385 / unit', systemCategory: 'RADRs (Road/Sidewalk Hybrids)', image: '/media/Segway%20Robotics.jpeg' })}>
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src="/media/DoorDash_Dot-04__1__1__1_.png" alt="Road-capable autonomous delivery bot" className="robo-img" style={{ objectPosition: 'center' }} />
+                <img src="/media/Segway%20Robotics.jpeg" alt="Segway Robotics E1 outdoor delivery robot" className="robo-img" style={{ objectPosition: 'center' }} />
                 <div className="robo-overlay">
                   <p className="robo-overlay-vendor">Segway Robotics</p>
                   <p className="robo-overlay-name">E1 Outdoor Delivery Robot</p>
