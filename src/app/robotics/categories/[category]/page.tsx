@@ -69,6 +69,10 @@ const VENDOR_IMAGES: Record<string, string> = {
   'lg-cloi':            '/media/LG%20CLOi.jpg',
   // ── Defense ─────────────────────────────────────────────────────────────
   'ghost-robotics':     'https://upload.wikimedia.org/wikipedia/commons/2/27/Ghost_Robotics_Vision_60_Q-UGV_Demo_%287351259%29.jpeg',
+  // ── Exoskeleton ──────────────────────────────────────────────────────────
+  'ekso-bionics':       '/media/EksoNR-by-Ekso-Bionics-Exoskeleton-Catalog-600.jpg',
+  'sarcos':             '/media/Guardian%20XO%20',
+  'german-bionic':      '/media/Cray-X-5th-Gen-German-Bionics-Exoskeleton-Catalog-2022.jpg',
   // ── Inspection ──────────────────────────────────────────────────────────
   'flyability':         'https://upload.wikimedia.org/wikipedia/commons/a/a1/ExR-2_Inspection_Robot_%2802%29.jpg',
   // ── Underwater ──────────────────────────────────────────────────────────
