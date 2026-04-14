@@ -10,22 +10,22 @@ import { ArrowUpRight } from 'lucide-react';
 
 /* ── Robot categories for browse section ── */
 const ROBOT_CATEGORIES = [
-  { slug: 'humanoid',    emoji: '🤖', label: 'Humanoid',           count: '12+ vendors' },
-  { slug: 'industrial',  emoji: '🏭', label: 'Industrial / AMR',   count: '10+ vendors' },
-  { slug: 'cobot',       emoji: '🦾', label: 'Cobots & Arms',      count: '7 vendors' },
-  { slug: 'delivery',    emoji: '📦', label: 'Delivery Robots',    count: '10+ vendors' },
-  { slug: 'drone',       emoji: '🚁', label: 'Drones & UAVs',      count: '8 vendors' },
-  { slug: 'service',     emoji: '🍽️', label: 'Service & Hospitality', count: '5 vendors' },
-  { slug: 'security',    emoji: '🔒', label: 'Security',           count: '2 vendors' },
-  { slug: 'cleaning',    emoji: '🧹', label: 'Floor Cleaning',     count: '3 vendors' },
-  { slug: 'quadruped',   emoji: '🐕', label: 'Quadruped',          count: '4 vendors' },
-  { slug: 'agricultural',emoji: '🌾', label: 'Agricultural',       count: '4 vendors' },
-  { slug: 'surgical',    emoji: '🏥', label: 'Surgical',           count: '4 vendors' },
-  { slug: 'inspection',  emoji: '🔍', label: 'Inspection',         count: '3 vendors' },
-  { slug: 'underwater',  emoji: '🤿', label: 'Underwater ROVs',    count: '3 vendors' },
-  { slug: 'exoskeleton', emoji: '🦿', label: 'Exoskeletons',       count: '3 vendors' },
-  { slug: 'components',  emoji: '⚙️',  label: 'Components & Sensors', count: '4 vendors' },
-  { slug: 'defense',     emoji: '🛡️', label: 'Defense',            count: '3 vendors' },
+  { slug: 'humanoid',    image: '/media/Agility%20Robotics%20Digit.jpg',                                                                                              label: 'Humanoid',             count: '12+ vendors' },
+  { slug: 'industrial',  image: '/media/Robotic-Sorting-as-a-Service-B3A7940.webp',                                                                                   label: 'Industrial / AMR',     count: '10+ vendors' },
+  { slug: 'cobot',       image: '/media/Boston%20Dynamics%20Stretch.jpg',                                                                                             label: 'Cobots & Arms',        count: '7 vendors' },
+  { slug: 'delivery',    image: 'https://upload.wikimedia.org/wikipedia/commons/3/36/Starship_food_delivery_robot_in_Niittykumpu.jpg',                                label: 'Delivery Robots',      count: '10+ vendors' },
+  { slug: 'drone',       image: '/media/drones_hero.webp',                                                                                                            label: 'Drones & UAVs',        count: '8 vendors' },
+  { slug: 'service',     image: '/media/Serve-Gen-2-left-and-Gen-3-robots.jpg',                                                                                       label: 'Service & Hospitality',count: '5 vendors' },
+  { slug: 'security',    image: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Knightscope_security_robot.jpg',                                                 label: 'Security',             count: '2 vendors' },
+  { slug: 'cleaning',    image: 'https://upload.wikimedia.org/wikipedia/commons/4/40/AvidbotsNeo1.jpg',                                                               label: 'Floor Cleaning',       count: '3 vendors' },
+  { slug: 'quadruped',   image: '/media/Boston%20Dynamics%20Spot.jpg',                                                                                                label: 'Quadruped',            count: '4 vendors' },
+  { slug: 'agricultural',image: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Crops_grown_on_the_FarmBot_Genesis.jpg',                                         label: 'Agricultural',         count: '4 vendors' },
+  { slug: 'surgical',    image: 'https://upload.wikimedia.org/wikipedia/commons/0/0d/Laproscopic_Surgery_Robot.jpg',                                                  label: 'Surgical',             count: '4 vendors' },
+  { slug: 'inspection',  image: 'https://upload.wikimedia.org/wikipedia/commons/a/a1/ExR-2_Inspection_Robot_%2802%29.jpg',                                            label: 'Inspection',           count: '3 vendors' },
+  { slug: 'underwater',  image: 'https://upload.wikimedia.org/wikipedia/commons/4/4a/BlueROV2_flying_with_ArduSub.jpg',                                               label: 'Underwater ROVs',      count: '3 vendors' },
+  { slug: 'exoskeleton', image: 'https://upload.wikimedia.org/wikipedia/commons/9/94/LAEVO_exoskeleton.jpg',                                                          label: 'Exoskeletons',         count: '3 vendors' },
+  { slug: 'components',  image: 'https://upload.wikimedia.org/wikipedia/commons/f/f8/Velodyne_Lidar_Alpha_Prime_Ultra_Puck_Puck_Sensor_Family.jpg',                   label: 'Components & Sensors', count: '4 vendors' },
+  { slug: 'defense',     image: 'https://upload.wikimedia.org/wikipedia/commons/2/27/Ghost_Robotics_Vision_60_Q-UGV_Demo_%287351259%29.jpeg',                         label: 'Defense',              count: '3 vendors' },
 ];
 
 /* ── Marquee items ── */
@@ -267,16 +267,24 @@ export default function RoboticsDivisionHome() {
             <Link
               key={cat.slug}
               href={`/robotics/categories/${cat.slug}`}
-              className="group flex flex-col gap-2 p-4 sm:p-5 rounded-xl border border-neutral-200 bg-white/70 backdrop-blur-md shadow-sm hover:shadow-md hover:border-neutral-400 transition-all duration-200"
+              className="group flex flex-col overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm hover:shadow-md hover:border-neutral-400 transition-all duration-200"
             >
-              <span className="text-2xl">{cat.emoji}</span>
-              <div>
-                <p className="font-manrope font-semibold text-neutral-900 text-sm group-hover:text-black transition-colors">{cat.label}</p>
-                <p className="text-neutral-400 text-xs mt-0.5">{cat.count}</p>
+              <div className="relative h-32 overflow-hidden bg-neutral-100">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={cat.image}
+                  alt={cat.label}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  loading="lazy"
+                />
               </div>
-              <span className="text-neutral-400 group-hover:text-neutral-700 text-xs flex items-center gap-0.5 transition-colors mt-auto">
-                Browse <ArrowUpRight className="w-3 h-3" />
-              </span>
+              <div className="p-3 sm:p-4 flex flex-col gap-1">
+                <p className="font-manrope font-semibold text-neutral-900 text-sm group-hover:text-black transition-colors leading-snug">{cat.label}</p>
+                <p className="text-neutral-400 text-xs">{cat.count}</p>
+                <span className="text-neutral-400 group-hover:text-neutral-700 text-xs flex items-center gap-0.5 transition-colors mt-1.5">
+                  Browse <ArrowUpRight className="w-3 h-3" />
+                </span>
+              </div>
             </Link>
           ))}
         </div>

@@ -6,23 +6,23 @@ import SoftDevHeader from '@/components/SoftDevHeader';
 import { VENDORS, BUY_PATH_LABELS, BUY_PATH_COLORS, type VendorCategory } from '@/data/vendors';
 
 /* ── Category metadata ──────────────────────────────────────────────────── */
-const CATEGORY_META: Record<VendorCategory, { label: string; emoji: string; desc: string }> = {
-  humanoid:    { label: 'Humanoid Robots',        emoji: '🤖', desc: 'Full-body bipedal robots for general labor, research, and service applications.' },
-  delivery:    { label: 'Delivery Robots',         emoji: '📦', desc: 'Sidewalk, road, and aerial platforms for last-mile and campus delivery.' },
-  industrial:  { label: 'Industrial / Warehouse',  emoji: '🏭', desc: 'AMRs, forklifts, and sorting systems for distribution and manufacturing.' },
-  drone:       { label: 'Drones & UAVs',           emoji: '🚁', desc: 'Commercial and industrial unmanned aerial systems for delivery, inspection, and mapping.' },
-  cobot:       { label: 'Cobots & Robot Arms',     emoji: '🦾', desc: 'Collaborative robot arms designed to work safely alongside humans in assembly and manufacturing.' },
-  surgical:    { label: 'Surgical Robots',         emoji: '🏥', desc: 'Robotic-assisted surgical systems for orthopedic, soft tissue, and minimally invasive procedures.' },
-  service:     { label: 'Service & Hospitality',   emoji: '🍽️', desc: 'Delivery, disinfection, and guest-service robots for healthcare, hospitality, and retail.' },
-  agricultural:{ label: 'Agricultural Robots',     emoji: '🌾', desc: 'Autonomous tractors, weeding robots, and crop-spraying drones for precision farming.' },
-  security:    { label: 'Security Robots',         emoji: '🔒', desc: 'Autonomous patrol and monitoring robots for corporate campuses and public spaces.' },
-  cleaning:    { label: 'Floor Cleaning Robots',   emoji: '🧹', desc: 'Autonomous scrubbers and sweepers for warehouses, airports, and commercial facilities.' },
-  exoskeleton: { label: 'Exoskeletons',            emoji: '🦿', desc: 'Powered wearable robots for industrial worker assistance and medical rehabilitation.' },
-  components:  { label: 'Components & Sensors',    emoji: '⚙️',  desc: 'LiDAR sensors, stereo cameras, grippers, and actuators for robot development.' },
-  quadruped:   { label: 'Quadruped Robots',        emoji: '🐕', desc: 'Four-legged robots for inspection, security, and research in complex terrain.' },
-  underwater:  { label: 'Underwater Robots',       emoji: '🤿', desc: 'ROVs and AUVs for subsea inspection, search & rescue, and scientific research.' },
-  inspection:  { label: 'Inspection Robots',       emoji: '🔍', desc: 'Specialized robots for confined-space, wall-climbing, and aerial industrial inspection.' },
-  defense:     { label: 'Defense Robots',          emoji: '🛡️', desc: 'Unmanned ground and aerial systems for defense, EOD, and government applications.' },
+const CATEGORY_META: Record<VendorCategory, { label: string; image: string; desc: string }> = {
+  humanoid:    { label: 'Humanoid Robots',        image: '/media/Agility%20Robotics%20Digit.jpg',                                                                                           desc: 'Full-body bipedal robots for general labor, research, and service applications.' },
+  delivery:    { label: 'Delivery Robots',         image: 'https://upload.wikimedia.org/wikipedia/commons/3/36/Starship_food_delivery_robot_in_Niittykumpu.jpg',                             desc: 'Sidewalk, road, and aerial platforms for last-mile and campus delivery.' },
+  industrial:  { label: 'Industrial / Warehouse',  image: '/media/Robotic-Sorting-as-a-Service-B3A7940.webp',                                                                                desc: 'AMRs, forklifts, and sorting systems for distribution and manufacturing.' },
+  drone:       { label: 'Drones & UAVs',           image: '/media/drones_hero.webp',                                                                                                        desc: 'Commercial and industrial unmanned aerial systems for delivery, inspection, and mapping.' },
+  cobot:       { label: 'Cobots & Robot Arms',     image: '/media/Boston%20Dynamics%20Stretch.jpg',                                                                                         desc: 'Collaborative robot arms designed to work safely alongside humans in assembly and manufacturing.' },
+  surgical:    { label: 'Surgical Robots',         image: 'https://upload.wikimedia.org/wikipedia/commons/0/0d/Laproscopic_Surgery_Robot.jpg',                                              desc: 'Robotic-assisted surgical systems for orthopedic, soft tissue, and minimally invasive procedures.' },
+  service:     { label: 'Service & Hospitality',   image: '/media/Serve-Gen-2-left-and-Gen-3-robots.jpg',                                                                                   desc: 'Delivery, disinfection, and guest-service robots for healthcare, hospitality, and retail.' },
+  agricultural:{ label: 'Agricultural Robots',     image: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Crops_grown_on_the_FarmBot_Genesis.jpg',                                     desc: 'Autonomous tractors, weeding robots, and crop-spraying drones for precision farming.' },
+  security:    { label: 'Security Robots',         image: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Knightscope_security_robot.jpg',                                             desc: 'Autonomous patrol and monitoring robots for corporate campuses and public spaces.' },
+  cleaning:    { label: 'Floor Cleaning Robots',   image: 'https://upload.wikimedia.org/wikipedia/commons/4/40/AvidbotsNeo1.jpg',                                                           desc: 'Autonomous scrubbers and sweepers for warehouses, airports, and commercial facilities.' },
+  exoskeleton: { label: 'Exoskeletons',            image: 'https://upload.wikimedia.org/wikipedia/commons/9/94/LAEVO_exoskeleton.jpg',                                                      desc: 'Powered wearable robots for industrial worker assistance and medical rehabilitation.' },
+  components:  { label: 'Components & Sensors',    image: 'https://upload.wikimedia.org/wikipedia/commons/f/f8/Velodyne_Lidar_Alpha_Prime_Ultra_Puck_Puck_Sensor_Family.jpg',               desc: 'LiDAR sensors, stereo cameras, grippers, and actuators for robot development.' },
+  quadruped:   { label: 'Quadruped Robots',        image: '/media/Boston%20Dynamics%20Spot.jpg',                                                                                            desc: 'Four-legged robots for inspection, security, and research in complex terrain.' },
+  underwater:  { label: 'Underwater Robots',       image: 'https://upload.wikimedia.org/wikipedia/commons/4/4a/BlueROV2_flying_with_ArduSub.jpg',                                          desc: 'ROVs and AUVs for subsea inspection, search & rescue, and scientific research.' },
+  inspection:  { label: 'Inspection Robots',       image: 'https://upload.wikimedia.org/wikipedia/commons/a/a1/ExR-2_Inspection_Robot_%2802%29.jpg',                                        desc: 'Specialized robots for confined-space, wall-climbing, and aerial industrial inspection.' },
+  defense:     { label: 'Defense Robots',          image: 'https://upload.wikimedia.org/wikipedia/commons/2/27/Ghost_Robotics_Vision_60_Q-UGV_Demo_%287351259%29.jpeg',                    desc: 'Unmanned ground and aerial systems for defense, EOD, and government applications.' },
 };
 
 export function generateStaticParams() {
@@ -63,9 +63,20 @@ export default function CategoryPage({ params }: { params: { category: string } 
 
         {/* Header */}
         <div className="mb-12">
-          <div className="text-5xl mb-4">{meta.emoji}</div>
-          <h1 className="font-manrope font-semibold text-3xl sm:text-4xl text-white mb-3">{meta.label}</h1>
-          <p className="text-neutral-400 text-lg max-w-2xl leading-relaxed">{meta.desc}</p>
+          <div className="relative h-48 sm:h-64 w-full overflow-hidden rounded-2xl mb-6 bg-neutral-900">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={meta.image}
+              alt={meta.label}
+              className="w-full h-full object-cover opacity-80"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
+            <div className="absolute bottom-4 left-5">
+              <span className="text-[10px] uppercase tracking-widest text-neutral-400 font-manrope">Category</span>
+              <h1 className="font-manrope font-semibold text-2xl sm:text-3xl text-white leading-tight">{meta.label}</h1>
+            </div>
+          </div>
+          <p className="text-neutral-400 text-base max-w-2xl leading-relaxed">{meta.desc}</p>
           <p className="text-neutral-600 text-sm mt-3 font-manrope">{vendors.length} vendor{vendors.length !== 1 ? 's' : ''} in catalog</p>
         </div>
 
