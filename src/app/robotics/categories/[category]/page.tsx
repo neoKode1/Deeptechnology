@@ -6,7 +6,7 @@ import SoftDevHeader from '@/components/SoftDevHeader';
 import { VENDORS, BUY_PATH_LABELS, BUY_PATH_COLORS, type VendorCategory } from '@/data/vendors';
 
 /* ── Category metadata ──────────────────────────────────────────────────── */
-export const CATEGORY_META: Record<VendorCategory, { label: string; emoji: string; desc: string }> = {
+const CATEGORY_META: Record<VendorCategory, { label: string; emoji: string; desc: string }> = {
   humanoid:    { label: 'Humanoid Robots',        emoji: '🤖', desc: 'Full-body bipedal robots for general labor, research, and service applications.' },
   delivery:    { label: 'Delivery Robots',         emoji: '📦', desc: 'Sidewalk, road, and aerial platforms for last-mile and campus delivery.' },
   industrial:  { label: 'Industrial / Warehouse',  emoji: '🏭', desc: 'AMRs, forklifts, and sorting systems for distribution and manufacturing.' },
