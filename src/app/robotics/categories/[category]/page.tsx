@@ -95,9 +95,12 @@ const VENDOR_IMAGES: Record<string, string> = {
   'franka':             '/media/Franka%20Robotics-franka-research-3.png',
   'igus':               '/media/igus.jpg',
   'doosan-robotics':    '/media/Doosan%20Robotics-A-Series-1.png',
-  // ── Components ──────────────────────────────────────────────────────────
-  'velodyne':           'https://upload.wikimedia.org/wikipedia/commons/f/f8/Velodyne_Lidar_Alpha_Prime_Ultra_Puck_Puck_Sensor_Family.jpg',
-  'ouster':             'https://upload.wikimedia.org/wikipedia/commons/f/f8/Velodyne_Lidar_Alpha_Prime_Ultra_Puck_Puck_Sensor_Family.jpg',
+  // ── Components & Sensors ────────────────────────────────────────────────
+  'onrobot':            '/media/OnRobot-Products_2021.jpg',
+  'robotiq':            '/media/Robotiq%202F-85%20Adaptive%20Gripper%20.jpg',
+  'ouster':             '/media/OS1-32%20LiDAR%20.png',
+  'stereolabs':         '/media/ZED%202i%20.webp',
+  'robotis':            '/media/ROBOTIS%20%3A%20Dynamixel.jpg',
 };
 
 export function generateStaticParams() {
