@@ -4,26 +4,7 @@ import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import SoftDevHeader from '@/components/SoftDevHeader';
 import { VENDORS, BUY_PATH_LABELS, BUY_PATH_COLORS, type VendorCategory } from '@/data/vendors';
-
-/* ── Category metadata ──────────────────────────────────────────────────── */
-const CATEGORY_META: Record<VendorCategory, { label: string; image: string; desc: string }> = {
-  humanoid:    { label: 'Humanoid Robots',        image: '/media/Neo_nimbus.png',                                                                                           desc: 'Full-body bipedal robots for general labor, research, and service applications.' },
-  delivery:    { label: 'Delivery Robots',         image: 'https://upload.wikimedia.org/wikipedia/commons/3/36/Starship_food_delivery_robot_in_Niittykumpu.jpg',                             desc: 'Sidewalk, road, and aerial platforms for last-mile and campus delivery.' },
-  industrial:  { label: 'Industrial / Warehouse',  image: '/media/Robotic-Sorting-as-a-Service-B3A7940.webp',                                                                                desc: 'AMRs, forklifts, and sorting systems for distribution and manufacturing.' },
-  drone:       { label: 'Drones & UAVs',           image: '/media/drones_hero.webp',                                                                                                        desc: 'Commercial and industrial unmanned aerial systems for delivery, inspection, and mapping.' },
-  cobot:       { label: 'Cobots & Robot Arms',     image: '/media/Boston%20Dynamics%20Stretch.jpg',                                                                                         desc: 'Collaborative robot arms designed to work safely alongside humans in assembly and manufacturing.' },
-  surgical:    { label: 'Surgical Robots',         image: 'https://upload.wikimedia.org/wikipedia/commons/0/0d/Laproscopic_Surgery_Robot.jpg',                                              desc: 'Robotic-assisted surgical systems for orthopedic, soft tissue, and minimally invasive procedures.' },
-  service:     { label: 'Service & Hospitality',   image: '/media/Serve-Gen-2-left-and-Gen-3-robots.jpg',                                                                                   desc: 'Delivery, disinfection, and guest-service robots for healthcare, hospitality, and retail.' },
-  agricultural:{ label: 'Agricultural Robots',     image: 'https://upload.wikimedia.org/wikipedia/commons/0/0e/Crops_grown_on_the_FarmBot_Genesis.jpg',                                     desc: 'Autonomous tractors, weeding robots, and crop-spraying drones for precision farming.' },
-  security:    { label: 'Security Robots',         image: 'https://upload.wikimedia.org/wikipedia/commons/c/cb/Knightscope_security_robot.jpg',                                             desc: 'Autonomous patrol and monitoring robots for corporate campuses and public spaces.' },
-  cleaning:    { label: 'Floor Cleaning Robots',   image: 'https://upload.wikimedia.org/wikipedia/commons/4/40/AvidbotsNeo1.jpg',                                                           desc: 'Autonomous scrubbers and sweepers for warehouses, airports, and commercial facilities.' },
-  exoskeleton: { label: 'Exoskeletons',            image: 'https://upload.wikimedia.org/wikipedia/commons/9/94/LAEVO_exoskeleton.jpg',                                                      desc: 'Powered wearable robots for industrial worker assistance and medical rehabilitation.' },
-  components:  { label: 'Components & Sensors',    image: 'https://upload.wikimedia.org/wikipedia/commons/f/f8/Velodyne_Lidar_Alpha_Prime_Ultra_Puck_Puck_Sensor_Family.jpg',               desc: 'LiDAR sensors, stereo cameras, grippers, and actuators for robot development.' },
-  quadruped:   { label: 'Quadruped Robots',        image: '/media/Boston%20Dynamics%20Spot.jpg',                                                                                            desc: 'Four-legged robots for inspection, security, and research in complex terrain.' },
-  underwater:  { label: 'Underwater Robots',       image: 'https://upload.wikimedia.org/wikipedia/commons/4/4a/BlueROV2_flying_with_ArduSub.jpg',                                          desc: 'ROVs and AUVs for subsea inspection, search & rescue, and scientific research.' },
-  inspection:  { label: 'Inspection Robots',       image: 'https://upload.wikimedia.org/wikipedia/commons/a/a1/ExR-2_Inspection_Robot_%2802%29.jpg',                                        desc: 'Specialized robots for confined-space, wall-climbing, and aerial industrial inspection.' },
-  defense:     { label: 'Defense Robots',          image: 'https://upload.wikimedia.org/wikipedia/commons/2/27/Ghost_Robotics_Vision_60_Q-UGV_Demo_%287351259%29.jpeg',                    desc: 'Unmanned ground and aerial systems for defense, EOD, and government applications.' },
-};
+import { CATEGORY_META } from '@/data/categories';
 
 /* ── Per-vendor product photos (CC / public domain / local) ─────────────── */
 const VENDOR_IMAGES: Record<string, string> = {
@@ -121,7 +102,7 @@ export default function CategoryPage({ params }: { params: { category: string } 
         <nav className="flex items-center gap-2 text-xs text-neutral-600 mb-10 font-manrope">
           <Link href="/robotics" className="hover:text-neutral-400 transition-colors">Robotics</Link>
           <span>/</span>
-          <span className="hover:text-neutral-400 transition-colors">Categories</span>
+          <Link href="/robotics/categories" className="hover:text-neutral-400 transition-colors">Categories</Link>
           <span>/</span>
           <span className="text-neutral-400">{meta.label}</span>
         </nav>
