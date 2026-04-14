@@ -53,6 +53,11 @@ const VENDOR_IMAGES: Record<string, string> = {
   'medtronic-hugo':     '/media/Hugo%20RAS.jpg',
   'stryker-mako':       '/media/Mako%204%20Family%204%204K%20with%20shadow4.png',
   'cmr-surgical':       '/media/CMR%20Surgical.webp',
+  // ── Agricultural ────────────────────────────────────────────────────────
+  'monarch-tractor':    '/media/Monarch%20Tractor.webp',
+  'carbon-robotics':    '/media/Carbon%20Robotics-LaserWeeder-G2-600.webp',
+  'dji-agras':          '/media/DJI%20Agras-Dronak_nekazaritzan_(cropped).jpg',
+  'burro':              '/media/Burro%20Autonomous%20Field%20Vehicle.png',
   // ── Service & Hospitality ────────────────────────────────────────────────
   'aethon':             '/media/Aethon_Website_Robot_T3.png',
   'bear-robotics':      '/media/Bear%20Robotics.jpg',
