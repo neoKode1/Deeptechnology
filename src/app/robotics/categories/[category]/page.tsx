@@ -71,6 +71,9 @@ const VENDOR_IMAGES: Record<string, string> = {
   'lg-cloi':            '/media/LG%20CLOi.jpg',
   // ── Defense ─────────────────────────────────────────────────────────────
   'ghost-robotics':     '/media/Ghost-Robotics-featured.jpg',
+  'aerovironment':      '/media/AeroVironment.webp',
+  'teledyne-flir-defense': '/media/Teledyne%20FLIR%20Defense.jpg',
+  'milrem-robotics':    '/media/Milrem%20Robotics.webp',
   // ── Exoskeleton ──────────────────────────────────────────────────────────
   'ekso-bionics':       '/media/EksoNR-by-Ekso-Bionics-Exoskeleton-Catalog-600.jpg',
   'sarcos':             '/media/Guardian%20XO%20',
