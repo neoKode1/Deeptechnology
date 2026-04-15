@@ -749,7 +749,7 @@ export default function RoboticsDivisionHome() {
       <section className="px-4 sm:px-6 md:px-12 lg:px-20 py-16 sm:py-24 max-w-[82rem] mx-auto border-t border-neutral-200">
 
         {/* Vendor logo bar */}
-        <p className="text-[10px] tracking-widest uppercase font-manrope text-neutral-400 mb-6">Platforms We Source &amp; Deploy</p>
+        <p className="text-[10px] tracking-widest uppercase font-manrope text-neutral-400 mb-6">Platforms We Source</p>
         <div className="flex flex-wrap gap-x-8 gap-y-4 items-center mb-16">
           {['Unitree Robotics', 'Boston Dynamics', 'Agility Robotics', 'Figure AI', 'Serve Robotics', 'Kiwibot', 'DJI Enterprise', 'Skydio'].map((name) => (
             <span key={name} className="text-sm font-semibold text-neutral-300 tracking-tight font-manrope">{name}</span>
@@ -759,20 +759,20 @@ export default function RoboticsDivisionHome() {
         {/* Case study + quote grid */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
 
-          {/* Case study card */}
+          {/* How it works card */}
           <div className="rounded-2xl border border-neutral-200 bg-white/60 backdrop-blur-sm p-7">
-            <p className="text-[10px] tracking-widest uppercase text-neutral-400 font-manrope mb-4">Case Study · Q1 2026 Pilot</p>
+            <p className="text-[10px] tracking-widest uppercase text-neutral-400 font-manrope mb-4">Example Scenario · Sidewalk Delivery</p>
             <h3 className="font-manrope font-semibold text-xl text-neutral-900 mb-2 leading-snug">
-              Sidewalk delivery fleet deployed in 18 days
+              From briefing to fleet-live in under 3 weeks
             </h3>
             <p className="text-sm text-neutral-500 leading-relaxed mb-6">
-              A food-and-grocery chain needed last-mile coverage across a 0.4 mi campus loop. We assessed the terrain, sourced three Kiwibot Leap units, configured routes, and had the fleet live inside 18 days — including POS integration.
+              A food-and-grocery operator needs last-mile coverage across a 0.4 mi campus loop. We assess the terrain, source 3 sidewalk robots, configure routes, and commission the fleet — including point-of-sale integration.
             </p>
             <div className="grid grid-cols-3 gap-4 mb-5">
               {[
-                ['18 days', 'Deployment time'],
-                ['3 robots', 'Fleet size'],
-                ['$2,697/mo', 'All-in fleet cost'],
+                ['< 3 weeks', 'Fleet live'],
+                ['3 robots', 'Typical fleet'],
+                ['From $900/mo', 'All-in est.'],
               ].map(([stat, label]) => (
                 <div key={label}>
                   <p className="text-lg font-bold text-neutral-900 font-manrope">{stat}</p>
@@ -780,20 +780,19 @@ export default function RoboticsDivisionHome() {
                 </div>
               ))}
             </div>
-            <p className="text-xs text-neutral-300 italic">Pilot customer · Confidential · Food &amp; Grocery, US</p>
+            <p className="text-xs text-neutral-300 italic">Illustrative scenario · Actual timelines and costs vary by environment</p>
           </div>
 
-          {/* Quote card */}
+          {/* How we work card */}
           <div className="rounded-2xl border border-neutral-200 bg-neutral-900 p-7 flex flex-col justify-between">
             <div>
-              <p className="text-[10px] tracking-widest uppercase text-neutral-500 font-manrope mb-6">What Clients Say</p>
-              <blockquote className="text-white text-lg font-manrope font-light leading-relaxed mb-6">
-                &ldquo;We evaluated four vendors ourselves and couldn&rsquo;t get a straight answer on pricing or lead time from any of them. Deep Tech had three units spec&rsquo;d and quoted within 48 hours. That alone was worth it.&rdquo;
-              </blockquote>
+              <p className="text-[10px] tracking-widest uppercase text-neutral-500 font-manrope mb-6">How We Work</p>
+              <p className="text-white text-lg font-manrope font-light leading-relaxed mb-6">
+                Most operators spend weeks chasing vendor quotes that don&rsquo;t account for their actual environment. We start with your space — terrain, traffic, payload, conditions — and deliver a sourced, priced proposal within 48 hours.
+              </p>
             </div>
             <div>
-              <p className="text-sm text-white font-semibold font-manrope">Operations Director</p>
-              <p className="text-xs text-neutral-400 mt-0.5">Logistics &amp; Fulfillment, Southwest US · 2026</p>
+              <p className="text-sm text-neutral-400 font-manrope">No retainer. No commitment. Just a straight answer.</p>
               <a
                 href="/pilot"
                 className="mt-5 inline-flex items-center gap-2 border border-white/20 text-white rounded-full py-2 px-5 text-xs hover:border-white/50 transition-colors"
