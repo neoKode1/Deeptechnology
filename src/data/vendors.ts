@@ -1921,7 +1921,7 @@ export const VENDORS: Vendor[] = [
         price: 'Quote required',
         status: 'quote_required',
         notes: 'Small-footprint ROV with optimal performance features. 8-thruster vectored system; modular design; supports 4K camera, sonar, and positioning payloads.',
-        image: '/media/VideoRay.webp',
+        image: '/media/Pro-5-edited-2.webp',
       },
     ],
     procurementNotes: 'US-based ROV manufacturer (Malvern, PA). Supplier to the US Navy, NATO, and commercial offshore sectors. All Mission Specialist Series vehicles share a modular architecture — payloads, thrusters, and sensors can be swapped in the field. Contact sales@videoray.com or +1 610-458-3000 for configuration and quote.',
