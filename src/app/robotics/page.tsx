@@ -743,40 +743,71 @@ export default function RoboticsDivisionHome() {
         </div>
       </section>
 
+      {/* ── INDUSTRY SIGNAL ── */}
+      <section className="bg-neutral-50 border-t border-b border-neutral-200 px-4 sm:px-6 md:px-12 lg:px-20 py-16 sm:py-24">
+        <div className="max-w-[82rem] mx-auto">
+
+          <p className="text-[10px] tracking-widest uppercase font-manrope text-neutral-400 mb-10">The Market Is Moving</p>
+
+          {/* Big quote */}
+          <blockquote className="mb-14 max-w-4xl">
+            <p className="font-manrope font-semibold text-neutral-900 leading-tight mb-5" style={{ fontSize: 'clamp(1.75rem, 3.5vw, 2.75rem)' }}>
+              &ldquo;Physical AI has arrived — every industrial company will become a robotics company.&rdquo;
+            </p>
+            <cite className="not-italic text-xs uppercase tracking-widest text-neutral-400 font-manrope">
+              Jensen Huang · CEO, NVIDIA · GTC 2026
+            </cite>
+          </blockquote>
+
+          {/* Deal cards */}
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            {[
+              {
+                co: 'Toyota Motor Canada × Agility Robotics',
+                tag: 'Humanoid · Manufacturing',
+                stat: 'Commercial deal signed',
+                detail: 'Toyota deployed Digit humanoid robots on a live production line following a year-long pilot — the first major automaker to reach a signed RaaS agreement.',
+                date: 'Feb 2026',
+              },
+              {
+                co: 'DHL Group × Boston Dynamics',
+                tag: 'Logistics · Warehousing',
+                stat: '1,000+ robots',
+                detail: 'DHL signed an MOU for over 1,000 additional robot deployments. They already run 7,500 robots across their global network.',
+                date: 'May 2025',
+              },
+              {
+                co: 'Figure AI × BMW',
+                tag: 'Humanoid · Automotive',
+                stat: '90,000 parts unloaded',
+                detail: 'After a 10-month factory trial — the largest publicly documented humanoid output in any automotive plant to date.',
+                date: '2025',
+              },
+            ].map(({ co, tag, stat, detail, date }) => (
+              <div key={co} className="bg-white border border-neutral-200 rounded-2xl p-6 flex flex-col gap-3">
+                <div className="flex items-start justify-between gap-2">
+                  <span className="text-[10px] uppercase tracking-widest text-neutral-400 font-manrope">{tag}</span>
+                  <span className="text-[10px] text-neutral-300 font-manrope shrink-0">{date}</span>
+                </div>
+                <p className="font-manrope font-semibold text-neutral-900 leading-tight" style={{ fontSize: 'clamp(1.1rem, 2vw, 1.5rem)' }}>{stat}</p>
+                <p className="text-xs font-semibold text-neutral-600 font-manrope">{co}</p>
+                <p className="text-sm text-neutral-500 leading-relaxed font-manrope">{detail}</p>
+              </div>
+            ))}
+          </div>
+
+        </div>
+      </section>
+
       {/* ── SOCIAL PROOF ── */}
       <section className="px-4 sm:px-6 md:px-12 lg:px-20 py-16 sm:py-24 max-w-[82rem] mx-auto border-t border-neutral-200">
 
         {/* Vendor logo bar */}
         <p className="text-[10px] tracking-widest uppercase font-manrope text-neutral-400 mb-6">Platforms We Source</p>
-        <div className="flex flex-wrap gap-x-8 gap-y-4 items-center mb-10">
+        <div className="flex flex-wrap gap-x-8 gap-y-4 items-center mb-16">
           {['Unitree Robotics', 'Boston Dynamics', 'Agility Robotics', 'Figure AI', 'Serve Robotics', 'Kiwibot', 'DJI Enterprise', 'Skydio'].map((name) => (
             <span key={name} className="text-sm font-semibold text-neutral-300 tracking-tight font-manrope">{name}</span>
           ))}
-        </div>
-
-        {/* Live industry deals strip */}
-        <div className="flex flex-col sm:flex-row sm:divide-x divide-neutral-200 border-y border-neutral-200 py-5 mb-10">
-          {[
-            { co: 'Toyota Motor Canada', detail: 'Commercial deal signed · Agility Digit humanoid robots deployed on production line · Feb 2026' },
-            { co: 'DHL Group', detail: 'MOU signed · 1,000+ Boston Dynamics robots across global network · May 2025' },
-            { co: 'Figure AI × BMW', detail: '90,000 parts unloaded · largest humanoid output in any automotive plant · 2025' },
-          ].map(({ co, detail }) => (
-            <div key={co} className="flex-1 px-0 sm:px-6 first:pl-0 last:pr-0 py-3 sm:py-0">
-              <p className="text-xs font-semibold text-neutral-800 font-manrope mb-1">{co}</p>
-              <p className="text-[11px] text-neutral-400 font-manrope leading-snug">{detail}</p>
-            </div>
-          ))}
-        </div>
-
-        {/* Jensen Huang quote */}
-        <div className="rounded-2xl bg-neutral-950 px-8 py-7 mb-6 flex flex-col sm:flex-row sm:items-center gap-5">
-          <span className="text-5xl text-neutral-700 font-serif leading-none shrink-0">&ldquo;</span>
-          <div className="flex-1">
-            <p className="text-white text-xl font-manrope font-light leading-snug mb-3">
-              Physical AI has arrived — every industrial company will become a robotics company.
-            </p>
-            <p className="text-neutral-500 text-[10px] uppercase tracking-widest font-manrope">Jensen Huang · CEO, NVIDIA · GTC 2026</p>
-          </div>
         </div>
 
         {/* Case study + quote grid */}
