@@ -133,11 +133,22 @@ export default function SoftwareDivisionPage() {
         <div className="max-w-[82rem] mx-auto">
 
           {/* Power headline */}
-          <div className="max-w-4xl mb-20">
-            <p className="text-xs uppercase tracking-[0.25em] text-[#999] font-manrope mb-5">What we do</p>
-            <h2 className="font-manrope font-semibold text-[#111] tracking-tighter leading-[1.05]" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}>
-              Retool for the next generation.<br />Without rebuilding from scratch.
-            </h2>
+          <div className="flex flex-col md:flex-row md:items-end gap-10 mb-20">
+            <div className="flex-1">
+              <p className="text-xs uppercase tracking-[0.25em] text-[#999] font-manrope mb-5">What we do</p>
+              <h2 className="font-manrope font-semibold text-[#111] tracking-tighter leading-[1.05]" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}>
+                Retool for the next generation.<br />Without rebuilding from scratch.
+              </h2>
+            </div>
+            {/* Jensen Huang */}
+            <div className="shrink-0 w-56 md:w-64 lg:w-72 rounded-2xl overflow-hidden self-stretch md:self-auto">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="/media/Jensen%20Huang.jpeg"
+                alt="Jensen Huang, CEO of NVIDIA"
+                className="block w-full h-full object-cover object-top"
+              />
+            </div>
           </div>
 
           {/* Capability grid */}
