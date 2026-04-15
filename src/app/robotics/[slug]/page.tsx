@@ -81,10 +81,10 @@ export default function VendorPage({ params }: { params: { slug: string } }) {
     <div className="min-h-screen bg-black text-white">
       <SoftDevHeader />
 
-      <main className="max-w-4xl mx-auto px-6 pt-32 pb-24">
+      <main className="max-w-6xl mx-auto px-6 pt-32 pb-24">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-xs text-neutral-600 mb-8 font-manrope">
+        <nav className="flex items-center gap-2 text-xs text-neutral-600 mb-10 font-manrope">
           <Link href="/robotics" className="hover:text-neutral-400 transition-colors">Robotics</Link>
           <span>/</span>
           <Link href={`/robotics/categories/${vendor.category}`} className="hover:text-neutral-400 transition-colors">
@@ -94,47 +94,64 @@ export default function VendorPage({ params }: { params: { slug: string } }) {
           <span className="text-neutral-400">{vendor.name}</span>
         </nav>
 
-        {/* Hero image */}
-        {heroImage && (
-          <div className="relative w-full h-64 sm:h-80 rounded-2xl overflow-hidden mb-10 bg-neutral-900">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={heroImage} alt={`${vendor.name} robot`}
-              className="w-full h-full object-cover object-top" />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
-            <div className="absolute bottom-5 left-6 flex flex-wrap gap-2">
-              <span className="text-[10px] uppercase tracking-widest bg-black/60 border border-neutral-700 text-neutral-300 rounded-full px-3 py-1 font-manrope backdrop-blur-sm">
-                {catLabel}
-              </span>
-              <span className="text-[10px] uppercase tracking-widest bg-black/60 border border-neutral-700 text-neutral-400 rounded-full px-3 py-1 font-manrope backdrop-blur-sm">
-                {BUY_PATH_LABELS[vendor.buyPath]}
-              </span>
-            </div>
-          </div>
-        )}
+        {/* ── Two-column hero: left info · right full robot image ── */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center mb-16">
 
-        {/* Header */}
-        <div className="mb-10">
-          {!heroImage && (
-            <div className="flex flex-wrap items-center gap-2 mb-4">
+          {/* Left: vendor identity + CTAs */}
+          <div>
+            <div className="flex flex-wrap gap-2 mb-5">
               <span className="text-[10px] uppercase tracking-widest border border-neutral-800 text-neutral-500 rounded-full px-3 py-1 font-manrope">
                 {catLabel}
               </span>
-              <span className="text-[10px] uppercase tracking-widest border rounded-full px-3 py-1 font-manrope text-neutral-400 border-neutral-700">
+              <span className="text-[10px] uppercase tracking-widest border border-neutral-700 text-neutral-400 rounded-full px-3 py-1 font-manrope">
                 {BUY_PATH_LABELS[vendor.buyPath]}
               </span>
+              {vendor.leadTime && (
+                <span className="text-[10px] uppercase tracking-widest text-neutral-500 font-manrope border border-neutral-800 rounded-full px-3 py-1">
+                  Lead time: {vendor.leadTime}
+                </span>
+              )}
             </div>
-          )}
-          <div className="flex items-start justify-between gap-4 flex-wrap">
-            <h1 className="text-3xl md:text-4xl font-semibold font-manrope text-white">{vendor.name}</h1>
-            {vendor.leadTime && (
-              <span className="text-[10px] uppercase tracking-widest text-neutral-500 font-manrope border border-neutral-800 rounded-full px-3 py-1 mt-1">
-                Lead time: {vendor.leadTime}
-              </span>
+
+            <h1 className="text-4xl md:text-5xl font-semibold font-manrope text-white leading-tight mb-4">
+              {vendor.name}
+            </h1>
+
+            {vendor.procurementNotes && (
+              <p className="text-neutral-400 text-sm font-manrope leading-relaxed mb-8">
+                {vendor.procurementNotes}
+              </p>
+            )}
+
+            <div className="flex flex-wrap gap-3">
+              <Link href={ctaHref}
+                className="inline-flex items-center justify-center bg-white text-black rounded-lg px-6 py-2.5 text-sm font-semibold font-manrope hover:bg-neutral-100 transition-colors">
+                Get a Quote →
+              </Link>
+              <Link href="/pilot"
+                className="inline-flex items-center justify-center border border-neutral-700 text-neutral-300 rounded-lg px-6 py-2.5 text-sm font-manrope hover:border-neutral-500 hover:text-white transition-colors">
+                30-Day Pilot
+              </Link>
+            </div>
+          </div>
+
+          {/* Right: full robot image — object-contain, no cropping */}
+          <div className="flex items-center justify-center rounded-2xl bg-neutral-950 border border-neutral-900 overflow-hidden"
+            style={{ minHeight: '360px' }}>
+            {heroImage ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={heroImage}
+                alt={`${vendor.name} robot`}
+                className="w-full max-h-[480px] object-contain p-6"
+              />
+            ) : (
+              <div className="flex flex-col items-center justify-center gap-2 p-10 text-center">
+                <p className="text-neutral-700 text-xs uppercase tracking-widest font-manrope">{catLabel}</p>
+                <p className="text-neutral-600 text-xs font-manrope mt-1">{vendor.name}</p>
+              </div>
             )}
           </div>
-          {vendor.procurementNotes && (
-            <p className="text-neutral-400 text-sm font-manrope leading-relaxed max-w-2xl mt-3">{vendor.procurementNotes}</p>
-          )}
         </div>
 
         {/* Products */}
