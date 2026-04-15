@@ -1163,12 +1163,12 @@ export const VENDORS: Vendor[] = [
     buyPath: 'dealer_only',
     contacts: [{ label: 'Website', value: 'store.dji.com/agras', href: 'https://store.dji.com/category/agriculture' }],
     products: [
-      { name: 'Agras T20P', price: '~$10,499', status: 'in_stock', orderUrl: 'https://www.dji.com/t20p', notes: '20 kg spray payload; 25 kg (35 L) spread payload; quad-rotor tilted truss design; folds 77% smaller; Dual Atomized Spraying System; Active Phased Array Radar + Binocular Vision; IPX6K; DJI Terra mapping.', image: '/media/dji-agras-t20p.png' },
-      { name: 'Agras T25', price: '~$10,999', status: 'in_stock', orderUrl: 'https://store.dji.com/category/agriculture', notes: '20 L tank; 16-nozzle; mid-range spraying drone.', image: '/media/DJI Agras T25.webp' },
-      { name: 'Agras T40', price: '~$13,499', status: 'in_stock', orderUrl: 'https://www.dji.com/t40', notes: '40 kg spray payload; 50 kg (70 L) spread payload; Coaxial Twin Rotor design; Dual Atomized Spraying System; Active Phased Array Radar + Binocular Vision; Core Modules IPX6K; EFI Generator (15% fuel saving); DJI Terra mapping.', image: '/media/DJI Agras T40.webp' },
+      { name: 'Agras T20P', price: '$10,499', status: 'not_available', orderUrl: 'https://www.dji.com/t20p', notes: 'Smart farming; intelligent spray systems; lightweight design; perfect for beginners or veterans. 20 kg spray payload; 25 kg (35 L) spread payload; quad-rotor tilted truss design; folds 77% smaller; Dual Atomized Spraying System; Active Phased Array Radar + Binocular Vision; IPX6K; DJI Terra mapping.', image: '/media/dji-agras-t20p.png' },
+      { name: 'Agras T25', price: '$10,999', status: 'not_available', orderUrl: 'https://store.dji.com/category/agriculture', notes: 'Spot spraying & small-field operations; single-operator; longer battery life; quicker charging. 20 L tank; 16-nozzle system.', image: '/media/DJI Agras T25.webp' },
+      { name: 'Agras T40', price: '$13,499', status: 'not_available', orderUrl: 'https://www.dji.com/t40', notes: 'Proven leader with millions of acres sprayed; dependable powertrain; choice of custom applicators. 40 kg spray payload; 50 kg (70 L) spread payload; Coaxial Twin Rotor design; Dual Atomized Spraying System; Active Phased Array Radar + Binocular Vision; Core Modules IPX6K; EFI Generator (15% fuel saving); DJI Terra mapping.', image: '/media/DJI Agras T40.webp' },
       { name: 'Agras T50', price: '$30,999', status: 'in_stock', orderUrl: 'https://store.dji.com/category/agriculture', notes: '40 L tank; 16-nozzle; dual atomizing; 50 kg MTOW; large farms.', image: '/media/DJI Agras T50.webp' },
     ],
-    procurementNotes: 'Agricultural drone spraying and spreading. Available through DJI authorized agricultural dealers.',
+    procurementNotes: 'Agricultural drone spraying and spreading. T20P, T25, and T40 currently out of stock at Agri Spray Drones (shop.agrispraydrones.com). Contact dealer for restock or alternative fulfillment.',
   },
   {
     id: 'burro',
