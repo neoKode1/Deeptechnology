@@ -18,6 +18,7 @@ export const VENDOR_IMAGES: Record<string, string> = {
   'agibot':             '/media/AgiBot1.png',
   'pal-robotics':       '/media/PAL%20Robotics-TIAGo-Robot.webp',
   '1x':                 '/media/1X%20Technologies.avif',
+  'fauna':              '/media/Fauna sprout.webp',
   // ── Delivery ────────────────────────────────────────────────────────────
   'serve':              '/media/Serve-Gen-2-left-and-Gen-3-robots.jpg',
   'kiwibot':            '/media/Kiwibot.jpg',

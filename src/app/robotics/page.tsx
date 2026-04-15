@@ -462,15 +462,15 @@ export default function RoboticsDivisionHome() {
         </div>
         {/* Row 3: 2 new humanoid images */}
         <div className="grid grid-cols-2 gap-2 mt-2" style={{ height: 'clamp(180px, 22vw, 300px)' }}>
-          <Link href="/robotics/categories/humanoid" className="overflow-hidden rounded-lg robo-img-wrap block">
+          <Link href="/robotics/fauna" className="overflow-hidden rounded-lg robo-img-wrap block">
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src="/media/fauna_sprout_3.webp"
-              alt="Fauna Robotics Sprout — consumer humanoid, an Amazon company"
+              alt="Fauna Robotics Sprout — consumer humanoid, assembled in America"
               className="robo-img"
             />
             <div className="robo-overlay">
-              <p className="robo-overlay-vendor">Fauna Robotics · Amazon</p>
+              <p className="robo-overlay-vendor">Fauna Robotics</p>
               <p className="robo-overlay-name">Sprout Creator Edition</p>
               <p className="robo-overlay-price">Consumer Humanoid · Contact for Pricing</p>
               <span className="robo-overlay-cta">View Details →</span>

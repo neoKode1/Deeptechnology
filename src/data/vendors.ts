@@ -120,6 +120,20 @@ export const VENDORS: Vendor[] = [
     ],
     procurementNotes: 'Enterprise pilot/deployment contracts only. No public price. Estimated $70K–$150K+ per unit. Notable: 11-month BMW Spartanburg deployment (30K cars). Web form → Sales review → Pilot.',
   },
+  {
+    id: 'fauna',
+    name: 'Fauna Robotics',
+    category: 'humanoid',
+    buyPath: 'email_required',
+    contacts: [
+      { label: 'Request Robot', value: 'faunarobotics.com', href: 'https://faunarobotics.com' },
+    ],
+    products: [
+      { name: 'Sprout Creator Edition', price: 'Contact for Pricing', status: 'quote_required', notes: 'Developer / creator access edition. Designed for early adopters building applications on Sprout. Bipedal consumer humanoid; designed in New York City, assembled in America.', image: '/media/fauna_sprout_3.webp' },
+      { name: 'Sprout', price: 'Contact for Pricing', status: 'quote_required', notes: 'Consumer humanoid robot. Autonomous navigation; human-scale dexterity; home and light commercial use cases. Assembled in America.', image: '/media/Fauna sprout.webp' },
+    ],
+    procurementNotes: 'Fauna Robotics is a US-based humanoid startup building consumer-grade bipedal robots. The Sprout Creator Edition is their developer access program — submit a "Request Robot" form on faunarobotics.com. Designed in New York City, assembled in America. Backed by Amazon (Alexa Fund). No public pricing; sourcing requires direct outreach.',
+  },
 
   // ─── DELIVERY ───────────────────────────────────────────────────────────────
   {
