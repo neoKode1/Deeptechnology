@@ -75,14 +75,21 @@ function ContactPageInner() {
   const [intake, setIntake] = useState<IntakeFields>({ ...EMPTY_INTAKE });
   const [status, setStatus] = useState<Status>('idle');
   const [errorMsg, setErrorMsg] = useState('');
+  const [vendorContext, setVendorContext] = useState('');
+  const [interestType, setInterestType] = useState('');
   const searchParams = useSearchParams();
 
-  /* Pre-fill inquiry type from URL — e.g. /contact?inquiry=robotics */
+  /* Pre-fill inquiry type, vendor context, and interest type from URL params */
   useEffect(() => {
-    const param = searchParams.get('inquiry');
-    if (param === 'robotics') {
+    const inquiry = searchParams.get('inquiry');
+    const vendor  = searchParams.get('vendor');
+    const interest = searchParams.get('interest');
+
+    if (inquiry === 'robotics') {
       setForm((prev) => ({ ...prev, inquiry: 'Autonomous solutions' }));
     }
+    if (vendor)   setVendorContext(decodeURIComponent(vendor));
+    if (interest) setInterestType(interest);
   }, [searchParams]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -112,7 +119,7 @@ function ContactPageInner() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, intake }),
+        body: JSON.stringify({ ...form, intake, vendorContext, interestType }),
       });
       const data = await res.json();
       if (!res.ok || !data.success) throw new Error(data.message || 'Something went wrong.');
@@ -178,6 +185,30 @@ function ContactPageInner() {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="flex flex-col gap-8 max-w-2xl">
+
+            {/* Vendor context banner — shown when arriving from a Coming Soon or Sourcing vendor page */}
+            {vendorContext && (
+              <div className={`flex items-start gap-3 px-4 py-3 rounded-sm border text-sm font-manrope ${
+                interestType === 'coming_soon'
+                  ? 'bg-neutral-50 border-neutral-200 text-[#555]'
+                  : interestType === 'sourcing'
+                  ? 'bg-amber-50 border-amber-200 text-amber-800'
+                  : 'bg-[#f9f9f9] border-[#eee] text-[#555]'
+              }`}>
+                <span className="mt-0.5 text-base leading-none">
+                  {interestType === 'coming_soon' ? '⏳' : interestType === 'sourcing' ? '🔄' : '🤖'}
+                </span>
+                <div>
+                  <span className="font-semibold text-[#111]">{vendorContext}</span>
+                  {interestType === 'coming_soon' && (
+                    <span className="ml-2 text-xs text-neutral-500">Early Access Registration — we&apos;ll notify you when sourcing opens.</span>
+                  )}
+                  {interestType === 'sourcing' && (
+                    <span className="ml-2 text-xs text-amber-700">Sourcing Queue — our team will prioritize your inquiry.</span>
+                  )}
+                </div>
+              </div>
+            )}
 
             {/* Row 1: First / Last name */}
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
