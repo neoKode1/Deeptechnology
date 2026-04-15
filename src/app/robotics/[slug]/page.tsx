@@ -162,53 +162,54 @@ export default function VendorPage({ params }: { params: { slug: string } }) {
               const productSlug = p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
               const productHref = `/robotics/${vendor.id}/${productSlug}`;
 
-              const inner = (
-                <>
-                  {/* Thumbnail */}
-                  {p.image ? (
-                    <div className="w-14 h-14 shrink-0 rounded-lg overflow-hidden bg-neutral-900 border border-neutral-800">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={p.image} alt={p.name} className="w-full h-full object-cover object-center" />
-                    </div>
-                  ) : (
-                    <div className="w-14 h-14 shrink-0 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center">
-                      <span className="text-neutral-700 text-[10px] font-manrope">No img</span>
-                    </div>
-                  )}
+              const thumbnail = p.image ? (
+                <div className="w-14 h-14 shrink-0 rounded-lg overflow-hidden bg-neutral-900 border border-neutral-800">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={p.image} alt={p.name} className="w-full h-full object-cover object-center" />
+                </div>
+              ) : (
+                <div className="w-14 h-14 shrink-0 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center">
+                  <span className="text-neutral-700 text-[10px] font-manrope">No img</span>
+                </div>
+              );
 
-                  {/* Name + notes */}
+              const meta = (
+                <div className="relative z-10 flex flex-col items-end gap-2 shrink-0">
+                  <span className="text-sm font-semibold text-white font-manrope tabular-nums">{p.price}</span>
+                  <span className={`text-[10px] uppercase tracking-wider border rounded-full px-2 py-0.5 font-manrope ${STATUS_STYLES[p.status]}`}>
+                    {STATUS_LABELS[p.status]}
+                  </span>
+                  {p.orderUrl && p.status !== 'not_available' && (
+                    <a href={p.orderUrl} target="_blank" rel="noopener noreferrer"
+                      className="text-[10px] text-white bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 rounded-full px-3 py-1 font-manrope transition-colors">
+                      {p.status === 'raas' ? 'Request RaaS →' : p.status === 'pre_order' ? 'Pre-Order →' : 'Order →'}
+                    </a>
+                  )}
+                  {p.image && <span className="text-[10px] text-neutral-600 font-manrope">View details →</span>}
+                </div>
+              );
+
+              return p.image ? (
+                /* Overlay pattern: Link covers the whole row; Order button sits above it via z-10 */
+                <div key={p.name} className="relative flex items-center gap-4 px-4 py-3 bg-neutral-950 hover:bg-neutral-900 transition-colors">
+                  <Link href={productHref} className="absolute inset-0" aria-label={`View ${p.name}`} />
+                  {thumbnail}
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-white font-manrope">{p.name}</p>
                     {p.notes   && <p className="text-xs text-neutral-600 mt-0.5 font-manrope">{p.notes}</p>}
                     {p.deposit && <p className="text-xs text-yellow-600 mt-0.5 font-manrope">Deposit: {p.deposit}</p>}
                   </div>
-
-                  {/* Price + status + CTA */}
-                  <div className="flex flex-col items-end gap-2 shrink-0">
-                    <span className="text-sm font-semibold text-white font-manrope tabular-nums">{p.price}</span>
-                    <span className={`text-[10px] uppercase tracking-wider border rounded-full px-2 py-0.5 font-manrope ${STATUS_STYLES[p.status]}`}>
-                      {STATUS_LABELS[p.status]}
-                    </span>
-                    {p.orderUrl && p.status !== 'not_available' && (
-                      <a href={p.orderUrl} target="_blank" rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="text-[10px] text-white bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 rounded-full px-3 py-1 font-manrope transition-colors">
-                        {p.status === 'raas' ? 'Request RaaS →' : p.status === 'pre_order' ? 'Pre-Order →' : 'Order →'}
-                      </a>
-                    )}
-                    {p.image && <span className="text-[10px] text-neutral-600 font-manrope">View details →</span>}
-                  </div>
-                </>
-              );
-
-              return p.image ? (
-                <Link key={p.name} href={productHref}
-                  className="flex items-center gap-4 px-4 py-3 bg-neutral-950 hover:bg-neutral-900 cursor-pointer transition-colors">
-                  {inner}
-                </Link>
+                  {meta}
+                </div>
               ) : (
                 <div key={p.name} className="flex items-center gap-4 px-4 py-3 bg-neutral-950 transition-colors">
-                  {inner}
+                  {thumbnail}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-white font-manrope">{p.name}</p>
+                    {p.notes   && <p className="text-xs text-neutral-600 mt-0.5 font-manrope">{p.notes}</p>}
+                    {p.deposit && <p className="text-xs text-yellow-600 mt-0.5 font-manrope">Deposit: {p.deposit}</p>}
+                  </div>
+                  {meta}
                 </div>
               );
             })}
