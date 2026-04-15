@@ -158,27 +158,60 @@ export default function VendorPage({ params }: { params: { slug: string } }) {
         <section className="mb-10">
           <h2 className="text-xs uppercase tracking-widest text-neutral-600 mb-4 font-manrope">Products & Pricing</h2>
           <div className="divide-y divide-neutral-900 border border-neutral-900 rounded-xl overflow-hidden">
-            {vendor.products.map((p) => (
-              <div key={p.name} className="flex items-start justify-between gap-4 px-5 py-4 bg-neutral-950 hover:bg-neutral-900 transition-colors">
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-white font-manrope">{p.name}</p>
-                  {p.notes   && <p className="text-xs text-neutral-600 mt-0.5 font-manrope">{p.notes}</p>}
-                  {p.deposit && <p className="text-xs text-yellow-600 mt-0.5 font-manrope">Deposit: {p.deposit}</p>}
-                </div>
-                <div className="flex flex-col items-end gap-2 shrink-0">
-                  <span className="text-sm font-semibold text-white font-manrope tabular-nums">{p.price}</span>
-                  <span className={`text-[10px] uppercase tracking-wider border rounded-full px-2 py-0.5 font-manrope ${STATUS_STYLES[p.status]}`}>
-                    {STATUS_LABELS[p.status]}
-                  </span>
-                  {p.orderUrl && p.status !== 'not_available' && (
-                    <a href={p.orderUrl} target="_blank" rel="noopener noreferrer"
-                      className="text-[10px] text-white bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 rounded-full px-3 py-1 font-manrope transition-colors">
-                      {p.status === 'raas' ? 'Request RaaS →' : p.status === 'pre_order' ? 'Pre-Order →' : 'Order →'}
-                    </a>
+            {vendor.products.map((p) => {
+              const productSlug = p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+              const productHref = `/robotics/${vendor.id}/${productSlug}`;
+
+              const inner = (
+                <>
+                  {/* Thumbnail */}
+                  {p.image ? (
+                    <div className="w-14 h-14 shrink-0 rounded-lg overflow-hidden bg-neutral-900 border border-neutral-800">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img src={p.image} alt={p.name} className="w-full h-full object-cover object-center" />
+                    </div>
+                  ) : (
+                    <div className="w-14 h-14 shrink-0 rounded-lg bg-neutral-900 border border-neutral-800 flex items-center justify-center">
+                      <span className="text-neutral-700 text-[10px] font-manrope">No img</span>
+                    </div>
                   )}
+
+                  {/* Name + notes */}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-white font-manrope">{p.name}</p>
+                    {p.notes   && <p className="text-xs text-neutral-600 mt-0.5 font-manrope">{p.notes}</p>}
+                    {p.deposit && <p className="text-xs text-yellow-600 mt-0.5 font-manrope">Deposit: {p.deposit}</p>}
+                  </div>
+
+                  {/* Price + status + CTA */}
+                  <div className="flex flex-col items-end gap-2 shrink-0">
+                    <span className="text-sm font-semibold text-white font-manrope tabular-nums">{p.price}</span>
+                    <span className={`text-[10px] uppercase tracking-wider border rounded-full px-2 py-0.5 font-manrope ${STATUS_STYLES[p.status]}`}>
+                      {STATUS_LABELS[p.status]}
+                    </span>
+                    {p.orderUrl && p.status !== 'not_available' && (
+                      <a href={p.orderUrl} target="_blank" rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="text-[10px] text-white bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 rounded-full px-3 py-1 font-manrope transition-colors">
+                        {p.status === 'raas' ? 'Request RaaS →' : p.status === 'pre_order' ? 'Pre-Order →' : 'Order →'}
+                      </a>
+                    )}
+                    {p.image && <span className="text-[10px] text-neutral-600 font-manrope">View details →</span>}
+                  </div>
+                </>
+              );
+
+              return p.image ? (
+                <Link key={p.name} href={productHref}
+                  className="flex items-center gap-4 px-4 py-3 bg-neutral-950 hover:bg-neutral-900 cursor-pointer transition-colors">
+                  {inner}
+                </Link>
+              ) : (
+                <div key={p.name} className="flex items-center gap-4 px-4 py-3 bg-neutral-950 transition-colors">
+                  {inner}
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
