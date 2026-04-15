@@ -228,7 +228,7 @@ export default function SoftwareDivisionPage() {
                   <img
                     src={proj.img}
                     alt={proj.title}
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-in-out"
+                    className="block w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-700 ease-in-out"
                   />
                   {proj.domain && (
                     <span className="absolute top-3 right-3 bg-black/70 text-white text-[10px] font-mono uppercase tracking-wider px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity">
