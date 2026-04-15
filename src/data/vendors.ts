@@ -1249,13 +1249,43 @@ export const VENDORS: Vendor[] = [
     name: 'VideoRay',
     category: 'underwater',
     buyPath: 'email_required',
-    contacts: [{ label: 'Website', value: 'videoray.com', href: 'https://videoray.com' }],
-    products: [
-      { name: 'Scout ROV', price: '~$15,000', status: 'quote_required', image: '/media/VideoRay.webp' },
-      { name: 'Pro 4', price: '~$40,000', status: 'quote_required', image: '/media/VideoRay.webp' },
-      { name: 'Defender', price: '~$75,000', status: 'quote_required', image: '/media/VideoRay.webp' },
+    leadTime: 'Quote required — 8–16 weeks typical',
+    contacts: [
+      { label: 'Website', value: 'videoray.com', href: 'https://www.videoray.com' },
+      { label: 'Sales', value: 'sales@videoray.com', href: 'mailto:sales@videoray.com' },
+      { label: 'Phone', value: '+1 610-458-3000', href: 'tel:+16104583000' },
     ],
-    procurementNotes: 'US Navy supplier. Professional and defense ROVs.',
+    products: [
+      {
+        name: 'Mission Specialist Wraith',
+        price: 'Quote required',
+        status: 'quote_required',
+        notes: 'Next-generation ROV with extreme agility. Compact, vectored-thruster design optimised for confined spaces and high-current environments. Depth rating 305 m.',
+        image: '/media/wraith-isolated-sm-mm-1.webp',
+      },
+      {
+        name: 'Mission Specialist Ally',
+        price: 'Quote required',
+        status: 'quote_required',
+        notes: 'Designed for optimal power and lift. Heavy-lift configuration with modular payload bay; ideal for cable-laying, object recovery, and intervention tasks.',
+        image: '/media/ally-edited-2.webp',
+      },
+      {
+        name: 'Mission Specialist Defender',
+        price: 'Quote required',
+        status: 'quote_required',
+        notes: 'Designed for heavier payloads and demanding intervention. Maximum thrust configuration; supports manipulator arms, sonar, and multi-tool payloads. Depth rating 305 m.',
+        image: '/media/DEFENDER-edited-4.webp',
+      },
+      {
+        name: 'Mission Specialist Pro 5',
+        price: 'Quote required',
+        status: 'quote_required',
+        notes: 'Small-footprint ROV with optimal performance features. 8-thruster vectored system; modular design; supports 4K camera, sonar, and positioning payloads.',
+        image: '/media/VideoRay.webp',
+      },
+    ],
+    procurementNotes: 'US-based ROV manufacturer (Malvern, PA). Supplier to the US Navy, NATO, and commercial offshore sectors. All Mission Specialist Series vehicles share a modular architecture — payloads, thrusters, and sensors can be swapped in the field. Contact sales@videoray.com or +1 610-458-3000 for configuration and quote.',
   },
 
   // ─── EXOSKELETON ─────────────────────────────────────────────────────────────
