@@ -25,31 +25,36 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">1. Information We Collect</h2>
-            <p>When you use our contact form or request a quote, we collect your name, email address, and the details of your inquiry. We do not collect personal data beyond what you voluntarily provide.</p>
+            <p>When you use our contact form, request a quote, or interact with our AI assistant (Nimbus), we may collect your name, email address, and the details of your inquiry. If you provide your email during a Nimbus chat session, it is stored to enable follow-up and to provide continuity in your consultation. We do not collect personal data beyond what you voluntarily provide.</p>
           </section>
 
           <section>
-            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">2. How We Use Your Information</h2>
+            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">2. AI Chat & Conversation Data</h2>
+            <p>Our AI assistant (Nimbus) is powered by Anthropic Claude. Conversation histories are stored in an encrypted, temporary cache for up to 7 days to provide session continuity. If you share an email address during a chat session, it is used solely to follow up on your inquiry and is not shared with third parties or used for marketing without your consent. We do not train AI models on your conversation content.</p>
+          </section>
+
+          <section>
+            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">3. How We Use Your Information</h2>
             <p>We use the information you provide to respond to inquiries, generate quotes, process payments through Stripe, and communicate about our services. We do not sell, rent, or share your personal data with third parties for marketing purposes.</p>
           </section>
 
           <section>
-            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">3. Payment Processing</h2>
+            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">4. Payment Processing</h2>
             <p>Payments are processed securely through Stripe. We do not store credit card numbers or sensitive payment details on our servers. All payment data is handled directly by Stripe in accordance with PCI-DSS standards.</p>
           </section>
 
           <section>
-            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">4. Cookies & Analytics</h2>
+            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">5. Cookies & Analytics</h2>
             <p>This site uses essential cookies required for functionality. We may use privacy-respecting analytics to understand site usage. No third-party advertising trackers are used.</p>
           </section>
 
           <section>
-            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">5. Data Retention</h2>
+            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">6. Data Retention</h2>
             <p>We retain your information only as long as necessary to fulfill the purposes outlined in this policy or as required by law. You may request deletion of your data at any time by contacting us.</p>
           </section>
 
           <section>
-            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">6. Cancellation & Refund Data</h2>
+            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">7. Cancellation & Refund Data</h2>
             <p>When you cancel an order, we retain the cancellation record (reason, refund amount, and timestamp) as part of your order history. Stripe processes and retains refund transaction data in accordance with their privacy policy and PCI-DSS requirements. We do not store your payment card details at any point.</p>
           </section>
 
