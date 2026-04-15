@@ -211,7 +211,7 @@ export default function RoboticsDivisionHome() {
             {[
               ['Environment-First', 'Our methodology'],
               ['Vendor-Agnostic', 'No manufacturer bias'],
-              ['6+', 'Environment types deployed'],
+              ['6+', 'Environment types we source for'],
               ['End-to-End', 'Assess · Source · Integrate'],
             ].map(([stat, label]) => (
               <div key={label} className="p-4 sm:p-6 rounded-xl border border-neutral-200 bg-white/70 backdrop-blur-md shadow-sm">
@@ -246,7 +246,7 @@ export default function RoboticsDivisionHome() {
 
       {/* ── DELIVERY SYSTEMS ── */}
       <section id="delivery-systems" className="px-4 sm:px-6 md:px-12 lg:px-20 py-14 sm:py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
-        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-400">In the Field</p>
+        <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-400">What We Source</p>
         <p className="text-neutral-500 text-sm max-w-lg leading-relaxed mb-12">
           Sidewalk bots, road hybrids, and autonomous delivery vehicles — operating across urban corridors, bike lanes, and last-mile routes.
         </p>
@@ -310,7 +310,7 @@ export default function RoboticsDivisionHome() {
       <section id="roi-calculator" className="px-4 sm:px-6 md:px-12 lg:px-20 py-14 sm:py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
         <p className="text-[10px] sm:text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-400">Model Your Deployment</p>
         <p className="text-neutral-500 text-sm max-w-lg leading-relaxed mb-10">
-          Use the calculator below to estimate monthly profit from skid commission earnings against your fleet lease or purchase cost — before you ever talk to us.
+          Model your deployment economics — estimate revenue potential against fleet lease or purchase cost before you ever talk to us.
         </p>
         <RoiCalculator />
       </section>
@@ -732,7 +732,7 @@ export default function RoboticsDivisionHome() {
           {[
             { label: 'Unitree G1 vs Boston Dynamics Spot', href: '/compare/unitree-vs-boston-dynamics' },
             { label: 'Agility Digit vs Figure 03', href: '/compare/agility-vs-figure' },
-            { label: 'Kiwibot Leap vs Serve Gen 3', href: '/compare/kiwibot-vs-serve' },
+            { label: 'Kiwibot S3 vs Serve Gen 3', href: '/compare/kiwibot-vs-serve' },
           ].map(({ label, href }) => (
             <a
               key={href}
