@@ -119,7 +119,7 @@ export default function PilotPage() {
             <CheckCircle2 className="w-10 h-10 text-green-500 mx-auto mb-4" />
             <h2 className="text-xl font-semibold text-white font-manrope mb-2">Request received.</h2>
             <p className="text-neutral-400 text-sm font-manrope">
-              We'll review your submission and reach out within <strong className="text-white">24 hours</strong> to
+              We&apos;ll review your submission and reach out within <strong className="text-white">24 hours</strong> to
               schedule your kickoff call. Check your email for a confirmation.
             </p>
           </div>

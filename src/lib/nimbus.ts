@@ -105,10 +105,8 @@ function buildSourcingPrompt(req: SourcingRequest, sessionId: string): string {
     if (i.timeline) lines.push(`Timeline: ${i.timeline}`);
   }
 
-  // Inject vendor intelligence — focus on autonomous/humanoid for robot inquiries
-  const vendorCategory: Vendor['category'] | undefined =
-    req.inquiry === 'Autonomous solutions' ? undefined : undefined; // full list for now
-  lines.push('', buildVendorContext(vendorCategory));
+  // Inject full vendor intelligence for all inquiry types
+  lines.push('', buildVendorContext());
 
   const callbackUrl = process.env.NEXT_PUBLIC_BASE_URL
     ? `${process.env.NEXT_PUBLIC_BASE_URL}/api/nimbus/callback`

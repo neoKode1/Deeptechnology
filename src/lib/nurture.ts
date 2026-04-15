@@ -43,8 +43,8 @@ export async function roiNurture({ resend, email, units, monthlyProfit, fmt }: R
     to: email,
     subject: `Re: your ${units}-robot ROI model — one quick question`,
     scheduledAt: daysFromNow(3),
-    html: roiD3Html({ units, profit, plural }),
-    text: roiD3Text({ units, profit, plural }),
+    html: roiD3Html({ units, profit }),
+    text: roiD3Text({ units, profit }),
   });
 
   // D+7 — deployment urgency
@@ -53,8 +53,8 @@ export async function roiNurture({ resend, email, units, monthlyProfit, fmt }: R
     to: email,
     subject: `Deployment window closing — ${units} robot${plural} → ${profit}/mo`,
     scheduledAt: daysFromNow(7),
-    html: roiD7Html({ units, profit, plural }),
-    text: roiD7Text({ units, profit, plural }),
+    html: roiD7Html({ units, profit }),
+    text: roiD7Text({ units, profit }),
   });
 
   // D+14 — personal note from Chad
@@ -249,7 +249,7 @@ export async function deployedRetention({ resend, email, customerName, quoteId }
 
 // ─── ROI templates ───────────────────────────────────────────────────────────
 
-function roiD3Html({ units, profit, plural }: { units: number; profit: string; plural: string }) {
+function roiD3Html({ units, profit }: { units: number; profit: string }) {
   return `<div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:560px;margin:0 auto;padding:36px;background:#fff;border:1px solid #eee;border-radius:8px;color:#333;">
   <p style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#999;margin:0 0 16px;">Deep Tech · Follow-up</p>
   <h2 style="color:#111;margin:0 0 12px;font-size:20px;">Quick check-in on your robot ROI</h2>
@@ -263,10 +263,10 @@ function roiD3Html({ units, profit, plural }: { units: number; profit: string; p
 </div>`;
 }
 
-function roiD3Text({ units, profit, plural }: { units: number; profit: string; plural: string }) {
+function roiD3Text({ units, profit }: { units: number; profit: string }) {
   return `Hi,
 
-Three days ago you modeled a ${units}-robot fleet${plural ? 's' : ''} projecting ${profit}/mo in profit.
+Three days ago you modeled a ${units}-robot fleet projecting ${profit}/mo in profit.
 
 Have you had a chance to think it over? We can answer your vendor and timeline questions in a 20-minute call, and send sourced quotes within 24 hours.
 
@@ -275,7 +275,7 @@ ${BASE}/contact?inquiry=robotics
 — Deep Tech`;
 }
 
-function roiD7Html({ units, profit, plural }: { units: number; profit: string; plural: string }) {
+function roiD7Html({ units, profit }: { units: number; profit: string }) {
   return `<div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:560px;margin:0 auto;padding:36px;background:#fff;border:1px solid #eee;border-radius:8px;color:#333;">
   <p style="font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#999;margin:0 0 16px;">Deep Tech · Last touch</p>
   <h2 style="color:#111;margin:0 0 12px;font-size:20px;">Deployment window closing for Q${Math.ceil((new Date().getMonth() + 2) / 3)}</h2>
@@ -289,7 +289,7 @@ function roiD7Html({ units, profit, plural }: { units: number; profit: string; p
 </div>`;
 }
 
-function roiD7Text({ units, profit, plural }: { units: number; profit: string; plural: string }) {
+function roiD7Text({ units, profit }: { units: number; profit: string }) {
   return `Hi,
 
 Deployment slots for Q${Math.ceil((new Date().getMonth() + 2) / 3)} are filling up. If you want your ${units}-robot fleet generating ${profit}/mo this quarter, now is the time.

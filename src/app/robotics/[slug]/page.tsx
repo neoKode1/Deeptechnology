@@ -5,6 +5,7 @@ import { VENDORS, BUY_PATH_LABELS, getVendor } from '@/data/vendors';
 import { COMPARISONS } from '@/data/comparisons';
 import { VENDOR_IMAGES } from '@/data/vendor-images';
 import { CATEGORY_META } from '@/data/categories';
+import { toSlug } from '@/lib/utils';
 import SoftDevHeader from '@/components/SoftDevHeader';
 
 /** Pre-render all 85 vendor pages at build time */
@@ -159,7 +160,7 @@ export default function VendorPage({ params }: { params: { slug: string } }) {
           <h2 className="text-xs uppercase tracking-widest text-neutral-600 mb-4 font-manrope">Products & Pricing</h2>
           <div className="divide-y divide-neutral-900 border border-neutral-900 rounded-xl overflow-hidden">
             {vendor.products.map((p) => {
-              const productSlug = p.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+              const productSlug = toSlug(p.name);
               const productHref = `/robotics/${vendor.id}/${productSlug}`;
 
               const thumbnail = p.image ? (

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Film, Video, Camera, Sparkles, X, ChevronLeft, ChevronRight } from 'lucide-react';
@@ -280,42 +280,14 @@ export default function Gallery() {
     }, 2000);
   };
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (!isFullscreen) return;
-      
-      switch (e.key) {
-        case 'Escape':
-          closeFullscreen();
-          break;
-        case 'ArrowLeft':
-          navigateImage(-1);
-          break;
-        case 'ArrowRight':
-          navigateImage(1);
-          break;
-      }
-    };
-
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
-  }, [isFullscreen, selectedImage]);
-
-  const openFullscreen = (index: number) => {
-    setSelectedImage(index);
-    setIsFullscreen(true);
-    document.body.style.overflow = 'hidden';
-  };
-
-  const closeFullscreen = () => {
+  const closeFullscreen = useCallback(() => {
     setIsFullscreen(false);
     setSelectedImage(null);
     document.body.style.overflow = 'unset';
-  };
+  }, []);
 
-  const navigateImage = (direction: number) => {
+  const navigateImage = useCallback((direction: number) => {
     if (selectedImage === null) return;
-    
     const newIndex = selectedImage + direction;
     if (newIndex >= 0 && newIndex < images.length) {
       setSelectedImage(newIndex);
@@ -324,6 +296,25 @@ export default function Gallery() {
     } else {
       setSelectedImage(0);
     }
+  }, [selectedImage, images.length]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isFullscreen) return;
+      switch (e.key) {
+        case 'Escape':     closeFullscreen(); break;
+        case 'ArrowLeft':  navigateImage(-1); break;
+        case 'ArrowRight': navigateImage(1);  break;
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isFullscreen, navigateImage, closeFullscreen]);
+
+  const openFullscreen = (index: number) => {
+    setSelectedImage(index);
+    setIsFullscreen(true);
+    document.body.style.overflow = 'hidden';
   };
 
   return (
@@ -508,7 +499,7 @@ export default function Gallery() {
               Ready to Create Something Amazing?
             </h2>
             <p className="font-body text-xl text-white/80 mb-8">
-              Let's collaborate on your next AI-powered multimedia project. 
+              Let&apos;s collaborate on your next AI-powered multimedia project.
               Bring your vision to life with cutting-edge technology.
             </p>
             <Link 

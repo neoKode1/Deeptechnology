@@ -15,7 +15,7 @@ const redis = new Redis({
  * Per-route sliding-window rate limiters.
  *
  * contact  — 5 submissions / 60 s  (spam protection, Nimbus cost control)
- * chat     — 10 messages / 60 s    (Claude API cost control — most critical)
+ * chat     — 5 messages / 60 s     (Claude API cost control — most critical)
  * checkout — 3 attempts / 60 s     (Stripe probing protection)
  */
 export const limiters = {

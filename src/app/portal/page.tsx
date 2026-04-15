@@ -43,7 +43,7 @@ export default function PortalPage() {
               </h1>
               <p className="text-sm text-neutral-500 font-manrope text-center mb-8 leading-relaxed">
                 Enter the email address you used when placing your order.<br />
-                We'll send you a secure access link.
+                We&apos;ll send you a secure access link.
               </p>
 
               <form onSubmit={handleSubmit} className="space-y-3">
@@ -94,7 +94,7 @@ export default function PortalPage() {
           )}
 
           <p className="text-center mt-10 text-xs text-neutral-700 font-manrope">
-            Don't have an order yet?{' '}
+            Don&apos;t have an order yet?{' '}
             <Link href="/contact" className="text-neutral-500 hover:text-neutral-300 transition-colors underline">
               Get in touch
             </Link>

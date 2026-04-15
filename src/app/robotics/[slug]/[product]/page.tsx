@@ -6,12 +6,7 @@ import SoftDevHeader from '@/components/SoftDevHeader';
 import RobotImageLightbox from '@/components/RobotImageLightbox';
 import { VENDORS } from '@/data/vendors';
 import { VENDOR_IMAGES } from '@/data/vendor-images';
-
-// ── Helpers ──────────────────────────────────────────────────────────────────
-
-function toSlug(name: string) {
-  return name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-}
+import { toSlug } from '@/lib/utils';
 
 // ── Static params ─────────────────────────────────────────────────────────────
 

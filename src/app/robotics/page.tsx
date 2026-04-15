@@ -1,5 +1,3 @@
-'use client';
-
 import SoftDevHeader from '@/components/SoftDevHeader';
 import ParallaxRobot from '@/components/ParallaxRobot';
 import RoiCalculator from '@/components/RoiCalculator';
