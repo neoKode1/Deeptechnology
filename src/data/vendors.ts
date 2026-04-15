@@ -930,15 +930,32 @@ export const VENDORS: Vendor[] = [
   },
   {
     id: 'medtronic-hugo',
-    name: 'Medtronic (Hugo RAS)',
+    name: 'Medtronic',
     category: 'surgical',
     buyPath: 'email_required',
-    contacts: [{ label: 'Website', value: 'medtronic.com', href: 'https://www.medtronic.com' }],
-    products: [
-      { name: 'Hugo RAS System (soft tissue)', price: '~$1,200,000–$1,500,000', status: 'quote_required', notes: 'FDA cleared Dec 2025. First US case Feb 2026 at Cleveland Clinic.', image: '/media/Hugo%20RAS.jpg' },
-      { name: 'Mazor X Stealth Edition (spine)', price: 'Quote', status: 'quote_required', image: '/media/Hugo%20RAS.jpg' },
+    contacts: [
+      { label: 'Website', value: 'medtronic.com/surgical-robotics', href: 'https://www.medtronic.com/en-us/healthcare-professionals/products/surgical-robotics/robotic-systems.html' },
+      { label: 'Contact Sales', value: 'medtronic.com/contact', href: 'https://www.medtronic.com/en-us/about/contact-us.html' },
     ],
-    procurementNotes: 'Contact Medtronic surgical robotics team. Hugo FDA cleared for US market Dec 2025.',
+    products: [
+      {
+        name: 'Hugo™ RAS System',
+        price: '~$1,200,000–$1,500,000',
+        status: 'quote_required',
+        orderUrl: 'https://www.medtronic.com/en-us/healthcare-professionals/specialties/surgical-robotics/robotic-assisted-surgery.html',
+        notes: 'FDA cleared Dec 2025 for urologic soft-tissue procedures (prostatectomy, nephrectomy, cystectomy). Modular design: 4 independent arm carts that can be repositioned between cases. Open console — surgeon maintains direct line of sight to the OR team. Touch Surgery™ AI-powered video management and analytics platform. CE marked; commercially available in 30+ countries. ~$1,000 cost per surgery. First US case performed Feb 2026 at Cleveland Clinic.',
+        image: '/media/Hugo RAS.jpg',
+      },
+      {
+        name: 'Mazor™ X Stealth Edition',
+        price: 'Quote',
+        status: 'quote_required',
+        orderUrl: 'https://www.medtronic.com/en-us/healthcare-professionals/products/surgical-robotics/robotic-systems/mazor-robotic-guidance-system.html',
+        notes: '3rd-generation spinal robotic guidance system; 8th-generation navigation. Combines pre-operative surgical planning with intraoperative robotic guidance for precise pedicle screw and implant placement. Integrates with O-arm™ surgical imaging for real-time verification. Indicated for general spinal and cranial procedures. Supports UNiD™ patient-specific rod integration.',
+        image: '/media/Mazor™ robotic guidance platform.avif',
+      },
+    ],
+    procurementNotes: 'Medtronic is the largest medical device company globally. Hugo RAS FDA cleared for US market Dec 2025 — expanding procedure clearances expected (gynecology, general surgery). Mazor X Stealth is the established spinal robotics leader. Contact Medtronic surgical robotics team for institutional pricing and evaluation.',
   },
   {
     id: 'stryker-mako',
