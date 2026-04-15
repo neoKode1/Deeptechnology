@@ -81,10 +81,10 @@ export default function ProductPage({
     <div className="min-h-screen bg-black text-white">
       <SoftDevHeader />
 
-      <main className="max-w-3xl mx-auto px-4 sm:px-6 py-10 sm:py-16">
+      <main className="max-w-6xl mx-auto px-6 pt-32 pb-24">
 
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-xs text-neutral-600 font-manrope mb-8">
+        <nav className="flex items-center gap-2 text-xs text-neutral-600 font-manrope mb-10">
           <Link href="/robotics" className="hover:text-neutral-400 transition-colors">Robots</Link>
           <span>/</span>
           <Link href={`/robotics/categories/${vendor.category}`} className="hover:text-neutral-400 transition-colors capitalize">{vendor.category}</Link>
@@ -94,81 +94,85 @@ export default function ProductPage({
           <span className="text-neutral-400">{product.name}</span>
         </nav>
 
-        {/* Hero image */}
-        <div className="relative w-full rounded-2xl overflow-hidden bg-neutral-900 border border-neutral-800 mb-8"
-             style={{ aspectRatio: '16/9' }}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src={product.image ?? vendorHeroImage}
-            alt={product.name}
-            className="w-full h-full object-cover object-center"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-        </div>
+        {/* ── Two-column hero: left info · right full robot image ── */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-10 items-center mb-16">
 
-        {/* Name + vendor badge */}
-        <div className="flex items-start justify-between gap-4 mb-6 flex-wrap">
+          {/* Left: identity + specs + CTAs */}
           <div>
-            <p className="text-xs uppercase tracking-widest text-neutral-600 font-manrope mb-1">{vendor.name}</p>
-            <h1 className="text-2xl sm:text-3xl font-semibold font-manrope text-white leading-tight">{product.name}</h1>
-          </div>
-          <span className={`text-[10px] uppercase tracking-wider border rounded-full px-3 py-1 font-manrope mt-1 ${STATUS_STYLES[product.status]}`}>
-            {STATUS_LABELS[product.status]}
-          </span>
-        </div>
-
-
-        {/* Specs grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-8">
-          <div className="bg-neutral-950 border border-neutral-900 rounded-xl px-4 py-3">
-            <p className="text-[10px] uppercase tracking-widest text-neutral-600 font-manrope mb-1">Price</p>
-            <p className="text-sm font-semibold text-white font-manrope">{product.price}</p>
-          </div>
-          <div className="bg-neutral-950 border border-neutral-900 rounded-xl px-4 py-3">
-            <p className="text-[10px] uppercase tracking-widest text-neutral-600 font-manrope mb-1">Availability</p>
-            <p className={`text-sm font-semibold font-manrope ${STATUS_STYLES[product.status].split(' ')[1]}`}>
-              {STATUS_LABELS[product.status]}
-            </p>
-          </div>
-          {product.deposit && (
-            <div className="bg-neutral-950 border border-neutral-900 rounded-xl px-4 py-3">
-              <p className="text-[10px] uppercase tracking-widest text-neutral-600 font-manrope mb-1">Deposit</p>
-              <p className="text-sm font-semibold text-yellow-400 font-manrope">{product.deposit}</p>
+            {/* Badges */}
+            <div className="flex flex-wrap gap-2 mb-5">
+              <span className="text-[10px] uppercase tracking-widest border border-neutral-800 text-neutral-500 rounded-full px-3 py-1 font-manrope">
+                {vendor.name}
+              </span>
+              <span className={`text-[10px] uppercase tracking-widest border rounded-full px-3 py-1 font-manrope ${STATUS_STYLES[product.status]}`}>
+                {STATUS_LABELS[product.status]}
+              </span>
             </div>
-          )}
-          <div className="bg-neutral-950 border border-neutral-900 rounded-xl px-4 py-3">
-            <p className="text-[10px] uppercase tracking-widest text-neutral-600 font-manrope mb-1">Vendor</p>
-            <p className="text-sm font-semibold text-white font-manrope">{vendor.name}</p>
-          </div>
-          {vendor.leadTime && (
-            <div className="bg-neutral-950 border border-neutral-900 rounded-xl px-4 py-3">
-              <p className="text-[10px] uppercase tracking-widest text-neutral-600 font-manrope mb-1">Lead Time</p>
-              <p className="text-sm font-semibold text-white font-manrope">{vendor.leadTime}</p>
+
+            <h1 className="text-4xl md:text-5xl font-semibold font-manrope text-white leading-tight mb-6">
+              {product.name}
+            </h1>
+
+            {/* Specs grid */}
+            <div className="grid grid-cols-2 gap-3 mb-6">
+              <div className="bg-neutral-950 border border-neutral-900 rounded-xl px-4 py-3">
+                <p className="text-[10px] uppercase tracking-widest text-neutral-600 font-manrope mb-1">Price</p>
+                <p className="text-sm font-semibold text-white font-manrope">{product.price}</p>
+              </div>
+              <div className="bg-neutral-950 border border-neutral-900 rounded-xl px-4 py-3">
+                <p className="text-[10px] uppercase tracking-widest text-neutral-600 font-manrope mb-1">Availability</p>
+                <p className={`text-sm font-semibold font-manrope ${STATUS_STYLES[product.status].split(' ')[1]}`}>
+                  {STATUS_LABELS[product.status]}
+                </p>
+              </div>
+              {product.deposit && (
+                <div className="bg-neutral-950 border border-neutral-900 rounded-xl px-4 py-3">
+                  <p className="text-[10px] uppercase tracking-widest text-neutral-600 font-manrope mb-1">Deposit</p>
+                  <p className="text-sm font-semibold text-yellow-400 font-manrope">{product.deposit}</p>
+                </div>
+              )}
+              {vendor.leadTime && (
+                <div className="bg-neutral-950 border border-neutral-900 rounded-xl px-4 py-3">
+                  <p className="text-[10px] uppercase tracking-widest text-neutral-600 font-manrope mb-1">Lead Time</p>
+                  <p className="text-sm font-semibold text-white font-manrope">{vendor.leadTime}</p>
+                </div>
+              )}
             </div>
-          )}
-        </div>
 
-        {/* Notes */}
-        {product.notes && (
-          <div className="bg-neutral-950 border border-neutral-900 rounded-xl px-5 py-4 mb-8">
-            <p className="text-[10px] uppercase tracking-widest text-neutral-600 font-manrope mb-2">About this model</p>
-            <p className="text-sm text-neutral-300 font-manrope leading-relaxed">{product.notes}</p>
+            {/* Notes */}
+            {product.notes && (
+              <div className="bg-neutral-950 border border-neutral-900 rounded-xl px-5 py-4 mb-6">
+                <p className="text-[10px] uppercase tracking-widest text-neutral-600 font-manrope mb-2">About this model</p>
+                <p className="text-sm text-neutral-300 font-manrope leading-relaxed">{product.notes}</p>
+              </div>
+            )}
+
+            {/* CTAs */}
+            <div className="flex flex-wrap gap-3">
+              <Link href={ctaHref}
+                className="inline-flex items-center gap-2 bg-white text-black font-manrope text-sm font-semibold px-6 py-3 rounded-xl hover:bg-neutral-200 transition-colors">
+                Get a Quote <ArrowUpRight className="w-4 h-4" />
+              </Link>
+              {product.orderUrl && product.status !== 'not_available' && (
+                <a href={product.orderUrl} target="_blank" rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 border border-neutral-700 text-white font-manrope text-sm px-6 py-3 rounded-xl hover:border-neutral-500 transition-colors">
+                  {product.status === 'raas' ? 'Request RaaS' : product.status === 'pre_order' ? 'Pre-Order Now' : 'Order Now'}
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
+              )}
+            </div>
           </div>
-        )}
 
-        {/* CTA buttons */}
-        <div className="flex flex-wrap gap-3 mb-10">
-          <Link href={ctaHref}
-            className="flex items-center gap-2 bg-white text-black font-manrope text-sm font-semibold px-6 py-3 rounded-xl hover:bg-neutral-200 transition-colors">
-            Get a Quote <ArrowUpRight className="w-4 h-4" />
-          </Link>
-          {product.orderUrl && product.status !== 'not_available' && (
-            <a href={product.orderUrl} target="_blank" rel="noopener noreferrer"
-              className="flex items-center gap-2 border border-neutral-700 text-white font-manrope text-sm px-6 py-3 rounded-xl hover:border-neutral-500 transition-colors">
-              {product.status === 'raas' ? 'Request RaaS' : product.status === 'pre_order' ? 'Pre-Order Now' : 'Order Now'}
-              <ArrowUpRight className="w-4 h-4" />
-            </a>
-          )}
+          {/* Right: full robot image — object-contain, no cropping */}
+          <div className="flex items-center justify-center rounded-2xl bg-neutral-950 border border-neutral-900 overflow-hidden"
+            style={{ minHeight: '400px' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={product.image ?? vendorHeroImage ?? ''}
+              alt={product.name}
+              className="w-full max-h-[560px] object-contain p-6"
+            />
+          </div>
         </div>
 
         {/* Other models from same vendor */}
@@ -176,22 +180,16 @@ export default function ProductPage({
           <h2 className="text-xs uppercase tracking-widest text-neutral-600 mb-3 font-manrope">Other {vendor.name} models</h2>
           <div className="divide-y divide-neutral-900 border border-neutral-900 rounded-xl overflow-hidden">
             {vendor.products.filter((p) => p.name !== product.name).slice(0, 6).map((p) => (
-              <div key={p.name} className="flex items-center gap-3 px-4 py-3 bg-neutral-950 hover:bg-neutral-900 transition-colors">
-                {p.image ? (
-                  <Link href={`/robotics/${vendor.id}/${toSlug(p.name)}`} className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="w-10 h-10 shrink-0 rounded-lg overflow-hidden bg-neutral-900 border border-neutral-800">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={p.image} alt={p.name} className="w-full h-full object-cover" />
-                    </div>
-                    <span className="text-sm text-white font-manrope truncate">{p.name}</span>
-                  </Link>
-                ) : (
-                  <div className="flex items-center gap-3 flex-1 min-w-0">
-                    <div className="w-10 h-10 shrink-0 rounded-lg bg-neutral-900 border border-neutral-800" />
-                    <span className="text-sm text-neutral-400 font-manrope truncate">{p.name}</span>
-                  </div>
-                )}
-                <span className="text-sm text-neutral-500 font-manrope shrink-0 tabular-nums">{p.price}</span>
+              <div key={p.name} className="relative flex items-center gap-3 px-4 py-3 bg-neutral-950 hover:bg-neutral-900 transition-colors">
+                {p.image && <Link href={`/robotics/${vendor.id}/${toSlug(p.name)}`} className="absolute inset-0" aria-label={p.name} />}
+                <div className="w-10 h-10 shrink-0 rounded-lg overflow-hidden bg-neutral-900 border border-neutral-800">
+                  {p.image && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={p.image} alt={p.name} className="w-full h-full object-contain p-0.5" />
+                  )}
+                </div>
+                <span className={`text-sm font-manrope truncate flex-1 min-w-0 ${p.image ? 'text-white' : 'text-neutral-400'}`}>{p.name}</span>
+                <span className="relative z-10 text-sm text-neutral-500 font-manrope shrink-0 tabular-nums">{p.price}</span>
               </div>
             ))}
           </div>
