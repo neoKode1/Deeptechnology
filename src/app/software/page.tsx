@@ -146,22 +146,22 @@ export default function SoftwareDivisionPage() {
               {
                 num: '01',
                 title: 'Legacy Retooling',
-                body: 'Broken dependencies, forced API migrations, dead links, outdated frameworks. We diagnose the rot and rebuild what needs rebuilding — without touching what works.',
+                body: 'Broken dependencies, forced API migrations, outdated frameworks. We audit your existing workflows first — identify what can be optimized in place vs. what needs replacing — and fix the rot without disturbing what works.',
               },
               {
                 num: '02',
-                title: 'AI Integration',
-                body: 'LLM pipelines, RAG architectures, agentic workflows, MCP servers. Drop Claude, GPT-4o, or any open model into your existing stack without rebuilding from scratch.',
+                title: 'Agentic AI Integration',
+                body: 'We design and implement multi-agent orchestration layers — supervisor/subagent patterns, tool-calling loops, structured output validation, and human-in-the-loop gates. Claude Code configured with project-specific CLAUDE.md, MCP servers wired to your codebase, APIs, and databases. Pipelines that route intelligently between models based on task complexity.',
               },
               {
                 num: '03',
-                title: 'New Architecture',
-                body: 'Greenfield systems designed AI-native from day one. Edge-deployed, TypeScript strict, built for autonomous orchestration and zero-downtime scale.',
+                title: 'Workflow Automation',
+                body: 'Existing manual processes audited, mapped, and automated — webhook-triggered agent chains, cron-scheduled AI jobs, Slack/Discord bots with agentic backends, and AI decision points dropped into n8n, Make, or custom pipelines. We connect the tools you already have rather than replace them.',
               },
               {
                 num: '04',
                 title: 'Production Hardening',
-                body: 'CI/CD pipelines, observability, security audits, and webhook infrastructure. Ship with confidence — monitored, tested, and resilient under load.',
+                body: 'CI/CD pipelines, observability, security audits, and webhook infrastructure. Claude Code slash commands for repetitive dev tasks. Retry logic, fallback chains, and parallel tool-call architecture for latency and reliability under load.',
               },
             ].map(({ num, title, body }) => (
               <div key={num} className="bg-white p-8 flex flex-col gap-4 hover:bg-[#fafafa] transition-colors">
@@ -264,6 +264,55 @@ export default function SoftwareDivisionPage() {
 
 
 
+      {/* ── AGENTIC PRACTICES ── */}
+      <section className="bg-white px-6 md:px-12 lg:px-20 py-24 border-b border-[#e5e5e5]">
+        <div className="max-w-[82rem] mx-auto">
+          <div className="max-w-4xl mb-16">
+            <p className="text-xs uppercase tracking-[0.25em] text-[#999] font-manrope mb-5">How we build</p>
+            <h2 className="font-manrope font-semibold text-[#111] tracking-tighter leading-[1.05]" style={{ fontSize: 'clamp(2rem, 4vw, 3.5rem)' }}>
+              Agentic orchestration<br />is not a buzzword here.
+            </h2>
+            <p className="mt-6 text-base text-[#666] leading-relaxed max-w-2xl">
+              We have built production multi-agent systems, configured Claude Code end-to-end, and designed pipelines that connect heterogeneous AI tools into coherent, reliable workflows. This is the actual practice.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-px bg-[#e5e5e5] border border-[#e5e5e5] rounded-xl overflow-hidden">
+            {[
+              {
+                label: 'Orchestration Layer Design',
+                detail: 'Supervisor agents that decompose goals, delegate to specialized subagents, collect structured outputs, and re-plan on failure. Built with Claude\'s tool-use API, extended thinking for complex reasoning, and interrupt points for human confirmation at high-stakes decision gates.',
+              },
+              {
+                label: 'Claude Code Configuration',
+                detail: 'Full project setup with CLAUDE.md for persistent context injection, custom slash commands for team-specific workflows, MCP servers so Claude reads your actual codebase and calls your APIs directly, and pre/post-tool hooks for linting, validation, and formatting on every action.',
+              },
+              {
+                label: 'Multi-Tool Pipeline Design',
+                detail: 'We connect the right model to the right task — fast/cheap models for triage and routing, reasoning models for decision-making, specialized models for code or vision. Structured JSON schemas enforce clean handoffs between stages. Retry logic and fallback chains handle failure without manual intervention.',
+              },
+              {
+                label: 'Existing Workflow Optimization',
+                detail: 'Audit of your current processes to identify where AI reasoning replaces manual steps — not a rebuild, an overlay. We map the decision points, add intelligence where it creates leverage, and measure time-to-value before recommending anything larger.',
+              },
+              {
+                label: 'Workflow Automation',
+                detail: 'Webhook-triggered agent chains, cron-scheduled AI jobs (reports, monitoring, digest emails), and AI decision nodes inside your existing n8n, Make, or Zapier flows. GitHub Actions with AI-powered code review. Slack and Discord bots backed by real agent logic — not canned responses.',
+              },
+              {
+                label: 'MCP Server Development',
+                detail: 'Custom MCP servers that give AI agents direct, structured access to your databases, internal APIs, file systems, and third-party services. Used in production in 12 Monkeys, Breach, and TheNoelleApp — enabling Claude and other LLMs to operate as true system actors, not just chatbots.',
+              },
+            ].map(({ label, detail }) => (
+              <div key={label} className="bg-white p-8 flex flex-col gap-3 hover:bg-[#fafafa] transition-colors">
+                <h3 className="font-manrope text-sm font-semibold text-[#111] tracking-tight">{label}</h3>
+                <p className="text-sm text-[#666] leading-relaxed">{detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* ── PRICING ── */}
       <section id="pricing" className="px-4 sm:px-6 md:px-12 lg:px-20 py-20 sm:py-28 max-w-[82rem] mx-auto">
         <SectionDivider label="Pricing" />
@@ -274,7 +323,7 @@ export default function SoftwareDivisionPage() {
             <p className="text-3xl font-semibold text-[#111] font-manrope mb-1">From $4,500</p>
             <p className="text-sm text-[#999] font-manrope mb-6">Quick-turn builds · 2–4 weeks</p>
             <ul className="space-y-2 text-sm text-[#555] font-manrope mb-8 flex-1">
-              {['Landing page or marketing site', 'API integration or automation', 'LLM-powered feature add-on', 'Single-endpoint AI agent'].map(f => (
+              {['Landing page or marketing site', 'API integration or workflow automation', 'LLM-powered feature add-on', 'Claude Code setup + MCP server wiring'].map(f => (
                 <li key={f} className="flex items-start gap-2"><span className="text-[#111] mt-0.5">—</span>{f}</li>
               ))}
             </ul>
@@ -293,7 +342,7 @@ export default function SoftwareDivisionPage() {
             <p className="text-3xl font-semibold text-white font-manrope mb-1">From $12,000</p>
             <p className="text-sm text-white/40 font-manrope mb-6">Production-grade apps · 4–10 weeks</p>
             <ul className="space-y-2 text-sm text-white/60 font-manrope mb-8 flex-1">
-              {['Full-stack SaaS or internal tool', 'Multi-agent AI orchestration', 'Auth, billing, and admin panel', 'CI/CD + Cloudflare/Vercel deploy'].map(f => (
+              {['Full-stack SaaS or internal tool', 'Agentic orchestration layer + pipeline design', 'Auth, billing, and admin panel', 'CI/CD + Cloudflare Workers deploy'].map(f => (
                 <li key={f} className="flex items-start gap-2"><span className="text-white/80 mt-0.5">—</span>{f}</li>
               ))}
             </ul>
@@ -309,7 +358,7 @@ export default function SoftwareDivisionPage() {
             <p className="text-3xl font-semibold text-[#111] font-manrope mb-1">Custom</p>
             <p className="text-sm text-[#999] font-manrope mb-6">Enterprise AI &amp; infrastructure</p>
             <ul className="space-y-2 text-sm text-[#555] font-manrope mb-8 flex-1">
-              {['Multi-model AI platforms', 'MCP server &amp; agent networks', 'Data pipelines &amp; RAG systems', 'Dedicated engineer + SLA'].map(f => (
+              {['Multi-model AI platforms + agent networks', 'Existing workflow optimization audit', 'Data pipelines, RAG &amp; MCP infrastructure', 'Dedicated engineer + SLA'].map(f => (
                 <li key={f} className="flex items-start gap-2"><span className="text-[#111] mt-0.5">—</span><span dangerouslySetInnerHTML={{ __html: f }} /></li>
               ))}
             </ul>
