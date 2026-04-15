@@ -34,17 +34,38 @@ export default function ConsultChat() {
   const bottomRef = useRef<HTMLDivElement>(null);
   const sessionId = useRef<string>('');
 
+  // ── Email gate ───────────────────────────────────────────────────────────────
+  const [exchanges, setExchanges] = useState(0);   // full user→AI exchanges completed
+  const [emailCapt, setEmailCapt] = useState(false);
+  const [gateEmail, setGateEmail] = useState('');
+  const [gateSending, setGateSending] = useState(false);
+  const [gateError, setGateError] = useState('');
+  const gateMessageAdded = useRef(false);
+
   useEffect(() => { sessionId.current = getSessionId(); }, []);
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [msgs]);
 
+  // Append Nimbus gate message once after 3rd exchange
+  useEffect(() => {
+    if (exchanges >= 3 && !emailCapt && !gateMessageAdded.current) {
+      gateMessageAdded.current = true;
+      setMsgs(prev => [...prev, {
+        role: 'assistant',
+        text: "Before we go further — what's your work email? I can send a summary to your team and make sure the right person follows up.",
+      }]);
+    }
+  }, [exchanges, emailCapt]);
+
   const hidden = EXCLUDED_PREFIXES.some(p => pathname.startsWith(p));
   if (hidden) return null;
 
+  const gateActive = exchanges >= 3 && !emailCapt;
+
   async function send() {
     const text = input.trim();
-    if (!text || loading) return;
+    if (!text || loading || gateActive) return;
     setInput('');
     setMsgs(prev => [...prev, { role: 'user', text }]);
     setLoading(true);
@@ -63,11 +84,37 @@ export default function ConsultChat() {
         : 'Sorry, I ran into an issue. Try again in a moment.');
       setMsgs(prev => [...prev, { role: 'assistant', text: reply }]);
       if (!open) setHasUnread(true);
+      setExchanges(e => e + 1);
     } catch (err) {
       console.error('[Nimbus] fetch error', err);
       setMsgs(prev => [...prev, { role: 'assistant', text: 'Connection issue. Please try again.' }]);
     } finally {
       setLoading(false);
+    }
+  }
+
+  async function submitGate(e: React.FormEvent) {
+    e.preventDefault();
+    if (!gateEmail.includes('@')) { setGateError('Please enter a valid email.'); return; }
+    setGateSending(true);
+    setGateError('');
+    try {
+      // Log the email server-side against this session
+      await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: '(email captured)', sessionId: sessionId.current, email: gateEmail }),
+      });
+      try { sessionStorage.setItem('nimbus-email', gateEmail); } catch { /* ignore */ }
+      setEmailCapt(true);
+      setMsgs(prev => [...prev, {
+        role: 'assistant',
+        text: `Got it — I've noted your email. What else can I help you with?`,
+      }]);
+    } catch {
+      setGateError('Something went wrong. Please try again.');
+    } finally {
+      setGateSending(false);
     }
   }
 
@@ -116,23 +163,48 @@ export default function ConsultChat() {
             <div ref={bottomRef} />
           </div>
 
-          {/* Input */}
-          <div className="border-t border-[#eee] p-3 flex gap-2 shrink-0 bg-white">
-            <input
-              className="flex-1 text-sm text-[#111] border border-[#e0e0e0] rounded-lg px-3 py-2 outline-none focus:border-[#111] transition-colors font-manrope"
-              placeholder="Ask about robotics, software, pricing…"
-              value={input}
-              onChange={e => setInput(e.target.value)}
-              onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }}
-            />
-            <button
-              onClick={send}
-              disabled={!input.trim() || loading}
-              className="bg-[#111] text-white rounded-lg px-3 py-2 hover:bg-[#333] transition-colors disabled:opacity-30 shrink-0"
-            >
-              <Send className="w-4 h-4" />
-            </button>
-          </div>
+          {/* Email gate — replaces input after 3 exchanges */}
+          {gateActive ? (
+            <form onSubmit={submitGate} className="border-t border-[#eee] p-3 flex flex-col gap-2 shrink-0 bg-[#fafafa]">
+              <p className="text-[10px] text-[#999] font-manrope text-center">Enter your email to continue</p>
+              <div className="flex gap-2">
+                <input
+                  type="email"
+                  required
+                  value={gateEmail}
+                  onChange={e => { setGateEmail(e.target.value); setGateError(''); }}
+                  placeholder="you@company.com"
+                  className="flex-1 text-sm text-[#111] border border-[#e0e0e0] rounded-lg px-3 py-2 outline-none focus:border-[#111] transition-colors font-manrope"
+                />
+                <button
+                  type="submit"
+                  disabled={gateSending}
+                  className="bg-[#111] text-white rounded-lg px-3 py-2 hover:bg-[#333] transition-colors disabled:opacity-50 shrink-0 text-sm font-manrope"
+                >
+                  {gateSending ? '…' : 'Go'}
+                </button>
+              </div>
+              {gateError && <p className="text-[11px] text-red-500 font-manrope text-center">{gateError}</p>}
+            </form>
+          ) : (
+            /* Normal input */
+            <div className="border-t border-[#eee] p-3 flex gap-2 shrink-0 bg-white">
+              <input
+                className="flex-1 text-sm text-[#111] border border-[#e0e0e0] rounded-lg px-3 py-2 outline-none focus:border-[#111] transition-colors font-manrope"
+                placeholder="Ask about robotics, software, pricing…"
+                value={input}
+                onChange={e => setInput(e.target.value)}
+                onKeyDown={e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } }}
+              />
+              <button
+                onClick={send}
+                disabled={!input.trim() || loading}
+                className="bg-[#111] text-white rounded-lg px-3 py-2 hover:bg-[#333] transition-colors disabled:opacity-30 shrink-0"
+              >
+                <Send className="w-4 h-4" />
+              </button>
+            </div>
+          )}
         </div>
       )}
 

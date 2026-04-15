@@ -8,7 +8,7 @@ import { rateLimit, limiters } from '@/lib/ratelimit';
 const MAX_HISTORY = 20;           // messages kept per thread (10 exchanges)
 const HISTORY_TTL = 60 * 60 * 24 * 7; // 7-day TTL
 const MAX_MESSAGE_CHARS = 600;    // hard cap on incoming message length
-const SESSION_DAILY_CAP = 40;     // max messages a single session can send per 24h
+const SESSION_DAILY_CAP = 12;     // max messages a single anonymous session can send per 24h
 
 // Allowed origins — requests from anywhere else are rejected
 const ALLOWED_ORIGINS = [
@@ -73,14 +73,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Chat unavailable' }, { status: 503 });
   }
 
-  let body: { message?: string; orderId?: string; sessionId?: string };
+  let body: { message?: string; orderId?: string; sessionId?: string; email?: string };
   try {
     body = await request.json();
   } catch {
     return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
   }
 
-  const { message, orderId, sessionId } = body;
+  const { message, orderId, sessionId, email } = body;
   if (!message || typeof message !== 'string' || message.trim().length === 0) {
     return NextResponse.json({ error: 'Message is required' }, { status: 400 });
   }
@@ -99,6 +99,17 @@ export async function POST(request: Request) {
     url: process.env.UPSTASH_REDIS_REST_URL!,
     token: process.env.UPSTASH_REDIS_REST_TOKEN!,
   });
+
+  // ── Log email against session when provided (lead capture from chat gate) ────
+  if (sessionId && email && typeof email === 'string' && email.includes('@')) {
+    const emailKey = `chat:lead:${sessionId}`;
+    try {
+      await redis.set(emailKey, email.toLowerCase().trim(), { ex: HISTORY_TTL });
+      console.log(`[chat] Lead email captured for session ${sessionId}: ${email}`);
+    } catch (err) {
+      console.warn('[chat] Failed to log lead email:', err);
+    }
+  }
 
   // ── Per-session daily cap (anonymous sessions only) ──────────────────────────
   if (sessionId && !orderId) {
