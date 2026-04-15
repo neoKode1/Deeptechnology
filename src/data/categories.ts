@@ -1,7 +1,7 @@
 import type { VendorCategory } from './vendors';
 
 export const CATEGORY_META: Record<VendorCategory, { label: string; image: string; desc: string }> = {
-  humanoid:    { label: 'Humanoid Robots',        image: '/media/Unitree%20Robotics-G1.png',                                                                                             desc: 'Full-body bipedal robots for general labor, research, and service applications.' },
+  humanoid:    { label: 'Humanoid Robots',        image: '/media/Neo_nimbus.png',                                                                                                        desc: 'Full-body bipedal robots for general labor, research, and service applications.' },
   delivery:    { label: 'Delivery Robots',         image: '/media/Serve-Gen-2-left-and-Gen-3-robots.jpg',              desc: 'Sidewalk, road, and aerial platforms for last-mile and campus delivery.' },
   industrial:  { label: 'Industrial / Warehouse',  image: '/media/Robotic-Sorting-as-a-Service-B3A7940.webp',                                                                 desc: 'AMRs, forklifts, and sorting systems for distribution and manufacturing.' },
   drone:       { label: 'Drones & UAVs',           image: '/media/DJI%20Enterprise.jpg',                                                                                      desc: 'Commercial and industrial unmanned aerial systems for delivery, inspection, and mapping.' },
