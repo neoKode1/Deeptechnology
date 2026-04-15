@@ -261,6 +261,16 @@ export default function SoftwareDivisionPage() {
         </div>
       </section>
 
+      {/* ── SATYA NADELLA IMAGE ── */}
+      <div className="w-full overflow-hidden" style={{ maxHeight: '520px' }}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/media/Satya%20Nadella.jpg"
+          alt="Satya Nadella, CEO of Microsoft"
+          className="block w-full h-full object-cover object-top"
+        />
+      </div>
+
       {/* ── LLM CAROUSEL ── */}
       <section className="bg-[#fafafa] border-t border-b border-[#e5e5e5] py-16 md:py-20 overflow-hidden">
         <p className="text-center text-xs uppercase tracking-[0.25em] text-[#999] font-manrope mb-8">
