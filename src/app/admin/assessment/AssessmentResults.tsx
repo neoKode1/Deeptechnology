@@ -7,6 +7,7 @@ import type { AssessmentResult, VendorMatch } from '@/lib/assessment/types';
 
 const EMOJI: Record<string, string> = {
   amr: '🤖', humanoid: '🦾', delivery: '📦', drone: '🚁', forklift: '🏗',
+  cobot: '🦿', cleaning: '🧹', security: '🛡️', agricultural: '🌾',
 };
 
 const fmt = (n: number) =>

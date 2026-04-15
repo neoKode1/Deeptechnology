@@ -1,8 +1,16 @@
 import { VENDOR_CATALOG } from './vendors';
 import type {
   AssessmentInput, AssessmentResult, VendorMatch,
-  ROIResult, TimelineResult,
+  ROIResult, TimelineResult, VendorSpec,
 } from './types';
+
+// Processes where robot movement speed is irrelevant to scoring
+const SPEED_IRRELEVANT_PROCESSES = new Set([
+  'cobot_assembly', 'floor_cleaning', 'patient_assistance', 'inspection',
+]);
+
+// Categories where the 1-robot-per-2.5-workers AMR rule does not apply
+const FIXED_STATION_CATEGORIES = new Set(['cobot', 'cleaning', 'agricultural']);
 
 // ── Vendor Matching ───────────────────────────────────────────────────────────
 
@@ -24,7 +32,7 @@ function scoreVendor(input: AssessmentInput, vendor: typeof VENDOR_CATALOG[0]): 
 
   // Environment fit
   score += 25;
-  reasons.push(`Designed for ${input.environment.replace('_', ' ')} environments`);
+  reasons.push(`Designed for ${input.environment.replace(/_/g, ' ')} environments`);
 
   // Process fit
   score += 25;
@@ -41,8 +49,8 @@ function scoreVendor(input: AssessmentInput, vendor: typeof VENDOR_CATALOG[0]): 
   if (units <= 3 && vendor.unitCostMin < 35000) { score += 10; reasons.push('Cost-efficient for small fleets'); }
   if (units > 5 && vendor.unitCostMax > 50000) { score += 5; reasons.push('Scales well for larger fleets'); }
 
-  // Speed fit
-  if (vendor.speedMph >= 3 && input.process !== 'inspection') {
+  // Speed fit — skip for processes where throughput speed is not a meaningful metric
+  if (vendor.speedMph >= 3 && !SPEED_IRRELEVANT_PROCESSES.has(input.process)) {
     score += 10;
     reasons.push(`${vendor.speedMph} mph throughput speed`);
   }
@@ -109,10 +117,24 @@ function calcTimeline(input: AssessmentInput, bestVendor: typeof VENDOR_CATALOG[
 
 // ── Recommended fleet size ────────────────────────────────────────────────────
 
-function recommendUnits(input: AssessmentInput): number {
-  // Rule of thumb: one robot per 2-3 workers on the process for AMR tasks
+function recommendUnits(input: AssessmentInput, topVendor?: VendorSpec): number {
+  const cat = topVendor?.category;
+
+  if (cat && FIXED_STATION_CATEGORIES.has(cat)) {
+    if (cat === 'cobot') {
+      // One cobot arm per station / worker being replaced
+      return Math.min(Math.max(1, input.workersOnProcess), input.desiredUnits);
+    }
+    if (cat === 'agricultural') {
+      // Acreage-based — default to desired, minimum 1
+      return Math.max(1, input.desiredUnits);
+    }
+    // cleaning robots: 1 per shift area — use desired directly
+    return Math.max(1, input.desiredUnits);
+  }
+
+  // AMR / humanoid / delivery / drone: one robot per 2-3 workers
   const suggested = Math.max(1, Math.ceil(input.workersOnProcess / 2.5));
-  // Cap recommendation at what they asked for
   return Math.min(suggested, input.desiredUnits);
 }
 
@@ -124,7 +146,7 @@ export function runAssessment(input: AssessmentInput): AssessmentResult {
     .filter((m): m is VendorMatch => m !== null)
     .sort((a, b) => b.fitScore - a.fitScore);
 
-  const recommendedUnits = recommendUnits(input);
+  const recommendedUnits = recommendUnits(input, matches[0]?.vendor);
   const topFleetCost = matches[0]?.estimatedUnitCost
     ? matches[0].estimatedUnitCost * recommendedUnits
     : 0;

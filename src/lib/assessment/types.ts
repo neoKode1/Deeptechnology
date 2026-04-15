@@ -64,7 +64,7 @@ export interface AssessmentInput {
 export interface VendorSpec {
   id: string;
   name: string;
-  category: 'amr' | 'humanoid' | 'delivery' | 'drone' | 'forklift';
+  category: 'amr' | 'humanoid' | 'delivery' | 'drone' | 'forklift' | 'cobot' | 'cleaning' | 'security' | 'agricultural';
   vendor: string;
   imageUrl?: string;   // product thumbnail — shown in assessment results
   unitCostMin: number;     // $ low estimate

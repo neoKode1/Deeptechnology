@@ -65,11 +65,11 @@ export const VENDOR_CATALOG: VendorSpec[] = [
     imageUrl: 'https://www.unitree.com/images/B2/B2-1.jpg',
     unitCostMin: 18000, unitCostMax: 28000,
     payloadKg: 40, speedMph: 9.3, deployWeeks: 6,
-    environments: ['warehouse', 'manufacturing', 'cold_storage'],
-    processes: ['inspection', 'delivery_indoor'],
+    environments: ['warehouse', 'manufacturing', 'cold_storage', 'construction', 'security'],
+    processes: ['inspection', 'delivery_indoor', 'security_patrol'],
     surfaces: ['smooth_concrete', 'epoxy', 'rough_concrete', 'mixed'],
     requiresDock: false, outdoorCapable: true, minCeilingFt: 6,
-    notes: 'Quadruped — handles uneven terrain. Excellent for inspection routes and facilities with obstacles.',
+    notes: 'Quadruped — handles uneven terrain. Excellent for inspection routes, construction sites, and facilities with obstacles.',
   },
   {
     id: 'unitree-h1',
@@ -242,11 +242,11 @@ export const VENDOR_CATALOG: VendorSpec[] = [
     vendor: 'Clearpath Robotics',
     unitCostMin: 22000, unitCostMax: 35000,
     payloadKg: 75, speedMph: 3.7, deployWeeks: 4,
-    environments: ['warehouse', 'manufacturing'],
+    environments: ['warehouse', 'manufacturing', 'construction'],
     processes: ['inspection', 'delivery_indoor'],
     surfaces: ['smooth_concrete', 'epoxy', 'rough_concrete', 'mixed'],
     requiresDock: false, outdoorCapable: true, minCeilingFt: 5,
-    notes: 'ROS2 research and commercial UGV. IP54. Rockwell Automation subsidiary. Best for custom sensor payloads, inspection routes, and R&D deployments.',
+    notes: 'ROS2 research and commercial UGV. IP54. Rockwell Automation subsidiary. Best for custom sensor payloads, inspection routes, construction sites, and R&D deployments.',
   },
 
   // ─── HUMANOID additions ──────────────────────────────────────────────────────
@@ -359,7 +359,7 @@ export const VENDOR_CATALOG: VendorSpec[] = [
   {
     id: 'avidbots-neo2',
     name: 'Neo 2',
-    category: 'amr',
+    category: 'cleaning',
     vendor: 'Avidbots',
     imageUrl: '/media/Avidbots.jpg',
     unitCostMin: 60000, unitCostMax: 90000,
@@ -373,7 +373,7 @@ export const VENDOR_CATALOG: VendorSpec[] = [
   {
     id: 'brain-corp-bg50',
     name: 'BrainOS Scrubber 50',
-    category: 'amr',
+    category: 'cleaning',
     vendor: 'Brain Corp / Tennant',
     unitCostMin: 55000, unitCostMax: 80000,
     payloadKg: 0, speedMph: 2.5, deployWeeks: 4,
@@ -388,7 +388,7 @@ export const VENDOR_CATALOG: VendorSpec[] = [
   {
     id: 'knightscope-k5',
     name: 'K5 Autonomous Security Robot',
-    category: 'amr',
+    category: 'security',
     vendor: 'Knightscope',
     imageUrl: '/media/Knightscope.jpg',
     unitCostMin: 8000, unitCostMax: 9600,
@@ -402,7 +402,7 @@ export const VENDOR_CATALOG: VendorSpec[] = [
   {
     id: 'cobalt-robotics',
     name: 'Cobalt Security Robot',
-    category: 'amr',
+    category: 'security',
     vendor: 'Cobalt Robotics',
     unitCostMin: 6000, unitCostMax: 7500,
     payloadKg: 0, speedMph: 2.5, deployWeeks: 3,
@@ -417,7 +417,7 @@ export const VENDOR_CATALOG: VendorSpec[] = [
   {
     id: 'universal-robots-ur5e',
     name: 'UR5e',
-    category: 'amr',
+    category: 'cobot',
     vendor: 'Universal Robots',
     imageUrl: '/media/Universal%20Robots.png',
     unitCostMin: 35000, unitCostMax: 55000,
@@ -431,7 +431,7 @@ export const VENDOR_CATALOG: VendorSpec[] = [
   {
     id: 'fanuc-crx10ia',
     name: 'CRX-10iA',
-    category: 'amr',
+    category: 'cobot',
     vendor: 'FANUC',
     imageUrl: '/media/FANUC.png',
     unitCostMin: 40000, unitCostMax: 65000,
@@ -447,7 +447,7 @@ export const VENDOR_CATALOG: VendorSpec[] = [
   {
     id: 'carbon-robotics-laserweeder',
     name: 'LaserWeeder (24-head)',
-    category: 'amr',
+    category: 'agricultural',
     vendor: 'Carbon Robotics',
     imageUrl: '/media/Carbon%20Robotics.jpg',
     unitCostMin: 1150000, unitCostMax: 1350000,
@@ -461,7 +461,7 @@ export const VENDOR_CATALOG: VendorSpec[] = [
   {
     id: 'agbot-rsx',
     name: 'RSX Row-Crop Robot',
-    category: 'amr',
+    category: 'agricultural',
     vendor: 'AgBot Technologies',
     unitCostMin: 150000, unitCostMax: 300000,
     payloadKg: 500, speedMph: 5, deployWeeks: 6,

@@ -104,9 +104,19 @@ export default function VendorPage({ params }: { params: { slug: string } }) {
               <span className="text-[10px] uppercase tracking-widest border border-neutral-800 text-neutral-500 rounded-full px-3 py-1 font-manrope">
                 {catLabel}
               </span>
-              <span className="text-[10px] uppercase tracking-widest border border-neutral-700 text-neutral-400 rounded-full px-3 py-1 font-manrope">
-                {BUY_PATH_LABELS[vendor.buyPath]}
-              </span>
+              {vendor.availability === 'coming_soon' ? (
+                <span className="text-[10px] uppercase tracking-widest border border-neutral-700 bg-neutral-800 text-neutral-400 rounded-full px-3 py-1 font-manrope">
+                  Coming Soon
+                </span>
+              ) : vendor.availability === 'sourcing' ? (
+                <span className="text-[10px] uppercase tracking-widest border border-amber-900 bg-amber-950 text-amber-400 rounded-full px-3 py-1 font-manrope">
+                  Sourcing…
+                </span>
+              ) : (
+                <span className="text-[10px] uppercase tracking-widest border border-neutral-700 text-neutral-400 rounded-full px-3 py-1 font-manrope">
+                  {BUY_PATH_LABELS[vendor.buyPath]}
+                </span>
+              )}
               {vendor.leadTime && (
                 <span className="text-[10px] uppercase tracking-widest text-neutral-500 font-manrope border border-neutral-800 rounded-full px-3 py-1">
                   Lead time: {vendor.leadTime}
@@ -118,6 +128,17 @@ export default function VendorPage({ params }: { params: { slug: string } }) {
               {vendor.name}
             </h1>
 
+            {vendor.availability === 'coming_soon' && (
+              <p className="text-neutral-500 text-sm font-manrope leading-relaxed mb-4 border border-neutral-800 bg-neutral-900/60 rounded-xl px-4 py-3">
+                ⏳ This platform is pre-commercial. No confirmed unit pricing or delivery date exists yet. Register your interest and we&apos;ll notify you when sourcing opens.
+              </p>
+            )}
+            {vendor.availability === 'sourcing' && (
+              <p className="text-amber-600/80 text-sm font-manrope leading-relaxed mb-4 border border-amber-900/50 bg-amber-950/30 rounded-xl px-4 py-3">
+                🔄 We&apos;re actively building our sourcing pipeline for this vendor. Enterprise pilots typically involve a 3–12 month qualification process. Join the queue now to get priority access.
+              </p>
+            )}
+
             {vendor.procurementNotes && (
               <p className="text-neutral-400 text-sm font-manrope leading-relaxed mb-8">
                 {vendor.procurementNotes}
@@ -125,10 +146,22 @@ export default function VendorPage({ params }: { params: { slug: string } }) {
             )}
 
             <div className="flex flex-wrap gap-3">
-              <Link href={ctaHref}
-                className="inline-flex items-center justify-center bg-white text-black rounded-lg px-6 py-2.5 text-sm font-semibold font-manrope hover:bg-neutral-100 transition-colors">
-                Get a Quote →
-              </Link>
+              {vendor.availability === 'coming_soon' ? (
+                <Link href={`${ctaHref}&interest=coming_soon`}
+                  className="inline-flex items-center justify-center bg-neutral-700 text-neutral-200 rounded-lg px-6 py-2.5 text-sm font-semibold font-manrope hover:bg-neutral-600 transition-colors">
+                  Register Interest →
+                </Link>
+              ) : vendor.availability === 'sourcing' ? (
+                <Link href={`${ctaHref}&interest=sourcing`}
+                  className="inline-flex items-center justify-center bg-amber-900/50 border border-amber-800 text-amber-300 rounded-lg px-6 py-2.5 text-sm font-semibold font-manrope hover:bg-amber-900/70 transition-colors">
+                  Join Sourcing Queue →
+                </Link>
+              ) : (
+                <Link href={ctaHref}
+                  className="inline-flex items-center justify-center bg-white text-black rounded-lg px-6 py-2.5 text-sm font-semibold font-manrope hover:bg-neutral-100 transition-colors">
+                  Get a Quote →
+                </Link>
+              )}
               <Link href="/pilot"
                 className="inline-flex items-center justify-center border border-neutral-700 text-neutral-300 rounded-lg px-6 py-2.5 text-sm font-manrope hover:border-neutral-500 hover:text-white transition-colors">
                 30-Day Pilot
