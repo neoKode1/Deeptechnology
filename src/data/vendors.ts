@@ -1596,7 +1596,7 @@ export const VENDORS: Vendor[] = [
     contacts: [{ label: 'Website', value: 'solutions.lg.com/us/robots', href: 'https://solutions.lg.com/us/robots' }],
     products: [
       { name: 'GuideBot', price: '$39,990 or $1,666/mo RaaS', status: 'in_stock', orderUrl: 'https://solutions.lg.com/us/robots', image: '/media/LG%20CLOi.jpg' },
-      { name: 'ServeBot 3.0', price: 'Quote', status: 'quote_required', image: '/media/LG%20CLOi.jpg' },
+      { name: 'CLOi ServeBot 3.0', price: 'Quote', status: 'quote_required', orderUrl: 'https://www.lg.com/us/business/cloi-servebot/lg-ldltr30', notes: 'Model LDLTR30. 4-tray autonomous delivery robot; 40 kg total load (10 kg per tray); extended tray 20.9" × 17.5"; 56 × 137 × 55 cm; 51 kg weight; independent suspension for stable driving; reinforced multi-robot fleet performance; 11-hour continuous operation on full charge; CMS (Cloud Management System) for simultaneous fleet control; status LED (Red/Blue/Green).', image: '/media/CLOi%20ServeBot%203.0.webp' },
     ],
     procurementNotes: 'LG service robots for hospitality, retail, and medical. US sales via LG Business Solutions.',
   },
