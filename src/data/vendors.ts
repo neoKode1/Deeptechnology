@@ -1298,7 +1298,7 @@ export const VENDORS: Vendor[] = [
         status: 'pre_order',
         orderUrl: 'https://franka.de/product-prototypes',
         notes: 'Dual-arm system for embodied AI research. Unifies teleoperation, data collection, and policy execution on one platform. Deliverable with curated manipulation actuators and vision sensors. Reproducible setup for standardized datasets across labs. FCI at 1 kHz. Optimized kinematics for table-top bimanual tasks.',
-        image: '/media/Franka%20Robotics-franka-research-3.png',
+        image: '/media/Franka%20Research%203%20Duo%20(FR3%20Duo).png',
       },
       {
         name: 'Tactile Mobile Robot (TMR) — Prototype',
@@ -1306,7 +1306,7 @@ export const VENDORS: Vendor[] = [
         status: 'pre_order',
         orderUrl: 'https://franka.de/product-prototypes',
         notes: 'Advanced mobile robot optimized for teleoperation, mobile manipulation, and physical AI research. Designed for seamless integration with Franka Research 3. Enables quick deployment for researchers beyond fixed workcells.',
-        image: '/media/Franka%20Robotics-franka-research-3.png',
+        image: '/media/Tactile%20Mobile%20Robot%20(TMR).png',
       },
       {
         name: 'Mobile FR3 Duo — Prototype',
@@ -1314,7 +1314,7 @@ export const VENDORS: Vendor[] = [
         status: 'pre_order',
         orderUrl: 'https://franka.de/product-prototypes',
         notes: 'FR3 Duo integrated with Tactile Mobile Robot (TMR). Combines dual-arm manipulation, rich perception, and omnidirectional mobility into a single physical AI system. Enables data collection and policy execution in unstructured mobile environments.',
-        image: '/media/Franka%20Robotics-franka-research-3.png',
+        image: '/media/Mobile%20FR3%20Duo.png',
       },
       {
         name: 'Franka GELLO / GELLO Duo — Teleoperation Device',
@@ -1322,7 +1322,7 @@ export const VENDORS: Vendor[] = [
         status: 'in_stock',
         orderUrl: 'https://franka.de/product-prototypes',
         notes: 'Teleoperation input devices for FR3 (GELLO) and FR3 Duo (GELLO Duo). Direct joint-level control for robot teaching and physical AI data collection. Fully open-source hardware and software. Single and dual-arm configurations.',
-        image: '/media/Franka%20Robotics-franka-research-3.png',
+        image: '/media/Franka%20GELLO%20and%20Franka%20GELLO%20Duo.png',
       },
       {
         name: 'Diana 7 by Agile Robots',
