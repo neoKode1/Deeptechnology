@@ -9,14 +9,22 @@ type Status = 'idle' | 'loading' | 'success' | 'error';
 
 /* ── Intake-field option sets (mirrors robotics page taxonomy) ── */
 const ENVIRONMENT_TYPES = [
-  'Urban / Street-Level', 'Warehouse / Distribution', 'Retail Floor',
-  'Food & Beverage', 'Campus & Multi-Building', 'Last-Mile Residential',
+  'Warehouse / Distribution', 'Manufacturing Floor',
+  'Urban / Street-Level', 'Last-Mile Residential',
+  'Retail Floor', 'Food & Beverage',
+  'Healthcare / Clinical', 'Agricultural / Farm',
+  'Hospitality / Hotel', 'Security / Patrol',
+  'Construction Site', 'Campus & Multi-Building',
+  'Outdoor / Rough Terrain', 'Other / Unsure',
 ] as const;
 
 const SYSTEM_CATEGORIES = [
   'SADRs (Sidewalk Delivery Robots)', 'RADRs (Road/Sidewalk Hybrids)',
   'UAVs (Aerial Drones)', 'ADVs (Autonomous Delivery Vehicles)',
-  'Humanoid / Service Robots', 'Forklift / Sorting Bots',
+  'Humanoid / Service Robots', 'Cobot (Collaborative Robot Arm)',
+  'Forklift / AMR / Sorting Bot', 'Agricultural Robot',
+  'Security & Patrol Robot', 'Cleaning / Sanitation Robot',
+  'Other / Unsure',
 ] as const;
 
 const TERRAIN_SURFACES = [
