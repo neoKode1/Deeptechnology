@@ -828,7 +828,7 @@ export default function RoboticsDivisionHome() {
                 <img
                   src={cat.image}
                   alt={cat.label}
-                  className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                  className="block w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
                   loading="lazy"
                 />
               </div>
