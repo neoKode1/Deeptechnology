@@ -497,22 +497,22 @@ export default function RoboticsDivisionHome() {
       <section id="trending" className="px-4 sm:px-6 md:px-12 lg:px-20 py-14 sm:py-20 max-w-[82rem] mx-auto border-t border-neutral-200">
         <p className="text-xs tracking-widest uppercase mb-3 font-manrope text-neutral-400">Trending · Most Requested</p>
         <p className="text-neutral-500 text-sm max-w-lg leading-relaxed mb-12">
-          The most-searched humanoid platforms in enterprise robotics right now — from Tesla&apos;s Optimus to next-generation bipedal systems entering mass production.
+          The most-searched humanoid platforms in enterprise robotics right now — from Boston Dynamics Atlas to next-generation bipedal systems entering mass production.
         </p>
-        {/* Row 1: Optimus hero (col-span-2) + Figure 02 + Digit */}
+        {/* Row 1: Atlas hero (col-span-2) + Figure 02 + Digit */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2" style={{ gridTemplateRows: 'auto' }}>
-          {/* Tesla Optimus — hero */}
-          <Link href="/robotics/tesla" className="md:col-span-2 md:row-span-2 overflow-hidden rounded-lg robo-img-wrap block" style={{ minHeight: '240px' }}>
+          {/* Boston Dynamics Atlas — hero */}
+          <Link href="/robotics/boston-dynamics" className="md:col-span-2 md:row-span-2 overflow-hidden rounded-lg robo-img-wrap block" style={{ minHeight: '240px' }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
-              src="/media/tesla-optimus-auAwknG6.png"
-              alt="Tesla Optimus Gen 2 humanoid robot"
+              src="/media/atlas2-Pre-Launch-Thumbnail.webp"
+              alt="Boston Dynamics Atlas humanoid robot"
               className="robo-img"
             />
             <div className="robo-overlay">
-              <p className="robo-overlay-vendor">Tesla</p>
-              <p className="robo-overlay-name">Optimus Gen 2</p>
-              <p className="robo-overlay-price">Target $20K–$30K · Early Access est. 2026</p>
+              <p className="robo-overlay-vendor">Boston Dynamics</p>
+              <p className="robo-overlay-name">Atlas</p>
+              <p className="robo-overlay-price">Enterprise RaaS · Contact for Pricing</p>
               <span className="robo-overlay-cta">View Details →</span>
             </div>
           </Link>
