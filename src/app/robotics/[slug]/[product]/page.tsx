@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 import SoftDevHeader from '@/components/SoftDevHeader';
+import RobotImageLightbox from '@/components/RobotImageLightbox';
 import { VENDORS } from '@/data/vendors';
 import { VENDOR_IMAGES } from '@/data/vendor-images';
 
@@ -163,16 +164,11 @@ export default function ProductPage({
             </div>
           </div>
 
-          {/* Right: full robot image — object-contain, no cropping */}
-          <div className="flex items-center justify-center rounded-2xl bg-neutral-950 border border-neutral-900 overflow-hidden"
-            style={{ minHeight: '400px' }}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={product.image ?? vendorHeroImage ?? ''}
-              alt={product.name}
-              className="w-full max-h-[560px] object-contain p-6"
-            />
-          </div>
+          {/* Right: full robot image — click to enlarge */}
+          <RobotImageLightbox
+            src={product.image ?? vendorHeroImage ?? ''}
+            alt={product.name}
+          />
         </div>
 
         {/* Other models from same vendor */}
