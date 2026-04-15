@@ -180,11 +180,11 @@ export default function VendorPage({ params }: { params: { slug: string } }) {
                   <span className={`text-[10px] uppercase tracking-wider border rounded-full px-2 py-0.5 font-manrope ${STATUS_STYLES[p.status]}`}>
                     {STATUS_LABELS[p.status]}
                   </span>
-                  {p.orderUrl && p.status !== 'not_available' && (
-                    <a href={p.orderUrl} target="_blank" rel="noopener noreferrer"
+                  {p.status !== 'not_available' && (
+                    <Link href={ctaHref}
                       className="text-[10px] text-white bg-neutral-800 hover:bg-neutral-700 border border-neutral-700 rounded-full px-3 py-1 font-manrope transition-colors">
-                      {p.status === 'raas' ? 'Request RaaS →' : p.status === 'pre_order' ? 'Pre-Order →' : 'Order →'}
-                    </a>
+                      {p.status === 'raas' ? 'Request via Deeptech →' : p.status === 'pre_order' ? 'Reserve via Deeptech →' : 'Source via Deeptech →'}
+                    </Link>
                   )}
                   {p.image && <span className="text-[10px] text-neutral-600 font-manrope">View details →</span>}
                 </div>
@@ -214,26 +214,6 @@ export default function VendorPage({ params }: { params: { slug: string } }) {
                 </div>
               );
             })}
-          </div>
-        </section>
-
-        {/* Contacts */}
-        <section className="mb-10">
-          <h2 className="text-xs uppercase tracking-widest text-neutral-600 mb-4 font-manrope">Verified Contacts</h2>
-          <div className="space-y-2">
-            {vendor.contacts.map((c) => (
-              <div key={c.label} className="flex items-center justify-between gap-4 px-5 py-3 border border-neutral-900 rounded-lg bg-neutral-950">
-                <span className="text-xs text-neutral-600 font-manrope w-40 shrink-0">{c.label}</span>
-                {c.href ? (
-                  <a href={c.href} target="_blank" rel="noopener noreferrer"
-                    className="text-xs text-neutral-300 hover:text-white transition-colors font-manrope truncate">
-                    {c.value}
-                  </a>
-                ) : (
-                  <span className="text-xs text-neutral-400 font-manrope truncate">{c.value}</span>
-                )}
-              </div>
-            ))}
           </div>
         </section>
 

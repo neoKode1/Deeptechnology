@@ -149,12 +149,12 @@ export default function ProductPage({
                 className="inline-flex items-center gap-2 bg-white text-black font-manrope text-sm font-semibold px-6 py-3 rounded-xl hover:bg-neutral-200 transition-colors">
                 Get a Quote <ArrowUpRight className="w-4 h-4" />
               </Link>
-              {product.orderUrl && product.status !== 'not_available' && (
-                <a href={product.orderUrl} target="_blank" rel="noopener noreferrer"
+              {product.status !== 'not_available' && (
+                <Link href={ctaHref}
                   className="inline-flex items-center gap-2 border border-neutral-700 text-white font-manrope text-sm px-6 py-3 rounded-xl hover:border-neutral-500 transition-colors">
-                  {product.status === 'raas' ? 'Request RaaS' : product.status === 'pre_order' ? 'Pre-Order Now' : 'Order Now'}
+                  {product.status === 'raas' ? 'Request via Deeptech' : product.status === 'pre_order' ? 'Reserve via Deeptech' : 'Source via Deeptech'}
                   <ArrowUpRight className="w-4 h-4" />
-                </a>
+                </Link>
               )}
             </div>
           </div>
