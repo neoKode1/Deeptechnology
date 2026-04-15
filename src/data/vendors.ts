@@ -199,6 +199,7 @@ export const VENDORS: Vendor[] = [
         price: '~$200,000 full-stack · RaaS available',
         status: 'raas',
         notes: 'Carries 30 kg payload · 30+ km range · 14 km/h top speed · 2–3 hr recharge. Partners: Just Eat, Swiss Post, Migros Online, Evri UK.',
+        image: '/media/rivr-unitree-robot-concept-scazziga-front-view-2025.jpg',
       },
     ],
     procurementNotes: 'Formerly Swiss-Mile. RIVR builds wheeled-legged quadruped robots for last-mile and doorstep delivery. Fleet deployment model — not sold unit-direct. $22M seed round backed by Jeff Bezos (Bezos Expeditions). HQ: Zurich, Switzerland.',
