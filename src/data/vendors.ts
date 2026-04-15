@@ -1164,9 +1164,9 @@ export const VENDORS: Vendor[] = [
     contacts: [{ label: 'Website', value: 'store.dji.com/agras', href: 'https://store.dji.com/category/agriculture' }],
     products: [
       { name: 'Agras T20P', price: '~$10,499', status: 'in_stock', orderUrl: 'https://www.dji.com/t20p', notes: '20 kg spray payload; 25 kg (35 L) spread payload; quad-rotor tilted truss design; folds 77% smaller; Dual Atomized Spraying System; Active Phased Array Radar + Binocular Vision; IPX6K; DJI Terra mapping.', image: '/media/dji-agras-t20p.png' },
-      { name: 'Agras T25', price: '~$10,999', status: 'in_stock', orderUrl: 'https://store.dji.com/category/agriculture', notes: '20 L tank; 16-nozzle; mid-range spraying drone.', image: '/media/DJI%20Agras-Dronak_nekazaritzan_%28cropped%29.jpg' },
-      { name: 'Agras T40', price: '~$13,499', status: 'in_stock', orderUrl: 'https://www.dji.com/t40', notes: '40 kg spray payload; 50 kg (70 L) spread payload; Coaxial Twin Rotor design; Dual Atomized Spraying System; Active Phased Array Radar + Binocular Vision; Core Modules IPX6K; EFI Generator (15% fuel saving); DJI Terra mapping.', image: '/media/dji-agras-t40.png' },
-      { name: 'Agras T50', price: '$30,999', status: 'in_stock', orderUrl: 'https://store.dji.com/category/agriculture', notes: '40 L tank; 16-nozzle; dual atomizing; 50 kg MTOW; large farms.', image: '/media/DJI%20Agras-Dronak_nekazaritzan_%28cropped%29.jpg' },
+      { name: 'Agras T25', price: '~$10,999', status: 'in_stock', orderUrl: 'https://store.dji.com/category/agriculture', notes: '20 L tank; 16-nozzle; mid-range spraying drone.', image: '/media/DJI Agras T25.webp' },
+      { name: 'Agras T40', price: '~$13,499', status: 'in_stock', orderUrl: 'https://www.dji.com/t40', notes: '40 kg spray payload; 50 kg (70 L) spread payload; Coaxial Twin Rotor design; Dual Atomized Spraying System; Active Phased Array Radar + Binocular Vision; Core Modules IPX6K; EFI Generator (15% fuel saving); DJI Terra mapping.', image: '/media/DJI Agras T40.webp' },
+      { name: 'Agras T50', price: '$30,999', status: 'in_stock', orderUrl: 'https://store.dji.com/category/agriculture', notes: '40 L tank; 16-nozzle; dual atomizing; 50 kg MTOW; large farms.', image: '/media/DJI Agras T50.webp' },
     ],
     procurementNotes: 'Agricultural drone spraying and spreading. Available through DJI authorized agricultural dealers.',
   },
