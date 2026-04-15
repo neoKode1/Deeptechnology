@@ -284,11 +284,12 @@ export const VENDORS: Vendor[] = [
     products: [
       { name: 'Mavic 3E (Enterprise)', price: '$4,599', status: 'in_stock', orderUrl: 'https://www.dronefly.com/products/dji-mavic-3-enterprise', notes: 'Mechanical shutter; 56× zoom; RTK module; IP54.', image: '/media/DJI%20Enterprise.jpg' },
       { name: 'Mavic 3T (Thermal)', price: '$4,799', status: 'in_stock', notes: 'Wide + zoom + thermal; first-responder / inspection.', image: '/media/DJI%20Enterprise.jpg' },
+      { name: 'Matrice 3TD', price: '~$5,799', status: 'in_stock', orderUrl: 'https://enterprise.dji.com/matrice-3td', notes: 'Triple-sensor enterprise compact: 48MP wide (4/3 CMOS) + 12MP 4× optical zoom tele + 640×512 LWIR thermal; 45-min flight; IP55; O3 Enterprise 15 km; 920g; omnidirectional obstacle sensing; hot-swappable battery. Ideal for inspection and first response.', image: '/media/DJI%20Matrice%203TD.webp' },
       { name: 'Matrice 30T', price: '~$9,000', status: 'in_stock', notes: 'Dual-sensor + thermal; IP55; dock-compatible; 41-min flight.', image: '/media/DJI%20Enterprise.jpg' },
       { name: 'Matrice 350 RTK', price: '~$7,000', status: 'in_stock', orderUrl: 'https://enterprise.dji.com/matrice-350-rtk', notes: '55-min flight; IP55; O3 Enterprise; 400 battery cycles; 6-directional sensing.', image: '/media/DJI%20Enterprise.jpg' },
       { name: 'Matrice 400', price: '$10,450', status: 'in_stock', orderUrl: 'https://talosdrones.com/products/dji-enterprise-matrice-400', notes: 'O4 Enterprise; 59-min flight; 40 km range; 6 kg payload; Zenmuse H30/L3 compatible.', image: '/media/DJI%20Enterprise.jpg' },
       { name: 'Matrice 4 Series', price: 'From ~$12,250', status: 'in_stock', notes: 'Latest compact enterprise series; 4K + thermal + lidar options; dock-ready.', image: '/media/DJI%20Enterprise.jpg' },
-      { name: 'DJI Dock 2', price: '~$7,500', status: 'in_stock', notes: 'Weatherproof drone-in-a-box; M30/M350/M400 compatible; fully autonomous BVLOS.', image: '/media/DJI%20Enterprise.jpg' },
+      { name: 'DJI Dock 2', price: '~$7,500', status: 'in_stock', notes: 'Weatherproof drone-in-a-box; M30/M350/M400 compatible; fully autonomous BVLOS.', image: '/media/DJI%20Dock.webp' },
       { name: 'Zenmuse L3 (LiDAR)', price: '~$15,700', status: 'in_stock', notes: '1535 nm LiDAR; 100MP RGB; up to 100 km²/flight; M300/M350/M400 compatible.', image: '/media/DJI%20Enterprise.jpg' },
     ],
     procurementNotes: 'In stock at multiple authorized US dealers. Can be purchased directly online (add to cart) or via "Request Quote" for enterprise volume orders.',
