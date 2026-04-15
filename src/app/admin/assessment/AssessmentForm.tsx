@@ -11,6 +11,11 @@ const ENVS: { value: EnvironmentType; label: string }[] = [
   { value: 'retail', label: 'Retail Floor' },
   { value: 'food_beverage', label: 'Food & Beverage' },
   { value: 'cold_storage', label: 'Cold Storage / Freezer' },
+  { value: 'agriculture', label: 'Agriculture / Outdoor Farm' },
+  { value: 'healthcare', label: 'Healthcare / Hospital' },
+  { value: 'hospitality', label: 'Hospitality / Hotel' },
+  { value: 'construction', label: 'Construction / Job Site' },
+  { value: 'security', label: 'Security / Perimeter Patrol' },
 ];
 
 const PROCESSES: { value: ProcessType; label: string }[] = [
@@ -21,6 +26,11 @@ const PROCESSES: { value: ProcessType; label: string }[] = [
   { value: 'inspection', label: 'Facility Inspection / Inventory Count' },
   { value: 'sorting', label: 'Sorting & Conveyor Assist' },
   { value: 'humanoid_general', label: 'General Humanoid Tasks' },
+  { value: 'floor_cleaning', label: 'Floor Cleaning / Sanitation' },
+  { value: 'security_patrol', label: 'Security Patrol / Monitoring' },
+  { value: 'cobot_assembly', label: 'Cobot Assembly / Welding / Finishing' },
+  { value: 'crop_monitoring', label: 'Crop Monitoring / Precision Agriculture' },
+  { value: 'patient_assistance', label: 'Patient Assistance / Clinical Logistics' },
 ];
 
 const SURFACES: { value: FloorSurface; label: string }[] = [
@@ -41,6 +51,11 @@ const THROUGHPUT_LABEL: Record<ProcessType, string> = {
   inspection:         'Inspections / shift (current)',
   sorting:            'Items Sorted / hr (current)',
   humanoid_general:   'Tasks Completed / hr (current)',
+  floor_cleaning:     'Sq Ft Cleaned / shift (current)',
+  security_patrol:    'Patrol Routes Completed / shift (current)',
+  cobot_assembly:     'Parts Assembled / hr (current)',
+  crop_monitoring:    'Acres Scanned / day (current)',
+  patient_assistance: 'Patient Room Visits / shift (current)',
 };
 
 const DEFAULTS: AssessmentInput = {

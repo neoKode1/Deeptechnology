@@ -786,7 +786,9 @@ export default function RoboticsDivisionHome() {
           {[
             { label: 'Unitree G1 vs Boston Dynamics Spot', href: '/compare/unitree-vs-boston-dynamics' },
             { label: 'Agility Digit vs Figure 03', href: '/compare/agility-vs-figure' },
-            { label: 'Kiwibot S3 vs Serve Gen 3', href: '/compare/kiwibot-vs-serve' },
+            { label: 'Kiwibot Leap vs Serve Gen 3', href: '/compare/kiwibot-vs-serve' },
+            { label: 'Atlas vs Figure 03', href: '/compare/atlas-vs-figure-03' },
+            { label: 'MiR 600 vs OTTO 750', href: '/compare/mir-vs-otto' },
           ].map(({ label, href }) => (
             <a
               key={href}

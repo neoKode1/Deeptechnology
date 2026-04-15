@@ -59,7 +59,31 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">7. Contact</h2>
+            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">8. Third-Party Data Processors</h2>
+            <p>We use the following sub-processors to operate our services. Each is bound by their own data protection agreements:</p>
+            <ul className="mt-3 space-y-2 text-sm list-disc list-inside text-[#555]">
+              <li><strong>Anthropic</strong> — AI inference for Nimbus chat. Conversation data is processed under Anthropic&apos;s API privacy terms. We have disabled training data sharing.</li>
+              <li><strong>Stripe</strong> — Payment processing. Handles all card data under PCI-DSS Level 1. Stripe does not share your card details with us.</li>
+              <li><strong>Upstash (Redis)</strong> — Encrypted in-memory cache for session management, rate limiting, and temporary lead storage (7-day TTL).</li>
+              <li><strong>Resend</strong> — Transactional email delivery for quote confirmations and ROI reports.</li>
+            </ul>
+          </section>
+
+          <section>
+            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">9. Your Rights (GDPR / CCPA)</h2>
+            <p>Depending on where you are located, you may have the following rights regarding your personal data:</p>
+            <ul className="mt-3 space-y-2 text-sm list-disc list-inside text-[#555]">
+              <li><strong>Access</strong> — Request a copy of the personal data we hold about you.</li>
+              <li><strong>Deletion</strong> — Request that we delete your personal data. Chat session data and email leads are deleted automatically after 7 days.</li>
+              <li><strong>Portability</strong> — Request your data in a portable format.</li>
+              <li><strong>Opt-out (CCPA)</strong> — California residents may opt out of the sale of personal information. We do not sell personal data.</li>
+              <li><strong>Correction</strong> — Request correction of inaccurate data we hold about you.</li>
+            </ul>
+            <p className="mt-3">To exercise any of these rights, contact us at <a href="mailto:info@deeptechnologies.dev" className="text-[#111] font-medium underline underline-offset-4">info@deeptechnologies.dev</a>. We will respond within 30 days.</p>
+          </section>
+
+          <section>
+            <h2 className="font-manrope font-semibold text-lg text-[#111] mb-3">10. Contact</h2>
             <p>For privacy-related inquiries, contact us at{' '}
               <a href="mailto:info@deeptechnologies.dev" className="text-[#111] font-medium underline underline-offset-4 hover:text-black">
                 info@deeptechnologies.dev

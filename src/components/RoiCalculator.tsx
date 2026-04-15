@@ -3,25 +3,37 @@
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 
+type Mode = 'delivery' | 'labor';
+
 /**
- * Delivery-bot ROI / skid-commission calculator.
- * Sliders are always interactive. The 4-metric results panel is gated
- * behind an email capture — on submission, the report is revealed and
- * a D+0 email is sent via POST /api/roi-capture.
+ * Dual-mode ROI calculator:
+ *  • Delivery mode  — skid-commission model for last-mile / indoor delivery bots
+ *  • Labor savings  — automation-rate model for warehouse AMRs and humanoids
  */
 export default function RoiCalculator() {
-  const [units, setUnits] = useState(3);
-  const [deliveries, setDeliveries] = useState(60);   // per bot per day
-  const [commission, setCommission] = useState(3.99); // $ per delivery (skid commission)
+  const [mode, setMode] = useState<Mode>('delivery');
+
+  // Delivery-bot inputs
+  const [units, setUnits]         = useState(3);
+  const [deliveries, setDeliveries] = useState(60);
+  const [commission, setCommission] = useState(3.99);
   const [daysPerMonth, setDaysPerMonth] = useState(26);
-  const [leaseCost, setLeaseCost] = useState(897);    // $ / unit / month
+  const [leaseCost, setLeaseCost]   = useState(897);
+
+  // Labor-savings inputs
+  const [lsWorkers, setLsWorkers]     = useState(10);
+  const [lsWage, setLsWage]           = useState(22);
+  const [lsShifts, setLsShifts]       = useState(2);
+  const [lsFleetCost, setLsFleetCost] = useState(150000);
+  const [lsAutoRate, setLsAutoRate]   = useState(60);   // % of labor replaced
 
   // Gate state
-  const [email, setEmail] = useState('');
-  const [unlocked, setUnlocked] = useState(false);
+  const [email, setEmail]         = useState('');
+  const [unlocked, setUnlocked]   = useState(false);
   const [gateStatus, setGateStatus] = useState<'idle' | 'loading' | 'error'>('idle');
   const [gateError, setGateError] = useState('');
 
+  // ── Delivery mode calculations ───────────────────────────────────────────────
   const monthlyDeliveries = units * deliveries * daysPerMonth;
   const monthlyRevenue    = monthlyDeliveries * commission;
   const monthlyCost       = units * leaseCost;
@@ -30,6 +42,14 @@ export default function RoiCalculator() {
   const breakEvenDays     = monthlyProfit > 0
     ? Math.ceil(monthlyCost / (monthlyRevenue / daysPerMonth))
     : null;
+
+  // ── Labor-savings mode calculations ─────────────────────────────────────────
+  const hoursPerYear         = lsShifts * 8 * 250;
+  const annualLaborCost      = lsWorkers * lsWage * hoursPerYear;
+  const annualSavings        = Math.round(annualLaborCost * Math.min(lsAutoRate / 100, 0.70));
+  const lsPaybackMonths      = annualSavings > 0 ? Math.round((lsFleetCost / annualSavings) * 12) : 999;
+  const lsThreeYearNet       = Math.round(annualSavings * 3 - lsFleetCost);
+  const lsRoi                = lsFleetCost > 0 ? Math.round((annualSavings / lsFleetCost) * 100) : 0;
 
   const fmt = (n: number) =>
     n >= 1000
@@ -71,55 +91,115 @@ export default function RoiCalculator() {
     <div className="border border-neutral-200 bg-white/80 backdrop-blur-md rounded-2xl shadow-sm p-6 sm:p-8 max-w-[820px] mx-auto">
       <div className="mb-6">
         <p className="text-[10px] tracking-widest uppercase text-neutral-400 mb-1 font-manrope">ROI Calculator</p>
-        <h3 className="font-manrope font-semibold text-lg sm:text-xl text-neutral-900">Skid Commission Earnings vs. Fleet Cost</h3>
+        <h3 className="font-manrope font-semibold text-lg sm:text-xl text-neutral-900">
+          {mode === 'delivery' ? 'Skid Commission Earnings vs. Fleet Cost' : 'Labor Savings vs. Automation Investment'}
+        </h3>
         <p className="text-sm text-neutral-500 mt-1">Adjust the sliders to model your deployment — see break-even before you call sales.</p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
-        {/* Sliders */}
-        {[
-          { label: 'Fleet size (bots)', value: units, min: 1, max: 20, step: 1, display: `${units} robot${units > 1 ? 's' : ''}`, set: setUnits },
-          { label: 'Deliveries / bot / day', value: deliveries, min: 10, max: 200, step: 5, display: `${deliveries} deliveries`, set: setDeliveries },
-          { label: 'Skid commission per delivery', value: commission, min: 0.5, max: 10, step: 0.25, display: `$${commission.toFixed(2)}`, set: setCommission },
-          { label: 'Operating days per month', value: daysPerMonth, min: 1, max: 31, step: 1, display: `${daysPerMonth} days`, set: setDaysPerMonth },
-          { label: 'Lease cost / bot / month', value: leaseCost, min: 200, max: 5000, step: 50, display: `$${leaseCost.toLocaleString()}`, set: setLeaseCost },
-        ].map(({ label, value, min, max, step, display, set }) => (
-          <div key={label}>
-            <div className="flex justify-between mb-1.5">
-              <span className="text-xs text-neutral-500 font-manrope">{label}</span>
-              <span className="text-xs font-semibold text-neutral-800 font-manrope tabular-nums">{display}</span>
-            </div>
-            <input
-              type="range" min={min} max={max} step={step} value={value}
-              onChange={e => set(Number(e.target.value))}
-              className="w-full accent-neutral-900 h-1.5 rounded-full"
-            />
-          </div>
+      {/* Mode toggle */}
+      <div className="flex gap-2 mb-8 p-1 bg-neutral-100 rounded-xl w-fit">
+        {(['delivery', 'labor'] as Mode[]).map((m) => (
+          <button
+            key={m}
+            onClick={() => setMode(m)}
+            className={`px-4 py-1.5 text-xs font-medium font-manrope rounded-lg transition-colors ${
+              mode === m ? 'bg-white text-neutral-900 shadow-sm' : 'text-neutral-500 hover:text-neutral-700'
+            }`}
+          >
+            {m === 'delivery' ? '🤖 Delivery Bot' : '🏭 Labor Savings'}
+          </button>
         ))}
+      </div>
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
+        {mode === 'delivery' ? (
+          <>
+            {[
+              { label: 'Fleet size (bots)', value: units, min: 1, max: 20, step: 1, display: `${units} robot${units > 1 ? 's' : ''}`, set: setUnits },
+              { label: 'Deliveries / bot / day', value: deliveries, min: 10, max: 200, step: 5, display: `${deliveries} deliveries`, set: setDeliveries },
+              { label: 'Skid commission per delivery', value: commission, min: 0.5, max: 10, step: 0.25, display: `$${commission.toFixed(2)}`, set: setCommission },
+              { label: 'Operating days per month', value: daysPerMonth, min: 1, max: 31, step: 1, display: `${daysPerMonth} days`, set: setDaysPerMonth },
+              { label: 'Lease cost / bot / month', value: leaseCost, min: 200, max: 5000, step: 50, display: `$${leaseCost.toLocaleString()}`, set: setLeaseCost },
+            ].map(({ label, value, min, max, step, display, set }) => (
+              <div key={label}>
+                <div className="flex justify-between mb-1.5">
+                  <span className="text-xs text-neutral-500 font-manrope">{label}</span>
+                  <span className="text-xs font-semibold text-neutral-800 font-manrope tabular-nums">{display}</span>
+                </div>
+                <input type="range" min={min} max={max} step={step} value={value}
+                  onChange={e => set(Number(e.target.value))}
+                  className="w-full accent-neutral-900 h-1.5 rounded-full" />
+              </div>
+            ))}
+          </>
+        ) : (
+          <>
+            {[
+              { label: 'Workers on the automated task', value: lsWorkers, min: 1, max: 100, step: 1, display: `${lsWorkers} people`, set: setLsWorkers },
+              { label: 'Avg hourly wage (fully loaded)', value: lsWage, min: 10, max: 80, step: 1, display: `$${lsWage}/hr`, set: setLsWage },
+              { label: 'Shifts per day', value: lsShifts, min: 1, max: 3, step: 1, display: `${lsShifts} shift${lsShifts > 1 ? 's' : ''}`, set: setLsShifts },
+              { label: 'Fleet investment (total CapEx)', value: lsFleetCost, min: 20000, max: 2000000, step: 10000, display: `$${(lsFleetCost / 1000).toFixed(0)}k`, set: setLsFleetCost },
+              { label: 'Labor automation rate', value: lsAutoRate, min: 10, max: 70, step: 5, display: `${lsAutoRate}% replaced`, set: setLsAutoRate },
+            ].map(({ label, value, min, max, step, display, set }) => (
+              <div key={label}>
+                <div className="flex justify-between mb-1.5">
+                  <span className="text-xs text-neutral-500 font-manrope">{label}</span>
+                  <span className="text-xs font-semibold text-neutral-800 font-manrope tabular-nums">{display}</span>
+                </div>
+                <input type="range" min={min} max={max} step={step} value={value}
+                  onChange={e => set(Number(e.target.value))}
+                  className="w-full accent-neutral-900 h-1.5 rounded-full" />
+              </div>
+            ))}
+          </>
+        )}
       </div>
 
       {/* Results — gated behind email capture */}
       {unlocked ? (
         <>
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
-            {[
-              { label: 'Monthly Revenue', value: fmt(monthlyRevenue), color: 'text-green-700', bg: 'bg-green-50 border-green-100' },
-              { label: 'Fleet Cost / mo', value: fmt(monthlyCost), color: 'text-neutral-700', bg: 'bg-neutral-50 border-neutral-200' },
-              { label: 'Monthly Profit', value: fmt(monthlyProfit), color: monthlyProfit >= 0 ? 'text-green-700' : 'text-red-600', bg: monthlyProfit >= 0 ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100' },
-              { label: 'ROI on Fleet Cost', value: pct(roi), color: roi >= 0 ? 'text-green-700' : 'text-red-600', bg: roi >= 0 ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100' },
-            ].map(({ label, value, color, bg }) => (
-              <div key={label} className={`rounded-xl border p-4 ${bg}`}>
-                <p className="text-[10px] uppercase tracking-widest text-neutral-400 mb-1 font-manrope">{label}</p>
-                <p className={`text-xl font-semibold font-manrope tabular-nums ${color}`}>{value}</p>
+          {mode === 'delivery' ? (
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {[
+                  { label: 'Monthly Revenue', value: fmt(monthlyRevenue), color: 'text-green-700', bg: 'bg-green-50 border-green-100' },
+                  { label: 'Fleet Cost / mo', value: fmt(monthlyCost), color: 'text-neutral-700', bg: 'bg-neutral-50 border-neutral-200' },
+                  { label: 'Monthly Profit', value: fmt(monthlyProfit), color: monthlyProfit >= 0 ? 'text-green-700' : 'text-red-600', bg: monthlyProfit >= 0 ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100' },
+                  { label: 'ROI on Fleet Cost', value: pct(roi), color: roi >= 0 ? 'text-green-700' : 'text-red-600', bg: roi >= 0 ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100' },
+                ].map(({ label, value, color, bg }) => (
+                  <div key={label} className={`rounded-xl border p-4 ${bg}`}>
+                    <p className="text-[10px] uppercase tracking-widest text-neutral-400 mb-1 font-manrope">{label}</p>
+                    <p className={`text-xl font-semibold font-manrope tabular-nums ${color}`}>{value}</p>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-
-          {breakEvenDays !== null && (
-            <p className="text-xs text-neutral-400 mt-4 text-center">
-              Break-even in <strong className="text-neutral-700">{breakEvenDays} operating day{breakEvenDays !== 1 ? 's' : ''}</strong> per month ·{' '}
-              {monthlyDeliveries.toLocaleString()} total deliveries / month
-            </p>
+              {breakEvenDays !== null && (
+                <p className="text-xs text-neutral-400 mt-4 text-center">
+                  Break-even in <strong className="text-neutral-700">{breakEvenDays} operating day{breakEvenDays !== 1 ? 's' : ''}</strong> per month ·{' '}
+                  {monthlyDeliveries.toLocaleString()} total deliveries / month
+                </p>
+              )}
+            </>
+          ) : (
+            <>
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                {[
+                  { label: 'Annual Labor Cost', value: fmt(annualLaborCost), color: 'text-neutral-700', bg: 'bg-neutral-50 border-neutral-200' },
+                  { label: 'Annual Savings', value: fmt(annualSavings), color: 'text-green-700', bg: 'bg-green-50 border-green-100' },
+                  { label: '3-Year Net Savings', value: fmt(lsThreeYearNet), color: lsThreeYearNet >= 0 ? 'text-green-700' : 'text-red-600', bg: lsThreeYearNet >= 0 ? 'bg-green-50 border-green-100' : 'bg-red-50 border-red-100' },
+                  { label: 'Payback Period', value: lsPaybackMonths < 999 ? `${lsPaybackMonths} mo` : '—', color: 'text-neutral-700', bg: 'bg-neutral-50 border-neutral-200' },
+                ].map(({ label, value, color, bg }) => (
+                  <div key={label} className={`rounded-xl border p-4 ${bg}`}>
+                    <p className="text-[10px] uppercase tracking-widest text-neutral-400 mb-1 font-manrope">{label}</p>
+                    <p className={`text-xl font-semibold font-manrope tabular-nums ${color}`}>{value}</p>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs text-neutral-400 mt-4 text-center">
+                {lsRoi}% annual ROI · capped at 70% labor automation (industry standard conservative estimate)
+              </p>
+            </>
           )}
 
           <p className="text-xs text-neutral-400 mt-2 text-center">

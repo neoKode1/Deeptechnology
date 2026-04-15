@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { ClipboardList, Cpu, Store, ArrowRight, LogOut } from 'lucide-react';
+import { ClipboardList, Cpu, Store, ArrowRight, LogOut, MessageSquare } from 'lucide-react';
 
 async function logout() {
   await fetch('/api/admin/logout', { method: 'POST' });
@@ -32,6 +32,14 @@ const TOOLS = [
     description: 'Browse the full vendor catalog with contacts, pricing ranges, and procurement paths.',
     badge: 'Reference',
     badgeColor: 'text-neutral-400 bg-neutral-800',
+  },
+  {
+    href: '/admin/leads',
+    icon: MessageSquare,
+    label: 'Chat Leads',
+    description: 'View emails captured via the Nimbus AI consultation gate. Follow up within 24 hours.',
+    badge: 'Leads',
+    badgeColor: 'text-amber-400 bg-amber-950',
   },
 ];
 

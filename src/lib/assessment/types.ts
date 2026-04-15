@@ -5,7 +5,12 @@ export type EnvironmentType =
   | 'manufacturing'
   | 'retail'
   | 'food_beverage'
-  | 'cold_storage';
+  | 'cold_storage'
+  | 'agriculture'
+  | 'healthcare'
+  | 'hospitality'
+  | 'construction'
+  | 'security';
 
 export type ProcessType =
   | 'picking_packing'
@@ -14,7 +19,12 @@ export type ProcessType =
   | 'delivery_outdoor'
   | 'inspection'
   | 'sorting'
-  | 'humanoid_general';
+  | 'humanoid_general'
+  | 'floor_cleaning'
+  | 'security_patrol'
+  | 'cobot_assembly'
+  | 'crop_monitoring'
+  | 'patient_assistance';
 
 export type FloorSurface = 'smooth_concrete' | 'epoxy' | 'rough_concrete' | 'outdoor_pavement' | 'mixed';
 

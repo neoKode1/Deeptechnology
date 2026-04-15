@@ -256,6 +256,65 @@ export const COMPARISONS: Comparison[] = [
       chooseB: 'Choose Serve Gen 3 if you are a large platform or logistics operator who can negotiate a fleet partnership.',
     },
   },
+  {
+    slug: 'atlas-vs-figure-03',
+    title: 'Boston Dynamics Atlas vs Figure 03 — 2026 Humanoid Robot Comparison',
+    description:
+      'The most capable bipedal robot ever built vs the best-funded US humanoid startup. Boston Dynamics Atlas vs Figure 03 — specs, deployment models, and a frank verdict on which is closer to production-ready today.',
+    vendorAId: 'boston-dynamics',
+    vendorBId: 'figure',
+    vendorALabel: 'Boston Dynamics Atlas',
+    vendorBLabel: 'Figure 03',
+    criteria: [
+      { label: 'Est. Unit Price',         a: '$150K–$300K (RaaS est.)',           b: '$70K–$150K+ (enterprise)',       winner: 'b' },
+      { label: 'Pricing Model',           a: 'RaaS only — no direct purchase',    b: 'Enterprise CapEx + RaaS pilots', winner: 'b' },
+      { label: 'Payload Capacity',        a: '~11 kg',                            b: '~25 kg (est.)',                  winner: 'b' },
+      { label: 'Walk Speed',              a: '~5.5 mph (fastest commercial)',      b: '~2.7 mph',                      winner: 'a' },
+      { label: 'Locomotion',              a: 'Electric — full athletic range',     b: 'Electric — upright bipedal',    winner: 'a' },
+      { label: 'Outdoor Capable',         a: 'Yes — any terrain',                 b: 'Structured indoors only',       winner: 'a' },
+      { label: 'Active Pilots',           a: 'Hyundai manufacturing (internal)',  b: 'BMW Spartanburg (30K cars/yr)', winner: 'b' },
+      { label: 'Buy Path',                a: 'RaaS — contact Hyundai / BD',       b: 'Web inquiry → enterprise sales',winner: 'b' },
+      { label: 'Deploy Lead Time',        a: '~24 weeks',                         b: '~24 weeks',                     winner: 'tie' },
+      { label: 'Software / AI',           a: 'Boston Dynamics proprietary',       b: 'Figure AI OS (VLA model)',       winner: 'tie' },
+      { label: 'Track Record',            a: '10+ years bipedal R&D',             b: '2 years — rapid iteration',     winner: 'a' },
+      { label: 'Backing',                 a: 'Hyundai ($1.1B)',                   b: 'OpenAI, Microsoft, Bezos ($675M+)', winner: 'tie' },
+    ],
+    verdict: {
+      summary:
+        "Atlas is the most athletically capable humanoid ever built — but it's not a product you can source on a timeline. Figure 03 is the better enterprise bet today: it has an active commercial pilot at BMW, a clearer procurement path, and higher payload capacity for structured warehouse tasks.",
+      chooseA: 'Choose Atlas if you are in automotive manufacturing and can partner directly with Hyundai / Boston Dynamics for a co-development deployment program.',
+      chooseB: 'Choose Figure 03 if you need a commercially available humanoid pilot for a structured factory or warehouse environment within the next 12–18 months.',
+    },
+  },
+  {
+    slug: 'mir-vs-otto',
+    title: 'MiR 600 vs OTTO 750 — 2026 Industrial AMR Comparison',
+    description:
+      'Two of the leading heavy-payload industrial AMRs head to head: Mobile Industrial Robots MiR 600 vs Rockwell Automation OTTO 750. Payload, speed, ecosystem, pricing, and which belongs on your factory floor.',
+    vendorAId: 'mir',
+    vendorBId: 'otto-motors',
+    vendorALabel: 'MiR 600',
+    vendorBLabel: 'OTTO 750',
+    criteria: [
+      { label: 'Payload Capacity',        a: '600 kg',                            b: '750 kg',                        winner: 'b' },
+      { label: 'Top Speed',               a: '3.7 mph (1.5 m/s)',                 b: '4.5 mph (2 m/s)',               winner: 'b' },
+      { label: 'Starting Price',          a: '$52K–$68K',                         b: '$55K–$80K',                     winner: 'a' },
+      { label: 'Navigation',              a: 'Laser SLAM — no infrastructure',    b: 'Laser SLAM — no infrastructure',winner: 'tie' },
+      { label: 'Fleet Software',          a: 'MiR Fleet (web-based)',             b: 'OTTO Fleet Manager',            winner: 'tie' },
+      { label: 'Safety Certification',    a: 'ISO 3691-4 / CE / UL',             b: 'ISO 3691-4 / CE / UL',         winner: 'tie' },
+      { label: 'WMS / ERP Integration',   a: 'Open REST API, 200+ connectors',    b: 'Rockwell FactoryTalk, SAP, Oracle', winner: 'b' },
+      { label: 'Distributor Network',     a: 'Teradyne / MiR global partners',    b: 'Toyota MHS, Papé, Rockwell dealers', winner: 'tie' },
+      { label: 'Best Industry Fit',       a: 'General manufacturing + logistics', b: 'Automotive + heavy industrial', winner: 'tie' },
+      { label: 'Deploy Lead Time',        a: '~10 weeks',                         b: '~8 weeks',                     winner: 'b' },
+      { label: 'Notable Deployments',     a: 'Airbus, Flex, Novo Nordisk',        b: 'John Deere, Caterpillar, GM',   winner: 'tie' },
+    ],
+    verdict: {
+      summary:
+        "Both are enterprise-grade heavy AMRs with similar navigation tech and safety certs. MiR 600 wins on price and ecosystem breadth. OTTO 750 wins on raw speed, payload, and Rockwell Automation integration — a decisive advantage for sites already on Allen-Bradley PLCs.",
+      chooseA: 'Choose MiR 600 if you need a well-supported, price-competitive AMR for general logistics or mixed-industry manufacturing where vendor lock-in is a concern.',
+      chooseB: 'Choose OTTO 750 if you are in automotive or heavy industrial manufacturing and are already in the Rockwell / FactoryTalk ecosystem.',
+    },
+  },
 ];
 
 export function getComparison(slug: string): Comparison | undefined {

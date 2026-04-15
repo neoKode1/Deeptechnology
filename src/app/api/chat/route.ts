@@ -104,7 +104,11 @@ export async function POST(request: Request) {
   if (sessionId && email && typeof email === 'string' && email.includes('@')) {
     const emailKey = `chat:lead:${sessionId}`;
     try {
-      await redis.set(emailKey, email.toLowerCase().trim(), { ex: HISTORY_TTL });
+      await redis.set(
+        emailKey,
+        JSON.stringify({ email: email.toLowerCase().trim(), capturedAt: new Date().toISOString() }),
+        { ex: HISTORY_TTL },
+      );
       console.log(`[chat] Lead email captured for session ${sessionId}: ${email}`);
     } catch (err) {
       console.warn('[chat] Failed to log lead email:', err);
