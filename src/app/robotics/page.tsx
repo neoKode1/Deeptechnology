@@ -1,10 +1,8 @@
 'use client';
 
-import { useState } from 'react';
 import SoftDevHeader from '@/components/SoftDevHeader';
 import ParallaxRobot from '@/components/ParallaxRobot';
 import RoiCalculator from '@/components/RoiCalculator';
-import RobotInquiryModal, { type RobotInfo } from '@/components/RobotInquiryModal';
 import Link from 'next/link';
 import { ArrowUpRight } from 'lucide-react';
 
@@ -129,9 +127,7 @@ const SYSTEMS = [
 ];
 
 export default function RoboticsDivisionHome() {
-  const [selectedRobot, setSelectedRobot] = useState<RobotInfo | null>(null);
-  const openModal = (info: RobotInfo) => setSelectedRobot(info);
-  const closeModal = () => setSelectedRobot(null);
+
 
   return (
     // Page bg uses the NOMA shader's darkest teal-black tone
@@ -889,8 +885,7 @@ export default function RoboticsDivisionHome() {
       </footer>
       </div>{/* end content wrapper */}
 
-      {/* ── Robot Inquiry Modal ── */}
-      <RobotInquiryModal robot={selectedRobot} onClose={closeModal} />
+
     </div>
   );
 }
