@@ -196,13 +196,16 @@ export default function SoftwareDivisionPage() {
       </section>
 
       {/* ── SUNDAR PICHAI IMAGE ── */}
-      <div className="w-full overflow-hidden" style={{ maxHeight: '520px' }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/media/Sundar%20Pichai.png"
-          alt="Sundar Pichai, CEO of Google"
-          className="block w-full h-full object-cover object-top"
-        />
+      <div className="px-6 md:px-12 lg:px-20 py-8">
+        <div className="max-w-[82rem] mx-auto">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/media/Sundar%20Pichai.png"
+            alt="Sundar Pichai, CEO of Google"
+            className="block w-full rounded-2xl object-cover object-top"
+            style={{ maxHeight: '320px' }}
+          />
+        </div>
       </div>
 
       {/* ── WORKS ── */}
@@ -262,13 +265,16 @@ export default function SoftwareDivisionPage() {
       </section>
 
       {/* ── SATYA NADELLA IMAGE ── */}
-      <div className="w-full overflow-hidden" style={{ maxHeight: '520px' }}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src="/media/Satya%20Nadella.jpg"
-          alt="Satya Nadella, CEO of Microsoft"
-          className="block w-full h-full object-cover object-top"
-        />
+      <div className="px-6 md:px-12 lg:px-20 py-8">
+        <div className="max-w-[82rem] mx-auto">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/media/Satya%20Nadella.jpg"
+            alt="Satya Nadella, CEO of Microsoft"
+            className="block w-full rounded-2xl object-cover object-top"
+            style={{ maxHeight: '320px' }}
+          />
+        </div>
       </div>
 
       {/* ── LLM CAROUSEL ── */}
