@@ -179,6 +179,26 @@ export const VENDORS: Vendor[] = [
     ],
     procurementNotes: 'B2B service agreement. Delivery-as-a-Service: $1 UK, $2 US per delivery. API integration available. 270+ locations globally. HQ: San Francisco.',
   },
+  {
+    id: 'rivr',
+    name: 'RIVR',
+    category: 'delivery',
+    buyPath: 'b2b_partner',
+    leadTime: '16–24 weeks (fleet deployment)',
+    contacts: [
+      { label: 'Website', value: 'rivr.ai', href: 'https://www.rivr.ai' },
+      { label: 'Partnership Inquiry', value: 'rivr.ai/#contact', href: 'https://www.rivr.ai/#contact' },
+    ],
+    products: [
+      {
+        name: 'RIVR One — Wheeled-Legged Delivery Robot',
+        price: '~$200,000 full-stack · RaaS available',
+        status: 'raas',
+        notes: 'Carries 30 kg payload · 30+ km range · 14 km/h top speed · 2–3 hr recharge. Partners: Just Eat, Swiss Post, Migros Online, Evri UK.',
+      },
+    ],
+    procurementNotes: 'Formerly Swiss-Mile. RIVR builds wheeled-legged quadruped robots for last-mile and doorstep delivery. Fleet deployment model — not sold unit-direct. $22M seed round backed by Jeff Bezos (Bezos Expeditions). HQ: Zurich, Switzerland.',
+  },
 
   // ─── INDUSTRIAL / WAREHOUSE ─────────────────────────────────────────────────
   {

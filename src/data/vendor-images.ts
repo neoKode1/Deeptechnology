@@ -22,7 +22,8 @@ export const VENDOR_IMAGES: Record<string, string> = {
   'serve':              '/media/Serve-Gen-2-left-and-Gen-3-robots.jpg',
   'kiwibot':            '/media/Kiwibot.jpg',
   'segway':             '/media/Segway%20Robotics.jpeg',
-  'starship':           '/media/del-bot-quad.webp',
+  // starship has no product image — their robots are not sold standalone
+  'rivr':               '/media/del-bot-quad.webp',
   // ── Industrial / Warehouse ──────────────────────────────────────────────
   'seegrid':            '/media/Seegrid-Palion-AMR-Fleet-2024_Palion-Tow-Palion-Lift-RS1-Palion-Lift-CR1.webp',
   'mir':                '/media/MiR-AMR-lineup-1500x1000-1-1024x683.webp',
