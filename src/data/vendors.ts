@@ -28,11 +28,20 @@ export type VendorCategory =
   | 'security' | 'cleaning' | 'exoskeleton' | 'components'
   | 'quadruped' | 'underwater' | 'inspection' | 'defense';
 
+/**
+ * availability — sourcing readiness from Deeptech's perspective:
+ *  - (undefined / 'active') → live catalog; real contact, quotable today
+ *  - 'sourcing'             → real product, gated access; 3–12 month enterprise pipeline
+ *  - 'coming_soon'          → pre-commercial; no confirmed unit pricing or delivery date
+ */
+export type VendorAvailability = 'active' | 'sourcing' | 'coming_soon';
+
 export interface Vendor {
   id: string;
   name: string;
   category: VendorCategory;
   buyPath: BuyPath;
+  availability?: VendorAvailability;
   leadTime?: string;
   contacts: VendorContact[];
   products: VendorProduct[];
@@ -69,6 +78,7 @@ export const VENDORS: Vendor[] = [
     id: '1x',
     name: '1X Technologies',
     category: 'humanoid',
+    availability: 'sourcing',
     buyPath: 'direct_online',
     leadTime: 'US deliveries begin 2026',
     contacts: [
@@ -85,6 +95,7 @@ export const VENDORS: Vendor[] = [
     id: 'agility',
     name: 'Agility Robotics',
     category: 'humanoid',
+    availability: 'sourcing',
     buyPath: 'raas_only',
     contacts: [
       { label: 'Sales Page', value: 'agilityrobotics.com/sales', href: 'https://agilityrobotics.com/sales' },
@@ -111,6 +122,7 @@ export const VENDORS: Vendor[] = [
     id: 'figure',
     name: 'Figure AI',
     category: 'humanoid',
+    availability: 'sourcing',
     buyPath: 'email_required',
     contacts: [
       { label: 'Contact', value: 'figure.ai', href: 'https://www.figure.ai' },
@@ -124,6 +136,7 @@ export const VENDORS: Vendor[] = [
     id: 'fauna',
     name: 'Fauna Robotics',
     category: 'humanoid',
+    availability: 'coming_soon',
     buyPath: 'email_required',
     contacts: [
       { label: 'Request Robot', value: 'faunarobotics.com', href: 'https://faunarobotics.com' },
@@ -201,6 +214,7 @@ export const VENDORS: Vendor[] = [
     id: 'rivr',
     name: 'RIVR',
     category: 'delivery',
+    availability: 'coming_soon',
     buyPath: 'b2b_partner',
     leadTime: '16–24 weeks (fleet deployment)',
     contacts: [
@@ -336,6 +350,7 @@ export const VENDORS: Vendor[] = [
     id: 'apptronik',
     name: 'Apptronik',
     category: 'humanoid',
+    availability: 'sourcing',
     buyPath: 'email_required',
     contacts: [
       { label: 'Contact / Partnerships', value: 'apptronik.com/contact', href: 'https://apptronik.com/contact' },
@@ -350,6 +365,7 @@ export const VENDORS: Vendor[] = [
     id: 'sanctuary',
     name: 'Sanctuary AI',
     category: 'humanoid',
+    availability: 'sourcing',
     buyPath: 'email_required',
     contacts: [
       { label: 'Contact', value: 'sanctuaryai.com', href: 'https://sanctuaryai.com' },
@@ -363,6 +379,7 @@ export const VENDORS: Vendor[] = [
     id: 'ubtech',
     name: 'UBTECH Robotics',
     category: 'humanoid',
+    availability: 'sourcing',
     buyPath: 'email_required',
     contacts: [
       { label: 'Global Enterprise', value: 'enterprise@ubtrobot.com', href: 'mailto:enterprise@ubtrobot.com' },
@@ -377,6 +394,7 @@ export const VENDORS: Vendor[] = [
     id: 'fourier',
     name: 'Fourier Intelligence',
     category: 'humanoid',
+    availability: 'sourcing',
     buyPath: 'email_required',
     contacts: [
       { label: 'Contact', value: 'fourier-ai.com', href: 'https://www.fourier-ai.com' },
@@ -393,6 +411,7 @@ export const VENDORS: Vendor[] = [
     id: 'neura',
     name: 'Neura Robotics',
     category: 'humanoid',
+    availability: 'coming_soon',
     buyPath: 'email_required',
     contacts: [
       { label: 'Contact', value: 'neura-robotics.com/contact', href: 'https://www.neura-robotics.com/contact' },
@@ -413,6 +432,7 @@ export const VENDORS: Vendor[] = [
     id: 'kepler',
     name: 'Kepler Robotics',
     category: 'humanoid',
+    availability: 'coming_soon',
     buyPath: 'email_required',
     contacts: [
       { label: 'Website', value: 'gotokepler.com', href: 'https://www.gotokepler.com' },
@@ -624,6 +644,7 @@ export const VENDORS: Vendor[] = [
     id: 'zipline',
     name: 'Zipline',
     category: 'drone',
+    availability: 'sourcing',
     buyPath: 'b2b_partner',
     contacts: [
       { label: 'Partner / Business', value: 'zipline.com/contact', href: 'https://www.zipline.com/contact' },
@@ -638,6 +659,7 @@ export const VENDORS: Vendor[] = [
     id: 'wing',
     name: 'Wing (Alphabet)',
     category: 'drone',
+    availability: 'sourcing',
     buyPath: 'b2b_partner',
     contacts: [
       { label: 'Partner Inquiry', value: 'wing.com/partners', href: 'https://wing.com/partners' },
@@ -1590,6 +1612,28 @@ export const VENDORS: Vendor[] = [
     ],
     procurementNotes: 'LG service robots for hospitality, retail, and medical. US sales via LG Business Solutions.',
   },
+  {
+    id: 'diligent-robotics',
+    name: 'Diligent Robotics',
+    category: 'service',
+    buyPath: 'raas_only',
+    availability: 'sourcing',
+    leadTime: '12–16 weeks (hospital qualification)',
+    contacts: [
+      { label: 'Website', value: 'diligentrobots.com', href: 'https://diligentrobots.com' },
+      { label: 'Inquiries', value: 'info@diligentrobots.com', href: 'mailto:info@diligentrobots.com' },
+    ],
+    products: [
+      {
+        name: 'Moxi',
+        price: 'RaaS — contact for pricing',
+        status: 'raas',
+        notes: 'Hospital logistics robot. Delivers supplies, medications, and lab specimens to nurse stations. 15 kg payload. Operates autonomously during all shifts. Nurses rate 4.8/5.',
+        image: '/media/Diligent%20Robotics%20Moxi.jpg',
+      },
+    ],
+    procurementNotes: 'Moxi is deployed under a RaaS agreement with multi-year hospital contracts. Customers include Baylor Scott & White, HCA Healthcare, and CommonSpirit Health (65+ hospitals). Requires clinical workflow integration and 12-week onboarding. Contact Deeptech to initiate a pilot discussion.',
+  },
 
   // ─── FLOOR CLEANING ──────────────────────────────────────────────────────────
   {
@@ -1768,6 +1812,27 @@ export const VENDORS: Vendor[] = [
       { name: 'Burro Autonomous Field Vehicle', price: '~$15,000–$20,000', status: 'quote_required', image: '/media/Burro%20Autonomous%20Field%20Vehicle.png' },
     ],
     procurementNotes: 'Follows farm workers and hauls harvest bins autonomously. Contact via website.',
+  },
+  {
+    id: 'agbot',
+    name: 'AgBot Technologies',
+    category: 'agricultural',
+    buyPath: 'email_required',
+    availability: 'sourcing',
+    leadTime: 'Contact for availability',
+    contacts: [
+      { label: 'Website', value: 'agbot.com.au', href: 'https://agbot.com.au' },
+    ],
+    products: [
+      {
+        name: 'RSX Row-Crop Robot',
+        price: '$150,000–$300,000 (quote required)',
+        status: 'quote_required',
+        notes: 'Autonomous row-crop platform for seeding, spraying, and mechanical weeding. Runs 24/7. Best for corn, soy, cotton operations on 500+ acres. Integrates with John Deere Operations Center.',
+        image: '/media/AgBot%20RSX.jpg',
+      },
+    ],
+    procurementNotes: 'AgBot Technologies is an Australian AgTech company specializing in large-scale autonomous row-crop platforms. The RSX operates 24/7 across corn, soy, and cotton fields. US deployments are in early pilot stages. Contact Deeptech to explore a farm trial.',
   },
 
   // ─── INSPECTION ──────────────────────────────────────────────────────────────

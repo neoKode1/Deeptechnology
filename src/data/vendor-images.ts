@@ -58,12 +58,14 @@ export const VENDOR_IMAGES: Record<string, string> = {
   'carbon-robotics':    '/media/Carbon%20Robotics-LaserWeeder-G2-600.webp',
   'dji-agras':          '/media/DJI%20Agras-Dronak_nekazaritzan_(cropped).jpg',
   'burro':              '/media/Burro%20Autonomous%20Field%20Vehicle.png',
+  'agbot':              '/media/AgBot%20RSX.jpg',
   // ── Service & Hospitality ────────────────────────────────────────────────
   'aethon':             '/media/Aethon_Website_Robot_T3.png',
   'bear-robotics':      '/media/Bear%20Robotics.jpg',
   'pudu-robotics':      '/media/PUDU%20Robotics-Bellabot-1-2.webp',
   'xenex':              '/media/Xenex-XenL.jpg',
   'lg-cloi':            '/media/LG%20CLOi.jpg',
+  'diligent-robotics':  '/media/Diligent%20Robotics%20Moxi.jpg',
   // ── Defense ─────────────────────────────────────────────────────────────
   'ghost-robotics':     '/media/Ghost-Robotics-featured.jpg',
   'aerovironment':      '/media/AeroVironment.webp',
