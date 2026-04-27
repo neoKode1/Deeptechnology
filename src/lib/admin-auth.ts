@@ -2,46 +2,43 @@
  * Admin authentication — two-layer strategy:
  *
  * 1. API clients: `Authorization: Bearer <ADMIN_SECRET>` header (unchanged)
- * 2. Browser UI:  UUID session token stored in Redis, sent as `admin_token` cookie
+ * 2. Browser UI:  UUID session token stored in Cloudflare D1, sent as `admin_token` cookie
  *
  * The cookie value is NEVER the secret itself — it's a random UUID that maps
- * to a session record in Redis. Stealing the cookie gives at most 24 hours of
- * access, and sessions can be invalidated instantly by deleting the Redis key.
+ * to a session row in D1. Stealing the cookie gives at most 24 hours of access,
+ * and sessions can be invalidated instantly by deleting the row.
  */
 
-import { Redis } from '@upstash/redis';
+import { d1Exec, d1First } from '@/lib/d1';
 
-const SESSION_TTL = 60 * 60 * 24; // 24 hours
-const SESSION_PREFIX = 'admin:session:';
+const SESSION_TTL_MS = 60 * 60 * 24 * 1000; // 24 hours
 
-function getRedis() {
-  return new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL!,
-    token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-  });
-}
-
-/** Create a new admin session in Redis. Returns the UUID token to set as a cookie. */
+/** Create a new admin session in D1. Returns the UUID token to set as a cookie. */
 export async function createAdminSession(): Promise<string> {
   const { randomUUID } = await import('crypto');
   const token = randomUUID();
-  const redis = getRedis();
-  await redis.set(`${SESSION_PREFIX}${token}`, '1', { ex: SESSION_TTL });
+  const now = Date.now();
+  const expiresAt = now + SESSION_TTL_MS;
+  await d1Exec(
+    'INSERT INTO admin_sessions (token, created_at, expires_at) VALUES (?, ?, ?)',
+    [token, now, expiresAt],
+  );
   return token;
 }
 
 /** Destroy an admin session (logout). */
 export async function destroyAdminSession(token: string): Promise<void> {
-  const redis = getRedis();
-  await redis.del(`${SESSION_PREFIX}${token}`);
+  await d1Exec('DELETE FROM admin_sessions WHERE token = ?', [token]);
 }
 
-/** Verify a session UUID exists in Redis. */
+/** Verify a session UUID exists in D1 and has not expired. */
 async function isValidSession(token: string): Promise<boolean> {
   try {
-    const redis = getRedis();
-    const val = await redis.get(`${SESSION_PREFIX}${token}`);
-    return val === '1';
+    const row = await d1First<{ token: string }>(
+      'SELECT token FROM admin_sessions WHERE token = ? AND expires_at > ?',
+      [token, Date.now()],
+    );
+    return row !== null;
   } catch {
     return false;
   }
@@ -58,7 +55,7 @@ function getCookie(request: Request, name: string): string | null {
  * Check if the request is authorized for admin access.
  * Accepts:
  *   - `Authorization: Bearer <ADMIN_SECRET>` header (programmatic API access)
- *   - `admin_token=<UUID>` cookie (browser admin UI — UUID validated against Redis)
+ *   - `admin_token=<UUID>` cookie (browser admin UI — UUID validated against D1)
  */
 export async function isAuthorizedRequest(request: Request): Promise<boolean> {
   const secret = process.env.ADMIN_SECRET;
@@ -89,4 +86,3 @@ export function unauthorizedResponse() {
     headers: { 'Content-Type': 'application/json' },
   });
 }
-

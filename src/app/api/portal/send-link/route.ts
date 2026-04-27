@@ -3,8 +3,8 @@
  *
  * Customer portal magic-link flow:
  * 1. Accept an email address
- * 2. Look up all quotes for that email in Redis (quotes:by-email:{email} list)
- * 3. If any found: generate a UUID token, store `portal:token:{uuid}` → email in Redis (1 hour TTL)
+ * 2. Look up all quotes for that email in D1
+ * 3. If any found: generate a UUID token, store in D1 (1 hour TTL)
  * 4. Send a magic-link email via Resend
  *
  * Always returns 200 with { success: true } regardless of whether the email
@@ -12,12 +12,12 @@
  */
 
 import { NextResponse } from 'next/server';
-import { Redis } from '@upstash/redis';
 import { Resend } from 'resend';
 import { randomUUID } from 'crypto';
 import { rateLimit, limiters } from '@/lib/ratelimit';
+import { listQuotesByEmail } from '@/lib/quotes/store';
+import { createPortalToken } from '@/lib/portal-tokens';
 
-const TOKEN_TTL = 60 * 60; // 1 hour
 const BASE = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://deeptechnologies.dev';
 const FROM = 'Deep Tech <info@deeptechnologies.dev>';
 
@@ -36,16 +36,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ success: false, message: 'Invalid request' }, { status: 400 });
   }
 
-  const redis = new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL!,
-    token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-  });
-
-  // Look up quote IDs for this email
-  const quoteIds: string[] = (await redis.lrange(`quotes:by-email:${email}`, 0, -1)) ?? [];
+  // Look up quotes for this email
+  const quotes = await listQuotesByEmail(email);
 
   // Always return success — don't expose whether the email exists
-  if (quoteIds.length === 0) {
+  if (quotes.length === 0) {
     console.log(`[portal] No quotes for ${email} — sending not-found variant`);
     // Send a "no orders found" email so the user knows
     try {
@@ -62,7 +57,7 @@ export async function POST(request: Request) {
 
   // Generate and store a token
   const token = randomUUID();
-  await redis.set(`portal:token:${token}`, email, { ex: TOKEN_TTL });
+  await createPortalToken(token, email);
 
   const magicLink = `${BASE}/portal/orders?token=${token}`;
 
@@ -81,7 +76,7 @@ export async function POST(request: Request) {
 </div>`,
       text: `View your Deep Tech orders:\n\n${magicLink}\n\nThis link expires in 1 hour.\n\n— Deep Tech`,
     });
-    console.log(`[portal] Magic link sent to ${email} — ${quoteIds.length} orders`);
+    console.log(`[portal] Magic link sent to ${email} — ${quotes.length} orders`);
   } catch (err) {
     console.error('[portal] Email send failed:', err);
   }

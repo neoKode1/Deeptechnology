@@ -1,12 +1,18 @@
 import { NextResponse } from 'next/server';
 import Anthropic from '@anthropic-ai/sdk';
-import { Redis } from '@upstash/redis';
 import { getQuote } from '@/lib/quotes/store';
 import { buildSystemPrompt } from '@/lib/chat-prompt';
 import { rateLimit, limiters } from '@/lib/ratelimit';
+import {
+  historyKey,
+  getChatHistory,
+  saveChatHistory,
+  incrementSessionCap,
+  saveChatLead,
+  type ChatMessage,
+} from '@/lib/chat-store';
 
 const MAX_HISTORY = 20;           // messages kept per thread (10 exchanges)
-const HISTORY_TTL = 60 * 60 * 24 * 7; // 7-day TTL
 const MAX_MESSAGE_CHARS = 600;    // hard cap on incoming message length
 const SESSION_DAILY_CAP = 12;     // max messages a single anonymous session can send per 24h
 
@@ -17,8 +23,6 @@ const ALLOWED_ORIGINS = [
   ...(process.env.NODE_ENV === 'development' ? ['http://localhost:3000'] : []),
 ];
 
-type ChatMessage = { role: 'user' | 'assistant'; content: string };
-
 /**
  * GET /api/chat?orderId=xxx
  * Load stored conversation history so the client can restore the chat UI on mount.
@@ -28,19 +32,12 @@ export async function GET(request: Request) {
   const orderId = searchParams.get('orderId');
   const sessionId = searchParams.get('sessionId');
 
-  const historyKey = orderId
-    ? `chat:${orderId}:history`
-    : sessionId ? `chat:anon:${sessionId}:history` : null;
-
-  if (!historyKey) return NextResponse.json({ history: [] });
+  const key = historyKey(orderId, sessionId);
+  if (!key) return NextResponse.json({ history: [] });
 
   try {
-    const redis = new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL!,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-    });
-    const stored = await redis.get<ChatMessage[]>(historyKey);
-    return NextResponse.json({ history: Array.isArray(stored) ? stored : [] });
+    const stored = await getChatHistory(key);
+    return NextResponse.json({ history: stored });
   } catch {
     return NextResponse.json({ history: [] });
   }
@@ -52,7 +49,7 @@ export async function GET(request: Request) {
  * Customer-facing chat endpoint powered by Claude.
  * Accepts { message, orderId? } and returns { reply }.
  *
- * Conversation history is persisted in Redis under:
+ * Conversation history is persisted in D1 under:
  *   chat:{orderId}:history   (when orderId is provided)
  *   chat:anon:{sessionId}:history   (anonymous sessions — sessionId from client)
  */
@@ -88,27 +85,13 @@ export async function POST(request: Request) {
   // ── Hard cap on message length (prevents token stuffing) ────────────────────
   const userMessage = message.trim().slice(0, MAX_MESSAGE_CHARS);
 
-  // ── Redis history key ────────────────────────────────────────────────────────
-  const historyKey = orderId
-    ? `chat:${orderId}:history`
-    : sessionId
-      ? `chat:anon:${sessionId}:history`
-      : null;
-
-  const redis = new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL!,
-    token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-  });
+  // ── D1 history key ───────────────────────────────────────────────────────────
+  const key = historyKey(orderId, sessionId);
 
   // ── Log email against session when provided (lead capture from chat gate) ────
   if (sessionId && email && typeof email === 'string' && email.includes('@')) {
-    const emailKey = `chat:lead:${sessionId}`;
     try {
-      await redis.set(
-        emailKey,
-        JSON.stringify({ email: email.toLowerCase().trim(), capturedAt: new Date().toISOString() }),
-        { ex: HISTORY_TTL },
-      );
+      await saveChatLead(sessionId, email);
       console.log(`[chat] Lead email captured for session ${sessionId}: ${email}`);
     } catch (err) {
       console.warn('[chat] Failed to log lead email:', err);
@@ -117,24 +100,25 @@ export async function POST(request: Request) {
 
   // ── Per-session daily cap (anonymous sessions only) ──────────────────────────
   if (sessionId && !orderId) {
-    const capKey = `chat:cap:${sessionId}:${new Date().toISOString().slice(0, 10)}`;
-    const count = await redis.incr(capKey);
-    if (count === 1) await redis.expire(capKey, 60 * 60 * 25); // TTL slightly > 24h
-    if (count > SESSION_DAILY_CAP) {
-      console.warn('[chat] Session daily cap hit:', sessionId);
-      return NextResponse.json(
-        { error: 'Daily message limit reached. Please contact us directly.' },
-        { status: 429 },
-      );
+    try {
+      const count = await incrementSessionCap(sessionId);
+      if (count > SESSION_DAILY_CAP) {
+        console.warn('[chat] Session daily cap hit:', sessionId);
+        return NextResponse.json(
+          { error: 'Daily message limit reached. Please contact us directly.' },
+          { status: 429 },
+        );
+      }
+    } catch (err) {
+      console.warn('[chat] Failed to increment session cap (allowing through):', err);
     }
   }
 
   // ── Load existing history ────────────────────────────────────────────────────
   let history: ChatMessage[] = [];
-  if (historyKey) {
+  if (key) {
     try {
-      const stored = await redis.get<ChatMessage[]>(historyKey);
-      if (Array.isArray(stored)) history = stored;
+      history = await getChatHistory(key);
     } catch (err) {
       console.warn('[chat] Failed to load history:', err);
     }
@@ -164,14 +148,14 @@ export async function POST(request: Request) {
         : "I wasn't able to process that. Please try again.";
 
     // ── Persist updated history ──────────────────────────────────────────────
-    if (historyKey) {
+    if (key) {
       const updated: ChatMessage[] = [
         ...(messages as ChatMessage[]),
         { role: 'assistant' as const, content: reply },
       ].slice(-MAX_HISTORY); // keep last N messages
 
       try {
-        await redis.set(historyKey, updated, { ex: HISTORY_TTL });
+        await saveChatHistory(key, updated);
       } catch (err) {
         console.warn('[chat] Failed to save history:', err);
       }

@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
-import { getQuote, addMessage } from '@/lib/quotes/store';
-import { Redis } from '@upstash/redis';
+import { getQuote, saveQuote, addMessage } from '@/lib/quotes/store';
 
 /**
  * POST /api/quotes/[id]/net-terms
@@ -51,13 +50,8 @@ export async function POST(
   const termsLabel = terms === 'net30' ? 'Net-30' : 'Net-60';
 
   // Update quote status
-  const redis = new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL!,
-    token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-  });
-  const now = new Date().toISOString();
-  const updated = { ...quote, status: 'pending_net_terms' as const, updatedAt: now };
-  await redis.set(`quote:${id}`, JSON.stringify(updated));
+  quote.status = 'pending_net_terms';
+  await saveQuote(quote);
 
   // Log system message
   await addMessage(id, {

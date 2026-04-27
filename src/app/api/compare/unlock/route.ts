@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
-import { Redis } from '@upstash/redis';
 import { rateLimit, limiters } from '@/lib/ratelimit';
 import { getComparison } from '@/data/comparisons';
 import { pushToCRM } from '@/lib/crm';
+import { saveLead } from '@/lib/leads-store';
 
 const resend = new Resend(process.env.RESEND_API_KEY);
 const FROM = 'Deep Tech <info@deeptechnologies.dev>';
@@ -47,18 +47,11 @@ export async function POST(request: Request) {
   const id = `compare-lead-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
   const timestamp = new Date().toISOString();
 
-  // ── Persist to Redis ─────────────────────────────────────────────────────────
+  // ── Persist lead ─────────────────────────────────────────────────────────────
   try {
-    const redis = new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL!,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-    });
-    await redis.set(`compare-lead:${id}`, JSON.stringify({ id, email, slug, timestamp }), {
-      ex: 60 * 60 * 24 * 90,
-    });
-    await redis.lpush('compare-leads', id);
+    await saveLead('compare_unlock', id, email, { id, email, slug, timestamp });
   } catch (err) {
-    console.error('[compare/unlock] Redis error:', err);
+    console.error('[compare/unlock] D1 error:', err);
   }
 
   // ── Push to CRM ──────────────────────────────────────────────────────────────

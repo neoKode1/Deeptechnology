@@ -1,72 +1,46 @@
-import { Ratelimit } from '@upstash/ratelimit';
-import { Redis } from '@upstash/redis';
 import { NextRequest, NextResponse } from 'next/server';
+import { d1First, d1Exec } from '@/lib/d1';
 
 /**
- * Shared Upstash Redis instance for rate limiting.
- * Reuses the same Redis credentials already in the stack.
- */
-const redis = new Redis({
-  url: process.env.UPSTASH_REDIS_REST_URL!,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-});
-
-/**
- * Per-route sliding-window rate limiters.
+ * D1-backed sliding-window rate limiter.
  *
- * contact  — 5 submissions / 60 s  (spam protection, Nimbus cost control)
- * chat     — 5 messages / 60 s     (Claude API cost control — most critical)
- * checkout — 3 attempts / 60 s     (Stripe probing protection)
+ * Each request inserts a row into `rate_limits (bucket, ip, ts)`. We then
+ * count rows in the trailing `windowMs` window — if the count exceeds
+ * `limit`, the request is rejected with 429.
+ *
+ * Old rows are best-effort pruned on each call (small probability) to keep
+ * the table from growing without bound.
+ */
+
+export interface LimiterConfig {
+  bucket: string;     // e.g. 'rl:chat'
+  limit: number;      // max requests per window
+  windowMs: number;   // window size in milliseconds
+}
+
+function cfg(bucket: string, limit: number, seconds: number): LimiterConfig {
+  return { bucket, limit, windowMs: seconds * 1000 };
+}
+
+/**
+ * Per-route rate limiters.
+ *
+ * contact / chat / compare / roi — 5 / 60 s
+ * checkout / portal / enterprise — 3 / 60 s
  */
 export const limiters = {
-  contact: new Ratelimit({
-    redis,
-    limiter: Ratelimit.slidingWindow(5, '60 s'),
-    prefix: 'rl:contact',
-    analytics: true,
-  }),
-  chat: new Ratelimit({
-    redis,
-    limiter: Ratelimit.slidingWindow(5, '60 s'),
-    prefix: 'rl:chat',
-    analytics: true,
-  }),
-  checkout: new Ratelimit({
-    redis,
-    limiter: Ratelimit.slidingWindow(3, '60 s'),
-    prefix: 'rl:checkout',
-    analytics: true,
-  }),
-  compare: new Ratelimit({
-    redis,
-    limiter: Ratelimit.slidingWindow(5, '60 s'),
-    prefix: 'rl:compare',
-    analytics: true,
-  }),
-  roi: new Ratelimit({
-    redis,
-    limiter: Ratelimit.slidingWindow(5, '60 s'),
-    prefix: 'rl:roi',
-    analytics: true,
-  }),
-  portal: new Ratelimit({
-    redis,
-    limiter: Ratelimit.slidingWindow(3, '60 s'),
-    prefix: 'rl:portal',
-    analytics: true,
-  }),
-  enterprise: new Ratelimit({
-    redis,
-    limiter: Ratelimit.slidingWindow(3, '60 s'),
-    prefix: 'rl:enterprise',
-    analytics: true,
-  }),
+  contact:    cfg('rl:contact',    5, 60),
+  chat:       cfg('rl:chat',       5, 60),
+  checkout:   cfg('rl:checkout',   3, 60),
+  compare:    cfg('rl:compare',    5, 60),
+  roi:        cfg('rl:roi',        5, 60),
+  portal:     cfg('rl:portal',     3, 60),
+  enterprise: cfg('rl:enterprise', 3, 60),
 };
 
 /**
  * Extract the real client IP from a Next.js request.
  * Respects Vercel / Cloudflare / reverse-proxy forwarding headers.
- * Falls back to '127.0.0.1' in local dev.
  */
 export function getIP(request: NextRequest | Request): string {
   const req = request as NextRequest;
@@ -86,32 +60,65 @@ export function getIP(request: NextRequest | Request): string {
  *   if (limited) return limited;
  */
 export async function rateLimit(
-  limiter: Ratelimit,
+  limiter: LimiterConfig,
   request: NextRequest | Request,
 ): Promise<NextResponse | null> {
   const ip = getIP(request);
-  const { success, limit, remaining, reset } = await limiter.limit(ip);
+  const now = Date.now();
+  const windowStart = now - limiter.windowMs;
 
-  if (!success) {
-    const retryAfter = Math.ceil((reset - Date.now()) / 1000);
-    return new NextResponse(
-      JSON.stringify({
-        success: false,
-        error: 'Too many requests. Please slow down.',
-        retryAfter,
-      }),
-      {
-        status: 429,
-        headers: {
-          'Content-Type': 'application/json',
-          'X-RateLimit-Limit': String(limit),
-          'X-RateLimit-Remaining': String(remaining),
-          'X-RateLimit-Reset': String(reset),
-          'Retry-After': String(retryAfter),
-        },
-      },
+  try {
+    // Count requests in the trailing window
+    const row = await d1First<{ n: number }>(
+      'SELECT COUNT(*) AS n FROM rate_limits WHERE bucket = ? AND ip = ? AND ts > ?',
+      [limiter.bucket, ip, windowStart],
     );
-  }
+    const count = row?.n ?? 0;
 
-  return null;
+    if (count >= limiter.limit) {
+      const oldest = await d1First<{ ts: number }>(
+        'SELECT MIN(ts) AS ts FROM rate_limits WHERE bucket = ? AND ip = ? AND ts > ?',
+        [limiter.bucket, ip, windowStart],
+      );
+      const reset = (oldest?.ts ?? now) + limiter.windowMs;
+      const retryAfter = Math.max(1, Math.ceil((reset - now) / 1000));
+      return new NextResponse(
+        JSON.stringify({
+          success: false,
+          error: 'Too many requests. Please slow down.',
+          retryAfter,
+        }),
+        {
+          status: 429,
+          headers: {
+            'Content-Type': 'application/json',
+            'X-RateLimit-Limit': String(limiter.limit),
+            'X-RateLimit-Remaining': '0',
+            'X-RateLimit-Reset': String(reset),
+            'Retry-After': String(retryAfter),
+          },
+        },
+      );
+    }
+
+    // Record this request
+    await d1Exec(
+      'INSERT INTO rate_limits (bucket, ip, ts) VALUES (?, ?, ?)',
+      [limiter.bucket, ip, now],
+    );
+
+    // Best-effort prune (1-in-20 calls): drop rows older than the window
+    if (Math.random() < 0.05) {
+      await d1Exec(
+        'DELETE FROM rate_limits WHERE bucket = ? AND ts <= ?',
+        [limiter.bucket, windowStart],
+      ).catch(() => undefined);
+    }
+
+    return null;
+  } catch (err) {
+    // Fail open — never let rate-limit infrastructure break a real request
+    console.error('[ratelimit] Check failed (fail-open):', err);
+    return null;
+  }
 }

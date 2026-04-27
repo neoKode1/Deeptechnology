@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
-import { Redis } from '@upstash/redis';
 import { Resend } from 'resend';
 import Stripe from 'stripe';
-import { getQuote, addMessage } from '@/lib/quotes/store';
+import { getQuote, saveQuote, addMessage } from '@/lib/quotes/store';
+import { deleteWorkOrder } from '@/lib/work-orders';
 import { isAuthorizedRequest } from '@/lib/admin-auth';
 import type { CancellationRecord } from '@/lib/quotes/types';
 
@@ -109,21 +109,15 @@ export async function POST(
     }
   }
 
-  // Update quote in Redis
-  const redis = new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL!,
-    token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-  });
-
+  // Persist updated quote
   quote.status = 'cancelled';
   quote.cancelledAt = now;
   quote.cancellation = cancellation;
   quote.updatedAt = now;
-  await redis.set(`quote:${id}`, JSON.stringify(quote));
+  await saveQuote(quote);
 
-  // Remove from work orders index if exists
-  await redis.del(`workorder:${id}`);
-  await redis.zrem('workorders:index', id);
+  // Remove the work order if it exists
+  await deleteWorkOrder(id);
 
   // Log system message
   await addMessage(id, {

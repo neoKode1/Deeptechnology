@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { Resend } from 'resend';
-import { getQuote, updateQuote, addMessage } from '@/lib/quotes/store';
+import { getQuote, saveQuote, updateQuote, addMessage } from '@/lib/quotes/store';
 
 /**
  * In-memory set of processed Stripe event IDs to prevent double-processing.
@@ -101,11 +101,6 @@ export async function POST(request: Request) {
 
       // Store payment/subscription metadata directly on the quote record
       try {
-        const { Redis } = await import('@upstash/redis');
-        const redis = new Redis({
-          url: process.env.UPSTASH_REDIS_REST_URL!,
-          token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-        });
         const updated = await getQuote(quoteId);
         if (updated) {
           updated.paidAt = new Date().toISOString();
@@ -118,7 +113,7 @@ export async function POST(request: Request) {
           } else {
             updated.stripePaymentIntent = session.payment_intent as string;
           }
-          await redis.set(`quote:${quoteId}`, JSON.stringify(updated));
+          await saveQuote(updated);
         }
       } catch (e) {
         console.error('[webhook] Failed to store payment metadata:', e);

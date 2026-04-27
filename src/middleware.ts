@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
  * Middleware — protects all /admin/* routes.
  *
  * Edge-compatible: only checks cookie presence here.
- * Redis session validity is enforced by each API route via isAuthorizedRequest().
+ * D1 session validity is enforced by each API route via isAuthorizedRequest().
  *
  * Unauthenticated → redirect to /admin/login
  * Authenticated   → pass through

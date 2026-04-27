@@ -1,39 +1,33 @@
-import { Redis } from '@upstash/redis';
 import { randomUUID } from 'crypto';
+import { d1Query, d1First, d1Exec } from '@/lib/d1';
 import type { Quote, QuoteMessage, CreateQuotePayload, UpdateQuotePayload, LineItem } from './types';
 
 /**
- * Upstash Redis client (REST-based, works in Vercel serverless).
- * Requires UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN env vars.
+ * D1-backed quote store. Quotes are stored as JSON blobs in the `quotes` table
+ * with `email` and `status` indexed for common lookups (admin filtering,
+ * portal magic-link readback).
  */
-let redis: Redis | null = null;
 
-function getRedis(): Redis {
-  if (!redis) {
-    const url = process.env.UPSTASH_REDIS_REST_URL;
-    const token = process.env.UPSTASH_REDIS_REST_TOKEN;
-    if (!url || !token) {
-      throw new Error('Missing UPSTASH_REDIS_REST_URL or UPSTASH_REDIS_REST_TOKEN');
-    }
-    redis = new Redis({ url, token });
-  }
-  return redis;
+interface QuoteRow {
+  id: string;
+  email: string | null;
+  status: string;
+  data: string;
+  created_at: number;
+  updated_at: number;
 }
 
-/** Redis key for a quote */
-function quoteKey(id: string): string {
-  return `quote:${id}`;
+function rowToQuote(row: QuoteRow): Quote {
+  const q = JSON.parse(row.data) as Quote;
+  if (!q.messages) q.messages = [];
+  return q;
 }
-
-/** Redis key for the sorted set of all quote IDs (sorted by createdAt) */
-const QUOTES_INDEX = 'quotes:index';
 
 /**
  * Create a new quote from the provided payload.
  * Applies default 15% markup and calculates totals.
  */
 export async function createQuote(payload: CreateQuotePayload): Promise<Quote> {
-  const r = getRedis();
   const id = `quote-${randomUUID().slice(0, 8)}`;
   const now = new Date().toISOString();
   const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
@@ -53,14 +47,11 @@ export async function createQuote(payload: CreateQuotePayload): Promise<Quote> {
     };
   });
 
-  // Separate one-time vs recurring line items for totals
   const oneTimeItems = lineItems.filter((li) => li.billingCycle !== 'monthly');
   const monthlyItems = lineItems.filter((li) => li.billingCycle === 'monthly');
 
   const subtotal = Math.round(oneTimeItems.reduce((sum, li) => sum + li.clientPrice, 0) * 100) / 100;
   const monthlyTotal = Math.round(monthlyItems.reduce((sum, li) => sum + li.clientPrice, 0) * 100) / 100;
-
-  // Derive overall billing mode: 'monthly' if any line item is recurring, else 'one_time'
   const billingCycle: Quote['billingCycle'] = monthlyItems.length > 0 ? 'monthly' : 'one_time';
 
   const quote: Quote = {
@@ -83,38 +74,38 @@ export async function createQuote(payload: CreateQuotePayload): Promise<Quote> {
     notes: payload.notes,
   };
 
-  // Store quote JSON and add to sorted index (score = timestamp for ordering)
-  await r.set(quoteKey(id), JSON.stringify(quote));
-  await r.zadd(QUOTES_INDEX, { score: Date.now(), member: id });
-
-  // Index by customer email so the portal can look up all quotes for an email
-  if (payload.customerEmail) {
-    const emailKey = `quotes:by-email:${payload.customerEmail.toLowerCase().trim()}`;
-    await r.lpush(emailKey, id);
-    await r.expire(emailKey, 60 * 60 * 24 * 365 * 2); // 2-year TTL
-  }
+  const ts = Date.now();
+  const email = payload.customerEmail?.toLowerCase().trim() ?? null;
+  await d1Exec(
+    'INSERT INTO quotes (id, email, status, data, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)',
+    [id, email, quote.status, JSON.stringify(quote), ts, ts],
+  );
 
   console.log(`[quotes] Created quote ${id} for ${payload.customerEmail}`);
   return quote;
 }
 
-/**
- * Get a quote by ID. Returns null if not found.
- */
+/** Get a quote by ID. */
 export async function getQuote(id: string): Promise<Quote | null> {
-  const r = getRedis();
-  const raw = await r.get<string>(quoteKey(id));
-  if (!raw) return null;
-  const quote = (typeof raw === 'string' ? JSON.parse(raw) : raw) as Quote;
-  // Backfill messages array for quotes created before this field existed
-  if (!quote.messages) quote.messages = [];
-  return quote;
+  const row = await d1First<QuoteRow>('SELECT * FROM quotes WHERE id = ?', [id]);
+  return row ? rowToQuote(row) : null;
 }
 
 /**
- * Update a quote's mutable fields (status, routing, notes, lineItems).
- * Recalculates totals if lineItems are updated.
+ * Persist a Quote object to D1 (used by webhook + cancel flows that mutate
+ * fields not covered by `updateQuote`).
  */
+export async function saveQuote(quote: Quote): Promise<void> {
+  const ts = Date.now();
+  const email = quote.customerEmail?.toLowerCase().trim() ?? null;
+  quote.updatedAt = new Date().toISOString();
+  await d1Exec(
+    'UPDATE quotes SET email = ?, status = ?, data = ?, updated_at = ? WHERE id = ?',
+    [email, quote.status, JSON.stringify(quote), ts, quote.id],
+  );
+}
+
+/** Update a quote's mutable fields. */
 export async function updateQuote(id: string, payload: UpdateQuotePayload): Promise<Quote | null> {
   const quote = await getQuote(id);
   if (!quote) return null;
@@ -137,47 +128,35 @@ export async function updateQuote(id: string, payload: UpdateQuotePayload): Prom
     quote.acceptedAt = new Date().toISOString();
   }
 
-  quote.updatedAt = new Date().toISOString();
-  const r = getRedis();
-  await r.set(quoteKey(id), JSON.stringify(quote));
+  await saveQuote(quote);
   console.log(`[quotes] Updated quote ${id} → ${quote.status}`);
   return quote;
 }
 
-/**
- * List all quotes, optionally filtered by status.
- * Returns newest first.
- */
+/** List all quotes, optionally filtered by status. Newest first. */
 export async function listQuotes(status?: string): Promise<Quote[]> {
-  const r = getRedis();
-  // Get all quote IDs from sorted set, newest first
-  const ids = await r.zrange(QUOTES_INDEX, 0, -1, { rev: true }) as string[];
-
-  if (ids.length === 0) return [];
-
-  // Fetch all quotes in parallel
-  const quotes = await Promise.all(
-    ids.map(async (id) => {
-      const raw = await r.get<string>(quoteKey(id));
-      if (!raw) return null;
-      return (typeof raw === 'string' ? JSON.parse(raw) : raw) as Quote;
-    })
-  );
-
-  const valid = quotes.filter((q): q is Quote => q !== null);
-  // Ensure messages array exists for older quotes created before this field
-  for (const q of valid) {
-    if (!q.messages) q.messages = [];
-  }
-  return status ? valid.filter((q) => q.status === status) : valid;
+  const rows = status
+    ? await d1Query<QuoteRow>(
+        'SELECT * FROM quotes WHERE status = ? ORDER BY created_at DESC',
+        [status],
+      )
+    : await d1Query<QuoteRow>('SELECT * FROM quotes ORDER BY created_at DESC');
+  return rows.map(rowToQuote);
 }
 
-/**
- * Add a message to a quote's conversation thread.
- */
+/** Look up all quote IDs for a customer email (used by portal magic-link). */
+export async function listQuotesByEmail(email: string): Promise<Quote[]> {
+  const rows = await d1Query<QuoteRow>(
+    'SELECT * FROM quotes WHERE email = ? ORDER BY created_at DESC',
+    [email.toLowerCase().trim()],
+  );
+  return rows.map(rowToQuote);
+}
+
+/** Add a message to a quote's conversation thread. */
 export async function addMessage(
   quoteId: string,
-  message: Omit<QuoteMessage, 'id' | 'sentAt'>
+  message: Omit<QuoteMessage, 'id' | 'sentAt'>,
 ): Promise<QuoteMessage | null> {
   const quote = await getQuote(quoteId);
   if (!quote) return null;
@@ -190,11 +169,8 @@ export async function addMessage(
 
   if (!quote.messages) quote.messages = [];
   quote.messages.push(msg);
-  quote.updatedAt = new Date().toISOString();
 
-  const r = getRedis();
-  await r.set(quoteKey(quoteId), JSON.stringify(quote));
+  await saveQuote(quote);
   console.log(`[quotes] Added message ${msg.id} to quote ${quoteId}`);
   return msg;
 }
-

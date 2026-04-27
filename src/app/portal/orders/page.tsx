@@ -1,8 +1,8 @@
 import { Suspense } from 'react';
 import { redirect } from 'next/navigation';
 import Link from 'next/link';
-import { Redis } from '@upstash/redis';
-import { getQuote } from '@/lib/quotes/store';
+import { listQuotesByEmail } from '@/lib/quotes/store';
+import { consumePortalToken } from '@/lib/portal-tokens';
 import SoftDevHeader from '@/components/SoftDevHeader';
 import type { Quote } from '@/lib/quotes/types';
 
@@ -17,27 +17,12 @@ const STATUS_STYLES: Record<string, string> = {
 };
 
 async function OrderList({ token }: { token: string }) {
-  const redis = new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL!,
-    token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-  });
-
-  // Verify the magic-link token
-  const email = await redis.get<string>(`portal:token:${token}`);
+  // Atomically verify + consume the magic-link token
+  const email = await consumePortalToken(token);
   if (!email) redirect('/portal?expired=1');
 
-  // Consume the token so it can't be reused
-  await redis.del(`portal:token:${token}`);
-
-  // Fetch all quote IDs for this email
-  const quoteIds: string[] = (await redis.lrange(`quotes:by-email:${email}`, 0, -1)) ?? [];
-
-  // Load each quote
-  const quotes: Quote[] = (
-    await Promise.all(quoteIds.map(id => getQuote(id)))
-  ).filter((q): q is Quote => q !== null);
-
-  quotes.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  // Fetch all quotes for this email (already sorted newest first)
+  const quotes: Quote[] = await listQuotesByEmail(email);
 
   return (
     <div className="w-full max-w-2xl mx-auto">

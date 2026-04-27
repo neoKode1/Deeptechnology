@@ -1,9 +1,9 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
-import { Redis } from '@upstash/redis';
 import { roiNurture } from '@/lib/nurture';
 import { pushToCRM } from '@/lib/crm';
 import { rateLimit, limiters } from '@/lib/ratelimit';
+import { saveLead } from '@/lib/leads-store';
 
 export interface RoiParams {
   units: number;
@@ -53,17 +53,12 @@ export async function POST(request: Request) {
   const timestamp = new Date().toISOString();
   const leadRecord = { id, email, roiParams, timestamp, source: 'roi_calculator' };
 
-  // ── Persist to Redis ──────────────────────────────────────────────────────
+  // ── Persist lead ──────────────────────────────────────────────────────────
   try {
-    const redis = new Redis({
-      url: process.env.UPSTASH_REDIS_REST_URL!,
-      token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-    });
-    await redis.set(`roi-lead:${id}`, JSON.stringify(leadRecord), { ex: 60 * 60 * 24 * 90 }); // 90-day TTL
-    await redis.lpush('roi-leads', id);
+    await saveLead('roi_calculator', id, email, leadRecord);
     console.log(`[roi-capture] Saved lead ${id} for ${email}`);
   } catch (err) {
-    console.error('[roi-capture] Redis error:', err);
+    console.error('[roi-capture] D1 error:', err);
     // Don't fail the request — still send the email
   }
 

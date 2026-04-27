@@ -1,20 +1,20 @@
 import { NextResponse } from 'next/server';
-import { Redis } from '@upstash/redis';
 import { Resend } from 'resend';
-import { getQuote, updateQuote, addMessage } from '@/lib/quotes/store';
+import { getQuote, saveQuote, updateQuote, addMessage } from '@/lib/quotes/store';
+import { saveWorkOrder, type WorkOrderRecord } from '@/lib/work-orders';
 import { isAuthorizedRequest, unauthorizedResponse } from '@/lib/admin-auth';
 
 /**
  * POST /api/quotes/[id]/start-work-order
  *
  * Admin action: advance a paid quote from "ordered" to "procurement".
- * 1. Updates quote status + timestamps in Redis
- * 2. Creates a structured work order task in Redis (workorder:{id})
+ * 1. Updates quote status + timestamps in D1
+ * 2. Creates a structured work order record in the work_orders table
  * 3. Sends admin a detailed work order email with line items
  * 4. Logs a system message in the quote thread
  *
- * The work order task in Redis serves as the automation dispatch:
- * Claude Code or any agent can poll `workorder:*` keys to pick up new work.
+ * The work order row serves as the automation dispatch: Claude Code or any
+ * agent can poll the work_orders table to pick up new procurement tasks.
  */
 export async function POST(
   request: Request,
@@ -36,10 +36,6 @@ export async function POST(
   }
 
   const now = new Date().toISOString();
-  const redis = new Redis({
-    url: process.env.UPSTASH_REDIS_REST_URL!,
-    token: process.env.UPSTASH_REDIS_REST_TOKEN!,
-  });
 
   // 1. Advance quote to procurement
   await updateQuote(id, {
@@ -50,11 +46,11 @@ export async function POST(
   const updated = await getQuote(id);
   if (updated) {
     updated.workOrderStartedAt = now;
-    await redis.set(`quote:${id}`, JSON.stringify(updated));
+    await saveQuote(updated);
   }
 
-  // 2. Create structured work order task in Redis
-  const workOrder = {
+  // 2. Create structured work order record in D1
+  const workOrder: WorkOrderRecord = {
     id: `wo-${id}`,
     quoteId: id,
     status: 'pending',
@@ -76,9 +72,8 @@ export async function POST(
     updatedAt: now,
   };
 
-  await redis.set(`workorder:${id}`, JSON.stringify(workOrder));
-  await redis.zadd('workorders:index', { score: Date.now(), member: id });
-  console.log(`[work-order] Created work order task workorder:${id}`);
+  await saveWorkOrder(id, workOrder);
+  console.log(`[work-order] Created work order record for quote ${id}`);
 
   // 3. Log system message
   await addMessage(id, {
