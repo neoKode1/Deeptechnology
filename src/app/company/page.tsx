@@ -1,0 +1,401 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { ArrowRight, ArrowUpRight } from 'lucide-react';
+import SoftDevHeader from '@/components/SoftDevHeader';
+
+/* ─────────────────────────────────────────────
+   Marquee label pill (scrolling inside a pill)
+───────────────────────────────────────────── */
+function MarqueePill({ label, speed = '5s' }: { label: string; speed?: string }) {
+  return (
+    <div
+      className="border border-[#ccc] rounded-full px-4 py-1.5 overflow-hidden"
+      style={{ width: `${label.length * 0.62 + 2}rem` }}
+    >
+      <div
+        className="flex"
+        style={{ width: '200%', animation: `marquee-scroll ${speed} linear infinite` }}
+      >
+        <span className="text-xs uppercase tracking-wider font-medium text-[#111] shrink-0 w-full text-center">
+          {label}
+        </span>
+        <span className="text-xs uppercase tracking-wider font-medium text-[#111] shrink-0 w-full text-center">
+          {label}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function SectionDivider({ label, speed }: { label: string; speed?: string }) {
+  return (
+    <div className="flex items-center gap-4 mb-14">
+      <MarqueePill label={label} speed={speed} />
+      <div className="h-[1px] bg-[#ccc] flex-grow" />
+    </div>
+  );
+}
+
+/* ── Tech marquee items ── */
+const TECH_TAGS = [
+  'TypeScript', 'React', 'Next.js', 'SvelteKit', 'Python', 'AI / ML',
+  'Cloudflare Workers', 'Ollama', 'Anthropic SDK', 'Node.js',
+  'Tailwind CSS', 'REST APIs', 'Quantum Computing', 'Edge Compute',
+  'TypeScript', 'React', 'Next.js', 'SvelteKit', 'Python', 'AI / ML',
+  'Cloudflare Workers', 'Ollama', 'Anthropic SDK', 'Node.js',
+  'Tailwind CSS', 'REST APIs', 'Quantum Computing', 'Edge Compute',
+];
+
+/* ── Services ── */
+const SERVICES = [
+  {
+    num: '01.',
+    title: 'Software Development',
+    tags: ['AI Agents', 'LLMs', 'Edge Compute', 'TypeScript'],
+    desc: 'Your engineers spend weeks on work AI can do in hours. We embed AI directly into your live stack — cutting build time, automating workflows, and adding intelligence without a rewrite or rebuild. Proof: we built this entire platform — AI chat, automated quoting, Stripe payments, 14-stage fulfillment — solo, in 30 days.',
+    link: '/software',
+  },
+  {
+    num: '02.',
+    title: 'Robotics & Automation',
+    tags: ['AMRs', 'Drones', 'Fleet Ops', 'Warehouse'],
+    desc: 'Labor is your biggest fulfillment cost. We source, deploy, and integrate autonomous robots — AMRs, sidewalk bots, drones — directly into your existing operations. Typical warehouse deployment reduces labor costs 35–60%. Pilots start at $2,500 and are credited toward your full fleet order.',
+    link: '/',
+  },
+];
+
+
+
+export default function SoftwareDivisionHome() {
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setReady(true), 600);
+    return () => clearTimeout(timer);
+  }, []);
+
+  return (
+    <div
+      className="min-h-screen overflow-x-hidden bg-white text-[#4d4d4d] transition-opacity duration-1000 ease-out"
+      style={{ opacity: ready ? 1 : 0 }}
+    >
+      <SoftDevHeader />
+
+      {/* ── HERO ── */}
+      <section
+        className="relative overflow-hidden px-4 sm:px-6 md:px-12 lg:px-20 pt-20 sm:pt-16 md:pt-24 pb-12 sm:pb-20"
+        style={{ maxWidth: '82rem', margin: '0 auto', minHeight: '80vh' }}
+      >
+        {/* Spline 3D animation — right-of-center, non-blocking; hidden on small screens */}
+        <div
+          className="absolute top-0 pointer-events-none select-none hidden md:block"
+          aria-hidden="true"
+          style={{
+            left: '42%',
+            right: '-8%',
+            top: 0,
+            bottom: 0,
+            zIndex: 0,
+          }}
+        >
+          <iframe
+            src="https://my.spline.design/animatedshapeblend-1gCFHvLukjcmK6imbIAFLY2d/"
+            frameBorder="0"
+            width="100%"
+            height="100%"
+            title="Animated 3D Spline background"
+            style={{ border: 'none', display: 'block', pointerEvents: 'none' }}
+          />
+        </div>
+
+        {/* Text content — DOM order ensures it paints above the iframe;
+            no z-index here so mix-blend-mode composites against the full
+            section stacking context (including the iframe behind it). */}
+        <div className="relative flex flex-col mb-16">
+          {/* Oversized headline — mix-blend-mode: difference
+              white text on white bg → renders black;
+              white text on black blob → inverts to white */}
+          <h1
+            className="font-roboto font-black uppercase leading-none"
+            style={{
+              fontSize: 'clamp(5rem, 16vw, 14rem)',
+              color: '#fff',
+              mixBlendMode: 'difference',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            Engineer
+          </h1>
+          <h1
+            className="font-roboto font-black uppercase leading-none"
+            style={{
+              fontSize: 'clamp(5rem, 16vw, 14rem)',
+              color: '#fff',
+              mixBlendMode: 'difference',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            your
+          </h1>
+          <h1
+            className="font-roboto font-black uppercase leading-none"
+            style={{
+              fontSize: 'clamp(5rem, 16vw, 14rem)',
+              color: '#fff',
+              mixBlendMode: 'difference',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            future.
+          </h1>
+          <p
+            className="font-manrope font-light tracking-tighter mt-3"
+            style={{
+              fontSize: 'clamp(1.75rem, 5vw, 4rem)',
+              lineHeight: 1.1,
+              letterSpacing: '-0.03em',
+              color: '#fff',
+              mixBlendMode: 'difference',
+              opacity: 0.45,
+            }}
+          >
+            Start building.
+          </p>
+
+          {/* Body copy + buttons — normal rendering below the blend-mode headlines */}
+          <p className="mt-6 sm:mt-10 text-base sm:text-lg md:text-xl text-[#333] max-w-xl font-normal leading-relaxed" style={{ position: 'relative', zIndex: 2 }}>
+            Your stack already works. We make it faster, smarter, and cheaper to run — by embedding AI directly where it counts.
+          </p>
+
+          {/* Entry-point prompt */}
+          <div className="mt-6 sm:mt-8 mb-2" style={{ position: 'relative', zIndex: 2 }}>
+            <p className="text-xs sm:text-sm text-[#888] uppercase tracking-widest font-manrope">
+              Don&apos;t know where to start?{' '}
+              <Link href="/contact" className="text-[#111] font-semibold hover:underline underline-offset-4 transition-all">
+                Start here.
+              </Link>
+            </p>
+            <p className="mt-1 text-[10px] sm:text-xs text-[#aaa] tracking-widest uppercase font-manrope">
+              Retool your existing infrastructure.
+            </p>
+          </div>
+
+          <div className="mt-5 sm:mt-6 flex gap-3 sm:gap-4 flex-wrap" style={{ position: 'relative', zIndex: 2 }}>
+            <Link href="/software" className="sd-btn-primary text-xs sm:text-sm">
+              Explore Our Work <ArrowUpRight className="w-4 h-4" />
+            </Link>
+            <Link href="/contact" className="sd-btn-outline text-xs sm:text-sm">
+              Work With Us <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+
+        {/* Tech-stack marquee */}
+        <div className="w-full overflow-hidden" style={{ position: 'relative', zIndex: 2 }}>
+          <div
+            className="flex"
+            style={{ width: 'max-content', animation: 'marquee-scroll 25s linear infinite' }}
+          >
+            {TECH_TAGS.map((tag, i) => (
+              <span
+                key={i}
+                className="font-manrope text-[#111]/20 text-[2rem] md:text-[3rem] font-semibold tracking-tight whitespace-nowrap px-6"
+              >
+                {tag}
+              </span>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── SERVICES ── */}
+      <section id="services" className="px-6 md:px-12 lg:px-20 py-20 max-w-[82rem] mx-auto">
+        <SectionDivider label="Services" />
+
+        <div className="flex flex-col">
+          {SERVICES.map((svc, i) => (
+            <Link
+              key={svc.num}
+              href={svc.link}
+              className={`flex flex-col lg:flex-row lg:items-center gap-6 py-10 group hover:bg-[#fafafa] transition-colors -mx-6 px-6 md:-mx-12 md:px-12 lg:-mx-20 lg:px-20 cursor-pointer ${
+                i < SERVICES.length - 1 ? 'border-b border-[#ccc]' : ''
+              }`}
+            >
+              <div className="sd-heading text-[2rem] font-medium w-16 shrink-0">{svc.num}</div>
+              <div className="sd-heading text-[2rem] font-medium w-full lg:w-1/3 tracking-tight">
+                {svc.title}
+              </div>
+              <div className="flex-grow flex flex-col gap-4">
+                <div className="flex flex-wrap gap-2">
+                  {svc.tags.map((t) => (
+                    <span key={t} className="sd-pill">{t}</span>
+                  ))}
+                </div>
+                <p className="text-[#333] text-base max-w-lg leading-relaxed">{svc.desc}</p>
+              </div>
+            </Link>
+          ))}
+        </div>
+      </section>
+
+      {/* ── PROCESS + PRICING ── */}
+      <section className="px-6 md:px-12 lg:px-20 py-20 bg-[#fafafa] border-t border-b border-[#eee]">
+        <div className="max-w-[82rem] mx-auto">
+          <SectionDivider label="How it works" />
+
+          {/* 3-step process */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-0 mb-16">
+            {[
+              {
+                step: '01',
+                title: 'Submit your project',
+                time: 'Day 0',
+                desc: 'Fill out the intake form — project type, environment, budget, timeline. Takes 3 minutes. No sales call required to get a quote.',
+              },
+              {
+                step: '02',
+                title: 'You get a real answer',
+                time: 'Within 24 hours',
+                desc: "We respond with scope, cost, and next steps. Not \u2018let\u2019s chat\u2019 \u2014 a concrete recommendation you can act on.",
+              },
+              {
+                step: '03',
+                title: 'Discovery call → proposal',
+                time: 'Day 2–5',
+                desc: 'A 30-minute call to finalize scope. Fixed-price proposal follows. Robotics pilots can start within 2 weeks. Software sprints within 1.',
+              },
+            ].map(({ step, title, time, desc }) => (
+              <div key={step} className="flex flex-col gap-4 pt-8 pb-8 md:pr-12 border-t border-[#e0e0e0] md:border-t-0 md:border-l first:border-l-0 md:pl-12 first:pl-0">
+                <div className="flex items-center justify-between">
+                  <span className="text-[#bbb] text-xs uppercase tracking-widest font-manrope">{step}</span>
+                  <span className="text-[10px] uppercase tracking-widest text-[#999] font-manrope border border-[#ddd] rounded-full px-3 py-1 bg-white">{time}</span>
+                </div>
+                <h3 className="text-[#111] font-semibold text-lg tracking-tight">{title}</h3>
+                <p className="text-[#666] text-sm leading-relaxed font-manrope">{desc}</p>
+              </div>
+            ))}
+          </div>
+
+          {/* Pricing anchor + CTA */}
+          <div className="flex flex-col lg:flex-row items-start lg:items-center justify-between gap-8 pt-10 border-t border-[#e0e0e0]">
+            <div className="flex flex-col sm:flex-row gap-8 sm:gap-16">
+              {[
+                { label: 'Robotics pilots', price: 'from $2,500', note: 'Credited toward full fleet order' },
+                { label: 'Software builds', price: 'from $10K', note: 'AI integration · New builds · Sprints' },
+              ].map(({ label, price, note }) => (
+                <div key={label} className="flex flex-col gap-1">
+                  <span className="text-xs uppercase tracking-[0.18em] text-[#999] font-manrope">{label}</span>
+                  <span className="text-[#111] font-semibold text-3xl tracking-tight">{price}</span>
+                  <span className="text-xs text-[#aaa] font-manrope">{note}</span>
+                </div>
+              ))}
+            </div>
+            <Link href="/contact" className="sd-btn-primary text-sm whitespace-nowrap shrink-0">
+              Start a Project <ArrowUpRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ── ABOUT ── */}
+      <section id="about" className="px-6 md:px-12 lg:px-20 py-24 max-w-[82rem] mx-auto">
+        <SectionDivider label="About" />
+
+        <div className="flex flex-col gap-10 max-w-3xl">
+          <p className="text-[1.25rem] md:text-[1.5rem] leading-relaxed text-[#222] tracking-tight">
+            A multi-disciplinary technology company operating across software and robotics. We build at the intersection of AI and real-world systems — shipping production infrastructure, deploying autonomous hardware, and integrating intelligent systems into live operations.
+          </p>
+
+          {/* Stat row */}
+          <div className="grid grid-cols-3 gap-3 sm:gap-4 pt-6 border-t border-[#e5e5e5]">
+            {[
+              { n: '30+', label: 'Public Repos' },
+              { n: '24hr', label: 'Response SLA' },
+              { n: '30-day', label: 'Pilot Program' },
+            ].map(({ n, label }) => (
+              <div key={label} className="flex flex-col gap-1">
+                <span className="font-manrope text-[1.5rem] sm:text-[2rem] font-semibold tracking-tight text-[#111]">{n}</span>
+                <span className="text-xs uppercase tracking-widest text-[#999]">{label}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── FOOTER ── */}
+      <footer className="bg-[#0a0a0a] text-white pt-16 sm:pt-24 pb-8 px-4 sm:px-6 md:px-12 lg:px-20">
+        <div className="max-w-[82rem] mx-auto flex flex-col">
+          <div className="flex flex-col lg:flex-row justify-between items-start gap-10 sm:gap-16 mb-16 sm:mb-24">
+            <div className="flex flex-col gap-6 sm:gap-8 max-w-lg">
+              <h2 className="font-manrope text-[1.5rem] sm:text-[2rem] md:text-[2.5rem] font-medium tracking-tight leading-snug">
+                Ready to cut costs and ship faster?
+              </h2>
+              <p className="text-sm text-white/60 font-manrope leading-relaxed -mt-2">
+                Submit your project and get a real answer within 24 hours. No discovery call required to get started.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <Link
+                  href="/contact"
+                  className="inline-flex items-center gap-2 bg-white text-[#111] rounded-full py-2.5 px-6 hover:bg-neutral-200 transition-colors w-max text-xs sm:text-sm font-semibold"
+                >
+                  Start a Project <ArrowUpRight className="w-4 h-4" />
+                </Link>
+                <a
+                  href="mailto:info@deeptechnologies.dev"
+                  className="inline-flex items-center gap-2 border border-white/30 text-white/70 rounded-full py-2.5 px-4 sm:px-6 hover:border-white hover:text-white transition-colors w-max text-xs sm:text-sm"
+                >
+                  <span className="truncate">info@deeptechnologies.dev</span>
+                  <ArrowUpRight className="w-4 h-4 shrink-0" />
+                </a>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-8 sm:gap-12 lg:gap-24">
+              <div className="flex flex-col gap-6">
+                <h4 className="font-manrope text-lg font-medium">Navigate</h4>
+                <div className="flex flex-col gap-3 text-sm text-[#999]">
+                  <Link href="/" className="hover:text-white transition-colors">Home</Link>
+                  <Link href="/company#about" className="hover:text-white transition-colors">About</Link>
+                  <Link href="/company#services" className="hover:text-white transition-colors">Services</Link>
+                  <Link href="/software#work" className="hover:text-white transition-colors">Work</Link>
+                  <Link href="/" className="hover:text-white transition-colors">Robotics</Link>
+                  <Link href="/pilot" className="hover:text-white transition-colors">30-Day Pilot</Link>
+                  <Link href="/portal" className="hover:text-white transition-colors">Customer Portal</Link>
+                </div>
+              </div>
+              <div className="flex flex-col gap-6">
+                <h4 className="font-manrope text-lg font-medium">Connect</h4>
+                <div className="flex flex-col gap-3 text-sm text-[#999]">
+                  <a href="https://x.com/JusChadneo" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Twitter / X</a>
+                  <a href="https://www.instagram.com/a_dark_orchestra/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">Instagram</a>
+                  <a href="https://linkedin.com/company/deeptech-ai" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">LinkedIn</a>
+                  <a href="https://github.com/neoKode1" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors">GitHub</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Big wordmark */}
+          <div className="text-center w-full mt-10 overflow-hidden">
+            <span className="font-manrope font-medium text-[15vw] md:text-[10vw] tracking-tighter leading-none block w-full text-center text-white/10">
+              Deeptech
+            </span>
+          </div>
+
+          <div className="h-[1px] w-full bg-[#2d2c2c] my-8" />
+
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-[#999]">
+            <div>© {new Date().getFullYear()} Deeptech. All rights reserved.</div>
+            <div className="flex flex-wrap justify-center gap-6">
+              <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
+              <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
+            </div>
+
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
+}

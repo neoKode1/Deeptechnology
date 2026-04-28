@@ -20,7 +20,7 @@ export default function CategoriesPage() {
 
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs text-neutral-600 mb-10 font-manrope">
-          <Link href="/robotics" className="hover:text-neutral-400 transition-colors">Robotics</Link>
+          <Link href="/" className="hover:text-neutral-400 transition-colors">Robotics</Link>
           <span>/</span>
           <span className="text-neutral-400">Categories</span>
         </nav>

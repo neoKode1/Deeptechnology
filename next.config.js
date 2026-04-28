@@ -4,6 +4,13 @@ const { withSentryConfig } = require('@sentry/nextjs');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  async redirects() {
+    return [
+      // Robotics catalog is now the home page; permanently redirect the bare
+      // /robotics path so existing inbound links and SEO carry over.
+      { source: '/robotics', destination: '/', permanent: true },
+    ];
+  },
   webpack(config) {
     config.module.rules.push({
       test: /\.(mp4|webm)$/,
@@ -27,5 +34,4 @@ module.exports = withSentryConfig(nextConfig, {
   authToken: process.env.SENTRY_AUTH_TOKEN,
   silent: true,
   disableSourceMapUpload: !process.env.SENTRY_AUTH_TOKEN,
-
 });

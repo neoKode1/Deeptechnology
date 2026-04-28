@@ -81,7 +81,7 @@ export default function ProductPage({
 
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs text-neutral-600 font-manrope mb-10">
-          <Link href="/robotics" className="hover:text-neutral-400 transition-colors">Robots</Link>
+          <Link href="/" className="hover:text-neutral-400 transition-colors">Robots</Link>
           <span>/</span>
           <Link href={`/robotics/categories/${vendor.category}`} className="hover:text-neutral-400 transition-colors capitalize">{vendor.category}</Link>
           <span>/</span>
@@ -191,7 +191,7 @@ export default function ProductPage({
           <Link href={`/robotics/${vendor.id}`} className="hover:text-neutral-400 transition-colors">
             ← Back to {vendor.name}
           </Link>
-          <Link href="/robotics" className="hover:text-neutral-400 transition-colors">
+          <Link href="/" className="hover:text-neutral-400 transition-colors">
             All Robots →
           </Link>
         </div>

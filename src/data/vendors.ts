@@ -2211,6 +2211,166 @@ export const VENDORS: Vendor[] = [
     ],
     procurementNotes: 'PUDU Robotics (深圳市普渡科技有限公司, Shenzhen, China) is a global leader in service, cleaning, and delivery robots, deployed in 60+ countries. Products are sold through authorized regional distributors — no direct purchase. Contact via pudurobotics.com/contact-us to connect with the nearest distributor. Product lines span hospitality delivery (BellaBot, PuduBot, HolaBot), commercial cleaning (CC1, MT1, SH1, BG1), industrial AMR delivery (T150, T300, T600), quadruped inspection (D5), and next-gen humanoids/semi-humanoids (D7, D9, FlashBot Arm).',
   },
+
+  // ─── APRIL 2026 ADDITIONS ───────────────────────────────────────────────────
+  {
+    id: 'unix-ai',
+    name: 'UniX AI',
+    category: 'humanoid',
+    availability: 'sourcing',
+    buyPath: 'email_required',
+    contacts: [
+      { label: 'Website', value: 'unix-group.ai', href: 'https://unix-group.ai' },
+    ],
+    products: [
+      { name: 'Panther (3rd Gen)', price: 'Enterprise — Contact', status: 'quote_required', notes: 'Full-size wheeled dual-arm humanoid. 34 DOF; world\'s first mass-produced 8-DOF bionic arms; 4WS+4WD chassis; 12 kg dual-arm payload; ~2070 TOPS edge compute; 6–12 hr battery; 1.6–1.75 m height range.', image: '/media/UniX%20AI%20Panther.jpg' },
+      { name: 'Wanda Series', price: 'Enterprise — Contact', status: 'quote_required', notes: 'Wheeled dual-arm humanoid platform; predecessor to Panther.', image: '/media/UniX%20AI%20Panther.jpg' },
+      { name: 'Martian', price: 'Enterprise — Contact', status: 'quote_required', notes: 'Bipedal humanoid platform.', image: '/media/UniX%20AI%20Panther.jpg' },
+    ],
+    procurementNotes: 'UniX AI (Suzhou, Jiangsu, China). Claims first mass-produced humanoid in real-home commercial deployment (April 2026). Core stack: UniTouch (tactile), UniFlex (manipulation), UniCortex (decision). Enterprise sourcing only; contact via unix-group.ai.',
+  },
+  {
+    id: 'tri-toyota',
+    name: 'Toyota Research Institute (TRI)',
+    category: 'humanoid',
+    availability: 'coming_soon',
+    buyPath: 'not_available',
+    contacts: [
+      { label: 'TRI Robotics', value: 'tri.global/our-work/robotics', href: 'https://www.tri.global/our-work/robotics' },
+      { label: 'Toyota Partner Robot', value: 'global.toyota', href: 'https://global.toyota' },
+    ],
+    products: [
+      { name: 'T-HR3 (Partner Robot)', price: 'Not for sale', status: 'not_available', notes: 'Third-gen teleoperated humanoid with force feedback. Research/demo platform for home, medical, construction, disaster, and space use cases.' },
+      { name: 'Large Behavior Models (LBM)', price: 'Research — N/A', status: 'not_available', notes: 'AI foundation models for general-purpose robots; trained on physical and simulated robot fleets. 2026 publications on STEP sequential testing for policy comparison.' },
+      { name: 'Punyo Soft Bubble Gripper', price: 'Research — N/A', status: 'not_available', notes: 'Soft bubble gripper design for robust and perceptive manipulation.', image: '/media/TRI%20Punyo.jpg' },
+    ],
+    procurementNotes: 'TRI is a research lab; outputs are publications, foundation models, and reference hardware (Punyo, T-HR3). No commercial product channel. Tracked here as an upstream technology source for Physical AI rather than a procurable vendor.',
+  },
+  {
+    id: 'anvil-robotics',
+    name: 'Anvil Robotics',
+    category: 'humanoid',
+    availability: 'sourcing',
+    buyPath: 'email_required',
+    contacts: [
+      { label: 'Website', value: 'anvil.bot', href: 'https://anvil.bot' },
+    ],
+    products: [
+      { name: 'OpenArm (Bimanual Platform)', price: 'Quote', status: 'quote_required', notes: 'Open-source bimanual manipulation platform for Physical AI training. Used by Nvidia, Google, Georgia Tech, Columbia, U Toronto.', image: '/media/Anvil%20Robotics%20OpenArm.jpg' },
+      { name: 'OpenYAM Devkit', price: 'Quote', status: 'quote_required', notes: 'Open-source robot devkit for research and Physical AI dataset generation.', image: '/media/Anvil%20Robotics%20OpenArm.jpg' },
+      { name: 'Custom Low-Volume Robots', price: 'Quote', status: 'quote_required', notes: 'Low-volume custom open-source robot builds for research labs and Physical AI customers.', image: '/media/Anvil%20Robotics%20OpenArm.jpg' },
+    ],
+    procurementNotes: 'Anvil Robotics (Palo Alto, CA + Taipei, Taiwan). Backed by Matter Venture Partners. Ships to 60+ countries. Contact via anvil.bot for quotes on OpenArm, OpenYAM, or custom builds.',
+  },
+  {
+    id: 'foxtech',
+    name: 'Foxtech',
+    category: 'drone',
+    buyPath: 'direct_online',
+    contacts: [
+      { label: 'Website', value: 'foxtech.com', href: 'https://www.foxtech.com' },
+      { label: 'FPV Store', value: 'foxtechfpv.com', href: 'https://www.foxtechfpv.com' },
+      { label: 'UAV Store', value: 'foxtechuav.com', href: 'https://www.foxtechuav.com' },
+      { label: 'Robotics', value: 'foxtechrobotics.com', href: 'https://www.foxtechrobotics.com' },
+    ],
+    products: [
+      { name: 'Agility A1 + SYK-10AI', price: 'Quote', status: 'quote_required', notes: 'Bionic robot platform paired with SYK-10AI night-vision system.', image: '/media/Foxtech%20Agility%20A1.jpg' },
+      { name: 'Industrial UAV / VTOL', price: 'Quote', status: 'quote_required', notes: 'Heavy-lift industrial drones, agricultural drones, VTOL fixed-wing platforms.', image: '/media/Foxtech%20Agility%20A1.jpg' },
+      { name: 'UGV / USV Platforms', price: 'Quote', status: 'quote_required', notes: 'Unmanned ground and surface vehicles for industrial and survey applications.', image: '/media/Foxtech%20Agility%20A1.jpg' },
+      { name: 'LiDAR & Mapping Payloads', price: 'Quote', status: 'quote_required', notes: 'LiDAR scanners and aerial mapping cameras for survey, inspection, and mapping workflows.', image: '/media/Foxtech%20Agility%20A1.jpg' },
+    ],
+    procurementNotes: 'Foxtech (Tianjin, China; founded 2010) operates several storefronts: foxtech.com (corporate), foxtechfpv.com (FPV), foxtechuav.com (industrial UAV), foxtechrobotics.com (UGV/bionic). Direct online ordering available for most SKUs; large/custom builds quoted by email.',
+  },
+  {
+    id: 'guru-wireless',
+    name: 'GuRu Wireless',
+    category: 'defense',
+    availability: 'sourcing',
+    buyPath: 'email_required',
+    contacts: [
+      { label: 'Website', value: 'guru.inc', href: 'https://guru.inc' },
+    ],
+    products: [
+      { name: 'Long-Range Wireless Power Beaming (LRWPB)', price: 'Program — Contact', status: 'quote_required', notes: '24 GHz mm-wave wireless power beaming system. Demonstrated 96-hour continuous untethered drone flight for ISR. Sole mm-wave LRWPB provider.', image: '/media/GuRu%20Wireless.jpg' },
+      { name: 'sUAS + Wireless Power + C3 System', price: 'Program — Contact', status: 'quote_required', notes: 'Full small-UAS package bundling drones with persistent wireless power and command/control/comms for defense and security customers.', image: '/media/GuRu%20Wireless.jpg' },
+    ],
+    procurementNotes: 'GuRu Wireless (Pasadena, CA; Caltech spinout, founded 2017). Defense/security program contracts only. Contact via guru.inc.',
+  },
+  {
+    id: 'lymow',
+    name: 'Lymow',
+    category: 'agricultural',
+    buyPath: 'direct_online',
+    contacts: [
+      { label: 'Website', value: 'lymow.com', href: 'https://www.lymow.com' },
+    ],
+    products: [
+      { name: 'Lycut', price: 'Direct online', status: 'in_stock', orderUrl: 'https://www.lymow.com', notes: 'RTK + vision robotic lawn mower with track drive (wire-free). Designed for complex/challenging yards.', image: '/media/Lymow%20Lycut.jpg' },
+    ],
+    procurementNotes: 'Lymow Tech direct-to-consumer robotic mowers. RTK + vision navigation removes the need for boundary wire. Direct purchase via lymow.com.',
+  },
+  {
+    id: 'robostore',
+    name: 'RoboStore',
+    category: 'quadruped',
+    buyPath: 'dealer_only',
+    contacts: [
+      { label: 'Website', value: 'robostore.com', href: 'https://robostore.com' },
+    ],
+    products: [
+      { name: 'Unitree G1 (Reseller)', price: 'See Unitree pricing', status: 'in_stock', orderUrl: 'https://robostore.com', notes: 'Authorized Unitree humanoid distributor. Same SKU as direct Unitree G1.', image: '/media/RoboStore.jpg' },
+      { name: 'Unitree GO2 Pro (Reseller)', price: 'See Unitree pricing', status: 'in_stock', orderUrl: 'https://robostore.com', notes: 'Authorized Unitree quadruped distributor.', image: '/media/RoboStore.jpg' },
+      { name: 'Unitree B2 (Reseller)', price: 'See Unitree pricing', status: 'in_stock', orderUrl: 'https://robostore.com', notes: 'Industrial quadruped — authorized Unitree distributor.', image: '/media/RoboStore.jpg' },
+      { name: 'LiDAR / Sensors / Arms', price: 'Varies', status: 'in_stock', orderUrl: 'https://robostore.com', notes: 'In-house lab tests and programs Unitree platforms; carries LiDAR, sensors, and robotic arm accessories.', image: '/media/RoboStore.jpg' },
+    ],
+    procurementNotes: 'RoboStore is an authorized Unitree partner and integration shop. Useful for buyers who want pre-tested/programmed Unitree units plus accessories from a single source. Cross-reference Unitree direct pricing before quoting.',
+  },
+  {
+    id: 'artly',
+    name: 'Artly',
+    category: 'service',
+    buyPath: 'b2b_partner',
+    contacts: [
+      { label: 'Coffee', value: 'artly.coffee', href: 'https://artly.coffee' },
+      { label: 'Physical AI', value: 'artly.ai', href: 'https://artly.ai' },
+      { label: 'Build', value: 'buildwithartly.com', href: 'https://buildwithartly.com' },
+    ],
+    products: [
+      { name: 'Barista Bot', price: 'Service / B2B — Contact', status: 'raas', notes: 'AI-powered robotic-arm barista trained by US latte-art champion Joe Yang. Learns new skills from human demonstrations in ~30 minutes.', image: '/media/Artly%20Barista%20Bot.jpg' },
+      { name: 'Artly Physical AI Platform', price: 'Enterprise — Contact', status: 'quote_required', notes: 'Physical AI training platform for skill acquisition from human demos; deployed in Artly\'s coffee operations.', image: '/media/Artly%20Barista%20Bot.jpg' },
+    ],
+    procurementNotes: 'Legal name: Blue Hill Tech, Inc. (Seattle, WA; founded 2020). Two business arms: artly.coffee (consumer/event service) and artly.ai / buildwithartly.com (Physical AI training platform). B2B partnerships and venue placements via the artly.coffee site.',
+  },
+  {
+    id: 'zikoo',
+    name: 'Zikoo Robotics',
+    category: 'industrial',
+    availability: 'sourcing',
+    buyPath: 'email_required',
+    contacts: [
+      { label: 'Website', value: 'zikooint.com', href: 'https://zikooint.com' },
+    ],
+    products: [
+      { name: 'R-bot (4-Way Pallet Shuttle)', price: 'Quote', status: 'quote_required', notes: 'Four-way pallet shuttle for dense-storage pallet handling.', image: '/media/Zikoo%20R-bot.jpg' },
+      { name: 'H-bot (Vertical 2-Way Shuttle/Elevator)', price: 'Quote', status: 'quote_required', notes: 'Vertical two-way shuttle/elevator for multi-level pallet movement.', image: '/media/Zikoo%20R-bot.jpg' },
+      { name: 'U-bot (Omnidirectional Stacker)', price: 'Quote', status: 'quote_required', notes: 'Narrow-aisle omnidirectional stacker.', image: '/media/Zikoo%20R-bot.jpg' },
+      { name: 'PTP Smart Warehouse Software', price: 'Quote', status: 'quote_required', notes: 'WMS / WES / WCS / RCS coordination layer for Zikoo fleets.', image: '/media/Zikoo%20R-bot.jpg' },
+    ],
+    procurementNotes: 'Zikoo Smart Technology Co., Ltd. (China). Pallet-to-person dense-storage and picking systems. Engagement: contact via zikooint.com → site survey → integrated quote covering hardware + PTP software.',
+  },
+  {
+    id: 'cubemars',
+    name: 'CubeMars',
+    category: 'components',
+    buyPath: 'direct_online',
+    contacts: [
+      { label: 'Website', value: 'cubemars.com', href: 'https://www.cubemars.com' },
+    ],
+    products: [
+      { name: 'AK Series Robotic Actuators', price: 'Direct online', status: 'in_stock', orderUrl: 'https://www.cubemars.com', notes: 'Integrated actuators (motor + reducer + driver + encoder). Used in humanoid joints (shoulders/hips/elbows/knees/wrists/ankles), exoskeletons, quadrupeds, and underwater thrusters.', image: '/media/CubeMars%20AK%20Series.jpg' },
+    ],
+    procurementNotes: 'Nanchang Kude Intelligent Technology Co., Ltd. (China). 17 years in operation; served 1,600+ enterprises. Direct online ordering at cubemars.com.',
+  },
 ];
 
 /** Look up a vendor by ID */

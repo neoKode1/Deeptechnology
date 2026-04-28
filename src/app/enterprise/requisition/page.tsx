@@ -60,7 +60,7 @@ export default function EnterpriseRequisitionPage() {
           <p className="text-neutral-500 text-sm leading-relaxed mb-6">
             Our team will review your requirements and reach out with a preliminary term sheet — typically within a few hours during business days.
           </p>
-          <Link href="/robotics" className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-neutral-900 transition">
+          <Link href="/" className="inline-flex items-center gap-2 text-sm text-neutral-500 hover:text-neutral-900 transition">
             <ArrowLeft size={15} /> Back to Robotics Division
           </Link>
         </div>
@@ -72,7 +72,7 @@ export default function EnterpriseRequisitionPage() {
     <div className="min-h-screen bg-neutral-50">
       <div className="max-w-[760px] mx-auto px-6 py-16 sm:py-24">
         {/* Header */}
-        <Link href="/robotics" className="inline-flex items-center gap-2 text-xs text-neutral-400 hover:text-neutral-700 transition mb-10">
+        <Link href="/" className="inline-flex items-center gap-2 text-xs text-neutral-400 hover:text-neutral-700 transition mb-10">
           <ArrowLeft size={14} /> Robotics Division
         </Link>
         <p className="text-[10px] tracking-widest uppercase text-neutral-400 mb-3 font-manrope">Enterprise</p>

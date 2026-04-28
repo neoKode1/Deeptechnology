@@ -426,10 +426,10 @@ export default function SoftwareDivisionPage() {
                 <h4 className="font-manrope text-lg font-medium">Navigate</h4>
                 <div className="flex flex-col gap-3 text-sm text-[#999]">
                   <Link href="/" className="hover:text-white transition-colors">Home</Link>
-                  <Link href="/#about" className="hover:text-white transition-colors">About</Link>
-                  <Link href="/#services" className="hover:text-white transition-colors">Services</Link>
+                  <Link href="/company#about" className="hover:text-white transition-colors">About</Link>
+                  <Link href="/company#services" className="hover:text-white transition-colors">Services</Link>
                   <Link href="/software#work" className="hover:text-white transition-colors">Work</Link>
-                  <Link href="/robotics" className="hover:text-white transition-colors">Robotics</Link>
+                  <Link href="/" className="hover:text-white transition-colors">Robotics</Link>
                   <Link href="/pilot" className="hover:text-white transition-colors">30-Day Pilot</Link>
                   <Link href="/portal" className="hover:text-white transition-colors">Customer Portal</Link>
                 </div>

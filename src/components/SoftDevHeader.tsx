@@ -10,6 +10,7 @@ import { Menu, X, ArrowUp } from 'lucide-react';
  * - Adapts text colors based on division: light text for Robotics/Creative/sub-pages, dark for SoftDev.
  * - Always transparent — fades away (opacity-0) once the user scrolls past 60px, fades back at the top.
  * - /about, /gallery, /contact are treated as Creative sub-pages (dark theme).
+ * - Robotics catalog is the home page (/), Company info lives at /company.
  */
 const SoftDevHeader = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -35,9 +36,10 @@ const SoftDevHeader = () => {
     pathname.startsWith('/creative') ||
     pathname === '/about' ||
     pathname === '/gallery';
-  const isRobotics = pathname.startsWith('/robotics');
+  const isRobotics = pathname === '/' || pathname.startsWith('/robotics');
   const isSoftware = pathname.startsWith('/software');
-  const isSoftDev = !isCreative && !isRobotics;
+  const isCompany = pathname.startsWith('/company');
+  const isSoftDev = !isCreative && !isRobotics && !isCompany;
   // Dark = white text — any page with a dark/black background
   const isDark = isCreative || pathname.startsWith('/pilot') || pathname.startsWith('/orders') || pathname.startsWith('/portal') || pathname.startsWith('/compare');
 
@@ -77,15 +79,18 @@ const SoftDevHeader = () => {
             <Link href="/software" className={`text-xs transition-colors duration-200 ${isSoftware ? pillActive : pillInactive}`}>
               Software Dev
             </Link>
-            <Link href="/robotics" className={`text-xs transition-colors duration-200 ${isRobotics ? pillActive : pillInactive}`}>
+            <Link href="/" className={`text-xs transition-colors duration-200 ${isRobotics ? pillActive : pillInactive}`}>
               Robotics
+            </Link>
+            <Link href="/company" className={`text-xs transition-colors duration-200 ${isCompany ? pillActive : pillInactive}`}>
+              Company
             </Link>
           </div>
 
           {/* Col 3 — Nav links + X icon + hamburger (right-aligned) */}
           <div className="flex items-center justify-end gap-6">
             <div className="hidden md:flex items-center gap-6 text-sm">
-              <Link href="/#services" className={`transition-colors ${textMuted}`}>Services</Link>
+              <Link href="/company#services" className={`transition-colors ${textMuted}`}>Services</Link>
               <Link href="/software#work" className={`transition-colors ${textMuted}`}>Work</Link>
               <Link href="/pilot" className={`transition-colors ${textMuted}`}>Pilot</Link>
               <Link href="/contact" className={`transition-colors ${textMuted}`}>Contact</Link>
@@ -131,12 +136,15 @@ const SoftDevHeader = () => {
             <Link href="/software" onClick={() => setIsMenuOpen(false)} className={`text-xs transition-colors ${isSoftware ? pillActive : pillInactive}`}>
               Software Dev
             </Link>
-            <Link href="/robotics" onClick={() => setIsMenuOpen(false)} className={`text-xs transition-colors ${isRobotics ? pillActive : pillInactive}`}>
+            <Link href="/" onClick={() => setIsMenuOpen(false)} className={`text-xs transition-colors ${isRobotics ? pillActive : pillInactive}`}>
               Robotics
+            </Link>
+            <Link href="/company" onClick={() => setIsMenuOpen(false)} className={`text-xs transition-colors ${isCompany ? pillActive : pillInactive}`}>
+              Company
             </Link>
           </div>
           {/* Nav links — always shown on mobile */}
-          {[['/#services', 'Services'], ['/software#work', 'Work'], ['/pilot', 'Pilot'], ['/contact', 'Contact']].map(([href, label]) => (
+          {[['/company#services', 'Services'], ['/software#work', 'Work'], ['/pilot', 'Pilot'], ['/contact', 'Contact']].map(([href, label]) => (
             <Link key={href} href={href} className={`text-2xl font-manrope font-light ${textColor}`} onClick={() => setIsMenuOpen(false)}>
               {label}
             </Link>

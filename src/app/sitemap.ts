@@ -8,9 +8,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
 
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: baseUrl,                    lastModified: now, changeFrequency: 'monthly', priority: 1.0 },
+    { url: baseUrl,                    lastModified: now, changeFrequency: 'weekly',  priority: 1.0 },
     { url: `${baseUrl}/software`,      lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
-    { url: `${baseUrl}/robotics`,      lastModified: now, changeFrequency: 'weekly',  priority: 0.9 },
+    { url: `${baseUrl}/company`,       lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${baseUrl}/pilot`,         lastModified: now, changeFrequency: 'monthly', priority: 0.8 },
     { url: `${baseUrl}/contact`,       lastModified: now, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${baseUrl}/privacy`,       lastModified: now, changeFrequency: 'yearly',  priority: 0.3 },

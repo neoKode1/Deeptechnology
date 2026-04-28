@@ -49,7 +49,7 @@ export default async function ComparisonPage({
             Deep Tech
           </Link>
           <Link
-            href="/robotics"
+            href="/"
             className="text-xs text-neutral-400 hover:text-white transition-colors"
           >
             ← Vendor Catalog

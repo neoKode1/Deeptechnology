@@ -38,7 +38,7 @@ export default function CategoryPage({ params }: { params: { category: string } 
 
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs text-neutral-600 mb-10 font-manrope">
-          <Link href="/robotics" className="hover:text-neutral-400 transition-colors">Robotics</Link>
+          <Link href="/" className="hover:text-neutral-400 transition-colors">Robotics</Link>
           <span>/</span>
           <Link href="/robotics/categories" className="hover:text-neutral-400 transition-colors">Categories</Link>
           <span>/</span>
@@ -157,7 +157,7 @@ export default function CategoryPage({ params }: { params: { category: string } 
 
         {/* Back link */}
         <div className="mt-16 pt-8 border-t border-neutral-800">
-          <Link href="/robotics" className="text-sm text-neutral-500 hover:text-white transition-colors font-manrope">
+          <Link href="/" className="text-sm text-neutral-500 hover:text-white transition-colors font-manrope">
             &larr; Back to Robotics Division
           </Link>
         </div>

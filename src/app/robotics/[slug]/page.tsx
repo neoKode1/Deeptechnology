@@ -86,7 +86,7 @@ export default function VendorPage({ params }: { params: { slug: string } }) {
 
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-xs text-neutral-600 mb-10 font-manrope">
-          <Link href="/robotics" className="hover:text-neutral-400 transition-colors">Robotics</Link>
+          <Link href="/" className="hover:text-neutral-400 transition-colors">Robotics</Link>
           <span>/</span>
           <Link href={`/robotics/categories/${vendor.category}`} className="hover:text-neutral-400 transition-colors">
             {catMeta?.label ?? catLabel}
@@ -321,7 +321,7 @@ export default function VendorPage({ params }: { params: { slug: string } }) {
           <Link href={`/robotics/categories/${vendor.category}`} className="hover:text-neutral-400 transition-colors">
             ← Back to {catMeta?.label ?? catLabel}
           </Link>
-          <Link href="/robotics" className="hover:text-neutral-400 transition-colors">
+          <Link href="/" className="hover:text-neutral-400 transition-colors">
             All Robots →
           </Link>
         </div>

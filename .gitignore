@@ -79,3 +79,9 @@ Thumbs.db
 
 
 .vercel
+
+# Local-dev backups and ad-hoc logs
+*.bak
+build.log
+dev.log
+dev.err.log

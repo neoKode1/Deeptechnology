@@ -4,12 +4,49 @@ import { useState, useEffect, useRef } from 'react';
 import { usePathname } from 'next/navigation';
 import { MessageCircle, X, Send, Bot } from 'lucide-react';
 
-type Msg = { role: 'user' | 'assistant'; text: string };
+type Msg = { role: 'user' | 'assistant'; text: string; showQuickLinks?: boolean };
 
 const GREETING =
   "Hi, I'm Nimbus — Deeptech's AI consultant. I can help you figure out if robotics or AI software is right for your operation, walk you through pricing, or answer any questions. What are you working on?";
 
 const EXCLUDED_PREFIXES = ['/orders/', '/admin/', '/portal/', '/checkout/', '/quote/'];
+
+// Quick-link chips shown when the API errors so the user always has somewhere to go.
+const QUICK_LINKS: { label: string; href: string }[] = [
+  { label: 'Robot catalog', href: '/' },
+  { label: 'Software', href: '/software' },
+  { label: 'About', href: '/company' },
+  { label: 'Start assessment', href: '/pilot' },
+  { label: 'Contact', href: '/contact' },
+];
+
+// Render `[label](url)` markdown links and bare http(s) URLs as anchors.
+function renderInline(text: string): React.ReactNode {
+  const parts: React.ReactNode[] = [];
+  const re = /\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s)]+)/g;
+  let last = 0;
+  let m: RegExpExecArray | null;
+  let key = 0;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) parts.push(text.slice(last, m.index));
+    const label = m[1] ?? m[3];
+    const href = m[2] ?? m[3];
+    parts.push(
+      <a
+        key={`l${key++}`}
+        href={href}
+        target={href.startsWith('http') ? '_blank' : undefined}
+        rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
+        className="underline decoration-[#999] underline-offset-2 hover:text-[#111]"
+      >
+        {label}
+      </a>,
+    );
+    last = m.index + m[0].length;
+  }
+  if (last < text.length) parts.push(text.slice(last));
+  return parts;
+}
 
 function getSessionId(): string {
   try {
@@ -79,15 +116,20 @@ export default function ConsultChat() {
       if (!res.ok) {
         console.error('[Nimbus] API error', res.status, data);
       }
+      const errored = !res.ok || !data.reply;
       const reply = data.reply || (res.status === 429
-        ? 'You\'ve sent a few messages quickly — please wait a moment and try again.'
-        : 'Sorry, I ran into an issue. Try again in a moment.');
-      setMsgs(prev => [...prev, { role: 'assistant', text: reply }]);
+        ? "You've sent a few messages quickly — please wait a moment and try again."
+        : "Sorry, I ran into an issue. In the meantime, here are a few useful pages:");
+      setMsgs(prev => [...prev, { role: 'assistant', text: reply, showQuickLinks: errored }]);
       if (!open) setHasUnread(true);
       setExchanges(e => e + 1);
     } catch (err) {
       console.error('[Nimbus] fetch error', err);
-      setMsgs(prev => [...prev, { role: 'assistant', text: 'Connection issue. Please try again.' }]);
+      setMsgs(prev => [...prev, {
+        role: 'assistant',
+        text: "Connection issue. While I'm offline, here are a few pages that cover most questions:",
+        showQuickLinks: true,
+      }]);
     } finally {
       setLoading(false);
     }
@@ -143,15 +185,30 @@ export default function ConsultChat() {
           {/* Messages */}
           <div className="flex-1 overflow-y-auto p-4 flex flex-col gap-3 bg-white">
             {msgs.map((m, i) => (
-              <div key={i} className={`flex gap-2 ${m.role === 'user' ? 'justify-end' : 'justify-start'}`}>
-                {m.role === 'assistant' && <Bot className="w-4 h-4 text-[#111] mt-1 shrink-0" />}
-                <div className={`max-w-[82%] rounded-xl px-3 py-2 text-sm leading-relaxed ${
-                  m.role === 'user'
-                    ? 'bg-[#111] text-white'
-                    : 'bg-[#f5f5f5] text-[#222]'
-                }`}>
-                  {m.text}
+              <div key={i} className={`flex flex-col gap-2 ${m.role === 'user' ? 'items-end' : 'items-start'}`}>
+                <div className={`flex gap-2 ${m.role === 'user' ? 'justify-end' : 'justify-start'} w-full`}>
+                  {m.role === 'assistant' && <Bot className="w-4 h-4 text-[#111] mt-1 shrink-0" />}
+                  <div className={`max-w-[82%] rounded-xl px-3 py-2 text-sm leading-relaxed whitespace-pre-wrap ${
+                    m.role === 'user'
+                      ? 'bg-[#111] text-white'
+                      : 'bg-[#f5f5f5] text-[#222]'
+                  }`}>
+                    {renderInline(m.text)}
+                  </div>
                 </div>
+                {m.showQuickLinks && (
+                  <div className="flex flex-wrap gap-1.5 pl-6">
+                    {QUICK_LINKS.map(q => (
+                      <a
+                        key={q.href}
+                        href={q.href}
+                        className="text-[11px] font-manrope bg-white border border-[#e0e0e0] text-[#222] rounded-full px-2.5 py-1 hover:bg-[#111] hover:text-white hover:border-[#111] transition-colors"
+                      >
+                        {q.label}
+                      </a>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
             {loading && (
