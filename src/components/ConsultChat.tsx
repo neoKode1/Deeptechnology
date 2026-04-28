@@ -166,10 +166,10 @@ export default function ConsultChat() {
   }
 
   return (
-    <div className="fixed bottom-6 right-4 sm:right-6 z-50 flex flex-col items-end gap-3">
-      {/* Chat panel */}
+    <div className="fixed bottom-4 sm:bottom-6 right-3 sm:right-6 z-50 flex flex-col items-end gap-3" style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}>
+      {/* Chat panel — height capped to viewport so it never clips on phones / landscape */}
       {open && (
-        <div className="w-[calc(100vw-2rem)] max-w-[360px] h-[500px] bg-white rounded-2xl shadow-2xl border border-[#e8e8e8] flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 fade-in duration-200">
+        <div className="w-[calc(100vw-1.5rem)] sm:w-[calc(100vw-2rem)] max-w-[360px] bg-white rounded-2xl shadow-2xl border border-[#e8e8e8] flex flex-col overflow-hidden animate-in slide-in-from-bottom-4 fade-in duration-200" style={{ height: 'min(500px, calc(100svh - 6rem))' }}>
           {/* Header */}
           <div className="bg-[#111] px-4 py-3 flex items-center justify-between shrink-0">
             <div className="flex items-center gap-2.5">

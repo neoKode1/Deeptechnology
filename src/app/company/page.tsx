@@ -389,6 +389,7 @@ export default function SoftwareDivisionHome() {
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 text-xs text-[#999]">
             <div>© {new Date().getFullYear()} Deeptech. All rights reserved.</div>
             <div className="flex flex-wrap justify-center gap-6">
+              <Link href="/admin/assessment" className="hover:text-white transition-colors">Assessment Tool</Link>
               <Link href="/privacy" className="hover:text-white transition-colors">Privacy</Link>
               <Link href="/terms" className="hover:text-white transition-colors">Terms</Link>
             </div>

@@ -61,8 +61,8 @@ const SoftDevHeader = () => {
           isHidden ? 'opacity-0 pointer-events-none -translate-y-1' : 'opacity-100 translate-y-0'
         }`}
       >
-        {/* 3-column grid: left and right are equal width so the center is always pixel-perfect center */}
-        <div className="grid grid-cols-[auto_1fr_auto] sm:grid-cols-3 items-center px-4 sm:px-6 py-4 sm:py-5 md:px-12 lg:px-20">
+        {/* 3-column grid: brand auto, switcher fluid center, nav auto. Keeps brand+nav from being squeezed at sm/md. */}
+        <div className="grid grid-cols-[auto_1fr_auto] items-center px-4 sm:px-6 py-4 sm:py-5 md:px-12 lg:px-20 gap-3 sm:gap-4">
 
           {/* Col 1 — Brand (left-aligned) */}
           <div className="flex items-center">

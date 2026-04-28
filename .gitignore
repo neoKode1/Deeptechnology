@@ -85,3 +85,6 @@ Thumbs.db
 build.log
 dev.log
 dev.err.log
+
+# Local commit-message scratch file
+.git-commit-msg.txt

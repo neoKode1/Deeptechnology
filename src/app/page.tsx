@@ -141,23 +141,23 @@ export default function RoboticsDivisionHome() {
       <SoftDevHeader />
 
       {/* ── HERO ── */}
-      <section className="relative w-full h-[100svh] flex flex-col justify-start sm:justify-end overflow-hidden">
+      <section className="relative w-full h-[100svh] flex flex-col justify-center sm:justify-end overflow-hidden">
         {/* Bottom gradient so text stays legible */}
         <div className="absolute inset-0 bg-gradient-to-t from-white/80 via-white/20 to-transparent pointer-events-none" />
 
-        <div className="relative z-10 px-6 md:px-12 lg:px-20 pt-24 sm:pt-0 pb-8 sm:pb-16 md:pb-24 max-w-[82rem] mx-auto w-full">
+        <div className="relative z-10 px-4 sm:px-6 md:px-12 lg:px-20 pt-20 sm:pt-0 pb-8 sm:pb-16 md:pb-24 max-w-[82rem] mx-auto w-full">
           {/* Frosted backdrop on mobile so text stays readable over robot */}
           <div className="sm:bg-transparent bg-white/70 backdrop-blur-md sm:backdrop-blur-none rounded-2xl sm:rounded-none p-5 sm:p-0 -mx-1 sm:mx-0">
           <p className="text-black/40 text-xs tracking-widest uppercase mb-6 font-manrope">
             Deeptech · Robotics Division
           </p>
-          <h1 className="font-manrope font-semibold text-[2.25rem] sm:text-[3.5rem] md:text-[6.5rem] leading-[1.02] tracking-tighter text-black drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)]">
+          <h1 className="font-manrope font-semibold leading-[1.02] tracking-tighter text-black drop-shadow-[0_1px_2px_rgba(255,255,255,0.8)]" style={{ fontSize: 'clamp(2rem, 8vw, 6.5rem)' }}>
             The right deployment
           </h1>
-          <h1 className="font-manrope font-semibold text-[2.25rem] sm:text-[3.5rem] md:text-[6.5rem] leading-[1.02] tracking-tighter text-black/30 drop-shadow-[0_1px_2px_rgba(255,255,255,0.6)]">
+          <h1 className="font-manrope font-semibold leading-[1.02] tracking-tighter text-black/40 drop-shadow-[0_1px_2px_rgba(255,255,255,0.6)]" style={{ fontSize: 'clamp(2rem, 8vw, 6.5rem)' }}>
             for the right environment.
           </h1>
-          <p className="mt-6 text-base md:text-lg text-black/60 max-w-xl leading-relaxed font-manrope font-light">
+          <p className="mt-6 text-sm sm:text-base md:text-lg text-black/60 max-w-xl leading-relaxed font-manrope font-light">
             We read your space — terrain, traffic, payload, conditions — then source the right robotics platform for it.
           </p>
           <div className="mt-8 flex flex-col sm:flex-row gap-4">
@@ -937,7 +937,10 @@ export default function RoboticsDivisionHome() {
         </div>
         <div className="border-t border-neutral-200 pt-6 flex flex-col md:flex-row justify-between items-center gap-4 text-xs text-neutral-400">
           <div>© {new Date().getFullYear()} Deeptech Robotics. All rights reserved.</div>
-          <a href="mailto:info@deeptechnologies.dev" className="hover:text-neutral-900 transition-colors">info@deeptechnologies.dev</a>
+          <div className="flex flex-wrap justify-center gap-5">
+            <a href="/admin/assessment" className="hover:text-neutral-900 transition-colors">Assessment Tool</a>
+            <a href="mailto:info@deeptechnologies.dev" className="hover:text-neutral-900 transition-colors">info@deeptechnologies.dev</a>
+          </div>
         </div>
       </footer>
       </div>{/* end content wrapper */}
