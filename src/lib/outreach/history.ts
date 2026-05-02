@@ -91,3 +91,29 @@ export async function listOutreach(opts: { vendorId?: string; limit?: number } =
       );
   return rows.map(rowToRecord);
 }
+
+/**
+ * Find a previously-sent outreach record whose metadata blob includes the
+ * given Stripe session id. Used by the webhook to short-circuit duplicate
+ * procurement sends if Stripe retries onto a fresh serverless instance
+ * (where the in-memory event Set has been lost).
+ *
+ * Uses a JSON-substring match on the metadata column rather than a dedicated
+ * column so we don't need a schema migration. The `idx_vendor_outreach_created`
+ * index keeps the scan cheap; we further restrict by template + status.
+ */
+export async function findOutreachBySessionId(
+  sessionId: string,
+  template: TemplateId = 'procurement_order',
+): Promise<OutreachRecord | null> {
+  if (!sessionId) return null;
+  const needle = `%"sessionId":"${sessionId}"%`;
+  const rows = await d1Query<OutreachRow>(
+    `SELECT * FROM vendor_outreach
+       WHERE template = ? AND status = 'sent' AND metadata LIKE ?
+       ORDER BY created_at DESC
+       LIMIT 1`,
+    [template, needle],
+  );
+  return rows[0] ? rowToRecord(rows[0]) : null;
+}

@@ -17,7 +17,7 @@ import {
   SOURCING_SIGNATURE_HTML,
   SOURCING_SIGNATURE_TEXT,
 } from './identity';
-import { recordOutreach } from './history';
+import { recordOutreach, findOutreachBySessionId } from './history';
 
 export interface PublicBuyMetadata {
   vendorId: string;
@@ -33,10 +33,12 @@ export interface PublicBuyMetadata {
 
 export interface ProcurementResult {
   ok: boolean;
-  skipped?: 'no_vendor' | 'no_email' | 'resend_unconfigured';
+  skipped?: 'no_vendor' | 'no_email' | 'resend_unconfigured' | 'duplicate';
   error?: string;
   toEmail?: string;
   resendId?: string;
+  /** Set when skipped='duplicate' — id of the existing vendor_outreach row */
+  existingOutreachId?: string;
 }
 
 function bodyToHtml(plain: string): string {
@@ -70,6 +72,20 @@ export async function fireProcurementOrder(args: {
   if (!vendor) {
     console.warn(`[procurement] Unknown vendorId in metadata: ${metadata.vendorId}`);
     return { ok: false, skipped: 'no_vendor' };
+  }
+
+  // Cross-instance idempotency: if a prior procurement_order send for this
+  // Stripe session is already on file, skip — the in-memory event Set won't
+  // catch retries that land on a fresh serverless instance.
+  try {
+    const existing = await findOutreachBySessionId(sessionId, 'procurement_order');
+    if (existing) {
+      console.log(`[procurement] Duplicate session ${sessionId} — existing outreach ${existing.id}, skipping send`);
+      return { ok: true, skipped: 'duplicate', toEmail: existing.toEmail, existingOutreachId: existing.id };
+    }
+  } catch (e) {
+    // D1 lookup failure should not block legitimate sends; log + proceed
+    console.warn(`[procurement] Idempotency lookup failed for session ${sessionId}:`, e instanceof Error ? e.message : e);
   }
 
   const mailto = vendor.contacts.find(c => c.href?.startsWith('mailto:'));

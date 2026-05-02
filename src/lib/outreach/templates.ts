@@ -16,7 +16,8 @@ export type TemplateId =
   | 'quote_request'
   | 'availability_check'
   | 'demo_request'
-  | 'procurement_order';
+  | 'procurement_order'
+  | 'subscription_cancelled';
 
 export interface TemplateContext {
   vendor: Vendor;
@@ -51,11 +52,12 @@ const productLine = (productName?: string, vendor?: Vendor) => {
 };
 
 export const TEMPLATE_LABELS: Record<TemplateId, string> = {
-  spec_request:       'Spec sheet / datasheet',
-  quote_request:      'Indicative quote',
-  availability_check: 'Stock & lead time',
-  demo_request:       'Remote demo',
-  procurement_order:  'Procurement order',
+  spec_request:          'Spec sheet / datasheet',
+  quote_request:         'Indicative quote',
+  availability_check:    'Stock & lead time',
+  demo_request:          'Remote demo',
+  procurement_order:     'Procurement order',
+  subscription_cancelled:'Subscription cancellation',
 };
 
 export function renderTemplate(id: TemplateId, ctx: TemplateContext): RenderedTemplate {
@@ -152,6 +154,22 @@ export function renderTemplate(id: TemplateId, ctx: TemplateContext): RenderedTe
         orderRef ? `Internal reference: ${orderRef}.` : '',
         '',
         `Please send your standard PO / invoice paperwork and confirm earliest realistic ship date. We'll bring the buyer in directly for delivery coordination once paperwork is in motion.`,
+        '',
+        `Thanks,`,
+      ].filter(Boolean).join('\n');
+      return { templateId: id, label, subject, body };
+    }
+
+    case 'subscription_cancelled': {
+      const subject = `RaaS cancellation — ${productName ?? vendor.name}${orderRef ? ` (Ref ${orderRef})` : ''}`;
+      const body = [
+        greet(vendor),
+        '',
+        `Heads up — a previously-active Robot-as-a-Service subscription has been cancelled on our side.`,
+        productLine(productName, vendor),
+        orderRef ? `Internal reference: ${orderRef}.` : '',
+        '',
+        `Please pause any further billing, scheduled shipments, or fleet-management provisioning tied to this account. If hardware retrieval logistics are required, we'll coordinate with you on that separately once the buyer confirms next steps.`,
         '',
         `Thanks,`,
       ].filter(Boolean).join('\n');

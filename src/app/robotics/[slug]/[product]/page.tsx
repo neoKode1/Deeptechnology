@@ -30,6 +30,7 @@ export async function generateMetadata({
   params,
 }: {
   params: { slug: string; product: string };
+  searchParams?: { canceled?: string };
 }): Promise<Metadata> {
   const vendor = VENDORS.find((v) => v.id === params.slug);
   if (!vendor) return {};
@@ -63,8 +64,10 @@ const STATUS_STYLES: Record<string, string> = {
 
 export default function ProductPage({
   params,
+  searchParams,
 }: {
   params: { slug: string; product: string };
+  searchParams?: { canceled?: string };
 }) {
   const vendor = VENDORS.find((v) => v.id === params.slug);
   if (!vendor) notFound();
@@ -75,6 +78,7 @@ export default function ProductPage({
   const vendorHeroImage = VENDOR_IMAGES[vendor.id];
   const buyAction = resolveBuy(vendor, product);
   const quoteHref = `/contact?inquiry=robotics&vendor=${encodeURIComponent(vendor.name)}&product=${encodeURIComponent(product.name)}`;
+  const wasCanceled = searchParams?.canceled === '1';
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -143,6 +147,17 @@ export default function ProductPage({
               <div className="bg-neutral-950 border border-neutral-900 rounded-xl px-5 py-4 mb-6">
                 <p className="text-[10px] uppercase tracking-widest text-neutral-600 font-manrope mb-2">About this model</p>
                 <p className="text-sm text-neutral-300 font-manrope leading-relaxed">{product.notes}</p>
+              </div>
+            )}
+
+            {/* Canceled-checkout banner — shown when Stripe redirects back via cancel_url */}
+            {wasCanceled && (
+              <div className="mb-4 border border-amber-700/40 bg-amber-950/30 rounded-xl px-4 py-3 flex items-start gap-3">
+                <span aria-hidden className="text-amber-400 text-sm leading-tight">●</span>
+                <div className="flex-1">
+                  <p className="text-xs font-semibold text-amber-300 font-manrope">Checkout canceled</p>
+                  <p className="text-[11px] text-amber-200/80 font-manrope mt-1">No charge was made. You can retry below or request a custom quote whenever you're ready.</p>
+                </div>
               </div>
             )}
 

@@ -124,6 +124,9 @@ export async function POST(request: NextRequest) {
   const fullText = rendered.body + SOURCING_SIGNATURE_TEXT;
   const fullHtml = bodyToHtml(rendered.body) + SOURCING_SIGNATURE_HTML;
 
+  // Step 1 — send via Resend. A failure here means the email never went out;
+  // we log a 'failed' audit row and return 502.
+  let resendId: string | undefined;
   try {
     const { data, error } = await resend.emails.send({
       from: SOURCING_FROM,
@@ -133,20 +136,8 @@ export async function POST(request: NextRequest) {
       html: fullHtml,
       text: fullText,
     });
-
     if (error) throw new Error(error.message ?? 'Resend send failed');
-
-    const record = await recordOutreach({
-      id, vendorId, template: templateId, toEmail,
-      subject: rendered.subject, body: fullText, status: 'sent',
-      resendId: data?.id,
-      metadata: {
-        productName: payload.productName, quantity: payload.quantity,
-        region: payload.region, timeline: payload.timeline, useCase: payload.useCase,
-        templateLabel: TEMPLATE_LABELS[templateId],
-      },
-    });
-    return NextResponse.json({ success: true, record });
+    resendId = data?.id;
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     console.error(`[admin/outreach] send to ${toEmail} failed:`, msg);
@@ -156,5 +147,36 @@ export async function POST(request: NextRequest) {
       metadata: { productName: payload.productName, quantity: payload.quantity, region: payload.region },
     }).catch(() => undefined);
     return NextResponse.json({ error: `Send failed: ${msg}` }, { status: 502 });
+  }
+
+  // Step 2 — record the successful send. A failure here is non-fatal: the
+  // email already went out, so we still return 200 but flag `partial: true`
+  // and surface the audit error so the operator knows the row is missing.
+  try {
+    const record = await recordOutreach({
+      id, vendorId, template: templateId, toEmail,
+      subject: rendered.subject, body: fullText, status: 'sent',
+      resendId,
+      metadata: {
+        productName: payload.productName, quantity: payload.quantity,
+        region: payload.region, timeline: payload.timeline, useCase: payload.useCase,
+        templateLabel: TEMPLATE_LABELS[templateId],
+      },
+    });
+    return NextResponse.json({ success: true, record });
+  } catch (auditErr) {
+    const auditMsg = auditErr instanceof Error ? auditErr.message : String(auditErr);
+    console.error(`[admin/outreach] EMAIL SENT but audit write failed for ${toEmail}:`, auditMsg);
+    return NextResponse.json({
+      success: true,
+      partial: true,
+      auditError: auditMsg,
+      record: {
+        id, vendorId, template: templateId, toEmail,
+        subject: rendered.subject, body: fullText, status: 'sent' as const,
+        resendId, createdAt: Date.now(),
+      },
+      warning: 'Email sent successfully but audit log write failed. Verify D1 connectivity.',
+    });
   }
 }

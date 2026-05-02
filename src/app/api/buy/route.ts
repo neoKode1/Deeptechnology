@@ -4,6 +4,7 @@ import { VENDORS } from '@/data/vendors';
 import { toSlug } from '@/lib/utils';
 import { resolveBuy } from '@/lib/buy/resolve';
 import { rateLimit, limiters } from '@/lib/ratelimit';
+import { createQuote } from '@/lib/quotes/store';
 
 /**
  * POST /api/buy
@@ -74,6 +75,47 @@ export async function POST(request: NextRequest) {
 
   const productPageUrl = `${baseUrl}/robotics/${vendor.id}/${productSlug}`;
 
+  // Pre-create a draft Quote so the in-app purchase shares the existing
+  // /admin/quotes lifecycle and the customer can /orders/[id] track from the
+  // success page. Customer details are filled in by the webhook on completion.
+  const vendorCost = action.fullPriceCents
+    ? action.fullPriceCents / 100
+    : action.amountCents / 100;
+  const billingCycle = action.mode === 'subscription' ? 'monthly' : 'one_time';
+  const inquiryType = action.kind === 'subscribe'
+    ? 'Robot-as-a-Service'
+    : isDeposit ? 'Reservation' : 'Direct Purchase';
+  const summary = `${vendor.name} ${product.name} — ${action.kind}` +
+    (isDeposit && action.fullPriceCents
+      ? ` (deposit $${(action.amountCents / 100).toFixed(0)} of $${(action.fullPriceCents / 100).toFixed(0)})`
+      : '');
+
+  let quoteId: string | undefined;
+  try {
+    const draft = await createQuote({
+      requestId: `public-buy-${Date.now()}`,
+      customerName: 'Pending (Stripe Checkout)',
+      customerEmail: '',
+      inquiryType,
+      summary,
+      lineItems: [{
+        description: product.name,
+        vendor: vendor.name,
+        vendorUrl: product.orderUrl,
+        vendorCost,
+        markup: 0,
+        billingCycle,
+        notes: `Public buy via /api/buy. Buy path: ${vendor.buyPath} · ${action.kind}.`,
+      }],
+      notes: `In-app ${action.kind} for ${vendor.name} ${product.name}. Customer details captured at Stripe completion.`,
+    });
+    quoteId = draft.id;
+  } catch (e) {
+    // D1 unavailable shouldn't block payment — the webhook will create the
+    // quote at completion time as a fallback.
+    console.warn('[buy] Pre-create quote failed (will fall back to webhook):', e instanceof Error ? e.message : e);
+  }
+
   const metadata: Record<string, string> = {
     source: 'public_buy',
     vendorId: vendor.id,
@@ -87,6 +129,7 @@ export async function POST(request: NextRequest) {
     productPageUrl,
   };
   if (action.fullPriceCents) metadata.fullPriceCents = String(action.fullPriceCents);
+  if (quoteId) metadata.quoteId = quoteId;
 
   const lineItem: Stripe.Checkout.SessionCreateParams.LineItem = {
     price_data: {
@@ -98,6 +141,12 @@ export async function POST(request: NextRequest) {
     quantity: 1,
   };
 
+  // success_url carries quote_id when we have one so the success page can
+  // surface a "Track Your Order" link without a server round-trip.
+  const successUrl = quoteId
+    ? `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}&quote_id=${quoteId}`
+    : `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`;
+
   try {
     const session = await stripe.checkout.sessions.create({
       mode: action.mode,
@@ -106,12 +155,12 @@ export async function POST(request: NextRequest) {
       ...(action.mode === 'subscription' && { subscription_data: { metadata } }),
       // Stripe Checkout collects email by default; surface it to webhook via session.customer_details
       billing_address_collection: 'required',
-      success_url: `${baseUrl}/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
+      success_url: successUrl,
       cancel_url: `${productPageUrl}?canceled=1`,
     });
 
-    console.log(`[buy] ${action.kind} session ${session.id} \u2014 ${vendor.name} ${product.name} \u2014 $${(action.amountCents/100).toFixed(0)}`);
-    return NextResponse.json({ success: true, url: session.url, sessionId: session.id });
+    console.log(`[buy] ${action.kind} session ${session.id} \u2014 ${vendor.name} ${product.name} \u2014 $${(action.amountCents/100).toFixed(0)}${quoteId ? ` \u2014 quote ${quoteId}` : ''}`);
+    return NextResponse.json({ success: true, url: session.url, sessionId: session.id, quoteId });
   } catch (err) {
     console.error('[buy] Stripe error:', err);
     const msg = err instanceof Error ? err.message : 'Failed to create checkout session.';

@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { Resend } from 'resend';
-import { getQuote, saveQuote, updateQuote, addMessage } from '@/lib/quotes/store';
+import { createQuote, getQuote, saveQuote, updateQuote, addMessage } from '@/lib/quotes/store';
 import { fireProcurementOrder, type PublicBuyMetadata } from '@/lib/outreach/procurement';
+import { recordOutreach } from '@/lib/outreach/history';
+import { VENDORS } from '@/data/vendors';
 
 /**
  * In-memory set of processed Stripe event IDs to prevent double-processing.
@@ -264,6 +266,14 @@ export async function POST(request: Request) {
       // Fires when a RaaS subscription is cancelled (by customer, admin, or non-payment).
       const subscription = event.data.object as Stripe.Subscription;
       const quoteId = subscription.metadata?.quoteId;
+      const isPublicBuy = subscription.metadata?.source === 'public_buy';
+
+      // Public-buy RaaS cancellations: notify the vendor so they can pause
+      // billing / provisioning. Quote-flow cancellations are handled below.
+      if (isPublicBuy) {
+        await firePublicBuyCancellationNotice(subscription).catch(e =>
+          console.error('[webhook] public_buy cancellation notice failed:', e));
+      }
 
       if (!quoteId) {
         console.warn('[webhook] customer.subscription.deleted without quoteId metadata — skipping');
@@ -425,6 +435,23 @@ async function handlePublicBuyCompletion(session: Stripe.Checkout.Session): Prom
     metadata: meta, sessionId: session.id, paymentIntentId, customerEmail, region,
   });
 
+  // Stripe retries on a fresh instance would otherwise double up the quote
+  // bridge + admin notification. The procurement helper's vendor_outreach
+  // lookup catches that case for us.
+  if (result.skipped === 'duplicate') {
+    console.log(`[webhook] public_buy duplicate session ${session.id} — skipping quote bridge + admin notification.`);
+    return;
+  }
+
+  // Bridge into the existing quote/work-order lifecycle so this purchase shows
+  // up in /admin/quotes and the customer can /orders/[id] track. Errors here
+  // never reverse payment — log + continue.
+  try {
+    await ensurePublicBuyQuote({ session, meta, paymentIntentId, customerEmail });
+  } catch (e) {
+    console.error('[webhook] public_buy quote bridge failed:', e);
+  }
+
   // Admin notification — fires on every public_buy completion regardless of
   // procurement send outcome so the operator sees every paid order.
   try {
@@ -440,6 +467,8 @@ async function handlePublicBuyCompletion(session: Stripe.Checkout.Session): Prom
     const kindLabel = meta.buyKind === 'subscribe' ? 'RaaS Subscription'
       : isDeposit ? 'Reservation Deposit'
       : 'Direct Purchase';
+    // Note: duplicate sessions are short-circuited above, so result.skipped
+    // here is narrowed to no_vendor | no_email | resend_unconfigured | undefined.
     const procurementLine = result.ok
       ? `<tr><td style="padding:6px 0;color:#666;">Procurement Email</td><td style="padding:6px 0;color:#22c55e;">Sent to ${result.toEmail}</td></tr>`
       : result.skipped === 'no_email'
@@ -475,3 +504,174 @@ async function handlePublicBuyCompletion(session: Stripe.Checkout.Session): Prom
   }
 }
 
+
+/**
+ * Bridge a public_buy Stripe session into the existing Quote/work-order flow.
+ *
+ * If `/api/buy` pre-created a draft quote, this fills in the customer details
+ * captured by Stripe Checkout (name, email, payment intent / subscription id)
+ * and advances it through accepted → ordered. If no quoteId is in metadata
+ * (D1 was unavailable when the session was created), this creates the quote
+ * directly so the order still lands in /admin/quotes.
+ *
+ * Returns the resulting quote id, or null if quote handling failed.
+ */
+async function ensurePublicBuyQuote(args: {
+  session: Stripe.Checkout.Session;
+  meta: PublicBuyMetadata;
+  paymentIntentId: string | null;
+  customerEmail: string | null;
+}): Promise<string | null> {
+  const { session, meta, paymentIntentId, customerEmail } = args;
+  const md = (session.metadata ?? {}) as Record<string, string>;
+  const isSubscription = session.mode === 'subscription';
+  const subId = typeof session.subscription === 'string'
+    ? session.subscription
+    : (session.subscription as Stripe.Subscription | null)?.id ?? null;
+  const customerName = session.customer_details?.name ?? customerEmail ?? 'Public buy customer';
+
+  let quoteId = md.quoteId ?? null;
+
+  if (!quoteId) {
+    // Fallback path: /api/buy couldn't pre-create. Build the quote now.
+    const vendor = VENDORS.find(v => v.id === meta.vendorId);
+    const amountCents = meta.amountCents ? Number(meta.amountCents) : 0;
+    const fullPriceCents = meta.fullPriceCents ? Number(meta.fullPriceCents) : amountCents;
+    const vendorCost = (fullPriceCents || amountCents) / 100;
+    const billingCycle = isSubscription ? 'monthly' : 'one_time';
+    const summary = `${meta.vendorName ?? meta.vendorId} ${meta.productName ?? ''} — ${meta.buyKind ?? 'public_buy'}`;
+    const created = await createQuote({
+      requestId: `public-buy-${session.id}`,
+      customerName,
+      customerEmail: customerEmail ?? '',
+      inquiryType: meta.buyKind === 'subscribe' ? 'Robot-as-a-Service'
+        : meta.isDeposit === '1' ? 'Reservation' : 'Direct Purchase',
+      summary,
+      lineItems: [{
+        description: meta.productName ?? '(unknown product)',
+        vendor: meta.vendorName ?? meta.vendorId,
+        vendorUrl: vendor?.products.find(p => p.name === meta.productName)?.orderUrl,
+        vendorCost,
+        markup: 0,
+        billingCycle,
+        notes: `Created by webhook fallback (quote was not pre-created). Buy kind: ${meta.buyKind ?? '?'}.`,
+      }],
+      notes: `Public buy — Stripe session ${session.id}.`,
+    });
+    quoteId = created.id;
+  }
+
+  // Backfill customer details + advance status. Two updates because
+  // updateQuote('accepted') stamps acceptedAt as a side-effect.
+  const existing = await getQuote(quoteId);
+  if (existing) {
+    existing.customerName = customerName;
+    if (customerEmail) existing.customerEmail = customerEmail;
+    if (session.amount_total != null) existing.stripeAmountTotal = session.amount_total;
+    if (isSubscription && subId) {
+      existing.stripeSubscriptionId = subId;
+    } else if (paymentIntentId) {
+      existing.stripePaymentIntent = paymentIntentId;
+    }
+    existing.paidAt = new Date().toISOString();
+    await saveQuote(existing);
+  }
+
+  await updateQuote(quoteId, { status: 'accepted' });
+  await updateQuote(quoteId, { status: 'ordered' });
+
+  await addMessage(quoteId, {
+    from: 'system',
+    to: customerEmail ?? '',
+    subject: isSubscription ? 'RaaS Subscription Activated' : 'Payment Received',
+    body: isSubscription
+      ? `In-app RaaS subscription ${subId ?? '?'} activated. Procurement email dispatched to ${meta.vendorName ?? meta.vendorId}.`
+      : `In-app ${meta.isDeposit === '1' ? 'reservation deposit' : 'payment'} received via Stripe (${paymentIntentId ?? '?'}). Procurement email dispatched to ${meta.vendorName ?? meta.vendorId}.`,
+  });
+
+  console.log(`[webhook] public_buy quote ${quoteId} → ordered (${session.id})`);
+  return quoteId;
+}
+
+/**
+ * Fire a `subscription_cancelled` blind notice to the vendor and log it to
+ * vendor_outreach. Used for public_buy RaaS cancellations so the vendor
+ * stops billing / provisioning. Idempotency is keyed on subscription id via
+ * the metadata blob.
+ */
+async function firePublicBuyCancellationNotice(subscription: Stripe.Subscription): Promise<void> {
+  const md = (subscription.metadata ?? {}) as Record<string, string>;
+  const vendorId = md.vendorId;
+  if (!vendorId) {
+    console.warn('[webhook] public_buy cancellation: subscription missing vendorId — skipping vendor notice');
+    return;
+  }
+  const vendor = VENDORS.find(v => v.id === vendorId);
+  if (!vendor) {
+    console.warn(`[webhook] public_buy cancellation: unknown vendorId ${vendorId} — skipping`);
+    return;
+  }
+  const mailto = vendor.contacts.find(c => c.href?.startsWith('mailto:'));
+  const toEmail = mailto?.value;
+  if (!toEmail) {
+    console.warn(`[webhook] public_buy cancellation: no mailto for ${vendor.name} — skipping`);
+    return;
+  }
+
+  const apiKey = process.env.RESEND_API_KEY;
+  if (!apiKey) {
+    console.warn('[webhook] public_buy cancellation: RESEND_API_KEY unset — skipping');
+    return;
+  }
+
+  // Lazy-import to keep the webhook hot path lean.
+  const [{ Resend: ResendCls }, templates, identity] = await Promise.all([
+    import('resend'),
+    import('@/lib/outreach/templates'),
+    import('@/lib/outreach/identity'),
+  ]);
+  const rendered = templates.renderTemplate('subscription_cancelled', {
+    vendor,
+    productName: md.productName,
+    orderRef: subscription.id,
+  });
+  const fullText = rendered.body + identity.SOURCING_SIGNATURE_TEXT;
+  const escaped = rendered.body.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const fullHtml = `<div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;padding:24px;color:#222;line-height:1.6;font-size:14px;white-space:pre-wrap;">${escaped}</div>` + identity.SOURCING_SIGNATURE_HTML;
+
+  const id = (globalThis.crypto?.randomUUID?.() ?? `cancel_${Date.now()}_${Math.random().toString(36).slice(2, 10)}`);
+  const resend = new ResendCls(apiKey);
+  try {
+    const { data, error } = await resend.emails.send({
+      from: identity.SOURCING_FROM,
+      to: toEmail,
+      replyTo: identity.SOURCING_REPLY_TO,
+      subject: rendered.subject,
+      html: fullHtml,
+      text: fullText,
+    });
+    if (error) throw new Error(error.message ?? 'Resend send failed');
+
+    await recordOutreach({
+      id, vendorId, template: 'subscription_cancelled',
+      toEmail, subject: rendered.subject, body: fullText, status: 'sent',
+      resendId: data?.id,
+      metadata: {
+        productName: md.productName,
+        productSlug: md.productSlug,
+        subscriptionId: subscription.id,
+        cancellationReason: subscription.cancellation_details?.reason ?? null,
+        source: 'webhook_auto',
+      },
+    });
+    console.log(`[webhook] public_buy cancellation notice → ${vendor.name} <${toEmail}> (sub ${subscription.id})`);
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error(`[webhook] public_buy cancellation notice failed for ${vendor.name}:`, msg);
+    await recordOutreach({
+      id, vendorId, template: 'subscription_cancelled',
+      toEmail, subject: rendered.subject, body: fullText, status: 'failed', error: msg,
+      metadata: { subscriptionId: subscription.id, source: 'webhook_auto' },
+    }).catch(() => undefined);
+  }
+}
