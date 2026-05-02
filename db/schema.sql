@@ -103,3 +103,20 @@ CREATE TABLE IF NOT EXISTS chat_leads (
 );
 CREATE INDEX IF NOT EXISTS idx_chat_leads_expires  ON chat_leads(expires_at);
 CREATE INDEX IF NOT EXISTS idx_chat_leads_captured ON chat_leads(captured_at DESC);
+
+-- Vendor outreach history (admin-initiated blind-first-contact inquiries)
+CREATE TABLE IF NOT EXISTS vendor_outreach (
+  id          TEXT    PRIMARY KEY,
+  vendor_id   TEXT    NOT NULL,        -- VENDORS[].id
+  template    TEXT    NOT NULL,        -- 'spec_request' | 'quote_request' | 'availability_check' | 'demo_request' | 'procurement_order'
+  to_email    TEXT    NOT NULL,
+  subject     TEXT    NOT NULL,
+  body        TEXT    NOT NULL,        -- plaintext body sent
+  status      TEXT    NOT NULL,        -- 'sent' | 'failed'
+  resend_id   TEXT,                    -- Resend message id, when status='sent'
+  error       TEXT,                    -- error message, when status='failed'
+  metadata    TEXT,                    -- JSON blob: { region, quantity, productName, ... }
+  created_at  INTEGER NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_vendor_outreach_vendor  ON vendor_outreach(vendor_id, created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_vendor_outreach_created ON vendor_outreach(created_at DESC);

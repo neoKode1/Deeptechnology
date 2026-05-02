@@ -36,6 +36,8 @@ export const limiters = {
   roi:        cfg('rl:roi',        5, 60),
   portal:     cfg('rl:portal',     3, 60),
   enterprise: cfg('rl:enterprise', 3, 60),
+  // Admin outbound vendor inquiries — keep tight to prevent accidental spam
+  outreach:   cfg('rl:outreach',   10, 60),
 };
 
 /**

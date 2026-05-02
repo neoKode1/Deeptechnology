@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { Resend } from 'resend';
 import { getQuote, saveQuote, updateQuote, addMessage } from '@/lib/quotes/store';
+import { fireProcurementOrder, type PublicBuyMetadata } from '@/lib/outreach/procurement';
 
 /**
  * In-memory set of processed Stripe event IDs to prevent double-processing.
@@ -58,6 +59,16 @@ export async function POST(request: Request) {
       }
 
       const session = event.data.object as Stripe.Checkout.Session;
+
+      // Public-buy path (in-app Buy Now / Reserve / Subscribe via /api/buy).
+      // These sessions carry vendor + product metadata and no quoteId — they
+      // route to vendor procurement instead of the quote lifecycle.
+      if (session.metadata?.source === 'public_buy') {
+        await handlePublicBuyCompletion(session);
+        processedEvents.add(event.id);
+        break;
+      }
+
       const quoteId = session.metadata?.quoteId;
 
       if (!quoteId) {
@@ -382,5 +393,85 @@ export async function POST(request: Request) {
   }
 
   return NextResponse.json({ received: true });
+}
+
+/**
+ * Handle a completed public-buy Stripe session: fire the procurement_order
+ * email to the vendor, log it to vendor_outreach, and notify admin. Errors
+ * are caught so a failed email never reverses the customer's payment.
+ */
+async function handlePublicBuyCompletion(session: Stripe.Checkout.Session): Promise<void> {
+  const md = (session.metadata ?? {}) as Record<string, string>;
+  const meta: PublicBuyMetadata = {
+    vendorId: md.vendorId, vendorName: md.vendorName,
+    productSlug: md.productSlug, productName: md.productName,
+    buyKind: md.buyKind, buyPath: md.buyPath,
+    amountCents: md.amountCents, fullPriceCents: md.fullPriceCents,
+    isDeposit: md.isDeposit,
+  };
+  if (!meta.vendorId) {
+    console.warn('[webhook] public_buy session missing vendorId — skipping procurement.');
+    return;
+  }
+
+  const paymentIntentId = typeof session.payment_intent === 'string'
+    ? session.payment_intent
+    : session.payment_intent?.id ?? null;
+  const customerEmail = session.customer_details?.email ?? session.customer_email ?? null;
+  const region = [session.customer_details?.address?.city, session.customer_details?.address?.country]
+    .filter(Boolean).join(', ') || undefined;
+
+  const result = await fireProcurementOrder({
+    metadata: meta, sessionId: session.id, paymentIntentId, customerEmail, region,
+  });
+
+  // Admin notification — fires on every public_buy completion regardless of
+  // procurement send outcome so the operator sees every paid order.
+  try {
+    const apiKey = process.env.RESEND_API_KEY;
+    if (!apiKey) return;
+    const resend = new Resend(apiKey);
+    const adminEmail = process.env.ADMIN_EMAIL || 'info@deeptechnologies.dev';
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://deeptechnologies.dev';
+    const amountFmt = session.amount_total != null
+      ? '$' + (session.amount_total / 100).toFixed(2)
+      : 'N/A';
+    const isDeposit = meta.isDeposit === '1';
+    const kindLabel = meta.buyKind === 'subscribe' ? 'RaaS Subscription'
+      : isDeposit ? 'Reservation Deposit'
+      : 'Direct Purchase';
+    const procurementLine = result.ok
+      ? `<tr><td style="padding:6px 0;color:#666;">Procurement Email</td><td style="padding:6px 0;color:#22c55e;">Sent to ${result.toEmail}</td></tr>`
+      : result.skipped === 'no_email'
+        ? `<tr><td style="padding:6px 0;color:#666;">Procurement Email</td><td style="padding:6px 0;color:#f59e0b;">Skipped — no mailto contact on file. Manual outreach required.</td></tr>`
+        : result.skipped === 'resend_unconfigured'
+          ? `<tr><td style="padding:6px 0;color:#666;">Procurement Email</td><td style="padding:6px 0;color:#f59e0b;">Skipped — Resend not configured.</td></tr>`
+          : `<tr><td style="padding:6px 0;color:#666;">Procurement Email</td><td style="padding:6px 0;color:#ef4444;">Failed — ${result.error ?? 'unknown error'}. Manual outreach required.</td></tr>`;
+
+    await resend.emails.send({
+      from: 'Deep Tech <info@deeptechnologies.dev>',
+      to: adminEmail,
+      subject: `🛒 In-App Order — ${meta.vendorName ?? meta.vendorId} ${meta.productName ?? ''} (${amountFmt})`,
+      html: `<div style="font-family:'Helvetica Neue',Arial,sans-serif;max-width:600px;margin:0 auto;padding:32px;background:#0a0a0a;color:#ccc;border-radius:8px;border:1px solid #222;">
+        <p style="font-size:11px;letter-spacing:0.2em;text-transform:uppercase;color:#22c55e;margin:0 0 16px;">${kindLabel}</p>
+        <h2 style="color:#22c55e;margin:0 0 8px;font-size:20px;">✅ In-App Purchase Confirmed</h2>
+        <p style="font-size:14px;color:#eee;margin:0 0 20px;">A customer paid <strong>${amountFmt}</strong> directly through the product page.</p>
+        <table style="width:100%;font-size:13px;color:#aaa;">
+          <tr><td style="padding:6px 0;color:#666;">Vendor</td><td style="padding:6px 0;color:#eee;">${meta.vendorName ?? meta.vendorId}</td></tr>
+          <tr><td style="padding:6px 0;color:#666;">Product</td><td style="padding:6px 0;color:#eee;">${meta.productName ?? '(unknown)'}</td></tr>
+          <tr><td style="padding:6px 0;color:#666;">Buy Path</td><td style="padding:6px 0;color:#eee;">${meta.buyPath ?? ''} · ${meta.buyKind ?? ''}</td></tr>
+          <tr><td style="padding:6px 0;color:#666;">Customer</td><td style="padding:6px 0;color:#eee;">${customerEmail ?? '(no email captured)'}</td></tr>
+          <tr><td style="padding:6px 0;color:#666;">Stripe Session</td><td style="padding:6px 0;color:#eee;font-family:monospace;font-size:11px;">${session.id}</td></tr>
+          ${procurementLine}
+        </table>
+        <div style="margin-top:24px;">
+          <a href="${baseUrl}/admin/vendors" style="display:inline-block;background:#22c55e;color:#000;font-size:13px;font-weight:600;text-decoration:none;padding:12px 28px;border-radius:4px;">View Vendor →</a>
+        </div>
+      </div>`,
+      text: `In-App Order — ${meta.vendorName ?? meta.vendorId} ${meta.productName ?? ''} — ${amountFmt}\nCustomer: ${customerEmail ?? 'unknown'}\nSession: ${session.id}\nProcurement email: ${result.ok ? 'sent to ' + result.toEmail : 'NOT sent (' + (result.skipped ?? result.error) + ')'}\n\nReview at ${baseUrl}/admin/vendors`,
+    });
+  } catch (e) {
+    console.error('[webhook] public_buy admin notification failed:', e);
+  }
 }
 

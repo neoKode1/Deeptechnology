@@ -10,6 +10,9 @@ import {
   BUY_PATH_COLORS,
   type Vendor,
 } from '@/data/vendors';
+import { VENDOR_IMAGES } from '@/data/vendor-images';
+import { CATEGORY_META } from '@/data/categories';
+import QuickInquiryMenu from '@/components/admin/QuickInquiryMenu';
 
 const CATEGORY_LABELS: Record<Vendor['category'], string> = {
   humanoid:    '🤖 Humanoid',
@@ -267,27 +270,51 @@ function VendorCard({ vendor }: { vendor: Vendor }) {
   const [expanded, setExpanded] = useState(false);
   const pathColor = BUY_PATH_COLORS[vendor.buyPath];
   const pathLabel = BUY_PATH_LABELS[vendor.buyPath];
+  const heroImage = VENDOR_IMAGES[vendor.id] ?? CATEGORY_META[vendor.category]?.image;
 
   return (
     <div className="bg-zinc-900/50 border border-zinc-800 rounded-lg p-5">
       {/* Header row */}
       <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-3 mb-4">
-        <div className="flex-1 min-w-0">
-          <div className="flex items-center gap-3 mb-1 flex-wrap">
-            <h3 className="font-semibold text-white">{vendor.name}</h3>
-            <span className={`text-xs px-2 py-0.5 rounded-full border ${pathColor}`}>{pathLabel}</span>
-            <span className="text-xs text-zinc-500 capitalize">{vendor.category}</span>
+        <div className="flex items-start gap-3 flex-1 min-w-0">
+          {/* Vendor hero thumbnail — falls back to category image */}
+          <div className="w-16 h-16 shrink-0 rounded-lg overflow-hidden bg-zinc-800 border border-zinc-700">
+            {heroImage ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img src={heroImage} alt={vendor.name} className="w-full h-full object-cover object-top" />
+            ) : null}
           </div>
-          {vendor.leadTime && (
-            <p className="text-xs text-zinc-500">⏱ Lead time: {vendor.leadTime}</p>
-          )}
+          <div className="flex-1 min-w-0">
+            <div className="flex items-center gap-3 mb-1 flex-wrap">
+              <h3 className="font-semibold text-white">
+                <Link
+                  href={`/robotics/${vendor.id}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-1.5 hover:text-emerald-400 transition-colors"
+                  title="Open public vendor page in a new tab"
+                >
+                  {vendor.name}
+                  <ExternalLink size={12} className="text-zinc-500" />
+                </Link>
+              </h3>
+              <span className={`text-xs px-2 py-0.5 rounded-full border ${pathColor}`}>{pathLabel}</span>
+              <span className="text-xs text-zinc-500 capitalize">{vendor.category}</span>
+            </div>
+            {vendor.leadTime && (
+              <p className="text-xs text-zinc-500">⏱ Lead time: {vendor.leadTime}</p>
+            )}
+          </div>
         </div>
-        <button
-          onClick={() => setExpanded(e => !e)}
-          className="text-xs text-zinc-400 hover:text-white transition shrink-0"
-        >
-          {expanded ? 'Collapse ▲' : 'Details ▼'}
-        </button>
+        <div className="flex items-center gap-2 shrink-0">
+          <QuickInquiryMenu vendor={vendor} />
+          <button
+            onClick={() => setExpanded(e => !e)}
+            className="text-xs text-zinc-400 hover:text-white transition"
+          >
+            {expanded ? 'Collapse ▲' : 'Details ▼'}
+          </button>
+        </div>
       </div>
 
       {/* Products table */}
@@ -295,6 +322,7 @@ function VendorCard({ vendor }: { vendor: Vendor }) {
         <table className="w-full text-sm">
           <thead>
             <tr className="text-xs text-zinc-500 border-b border-zinc-800">
+              <th className="pb-2 pr-3 font-medium w-10"></th>
               <th className="text-left pb-2 pr-4 font-medium">Model</th>
               <th className="text-left pb-2 pr-4 font-medium">Price</th>
               <th className="text-left pb-2 pr-4 font-medium">Status</th>
@@ -304,6 +332,14 @@ function VendorCard({ vendor }: { vendor: Vendor }) {
           <tbody>
             {vendor.products.map((p, i) => (
               <tr key={i} className="border-b border-zinc-800/50 last:border-0">
+                <td className="py-2 pr-3">
+                  <div className="w-8 h-8 rounded-md overflow-hidden bg-zinc-900 border border-zinc-800">
+                    {p.image ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={p.image} alt={p.name} className="w-full h-full object-cover object-top" />
+                    ) : null}
+                  </div>
+                </td>
                 <td className="py-2 pr-4 text-zinc-200 font-medium">{p.name}</td>
                 <td className="py-2 pr-4 text-zinc-300 font-mono text-xs">
                   {p.price}

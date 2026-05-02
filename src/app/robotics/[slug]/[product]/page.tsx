@@ -7,6 +7,8 @@ import RobotImageLightbox from '@/components/RobotImageLightbox';
 import { VENDORS } from '@/data/vendors';
 import { VENDOR_IMAGES } from '@/data/vendor-images';
 import { toSlug } from '@/lib/utils';
+import { resolveBuy } from '@/lib/buy/resolve';
+import PublicBuyButton from '@/components/PublicBuyButton';
 
 // ── Static params ─────────────────────────────────────────────────────────────
 
@@ -71,7 +73,8 @@ export default function ProductPage({
   if (!product) notFound();
 
   const vendorHeroImage = VENDOR_IMAGES[vendor.id];
-  const ctaHref = `/contact?inquiry=robotics&vendor=${encodeURIComponent(vendor.name)}&product=${encodeURIComponent(product.name)}`;
+  const buyAction = resolveBuy(vendor, product);
+  const quoteHref = `/contact?inquiry=robotics&vendor=${encodeURIComponent(vendor.name)}&product=${encodeURIComponent(product.name)}`;
 
   return (
     <div className="min-h-screen bg-black text-white">
@@ -144,18 +147,17 @@ export default function ProductPage({
             )}
 
             {/* CTAs */}
-            <div className="flex flex-wrap gap-3">
-              <Link href={ctaHref}
-                className="inline-flex items-center gap-2 bg-white text-black font-manrope text-sm font-semibold px-6 py-3 rounded-xl hover:bg-neutral-200 transition-colors">
-                Get a Quote <ArrowUpRight className="w-4 h-4" />
+            <div className="flex flex-col gap-4">
+              <PublicBuyButton
+                vendorId={vendor.id}
+                productSlug={toSlug(product.name)}
+                action={buyAction}
+                variant="primary"
+              />
+              <Link href={quoteHref}
+                className="inline-flex items-center gap-2 self-start border border-neutral-700 text-white font-manrope text-sm px-6 py-3 rounded-xl hover:border-neutral-500 transition-colors">
+                Get a Custom Quote <ArrowUpRight className="w-4 h-4" />
               </Link>
-              {product.status !== 'not_available' && (
-                <Link href={ctaHref}
-                  className="inline-flex items-center gap-2 border border-neutral-700 text-white font-manrope text-sm px-6 py-3 rounded-xl hover:border-neutral-500 transition-colors">
-                  {product.status === 'raas' ? 'Request via Deeptech' : product.status === 'pre_order' ? 'Reserve via Deeptech' : 'Source via Deeptech'}
-                  <ArrowUpRight className="w-4 h-4" />
-                </Link>
-              )}
             </div>
           </div>
 

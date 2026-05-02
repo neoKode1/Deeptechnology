@@ -64,13 +64,19 @@ const SoftDevHeader = () => {
         {/* 3-column grid: brand auto, switcher fluid center, nav auto. Keeps brand+nav from being squeezed at sm/md. */}
         <div className="grid grid-cols-[auto_1fr_auto] items-center px-4 sm:px-6 py-4 sm:py-5 md:px-12 lg:px-20 gap-3 sm:gap-4">
 
-          {/* Col 1 — Brand (left-aligned) */}
+          {/* Col 1 — Brand + tagline (left-aligned) */}
           <div className="flex items-center">
             <Link
               href="/"
-              className={`font-manrope text-xs sm:text-sm font-light tracking-[0.2em] sm:tracking-[0.25em] uppercase ${textColor}`}
+              aria-label="Deeptech — Sourcing & Solutions"
+              className="flex flex-col leading-tight"
             >
-              Deeptech
+              <span className={`font-manrope text-xs sm:text-sm font-light tracking-[0.2em] sm:tracking-[0.25em] uppercase ${textColor}`}>
+                Deeptech
+              </span>
+              <span className={`font-manrope text-[9px] sm:text-[10px] font-light tracking-[0.18em] uppercase mt-0.5 ${isDark ? 'text-white/45' : 'text-[#111]/45'}`}>
+                Sourcing &amp; Solutions
+              </span>
             </Link>
           </div>
 
