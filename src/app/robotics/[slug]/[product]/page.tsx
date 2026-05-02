@@ -156,7 +156,7 @@ export default function ProductPage({
                 <span aria-hidden className="text-amber-400 text-sm leading-tight">●</span>
                 <div className="flex-1">
                   <p className="text-xs font-semibold text-amber-300 font-manrope">Checkout canceled</p>
-                  <p className="text-[11px] text-amber-200/80 font-manrope mt-1">No charge was made. You can retry below or request a custom quote whenever you're ready.</p>
+                  <p className="text-[11px] text-amber-200/80 font-manrope mt-1">No charge was made. You can retry below or request a custom quote whenever you&apos;re ready.</p>
                 </div>
               </div>
             )}

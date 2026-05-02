@@ -13,6 +13,7 @@ import {
 import { VENDOR_IMAGES } from '@/data/vendor-images';
 import { CATEGORY_META } from '@/data/categories';
 import QuickInquiryMenu from '@/components/admin/QuickInquiryMenu';
+import OutreachHistory from '@/components/admin/OutreachHistory';
 
 const CATEGORY_LABELS: Record<Vendor['category'], string> = {
   humanoid:    '🤖 Humanoid',
@@ -363,9 +364,9 @@ function VendorCard({ vendor }: { vendor: Vendor }) {
         </table>
       </div>
 
-      {/* Contacts */}
+      {/* Contacts + outreach history */}
       {expanded && (
-        <div className="border-t border-zinc-800 pt-4 space-y-3">
+        <div className="border-t border-zinc-800 pt-4 space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {vendor.contacts.map((c, i) => {
               const isEmail = c.href?.startsWith('mailto:');
@@ -392,6 +393,9 @@ function VendorCard({ vendor }: { vendor: Vendor }) {
           <div className="flex items-start gap-2 pt-2 border-t border-zinc-800/50">
             <MessageSquare size={13} className="text-zinc-500 mt-0.5 shrink-0" />
             <p className="text-xs text-zinc-500">{vendor.procurementNotes}</p>
+          </div>
+          <div className="pt-2 border-t border-zinc-800/50">
+            <OutreachHistory vendorId={vendor.id} />
           </div>
         </div>
       )}
