@@ -5,6 +5,10 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
+  schedule:
+    # Weekly vendor URL audit — Mondays 13:00 UTC
+    - cron: '0 13 * * 1'
+  workflow_dispatch:
 
 # Cancel in-progress runs for the same PR / branch when a new commit lands.
 concurrency:
@@ -38,3 +42,35 @@ jobs:
 
       - name: Unit + integration tests
         run: npm test
+
+  vendor-urls:
+    name: Vendor URL audit
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    # External URLs flake — keep informational, don't fail the build.
+    continue-on-error: true
+    if: github.event_name == 'pull_request' || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Probe vendor links
+        run: node scripts/check-vendor-urls.mjs --json > url-report.json || true
+
+      - name: Summary
+        run: |
+          node -e "const j=JSON.parse(require('fs').readFileSync('url-report.json','utf8'));console.log('Total:',j.total,'| OK:',j.total-j.broken.length,'| Broken:',j.broken.length,'| Redirects:',j.redirected.length);if(j.broken.length){console.log('\\n=== BROKEN ===');for(const b of j.broken){console.log('['+b.vendorId+'] '+b.field+'='+b.url+' -> '+(b.result.error||'HTTP '+b.result.status))}}"
+
+      - name: Upload report artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: vendor-url-report
+          path: url-report.json
+          retention-days: 30

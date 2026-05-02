@@ -88,3 +88,8 @@ dev.err.log
 
 # Local commit-message scratch file
 .git-commit-msg.txt
+
+# Generated audit artifacts
+url-report.json
+spotcheck*.txt
+url-spotcheck.txt
