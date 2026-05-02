@@ -269,6 +269,7 @@ export default function AdminVendorsPage() {
 
 function VendorCard({ vendor }: { vendor: Vendor }) {
   const [expanded, setExpanded] = useState(false);
+  const [historyRefresh, setHistoryRefresh] = useState(0);
   const pathColor = BUY_PATH_COLORS[vendor.buyPath];
   const pathLabel = BUY_PATH_LABELS[vendor.buyPath];
   const heroImage = VENDOR_IMAGES[vendor.id] ?? CATEGORY_META[vendor.category]?.image;
@@ -308,7 +309,7 @@ function VendorCard({ vendor }: { vendor: Vendor }) {
           </div>
         </div>
         <div className="flex items-center gap-2 shrink-0">
-          <QuickInquiryMenu vendor={vendor} />
+          <QuickInquiryMenu vendor={vendor} onSent={() => { setHistoryRefresh(n => n + 1); setExpanded(true); }} />
           <button
             onClick={() => setExpanded(e => !e)}
             className="text-xs text-zinc-400 hover:text-white transition"
@@ -395,7 +396,7 @@ function VendorCard({ vendor }: { vendor: Vendor }) {
             <p className="text-xs text-zinc-500">{vendor.procurementNotes}</p>
           </div>
           <div className="pt-2 border-t border-zinc-800/50">
-            <OutreachHistory vendorId={vendor.id} />
+            <OutreachHistory vendorId={vendor.id} refreshKey={historyRefresh} />
           </div>
         </div>
       )}
