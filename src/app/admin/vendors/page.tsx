@@ -13,6 +13,7 @@ import {
 import { VENDOR_IMAGES } from '@/data/vendor-images';
 import { CATEGORY_META } from '@/data/categories';
 import QuickInquiryMenu from '@/components/admin/QuickInquiryMenu';
+import ProductInquiryButton from '@/components/admin/ProductInquiryButton';
 import OutreachHistory from '@/components/admin/OutreachHistory';
 
 const CATEGORY_LABELS: Record<Vendor['category'], string> = {
@@ -349,14 +350,21 @@ function VendorCard({ vendor }: { vendor: Vendor }) {
                 </td>
                 <td className={`py-2 pr-4 text-xs ${STATUS_COLORS[p.status]}`}>{STATUS_LABELS[p.status]}</td>
                 <td className="py-2">
-                  {p.orderUrl ? (
-                    <a href={p.orderUrl} target="_blank" rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300 transition">
-                      <ShoppingCart size={11} /> Order
-                    </a>
-                  ) : (
-                    <span className="text-xs text-zinc-600">—</span>
-                  )}
+                  <div className="flex items-center gap-3">
+                    {p.orderUrl ? (
+                      <a href={p.orderUrl} target="_blank" rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1 text-xs text-emerald-400 hover:text-emerald-300 transition">
+                        <ShoppingCart size={11} /> Order
+                      </a>
+                    ) : (
+                      <span className="text-xs text-zinc-600">—</span>
+                    )}
+                    <ProductInquiryButton
+                      vendor={vendor}
+                      productName={p.name}
+                      onSent={() => { setHistoryRefresh(n => n + 1); setExpanded(true); }}
+                    />
+                  </div>
                   {p.notes && <p className="text-[11px] text-zinc-600 mt-0.5 max-w-xs">{p.notes}</p>}
                 </td>
               </tr>

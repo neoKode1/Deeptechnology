@@ -16,11 +16,13 @@ const ALT_TEMPLATES: { id: TemplateId; blurb: string }[] = [
 
 interface Props {
   vendor: Vendor;
+  /** Pre-select a specific product (forwarded to the composer). */
+  initialProductName?: string;
   /** Bumped after a successful send so parents can refresh outreach history. */
   onSent?: () => void;
 }
 
-export default function QuickInquiryMenu({ vendor, onSent }: Props) {
+export default function QuickInquiryMenu({ vendor, initialProductName, onSent }: Props) {
   const [open, setOpen] = useState(false);
   const [active, setActive] = useState<TemplateId | null>(null);
   const dropRef = useRef<HTMLDivElement>(null);
@@ -84,6 +86,7 @@ export default function QuickInquiryMenu({ vendor, onSent }: Props) {
         <InquiryComposer
           vendor={vendor}
           initialTemplate={active}
+          initialProductName={initialProductName}
           onClose={() => setActive(null)}
           onSent={onSent}
         />

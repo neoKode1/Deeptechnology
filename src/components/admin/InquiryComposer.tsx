@@ -32,12 +32,17 @@ type SendState =
 interface Props {
   vendor: Vendor;
   initialTemplate?: TemplateId;
+  /** Pre-select a specific product (e.g. when opened from a product row). */
+  initialProductName?: string;
   onClose: () => void;
   onSent?: () => void;
 }
 
-export default function InquiryComposer({ vendor, initialTemplate, onClose, onSent }: Props) {
-  const initial = useMemo(() => buildDefaults(vendor, initialTemplate), [vendor, initialTemplate]);
+export default function InquiryComposer({ vendor, initialTemplate, initialProductName, onClose, onSent }: Props) {
+  const initial = useMemo(
+    () => buildDefaults(vendor, initialTemplate, initialProductName),
+    [vendor, initialTemplate, initialProductName],
+  );
   const [templateId, setTemplateId] = useState<TemplateId>(initial.templateId);
   const [toEmail, setToEmail] = useState(initial.toEmail);
   const [productName, setProductName] = useState(initial.productName);

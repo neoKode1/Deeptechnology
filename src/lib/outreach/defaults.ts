@@ -49,9 +49,15 @@ export function defaultProductName(vendor: Vendor): string {
  * One-liner buyer use case derived from vendor metadata. Keeps the email
  * grounded so the vendor can immediately tell whether the conversation is
  * worth their time. Falls back to a generic line if no notes exist.
+ *
+ * If `productName` is provided, prefers notes from that specific product
+ * over the first one; this matters when the composer is opened from a
+ * specific product or quote line item.
  */
-export function defaultUseCase(vendor: Vendor): string {
-  const product = vendor.products[0];
+export function defaultUseCase(vendor: Vendor, productName?: string): string {
+  const product = productName
+    ? vendor.products.find(p => p.name === productName) ?? vendor.products[0]
+    : vendor.products[0];
   const productNote = product?.notes?.trim();
   if (productNote) {
     // Take the first sentence to keep it tight.
@@ -78,15 +84,28 @@ export interface InquiryDefaults {
 /**
  * Build the full set of pre-populated form values for a vendor + template.
  * The composer feeds these directly into its initial state.
+ *
+ * @param initialProductName Optional explicit product to focus on (e.g. when
+ *   the composer is opened from a specific product row or quote line item).
+ *   When supplied and matched, it overrides the first-product heuristic and
+ *   biases the use-case extraction toward that product's notes.
  */
-export function buildDefaults(vendor: Vendor, templateId: TemplateId = DEFAULT_TEMPLATE): InquiryDefaults {
+export function buildDefaults(
+  vendor: Vendor,
+  templateId: TemplateId = DEFAULT_TEMPLATE,
+  initialProductName?: string,
+): InquiryDefaults {
+  const matched = initialProductName
+    ? vendor.products.find(p => p.name === initialProductName)?.name
+    : undefined;
+  const productName = matched ?? defaultProductName(vendor);
   return {
     templateId,
     toEmail: defaultRecipient(vendor),
-    productName: defaultProductName(vendor),
+    productName,
     quantity: DEFAULT_QUANTITY,
     region: DEFAULT_REGION,
     timeline: defaultTimeline(),
-    useCase: defaultUseCase(vendor),
+    useCase: defaultUseCase(vendor, productName || undefined),
   };
 }

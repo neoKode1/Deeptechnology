@@ -62,6 +62,28 @@ describe('buildDefaults', () => {
     expect(d.productName).toBe('');
     expect(d.useCase).toMatch(/industrial workflow/);
   });
+
+  it('honors an explicit initialProductName override', () => {
+    const v = fixture();
+    const d = buildDefaults(v, undefined, 'Acme Sentinel');
+    expect(d.productName).toBe('Acme Sentinel');
+  });
+
+  it('falls back to the first product when initialProductName does not match', () => {
+    const v = fixture();
+    const d = buildDefaults(v, undefined, 'Nonexistent Robot 9000');
+    expect(d.productName).toBe('Acme Scout v2');
+  });
+
+  it('biases useCase toward the matched product notes when override is supplied', () => {
+    const v = fixture({
+      products: [
+        { name: 'A', price: '$1', status: 'in_stock', notes: 'Alpha note for picking.' },
+        { name: 'B', price: '$2', status: 'in_stock', notes: 'Beta note for sorting.' },
+      ],
+    });
+    expect(buildDefaults(v, undefined, 'B').useCase).toBe('Beta note for sorting.');
+  });
 });
 
 describe('defaultRecipient', () => {

@@ -2378,6 +2378,25 @@ export function getVendor(id: string): Vendor | undefined {
   return VENDORS.find((v) => v.id === id);
 }
 
+/**
+ * Look up a vendor by display name. Used when we only have a vendor name
+ * string (e.g. quote line items, free-form references) and need a structured
+ * Vendor record to drive an inquiry. Match is case-insensitive and tries:
+ *   1. Exact (lowercased) name equality.
+ *   2. Either side fully contains the other (handles "Unitree" vs "Unitree Robotics").
+ */
+export function getVendorByName(name: string): Vendor | undefined {
+  if (!name) return undefined;
+  const needle = name.trim().toLowerCase();
+  if (!needle) return undefined;
+  const exact = VENDORS.find((v) => v.name.toLowerCase() === needle);
+  if (exact) return exact;
+  return VENDORS.find((v) => {
+    const n = v.name.toLowerCase();
+    return n.includes(needle) || needle.includes(n);
+  });
+}
+
 /** Get all vendors in a category */
 export function getVendorsByCategory(category: Vendor['category']): Vendor[] {
   return VENDORS.filter((v) => v.category === category);

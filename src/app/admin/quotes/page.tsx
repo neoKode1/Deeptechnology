@@ -4,6 +4,8 @@ import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
 import { ArrowLeft, ExternalLink, RefreshCw, MessageSquare, Play, X, Send, Ban } from 'lucide-react';
 import type { Quote, QuoteStatus, QuoteRouting, QuoteMessage } from '@/lib/quotes/types';
+import { getVendorByName } from '@/data/vendors';
+import ProductInquiryButton from '@/components/admin/ProductInquiryButton';
 
 const STATUSES: { value: string; label: string }[] = [
   { value: '', label: 'All' },
@@ -467,6 +469,47 @@ function QuoteRow({ quote: q, busy, onUpdateStatus, onRoute, onReply, onStartWor
           </select>
         </div>
       </div>
+
+      <SourceVendorInquiries quote={q} />
+    </div>
+  );
+}
+
+/**
+ * Strip of one chip per line item that attempts to resolve the line's vendor
+ * name to a catalog Vendor via getVendorByName. Resolvable items render an
+ * active ProductInquiryButton (composer pre-filled with the line's
+ * description as the product). Unresolvable items render a disabled chip
+ * with a tooltip so the operator knows the vendor is not in the catalog.
+ */
+function SourceVendorInquiries({ quote }: { quote: Quote }) {
+  if (!quote.lineItems?.length) return null;
+  return (
+    <div className="flex flex-wrap items-center gap-2 pt-3 mt-3 border-t border-zinc-800/40">
+      <span className="text-[10px] uppercase tracking-widest text-zinc-500">Source vendor</span>
+      {quote.lineItems.map((item, i) => {
+        const vendor = getVendorByName(item.vendor);
+        if (!vendor) {
+          return (
+            <span
+              key={i}
+              title={`${item.vendor} is not in the catalog \u2014 add them via Vendor Intelligence to enable quick inquiries.`}
+              className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full bg-zinc-900/60 text-zinc-600 border border-zinc-800/60 cursor-help"
+            >
+              {item.vendor}
+            </span>
+          );
+        }
+        return (
+          <ProductInquiryButton
+            key={i}
+            vendor={vendor}
+            productName={item.description}
+            label={vendor.name}
+            className="inline-flex items-center gap-1 text-[11px] px-2 py-0.5 rounded-full bg-emerald-950/40 text-emerald-300 border border-emerald-800/50 hover:bg-emerald-900/50 transition disabled:opacity-40 disabled:cursor-not-allowed"
+          />
+        );
+      })}
     </div>
   );
 }
