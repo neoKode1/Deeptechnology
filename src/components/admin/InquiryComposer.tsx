@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect, useCallback } from 'react';
 import { Send, Loader2, X, CheckCircle2, AlertCircle, Eye, EyeOff } from 'lucide-react';
 import type { Vendor } from '@/data/vendors';
 import { renderTemplate, TEMPLATE_LABELS, type TemplateId } from '@/lib/outreach/templates';
@@ -95,15 +95,46 @@ export default function InquiryComposer({ vendor, initialTemplate, initialProduc
   const sent = state.status === 'sent';
   const canSend = !!toEmail && !sending && !sent;
 
+  // Don't let an in-flight request be torn down out from under the user.
+  // Anything else (idle / sent / error) can be dismissed freely.
+  const tryClose = useCallback(() => {
+    if (sending) return;
+    onClose();
+  }, [sending, onClose]);
+
+  // ESC dismisses the modal from anywhere in the document.
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') tryClose(); };
+    document.addEventListener('keydown', onKey);
+    return () => document.removeEventListener('keydown', onKey);
+  }, [tryClose]);
+
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/70 backdrop-blur-sm overflow-y-auto py-8 px-4">
-      <div className="bg-zinc-950 border border-zinc-800 rounded-xl w-full max-w-2xl shadow-2xl">
+    <div
+      className="fixed inset-0 z-50 flex items-start justify-center bg-black/70 backdrop-blur-sm overflow-y-auto py-8 px-4"
+      onMouseDown={(e) => { if (e.target === e.currentTarget) tryClose(); }}
+      role="dialog"
+      aria-modal="true"
+      aria-label={`Sourcing inquiry for ${vendor.name}`}
+    >
+      <div
+        className="bg-zinc-950 border border-zinc-800 rounded-xl w-full max-w-2xl shadow-2xl"
+        onMouseDown={(e) => e.stopPropagation()}
+      >
         <header className="flex items-center justify-between px-5 py-3 border-b border-zinc-800">
           <div>
             <p className="text-[10px] uppercase tracking-widest text-zinc-500">Sourcing inquiry · {vendor.name}</p>
             <h3 className="text-sm font-semibold text-white">{TEMPLATE_LABELS[templateId]}</h3>
           </div>
-          <button onClick={onClose} className="text-zinc-500 hover:text-white" aria-label="Close"><X size={16} /></button>
+          <button
+            type="button"
+            onClick={tryClose}
+            disabled={sending}
+            className="text-zinc-500 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed p-1 -m-1"
+            aria-label="Close"
+          >
+            <X size={16} />
+          </button>
         </header>
 
         <div className="p-5 space-y-3">
@@ -131,7 +162,7 @@ export default function InquiryComposer({ vendor, initialTemplate, initialProduc
           {state.status === 'sent'  && <Banner ok msg={`Sent to ${state.toEmail}. Reply lands at ${SOURCING_REPLY_TO}.`} />}
           {state.status === 'error' && <Banner msg={state.message} />}
 
-          <button onClick={() => setShowPreview(s => !s)} className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-zinc-500 hover:text-zinc-300">
+          <button type="button" onClick={() => setShowPreview(s => !s)} className="inline-flex items-center gap-1.5 text-[10px] uppercase tracking-widest text-zinc-500 hover:text-zinc-300">
             {showPreview ? <EyeOff size={11} /> : <Eye size={11} />}
             {showPreview ? 'Hide preview' : 'Show preview'}
           </button>
@@ -148,8 +179,10 @@ export default function InquiryComposer({ vendor, initialTemplate, initialProduc
         </div>
 
         <footer className="flex items-center justify-end gap-2 px-5 py-3 border-t border-zinc-800">
-          <button onClick={onClose} className="text-xs px-3 py-1.5 text-zinc-400 hover:text-white">Close</button>
-          <button onClick={send} disabled={!canSend} className="inline-flex items-center gap-1.5 text-sm px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white disabled:opacity-40 disabled:cursor-not-allowed font-medium">
+          <button type="button" onClick={tryClose} disabled={sending} className="text-xs px-3 py-1.5 text-zinc-400 hover:text-white disabled:opacity-40 disabled:cursor-not-allowed">
+            {sent ? 'Done' : 'Close'}
+          </button>
+          <button type="button" onClick={send} disabled={!canSend} className="inline-flex items-center gap-1.5 text-sm px-4 py-2 rounded-full bg-emerald-600 hover:bg-emerald-500 text-white disabled:opacity-40 disabled:cursor-not-allowed font-medium">
             {sending ? <><Loader2 size={14} className="animate-spin" /> Sending…</> : sent ? <><CheckCircle2 size={14} /> Sent</> : <><Send size={14} /> Send now</>}
           </button>
         </footer>
